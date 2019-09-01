@@ -167,6 +167,12 @@ input 1:1:AT_Translated_Set_2_keyboard {
     # Move focus to the parent container
     bindsym $mod+a focus parent
 #
+# Display brightness
+#
+    bindsym XF86MonBrightnessDown exec brightnessctl s $(($(brightnessctl g) - 25))
+    bindsym XF86MonBrightnessUp exec brightnessctl s $(($(brightnessctl g) + 25))
+
+#
 # Scratchpad:
 #
     # Sway has a "scratchpad", which is a bag of holding for windows.
