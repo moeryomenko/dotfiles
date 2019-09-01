@@ -1,0 +1,10 @@
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[user]
+	name = Maxim Eryomenko
+	email = moeryomenko@gmail.com
+	signingkey = 2F4B3B6C1F00C59F
+[alias]
+	clog = log --format='%C(dim)%h    %ad    %<(24)%an    %C(reset)%s' --date=relative
+	noed = commit --amend --no-edit
