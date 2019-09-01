@@ -16,7 +16,7 @@ current_time=$(date "+%H:%M")
 #############
 
 # Battery or charger
-battery_charge=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "percentage" | awk '{print $2}')
+battery_charge=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "percentage" | awk '{print $2}' | sed 's/%//g')
 battery_status=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "state" | awk '{print $2}')
 
 # Network
@@ -31,7 +31,7 @@ loadavg_5min=$(cat /proc/loadavg | awk -F ' ' '{print $2}')
 
 weather=$(curl -Ss 'https://wttr.in/Pontevedra?0&T&Q&format=1')
 
-if [ $battery_status = "discharging" ];
+if [ $battery_status = "discharging" && $battery_charge < 10 ];
 then
 	battery_pluggedin='⚠'
 else
@@ -45,4 +45,4 @@ else
 	network_active="⇆"
 fi
 
-echo "$weather | ⌨ $language | $network_active $interface_easyname ($ping ms) | $loadavg_5min | $battery_pluggedin $battery_charge | $date_and_week $current_time"
+echo "$weather | ⌨ $language | $network_active $interface_easyname ($ping ms) | $loadavg_5min | $battery_pluggedin $battery_charge% | $date_and_week $current_time"
