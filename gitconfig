@@ -8,5 +8,11 @@
 [alias]
 	clog = log --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	noed = commit --amend --no-edit
+	a    = add
+	c    = clone
+	r    = rebase -i
+	co   = checkout
+	cm   = commit -s
+	s    = status
 [commit]
 	gpgsign = true
