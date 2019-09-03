@@ -19,6 +19,10 @@ current_time=$(date "+%H:%M")
 battery_charge=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "percentage" | awk '{print $2}' | sed 's/%//g')
 battery_status=$(upower --show-info $(upower --enumerate | grep 'BAT') | egrep "state" | awk '{print $2}')
 
+# Audio
+audio_volume=$(amixer sget 'Master' | grep -e '[0-9][0-9]%' | head -1 | awk '{print $5}' | tr -d '[]')
+audio_is_muted=$(amixer sget 'Master' | grep -e '[0-9][0-9]%' | head -1 | awk '{print $6}' | tr -d '[]')
+
 # Network
 network=$(ip route get 1.1.1.1 | grep -Po '(?<=dev\s)\w+' | cut -f1 -d ' ')
 # interface_easyname grabs the "old" interface name before systemd renamed it
@@ -45,4 +49,11 @@ else
 	network_active="⇆"
 fi
 
-echo "$weather | ⌨ $language | $network_active $interface_easyname ($ping ms) | $loadavg_5min | $battery_pluggedin $battery_charge% | $date_and_week $current_time"
+if [ $audio_is_muted = "off" ];
+then
+    audio_active='🔇'
+else
+    audio_active='🔊'
+fi
+
+echo "$weather | ⌨ $language | $network_active $interface_easyname ($ping ms) | 🏋 $loadavg_5min | $audio_active $audio_volume | $battery_pluggedin $battery_charge% | $date_and_week $current_time"
