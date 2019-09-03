@@ -29,7 +29,7 @@ ping=$(ping -c 1 www.google.com | tail -1| awk '{print $4}' | cut -d '/' -f 2 | 
 language=$(swaymsg -r -t get_inputs | awk '/1:1:AT_Translated_Set_2_keyboard/;/xkb_active_layout_name/' | grep -A1 '\b1:1:AT_Translated_Set_2_keyboard\b' | grep "xkb_active_layout_name" | awk -F '"' '{print $4}')
 loadavg_5min=$(cat /proc/loadavg | awk -F ' ' '{print $2}')
 
-weather=$(curl -Ss 'https://wttr.in/Pontevedra?0&T&Q&format=1')
+weather=$(curl -Ss 'https://wttr.in/Krasnodar?0&T&Q&format=1')
 
 if [ $battery_status = "discharging" && $battery_charge < 10 ];
 then
