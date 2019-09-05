@@ -173,6 +173,12 @@ input 1:1:AT_Translated_Set_2_keyboard {
     bindsym XF86MonBrightnessUp exec brightnessctl s $(($(brightnessctl g) + 25))
 
 #
+# Audio
+#
+      bindsym XF86AudioMute exec amixer set Master toggle
+      bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
+      bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+#
 # Scratchpad:
 #
     # Sway has a "scratchpad", which is a bag of holding for windows.
