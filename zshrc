@@ -342,3 +342,10 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 export GPG_TTY=$(tty)
+
+alias g=git
+
+# fast checkout with save current work.
+alias gfc='g stash; g switch'
+# fast return to previos works.
+alias grw='f(){g switch $1; g stash pop};f'

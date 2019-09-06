@@ -10,6 +10,7 @@
 	noed = commit --amend --no-edit
 	a    = add
 	c    = clone
+	d    = diff
 	r    = rebase -i
 	co   = checkout
 	cm   = commit -s
