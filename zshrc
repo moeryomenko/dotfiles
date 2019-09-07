@@ -349,3 +349,5 @@ alias g=git
 alias gfc='g stash; g switch'
 # fast return to previos works.
 alias grw='f(){g switch $1; g stash pop};f'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
