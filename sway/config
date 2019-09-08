@@ -19,7 +19,7 @@ set $term kitty
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/pictures/wallpapers/wallpaper.jpg fill
+#output * bg ~/pictures/wallpapers/wallpaper.jpg fill
 #
 # Example configuration:
 #
@@ -252,3 +252,4 @@ exec swayidle -w \
 #
 exec mako
 exec libinput-gestures-setup start
+exec oguri -c ~/.config/oguri/config
