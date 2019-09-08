@@ -1,0 +1,5 @@
+[output *]
+image=$HOME/pictures/wallpapers/wallpaper.gif
+filter=nearest
+scaling-mode=fill
+anchor=center
