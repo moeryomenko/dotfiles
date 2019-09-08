@@ -139,8 +139,8 @@ input 1:1:AT_Translated_Set_2_keyboard {
     bindsym $mod+Shift+0 move container to workspace 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
-    bindsym $mod+Alt+Right exec ~/.config/sway/scripts/workspace.sh right
-    bindsym $mod+Alt+Left exec ~/.config/sway/scripts/workspace.sh left
+    bindsym $mod+Alt+k exec ~/.config/sway/scripts/workspace.sh right
+    bindsym $mod+Alt+j exec ~/.config/sway/scripts/workspace.sh left
 #
 # Layout stuff:
 #
