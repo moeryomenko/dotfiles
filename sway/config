@@ -192,6 +192,9 @@ input 1:1:AT_Translated_Set_2_keyboard {
     bindsym $mod+minus scratchpad show
 
     bindsym Print exec ~/.config/sway/scripts/screenshot.sh
+    bindsym $mod+Print exec wf-recorder -g "$(slurp)" -f ~/videos/screencast/recording_$(date +"%Y-%m-%d_%H:%M:%S.mp4")
+    bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder
+
 #
 # Resizing containers:
 # 
