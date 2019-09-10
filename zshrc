@@ -344,6 +344,7 @@ export PATH=$PATH:$GOPATH/bin
 export GPG_TTY=$(tty)
 
 alias g=git
+alias c=clear
 
 # fast checkout with save current work.
 alias gfc='g stash; g switch'
