@@ -227,12 +227,9 @@ bindsym $mod+r mode "resize"
 bar {
     position top
 
-    font "Fira Code 11"
+    font Fira Code 10
     
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    #status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
-    status_command while ~/.config/sway/scripts/sway_bar.sh; do sleep 1; done
+    status_command exec conky
 
     colors {
         statusline #ffffff
