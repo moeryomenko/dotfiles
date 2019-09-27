@@ -351,4 +351,6 @@ alias gfc='g stash; g switch'
 # fast return to previos works.
 alias grw='f(){g switch $1; g stash pop};f'
 
+alias gwds="ydiff -s -c always -w 0"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
