@@ -238,6 +238,8 @@ bar {
     }
 }
 
+default_border pixel 0
+
 include /etc/sway/config.d/*
 
 # Set the swaylock
