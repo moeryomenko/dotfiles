@@ -7,6 +7,7 @@
 	signingkey = 2F4B3B6C1F00C59F
 [alias]
 	clog = log --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
+	glog = log --graph --all --date=relative --pretty=format:'%Cred%h %Creset%<|(50,trunc)%s %C(bold blue)<%an>%Creset %Cgreen(%cd)%Creset%C(auto)%d'
 	noed = commit --amend --no-edit
 	a    = add
 	c    = clone
