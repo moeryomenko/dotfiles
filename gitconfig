@@ -16,5 +16,6 @@
 	co   = checkout
 	cm   = commit -s
 	s    = status
+	fp   = format-patch
 [commit]
 	gpgsign = true
