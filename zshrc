@@ -333,11 +333,6 @@ fi
 #vimpm ()      { vim `perldoc -l $1 | sed -e 's/pod$/pm/'` }
 #vimhelp ()    { vim -c "help $1" -c on -c "au! VimEnter *" }
 
-if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-  export GDK_BACKEND=wayland
-  XKB_DEFAULT_LAYOUT=us exec sway
-fi
-
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
