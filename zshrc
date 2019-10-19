@@ -334,7 +334,8 @@ fi
 #vimhelp ()    { vim -c "help $1" -c on -c "au! VimEnter *" }
 
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export NPM_CONFIG_PREFIX=$HOME/.npm-global
+export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:/opt/gradle/bin
 
 export GPG_TTY=$(tty)
 
