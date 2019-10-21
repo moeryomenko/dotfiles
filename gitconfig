@@ -19,3 +19,8 @@
 	fp   = format-patch
 [commit]
 	gpgsign = true
+[sendemail]
+	smtpserver = smtp.gmail.com
+	smtpserverport = 587
+	smtpencryption = tls
+	smtpuser = moeryomenko@gmail.com
