@@ -17,6 +17,7 @@
 	cm   = commit -s
 	s    = status
 	fp   = format-patch
+	sm   = send-email
 [commit]
 	gpgsign = true
 [sendemail]
