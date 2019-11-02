@@ -19,7 +19,7 @@ set $term kitty
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg ~/pictures/wallpapers/wallpaper.jpg fill
+output * bg ~/pictures/wallpapers/wallpaper.jpg fill
 #
 # Example configuration:
 #
@@ -58,6 +58,10 @@ set $term kitty
 input 1:1:AT_Translated_Set_2_keyboard {
 	xkb_layout us,ru
 	xkb_options grp:alt_shift_toggle
+}
+
+input 1267:12363:MSFT0001:00_04F3:304B_Touchpad {
+	tap enabled
 }
 
 ### Key bindings
@@ -254,4 +258,4 @@ exec swayidle -w \
 #
 exec mako
 exec libinput-gestures-setup start
-exec oguri -c ~/.config/oguri/config
+# exec oguri -c ~/.config/oguri/config
