@@ -335,7 +335,7 @@ fi
 
 export GOPATH=$HOME/go
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
-export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:/opt/gradle/bin
+export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:/opt/gradle/bin:$HOME/.local/bin
 
 export GPG_TTY=$(tty)
 
