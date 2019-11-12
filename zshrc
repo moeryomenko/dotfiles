@@ -350,3 +350,10 @@ alias grw='f(){g switch $1; g stash pop};f'
 alias gwds="ydiff -s -c always -w 0"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# install:
+#      git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.5
+if [ -e "$HOME/.asdf" ]; then
+	. $HOME/.asdf/asdf.sh
+	. $HOME/.asdf/completions/asdf.bash
+fi
