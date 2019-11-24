@@ -1,6 +1,6 @@
 [core]
 	editor = nvim
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/gitignore-global
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com

@@ -1,0 +1,4 @@
+.tool-versions
+compile_commands.json
+build/
+.clangd/
