@@ -1,0 +1,17 @@
+TelegramDesktoprc
+Thunar/
+chromium-flags.conf
+chromium/
+fish/conf.d/
+fish/fish_variables
+fish/functions/
+fontconfig/
+gtk-3.0/
+gtkrc
+gtkrc-2.0
+htop/
+mimeapps.list
+omf/
+pulse/
+transmission/
+xfce4/
