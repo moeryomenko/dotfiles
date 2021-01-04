@@ -74,6 +74,9 @@ input 1267:12363:MSFT0001:00_04F3:304B_Touchpad {
     # Start a browser
     bindsym $mod+w exec GDK_BACKEND=wayland firefox -browser
 
+    # Start telegram
+    bindsym $mod+t exec telegram-desktop
+
     # Kill focused window
     bindsym $mod+Shift+q kill
 
