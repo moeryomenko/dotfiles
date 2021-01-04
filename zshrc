@@ -346,6 +346,10 @@ export GPG_TTY=$(tty)
 
 alias g=git
 alias c=clear
+alias k=kubectl
+
+source <(kubectl completion zsh)
+source <(kind completion zsh)
 
 # fast checkout with save current work.
 alias gfc='g stash; g switch'
