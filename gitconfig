@@ -4,7 +4,7 @@
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com
-	signingkey = 2F4B3B6C1F00C59F
+	signingkey = FBF8F1F6B20FCBD2
 [alias]
 	clog = log --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog = log --graph --all --date=relative --pretty=format:'%Cred%h %Creset%<|(50,trunc)%s %C(bold blue)<%an>%Creset %Cgreen(%cd)%Creset%C(auto)%d'
@@ -26,3 +26,5 @@
 	smtpencryption = tls
 	smtpuser = moeryomenko@gmail.com
 	smtppass = ppzyfivldvtsrwuj
+[init]
+	defaultBranch = main
