@@ -20,14 +20,14 @@
 ## /etc/zsh/zshrc was installed as ~/.zshrc.global and
 ## ~/.zshrc.local does not exist yet.
 if [ -r ~/.zshrc -a -r ~/.zshrc.global -a ! -r ~/.zshrc.local ] ; then
-    printf '-!-\n'
-    printf '-!- Looks like you are using the old zshrc layout of grml.\n'
-    printf '-!- Please read the notes in the grml-zsh-refcard, being'
-    printf '-!- available at: http://grml.org/zsh/\n'
-    printf '-!-\n'
-    printf '-!- If you just want to get rid of this warning message execute:\n'
-    printf '-!-        touch ~/.zshrc.local\n'
-    printf '-!-\n'
+	printf '-!-\n'
+	printf '-!- Looks like you are using the old zshrc layout of grml.\n'
+	printf '-!- Please read the notes in the grml-zsh-refcard, being'
+	printf '-!- available at: http://grml.org/zsh/\n'
+	printf '-!-\n'
+	printf '-!- If you just want to get rid of this warning message execute:\n'
+	printf '-!-        touch ~/.zshrc.local\n'
+	printf '-!-\n'
 fi
 
 ## Settings for umask
@@ -334,8 +334,8 @@ fi
 #vimhelp ()    { vim -c "help $1" -c on -c "au! VimEnter *" }
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-  export GDK_BACKEND=wayland
-  XKB_DEFAULT_LAYOUT=us exec sway
+	export GDK_BACKEND=wayland
+	XKB_DEFAULT_LAYOUT=us exec sway
 fi
 
 export GOPATH=$HOME/go
@@ -365,4 +365,11 @@ alias gwds="ydiff -s -c always -w 0"
 if [ -e "$HOME/.asdf" ]; then
 	. $HOME/.asdf/asdf.sh
 	. $HOME/.asdf/completions/asdf.bash
+	# append completions to fpath
+	fpath=(${ASDF_DIR}/completions $fpath)
+	# initialise completions with ZSH's compinit
+	autoload -Uz compinit
+	compinit
 fi
+
+eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moyeromenko)
