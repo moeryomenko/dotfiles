@@ -364,7 +364,7 @@ alias gwds="ydiff -s -c always -w 0"
 #      git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.5
 if [ -e "$HOME/.asdf" ]; then
 	. $HOME/.asdf/asdf.sh
-	. $HOME/.asdf/completions/asdf.bash
+	#. $HOME/.asdf/completions/asdf.bash
 	# append completions to fpath
 	fpath=(${ASDF_DIR}/completions $fpath)
 	# initialise completions with ZSH's compinit
@@ -372,4 +372,7 @@ if [ -e "$HOME/.asdf" ]; then
 	compinit
 fi
 
-eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moyeromenko)
+eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/maxer/.local/bin/terraform terraform
