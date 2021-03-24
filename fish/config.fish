@@ -10,3 +10,7 @@ set -x GO111MODULE on
 if test (tty) = /dev/tty1
 	exec sway
 end
+
+if test -e ~/.asdf/asdf.fish
+	source ~/.asdf/asdf.fish
+end
