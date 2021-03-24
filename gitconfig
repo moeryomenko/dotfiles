@@ -4,7 +4,7 @@
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com
-	signingkey = FBF8F1F6B20FCBD2
+	signingkey = 15AE73521DFBFAED
 [alias]
 	clog = log --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog = log --graph --all --date=relative --pretty=format:'%Cred%h %Creset%<|(50,trunc)%s %C(bold blue)<%an>%Creset %Cgreen(%cd)%Creset%C(auto)%d'
@@ -24,7 +24,9 @@
 	smtpserver = smtp.gmail.com
 	smtpserverport = 587
 	smtpencryption = tls
-	smtpuser = moeryomenko@gmail.com
-	smtppass = ppzyfivldvtsrwuj
 [init]
 	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[grep]
+	lineNumber = true
