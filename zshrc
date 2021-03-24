@@ -348,9 +348,6 @@ alias g=git
 alias c=clear
 alias k=kubectl
 
-source <(kubectl completion zsh)
-source <(kind completion zsh)
-
 # fast checkout with save current work.
 alias gfc='g stash; g switch'
 # fast return to previos works.
@@ -376,3 +373,6 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/maxer/.local/bin/terraform terraform
+
+source <(kubectl completion zsh)
+source <(kind completion zsh)
