@@ -370,7 +370,7 @@ if [ -e "$HOME/.asdf" ]; then
 fi
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
-eval $(keychain --eval --agents gpg --gpg2 15AE73521DFBFAED)
+eval $(keychain --eval --agents gpg --quiet --gpg2 15AE73521DFBFAED)
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/maxer/.local/bin/terraform terraform
