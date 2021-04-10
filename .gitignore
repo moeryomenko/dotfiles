@@ -16,3 +16,21 @@ pulse/
 transmission/
 xfce4/
 dconf/
+QtProject.conf
+Slack/
+Unknown Organization/
+bashtop/
+cni/
+dlv/
+docker/
+dolphinrc
+fish/completions
+google-chrome-unstable/
+helm/
+himalaya/
+kde.org/
+pavucontrol.ini
+pgcli/
+session/
+startup.sh
+zoomus.conf
