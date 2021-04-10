@@ -46,6 +46,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'Chiel92/vim-autoformat'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
