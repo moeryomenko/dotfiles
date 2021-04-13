@@ -39,6 +39,43 @@ alias gwds="ydiff -s -c always -w 0"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+function delete-branches() {
+	git branch |
+		grep --invert-match '\*' |
+		cut -c 3- |
+		fzf --multi --preview="git log {} --" |
+		xargs --no-run-if-empty git branch --delete --force
+}
+
+function pr-checkout() {
+  local jq_template pr_number
+
+  jq_template='"'\
+'#\(.number) - \(.title)'\
+'\t'\
+'Author: \(.user.login)\n'\
+'Created: \(.created_at)\n'\
+'Updated: \(.updated_at)\n\n'\
+'\(.body)'\
+'"'
+
+  pr_number=$(
+    gh api 'repos/:owner/:repo/pulls' |
+    jq ".[] | $jq_template" |
+    sed -e 's/"\(.*\)"/\1/' -e 's/\\t/\t/' |
+    fzf \
+      --with-nth=1 \
+      --delimiter='\t' \
+      --preview='echo -e {2}' \
+      --preview-window=top:wrap |
+    sed 's/^#\([0-9]\+\).*/\1/'
+  )
+
+  if [ -n "$pr_number" ]; then
+    gh pr checkout "$pr_number"
+  fi
+}
+
 # install:
 #      git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 if [ -e "$HOME/.asdf" ]; then
@@ -58,3 +95,4 @@ complete -o nospace -C /home/maxer/.local/bin/terraform terraform
 
 source <(kubectl completion zsh)
 source <(kind completion zsh)
+source <(gh completion -s zsh)
