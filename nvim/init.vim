@@ -27,11 +27,12 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
+let g:netrw_fastbrowse = 2
+let g:netrw_keepdir = 0
+let g:netrw_retmap = 1
+let g:netrw_silent = 1
+let g:netrw_special_syntax = 1
 let g:netrw_winsize = 25
-
-" constraint to check that the string is no more than 100 characters.
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%101v.\+/
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -133,3 +134,7 @@ EOF
 
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
+
+" constraint to check that the string is no more than 100 characters.
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%101v.\+/
