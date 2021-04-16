@@ -43,11 +43,13 @@ call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'arcticicestudio/nord-vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'Chiel92/vim-autoformat'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'sheerun/vim-polyglot'
+Plug 'majutsushi/tagbar'
 
 call plug#end()
 
@@ -61,6 +63,39 @@ let g:airline_theme='nord'
 let g:airline_powerline_fonts = 1
 let g:nord_uniform_status_lines = 1
 set statusline+=%#warningmsg#
+
+let g:tagbar_width=48
+
+" tagbar setting for golang
+let g:tagbar_type_go = {
+			\ 'ctagstype' : 'go',
+			\ 'kinds'     : [
+			\ 'p:package',
+			\ 'i:imports:1',
+			\ 'c:constants',
+			\ 'v:variables',
+			\ 't:types',
+			\ 'n:interfaces',
+			\ 'w:fields',
+			\ 'e:embedded',
+			\ 'm:methods',
+			\ 'r:constructor',
+			\ 'f:functions'
+			\ ],
+			\ 'sro' : '.',
+			\ 'kind2scope' : {
+			\ 't' : 'ctype',
+			\ 'n' : 'ntype'
+			\ },
+			\ 'scope2kind' : {
+			\ 'ctype' : 't',
+			\ 'ntype' : 'n'
+			\ },
+			\ 'ctagsbin'  : 'gotags',
+			\ 'ctagsargs' : '-sort -silent'
+			\ }
+
+nmap <F8> :TagbarToggle<CR>
 
 " code transformation.
 au BufWrite * :RemoveTrailingSpaces
