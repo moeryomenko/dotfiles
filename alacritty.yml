@@ -3,14 +3,17 @@ font:
   # Normal (roman) font face
   normal:
     family: "Fira Code"
+    style: Retina
 
   # Bold font face
   bold:
     family: "Fira Code"
+    style: Medium
 
   # Italic font face
   italic:
     family: "Fira Code"
+    style: "Light Italic"
 
   # Bold italic font face
   bold_italic:
