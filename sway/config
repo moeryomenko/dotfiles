@@ -14,7 +14,8 @@ set $term alacritty
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg ~/pictures/wallpapers/wallpaper.jpg fill
-output * scale 1.2
+output eDP-1 scale 1.2
+output DP-1 scale 1
 
 ### Input configuration
 #
