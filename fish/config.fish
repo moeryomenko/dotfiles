@@ -9,6 +9,7 @@ set -x XKB_DEFAULT_LAYOUT us
 set -x GOPATH $HOME/go
 set -x GO111MODULE on
 set -x NPM_CONFIG_PREFIX $HOME/.npm-global
+set -x JAVA_HOME (dirname (dirname (readlink -f (which javac))))
 
 set -x PATH $PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$HOME/.local/git-fuzzy/bin
 
