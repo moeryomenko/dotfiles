@@ -10,9 +10,9 @@
 	glog = log --graph --all --date=relative --pretty=format:'%Cred%h %Creset%<|(100,trunc)%s %C(bold blue)<%an>%Creset %Cgreen(%cd)%Creset%C(auto)%d'
 	noed = commit --amend --no-edit
 	a    = add
-	c    = clone
-	d    = diff
-	r    = rebase -i
+	cl   = clone
+	df   = diff
+	rb   = rebase -i
 	co   = checkout
 	cm   = commit -s
 	s    = status
