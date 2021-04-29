@@ -18,7 +18,7 @@
 	s        = status
 	fp       = format-patch
 	sm       = send-email
-	conflict = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff'"
+	conflict = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'"
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
