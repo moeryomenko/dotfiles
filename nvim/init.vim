@@ -50,6 +50,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -161,7 +162,7 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "cmake", "vimls", "terraformls" }
+local servers = { "gopls", "clangd", "cmake", "vimls", "terraformls", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup { on_attach = on_attach }
 end
