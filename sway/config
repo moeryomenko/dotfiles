@@ -248,8 +248,8 @@ include /etc/sway/config.d/*
 # resumed. It will also lock your screen before your computer goes to sleep.
 bindsym $mod+Alt+l exec swaylock -f -c 000000
 exec swayidle -w \
-	timeout 800 'swaylock -f -c 000000' \
-	timeout 1600 'swaymsg "output * dpms off"' \
+	timeout 1600 'swaylock -f -c 000000' \
+	timeout 3200 'swaymsg "output * dpms off"' \
 	resume 'swaymsg "output * dpms on"' \
 	before-sleep 'swaylock -f -c 000000'
 
