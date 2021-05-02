@@ -2,6 +2,8 @@ alias g=git
 alias c=clear
 alias l=ll
 alias gwds="ydiff -s -c always -w 0"
+alias bt=bat
+alias fz='fzf --preview \'bat --color=always --style=numbers --line-range=:500 {}\''
 
 set -x GDK_BACKEND wayland
 set -x XKB_DEFAULT_LAYOUT us
@@ -16,6 +18,9 @@ set -x JAVA_HOME $HOME/.local/jdk
 
 set GPG_TTY (tty)
 
+function btdiff
+  git diff --name-only --diff-filter=d | xargs bat --diff
+end
 
 function delete-branches
   git branch |
