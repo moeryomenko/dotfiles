@@ -11,7 +11,7 @@ set -x GO111MODULE on
 set -x NPM_CONFIG_PREFIX $HOME/.npm-global
 
 set -x PATH $PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$HOME/.local/git-fuzzy/bin
-set -x PATH $PATH:$HOME/.local/jdk/bin
+set -x PATH $PATH:$HOME/.local/jdk/bin:$HOME/flutter/bin
 set -x JAVA_HOME $HOME/.local/jdk
 
 set GPG_TTY (tty)
@@ -55,3 +55,5 @@ end
 if test (tty) = /dev/tty1
 	exec sway
 end
+
+source ~/.asdf/asdf.fish
