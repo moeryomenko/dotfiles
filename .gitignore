@@ -82,3 +82,6 @@ spectaclerc
 systemsettingsrc
 webengineurlinterceptoradblockrc
 xsettingsd/
+.gitsecret/keys/random_seed
+!*.secret
+1pass
