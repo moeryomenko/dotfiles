@@ -85,3 +85,10 @@ xsettingsd/
 .gitsecret/keys/random_seed
 !*.secret
 1pass
+dleyna-renderer-service.conf
+dleyna-server-service.conf
+evolution/
+gnome-control-center/
+goa-1.0/
+monitors.xml
+monitors.xml~
