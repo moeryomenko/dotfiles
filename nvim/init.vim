@@ -52,6 +52,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'rhysd/git-messenger.vim'
+Plug 'kristijanhusak/completion-tags'
 
 call plug#end()
 
@@ -117,12 +118,6 @@ noremap <F3> :Autoformat<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
 " lsp keybinding and completion.
 lua << EOF
 local nvim_lsp = require('lspconfig')
@@ -178,8 +173,18 @@ for _, lsp in ipairs(servers) do
 end
 EOF
 
+" completion settings.
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+" Avoid showing message extra message when using completion
+set shortmess+=c
+" combine tags with lsp
+let g:completion_chain_complete_list = {
+			\ 'default': [
+			\    {'complete_items': ['lsp', 'tags']},
+			\  ]}
 
 " constraint to check that the string is no more than 100 characters.
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
