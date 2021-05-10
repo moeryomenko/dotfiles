@@ -1,4 +1,4 @@
-" common.
+" common settings {{{
 syntax on
 filetype plugin indent on
 
@@ -6,23 +6,30 @@ set autoindent
 set smarttab
 set wildmenu
 set encoding=utf8
-set nu
+set rnu
 set termguicolors
 set cursorline
 set background=dark
+"}}}
 
-" search.
+" folding configurations {{{
+set foldmethod=syntax
+autocmd FileType vim setlocal foldmethod=marker
+"}}}
+
+" search configurations {{{
 set incsearch
 set hlsearch
 set nowrapscan
 set smartcase
+"}}}
 
 set backspace=indent,eol,start
 
 " needs for autoformat.
 let g:python3_host_prog='/usr/bin/python'
 
-" folder tree.
+" folder tree {{{
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -33,7 +40,9 @@ let g:netrw_retmap = 1
 let g:netrw_silent = 1
 let g:netrw_special_syntax = 1
 let g:netrw_winsize = 25
+"}}}
 
+" plugins settings {{{
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
 				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -53,9 +62,17 @@ Plug 'majutsushi/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'rhysd/git-messenger.vim'
 Plug 'kristijanhusak/completion-tags'
+Plug 'kristijanhusak/vim-create-pr'
+Plug 'sodapopcan/vim-twiggy'
+Plug 'junegunn/gv.vim'
 
 call plug#end()
+"}}}
 
+" git configurations {{{
+let g:twiggy_group_locals_by_slash = 0
+let g:twiggy_local_branch_sort = 'mru'
+let g:twiggy_remote_branch_sort = 'date'
 " setting for git messenger.
 " view git messege and diff by <Leader>gm.
 let g:git_messenger_always_into_popup = 1
@@ -64,8 +81,9 @@ hi gitmessengerPopupNormal term=None guifg=#eeeeee guibg=#333333 ctermfg=255 cte
 hi gitmessengerHeader term=None guifg=#88b8f6 ctermfg=111
 hi gitmessengerHash term=None guifg=#f0eaaa ctermfg=229
 hi gitmessengerHistory term=None guifg=#fd8489 ctermfg=210
+" }}}
 
-" styling.
+" style configutations {{{
 colorscheme nord
 let g:nord_cursor_line_number_background = 1
 let g:nord_uniform_status_lines = 1
@@ -75,7 +93,9 @@ let g:airline_theme='nord'
 let g:airline_powerline_fonts = 1
 let g:nord_uniform_status_lines = 1
 set statusline+=%#warningmsg#
+"}}}
 
+" tagbar configurations {{{
 let g:tagbar_width=48
 
 " tagbar setting for golang
@@ -108,16 +128,15 @@ let g:tagbar_type_go = {
 			\ }
 
 nmap <F8> :TagbarToggle<CR>
+"}}}
 
-" code transformation.
+" code transformation {{{
 au BufWrite * :RemoveTrailingSpaces
 au BufWrite *.h,*.hpp,*.hh,*.c,*.cpp,*.cxx,*.cc,*.py,*.go,*.vim :Autoformat
 noremap <F3> :Autoformat<CR>
+"}}}
 
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
+" lsp config {{{
 " lsp keybinding and completion.
 lua << EOF
 local nvim_lsp = require('lspconfig')
@@ -172,8 +191,9 @@ for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup { on_attach = on_attach }
 end
 EOF
+"}}}
 
-" completion settings.
+" completion configurations {{{
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
 " Set completeopt to have a better completion experience
@@ -185,6 +205,10 @@ let g:completion_chain_complete_list = {
 			\ 'default': [
 			\    {'complete_items': ['lsp', 'tags']},
 			\  ]}
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"}}}
 
 " constraint to check that the string is no more than 100 characters.
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
