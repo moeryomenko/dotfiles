@@ -51,8 +51,18 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
 Plug 'rust-lang/rust.vim'
+Plug 'rhysd/git-messenger.vim'
 
 call plug#end()
+
+" setting for git messenger.
+" view git messege and diff by <Leader>gm.
+let g:git_messenger_always_into_popup = 1
+let g:git_messenger_include_diff = 1
+hi gitmessengerPopupNormal term=None guifg=#eeeeee guibg=#333333 ctermfg=255 ctermbg=234
+hi gitmessengerHeader term=None guifg=#88b8f6 ctermfg=111
+hi gitmessengerHash term=None guifg=#f0eaaa ctermfg=229
+hi gitmessengerHistory term=None guifg=#fd8489 ctermfg=210
 
 " styling.
 colorscheme nord
