@@ -2,13 +2,10 @@
 syntax on
 filetype plugin indent on
 
-set autoindent
-set smarttab
-set wildmenu
+set ai smarttab wildmenu
 set encoding=utf8
-set rnu
-set termguicolors
-set cursorline
+set nu rnu
+set termguicolors cursorline
 set background=dark
 "}}}
 
@@ -210,6 +207,6 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "}}}
 
-" constraint to check that the string is no more than 100 characters.
+" constraint to check that the string is no more than 120 characters.
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%101v.\+/
+match OverLength /\%121v.\+/
