@@ -10,17 +10,17 @@
 	clog     = log --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog     = log --graph --all --date=relative --pretty=format:'%Cred%h %Creset%<|(100,trunc)%s %C(bold blue)<%an>%Creset %Cgreen(%cd)%Creset%C(auto)%d'
 	noed     = commit --amend --no-edit
-	a        = add
-	cl       = clone
-	df       = diff
-	rb       = rebase -i
-	co       = checkout
-	cm       = commit -s
-	s        = status
-	fp       = format-patch
-	sm       = send-email
-	conflict = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'"
-	sc       = secret
+	a  = add
+	c  = clone
+	d  = diff --word-diff
+	rb = rebase -i
+	co = checkout
+	cm = commit -s
+	s  = status
+	fp = format-patch
+	sm = send-email
+	rc = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'"
+	sc = secret
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
