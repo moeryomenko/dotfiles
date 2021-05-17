@@ -21,6 +21,7 @@
 	sm = send-email
 	rc = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'"
 	sc = secret
+	rs = restore
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
