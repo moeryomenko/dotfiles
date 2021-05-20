@@ -1,0 +1,6 @@
+# Set up Vim-style tab completion.
+TAB: menu-complete
+set show-all-if-ambiguous on
+# Edit with Vi keybindings.
+set editing-mode vi
+set keymap vi

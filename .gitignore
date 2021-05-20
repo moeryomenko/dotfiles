@@ -95,3 +95,5 @@ monitors.xml~
 gnome-builder/
 gedit/
 gnome-photos/
+bash_completion
+git-completion
