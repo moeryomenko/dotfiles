@@ -207,6 +207,21 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "}}}
 
+" git commit message {{{
+" Force the cursor onto a new line after 80 characters
+au FileType gitcommit setlocal tw=80
+" However, in Git commit messages, let’s make it 72 characters
+autocmd FileType gitcommit setlocal tw=72
+" Colour the 81st (or 73rd) column so that we don’t type over our limit
+au FileType gitcommit setlocal cc=+1
+" In Git commit messages, also colour the 51st column (for titles)
+autocmd FileType gitcommit setlocal cc+=51
+" enables the spell checker when editing commit messages, underlining typos
+" and other common mistakes.
+autocmd FileType gitcommit setlocal spell spelllang=en_us
+" }}}
+
 " constraint to check that the string is no more than 120 characters.
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%121v.\+/
+set cc=121
