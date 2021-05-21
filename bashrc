@@ -29,6 +29,7 @@ shopt -s cmdhist
 
 alias g=git
 alias ll='ls -l --color=always'
+alias la='ll -a'
 alias gwds='ydiff -s -c always -w 0'
 alias fz="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
