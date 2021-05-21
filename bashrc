@@ -14,6 +14,10 @@ if [ ! -f $HOME/.config/git-completion ]; then
 fi
 source $HOME/.config/git-completion
 
+if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
+        ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
+fi
+
 source $HOME/.config/bash-prompt
 
 set colored-stats on
