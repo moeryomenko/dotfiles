@@ -18,6 +18,14 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
         ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
+if [ ! -f $HOME/.dir_colors ]; then
+        ln -sf $HOME/.config/dir_colors $HOME/.dir_colors
+fi
+
+if [ ! -f $HOME/.gitconfig ]; then
+        ln -sf $HOME/.config/gitconfig $HOME/.gitconfig
+fi
+
 source $HOME/.config/bash-prompt
 
 set colored-stats on
