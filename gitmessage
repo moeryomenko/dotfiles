@@ -1,5 +1,7 @@
-# Summarize changes in around 50 characters or less
+# <type change>(scope): brief commit summary in around 50 characters or less
 
+# type changes: build|ci|chore|doc|feat|fix|perf|refactor|revert|style|test
+#
 # More detailed explanatory text, if necessary. Wrap it to about 72
 # characters or so. In some contexts, the first line is treated as the
 # subject of the commit and the rest of the text as the body. The
@@ -25,6 +27,7 @@
 #
 # Resolves: #123
 # See also: #456, #789
+#
 # Rules:
 # - Separate subject from body with a blank line
 # - Limit the subject line to 50 characters
