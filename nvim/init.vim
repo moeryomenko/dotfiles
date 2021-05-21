@@ -59,9 +59,6 @@ Plug 'majutsushi/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'rhysd/git-messenger.vim'
 Plug 'kristijanhusak/completion-tags'
-Plug 'kristijanhusak/vim-create-pr'
-Plug 'sodapopcan/vim-twiggy'
-Plug 'junegunn/gv.vim'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 
@@ -69,10 +66,6 @@ call plug#end()
 "}}}
 
 " git configurations {{{
-let g:twiggy_group_locals_by_slash = 0
-let g:twiggy_local_branch_sort = 'mru'
-let g:twiggy_remote_branch_sort = 'date'
-" setting for git messenger.
 " view git messege and diff by <Leader>gm.
 let g:git_messenger_always_into_popup = 1
 let g:git_messenger_include_diff = 1
@@ -185,7 +178,7 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "cmake", "vimls", "terraformls", "rust_analyzer", "vala_ls" }
+local servers = { "gopls", "clangd", "cmake", "vimls", "rust_analyzer" }
 for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup { on_attach = on_attach }
 end
