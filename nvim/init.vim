@@ -62,6 +62,8 @@ Plug 'kristijanhusak/completion-tags'
 Plug 'kristijanhusak/vim-create-pr'
 Plug 'sodapopcan/vim-twiggy'
 Plug 'junegunn/gv.vim'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 
 call plug#end()
 "}}}
@@ -191,20 +193,27 @@ EOF
 "}}}
 
 " completion configurations {{{
-" Use completion-nvim in every buffer
+" Use completion-nvim in every buffer.
 autocmd BufEnter * lua require'completion'.on_attach()
-" Set completeopt to have a better completion experience
+" Set completeopt to have a better completion experience.
 set completeopt=menuone,noinsert,noselect
-" Avoid showing message extra message when using completion
+" Avoid showing message extra message when using completion.
 set shortmess+=c
-" combine tags with lsp
+" Enable neosnippet for completion.
+let g:completion_enable_snippet = "Neosnippet"
+" combine tags, snippets with lsp.
 let g:completion_chain_complete_list = {
 			\ 'default': [
-			\    {'complete_items': ['lsp', 'tags']},
+			\    {'complete_items': ['lsp', 'tags', 'snippet']},
 			\  ]}
-" Use <Tab> and <S-Tab> to navigate through popup menu
+" Use <Tab> and <S-Tab> to navigate through popup menu.
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
 
 " git commit message {{{
