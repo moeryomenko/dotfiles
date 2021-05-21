@@ -7,6 +7,14 @@ set encoding=utf8
 set nu rnu
 set termguicolors cursorline
 set background=dark
+
+" Remember last position in file
+if has("autocmd")
+	autocmd BufReadPost *
+				\ if line("'\"") > 0 && line("'\"") <= line("$") |
+				\   exe "normal g`\"" |
+				\ endif
+endif
 "}}}
 
 " folding configurations {{{
