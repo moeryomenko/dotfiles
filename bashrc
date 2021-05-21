@@ -27,6 +27,19 @@ shopt -s cdspell
 # save all lines of a multiple-line command in the same history entry (allows easy re-editing of multi-line commands).
 shopt -s cmdhist
 
+# If there are multiple matches for completion, Tab should cycle through them
+bind 'TAB':menu-complete
+# Display a list of the matching files
+bind "set show-all-if-ambiguous on"
+# Perform partial completion on the first Tab press,
+# only start cycling full results on the second Tab press
+bind "set menu-complete-display-prefix on"
+# Cycle through history based on characters already typed on the line
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
+
+
 alias g=git
 alias ll='ls -l --color=always'
 alias la='ll -a'
