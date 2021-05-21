@@ -19,7 +19,7 @@
 	s    = status
 	fp   = format-patch
 	sm   = send-email
-	rc   = "!git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'"
+	rc   = resolve-conflicts
 	sc   = secret
 	rs   = restore
 	rmb  = remove-merged-branches
