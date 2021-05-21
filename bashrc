@@ -38,8 +38,6 @@ bind "set menu-complete-display-prefix on"
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
-
-
 alias g=git
 alias ll='ls -l --color=always'
 alias la='ll -a'
@@ -53,8 +51,9 @@ export GOPATH=$HOME/go
 export GO111MODULE=on
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
+export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$HOME/.local/git-fuzzy/bin
-export PATH=$PATH:$HOME/.local/jdk/bin:$HOME/flutter/bin
+export PATH=$PATH:$HOME/.local/jdk/bin
 export JAVA_HOME=$HOME/.local/jdk
 
 export GPG_TTY=$(tty)
