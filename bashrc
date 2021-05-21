@@ -29,6 +29,7 @@ shopt -s cmdhist
 
 alias g=git
 alias ll='ls -l --color=always'
+alias gwds='ydiff -s -c always -w 0'
 alias fz="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
 export GDK_BACKEND=wayland
@@ -56,4 +57,3 @@ source $HOME/.asdf/completions/asdf.bash
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
         exec sway
 fi
-
