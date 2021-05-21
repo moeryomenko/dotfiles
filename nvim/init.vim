@@ -81,6 +81,13 @@ hi gitmessengerPopupNormal term=None guifg=#eeeeee guibg=#333333 ctermfg=255 cte
 hi gitmessengerHeader term=None guifg=#88b8f6 ctermfg=111
 hi gitmessengerHash term=None guifg=#f0eaaa ctermfg=229
 hi gitmessengerHistory term=None guifg=#fd8489 ctermfg=210
+" Force the cursor onto a new line after 80 characters
+" However, in Git commit messages, let’s make it 72 characters
+" Colour the 81st (or 73rd) column so that we don’t type over our limit
+" In Git commit messages, also colour the 51st column (for titles)
+" enables the spell checker when editing commit messages, underlining typos
+" and other common mistakes.
+au FileType gitcommit setlocal tw=80 tw=72 cc=+1 cc+=51 spell spelllang=en_us
 " }}}
 
 " style configutations {{{
@@ -216,20 +223,6 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
-
-" git commit message {{{
-" Force the cursor onto a new line after 80 characters
-au FileType gitcommit setlocal tw=80
-" However, in Git commit messages, let’s make it 72 characters
-autocmd FileType gitcommit setlocal tw=72
-" Colour the 81st (or 73rd) column so that we don’t type over our limit
-au FileType gitcommit setlocal cc=+1
-" In Git commit messages, also colour the 51st column (for titles)
-autocmd FileType gitcommit setlocal cc+=51
-" enables the spell checker when editing commit messages, underlining typos
-" and other common mistakes.
-autocmd FileType gitcommit setlocal spell spelllang=en_us
-" }}}
 
 " constraint to check that the string is no more than 120 characters.
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
