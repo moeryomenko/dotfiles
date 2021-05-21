@@ -209,6 +209,7 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 " Enable neosnippet for completion.
 let g:completion_enable_snippet = "Neosnippet"
+let g:neosnippet#snippets_directory = "~/.config/nvim/snippets"
 " combine tags, snippets with lsp.
 let g:completion_chain_complete_list = {
 			\ 'default': [

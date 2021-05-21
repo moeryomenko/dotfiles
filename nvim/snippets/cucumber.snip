@@ -1,0 +1,41 @@
+# based on https://github.com/andreasonny83/gherkin-snippets
+
+snippet     feature
+options     head
+  Feature: ${1:feature}
+    ${2:description}
+
+    Scenario: ${3}
+      ${0}
+
+snippet     scenario
+options     head
+    Scenario: ${1}
+      ${0}
+
+snippet     given
+options     head
+      Given: ${1}
+        ${0}
+
+snippet     then
+options     head
+      Then: ${1}
+        ${0}
+
+snippet     when
+options     head
+      When: ${1}
+        ${0}
+
+snippet     rules
+options     head
+  Rules:
+    - ${1}
+    - ${2}
+    ${0}
+
+snippet     and
+options     head
+  And ${1}
+  ${0}
