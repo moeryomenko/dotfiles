@@ -51,6 +51,7 @@ bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
 alias g=git
+alias ur='ls | xargs -P10 -I{} git -C {} pull'
 alias ll='ls -l --color=always'
 alias la='ll -a'
 alias gwds='ydiff -s -c always -w 0'
