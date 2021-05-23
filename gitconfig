@@ -1,7 +1,7 @@
 [core]
 	editor = nvim
 	excludesfile = ~/.config/gitignore-global
-	pager = bat
+	pager = less
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com
