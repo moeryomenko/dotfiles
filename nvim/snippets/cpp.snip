@@ -1,0 +1,41 @@
+snippet     multicomment
+options     head
+  /* ${1:"Description}
+   */
+
+snippet     todo
+options     head
+  // TODO(${1}): ${2}
+
+snippet     fixme
+options     head
+  // FIXME(${1}): ${2}
+
+snippet     note
+options     head
+  // NOTE: ${1}
+
+# doxygen extentions.
+
+snippet     dfile
+options     head
+  /*!
+    \\\\file ${1:"Filename"}
+    \\\\brief ${2:"Description"}
+    \\\\author ${3:"Your name"}
+    \\\\date ${4:"DD"}/${5:"Month"}/${6:"Year"}
+  */
+
+snippet     dfunc
+options     head
+  /*!
+    \\\\brief ${1:"Description"}
+    \\\\param ${2:"Param description"}
+    \\\\pre ${3:"Pre-conditions"}
+    \\\\post ${4:"Post-conditions"}
+    \\\\return ${5:"Return of the function"}
+  */
+
+snippet     dparam
+options     head
+  \\\\param
