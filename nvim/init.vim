@@ -7,14 +7,23 @@ set encoding=utf8
 set nu rnu
 set termguicolors cursorline
 set background=dark
+set backspace=indent,eol,start
 
-" Remember last position in file
+" needs for autoformat.
+let g:python3_host_prog='/usr/bin/python'
+
+" Remember last position in file.
 if has("autocmd")
 	autocmd BufReadPost *
 				\ if line("'\"") > 0 && line("'\"") <= line("$") |
 				\   exe "normal g`\"" |
 				\ endif
 endif
+
+" Constraint to check that the string is no more than 120 characters.
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%121v.\+/
+set cc=121
 "}}}
 
 " folding configurations {{{
@@ -28,11 +37,6 @@ set hlsearch
 set nowrapscan
 set smartcase
 "}}}
-
-set backspace=indent,eol,start
-
-" needs for autoformat.
-let g:python3_host_prog='/usr/bin/python'
 
 " folder tree {{{
 let g:netrw_banner = 0
@@ -81,12 +85,11 @@ hi gitmessengerPopupNormal term=None guifg=#eeeeee guibg=#333333 ctermfg=255 cte
 hi gitmessengerHeader term=None guifg=#88b8f6 ctermfg=111
 hi gitmessengerHash term=None guifg=#f0eaaa ctermfg=229
 hi gitmessengerHistory term=None guifg=#fd8489 ctermfg=210
-" Force the cursor onto a new line after 80 characters
-" However, in Git commit messages, let’s make it 72 characters
-" Colour the 81st (or 73rd) column so that we don’t type over our limit
-" In Git commit messages, also colour the 51st column (for titles)
-" enables the spell checker when editing commit messages, underlining typos
-" and other common mistakes.
+" Force the cursor onto a new line after 80 characters.
+" However, in Git commit messages, let’s make it 72 characters.
+" Colour the 81st (or 73rd) column so that we don’t type over our limit.
+" In Git commit messages, also colour the 51st column (for titles).
+" Enables the spell checker when editing commit messages, underlining typos and other common mistakes.
 au FileType gitcommit setlocal tw=80 tw=72 cc=+1 cc+=51 spell spelllang=en_us
 " }}}
 
@@ -105,7 +108,7 @@ set statusline+=%#warningmsg#
 " tagbar configurations {{{
 let g:tagbar_width=48
 
-" tagbar setting for golang
+" tagbar setting for golang.
 let g:tagbar_type_go = {
 			\ 'ctagstype' : 'go',
 			\ 'kinds'     : [
@@ -224,8 +227,3 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 "}}}
-
-" constraint to check that the string is no more than 120 characters.
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%121v.\+/
-set cc=121
