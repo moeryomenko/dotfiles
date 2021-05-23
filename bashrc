@@ -2,6 +2,11 @@ if [ -f /etc/bashrc ]; then
         source /etc/bashrc
 fi
 
+if [ ! -f $HOME/.gdbinit ]; then
+        curl -fLo $HOME/.gdbinit \
+                https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
+fi
+
 if [ ! -f $HOME/.config/bash_completion ]; then
         curl -fLo $HOME/.config/bash_completion \
                 https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
