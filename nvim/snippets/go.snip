@@ -1,0 +1,24 @@
+snippet     todo
+options     head
+  // TODO(${1}): ${2}
+
+snippet     fixme
+options     head
+  // FIXME(${1}): ${2}
+
+snippet     note
+options     head
+  // NOTE: ${1}
+
+snippet     pubfn
+options     head
+  // ${1:fname} ${2:description}
+  func $1 (${3}) ${4:int }{
+    ${0:TARGET:return }
+  }
+
+# used into const and var section.
+snippet     pubvar
+options     head
+  // ${1:vname} ${2:description}
+  $1 ${3:err} = ${4:value}
