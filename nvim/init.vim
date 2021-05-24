@@ -60,7 +60,6 @@ endif
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'arcticicestudio/nord-vim'
-Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'Chiel92/vim-autoformat'
