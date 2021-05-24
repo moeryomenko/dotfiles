@@ -22,8 +22,6 @@ if has("autocmd")
 endif
 
 " Constraint to check that the string is no more than 120 characters.
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%121v.\+/
 set cc=121
 "}}}
 
