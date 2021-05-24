@@ -56,6 +56,9 @@ bindsym $mod+Shift+w exec google-chrome-unstable -enable-features=UseOzonePlatfo
 # Start Slack
 bindsym $mod+Shift+s exec flatpak run com.slack.Slack
 
+# Start Zoom
+bindsym $mod+Shift+z exec flatpak run us.zoom.Zoom
+
 # Start telegram
 bindsym $mod+t exec telegram-desktop
 
