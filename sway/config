@@ -53,6 +53,9 @@ bindsym $mod+w exec GDK_BACKEND=wayland firefox -browser
 # Start a Google Chrome
 bindsym $mod+Shift+w exec google-chrome-unstable -enable-features=UseOzonePlatform -ozone-platform=wayland
 
+# Start Slack
+bindsym $mod+Shift+s exec flatpak run com.slack.Slack
+
 # Start telegram
 bindsym $mod+t exec telegram-desktop
 
