@@ -37,6 +37,27 @@ set nowrapscan
 set smartcase
 "}}}
 
+" status line {{{
+set noshowmode
+set laststatus=2
+set statusline=
+set statusline+=%#TabLineSel#
+set statusline+=%{(mode()=='n')?'\ \ NORMAL\ ':''}
+set statusline+=%{(mode()=='i')?'\ \ INSERT\ ':''}
+set statusline+=%{(mode()=='v')?'\ \ VISUAL\ ':''}
+set statusline+=%{(mode()=='r')?'\ \ REPLACE\ ':''}
+set statusline+=%#StatusLine#
+set statusline+=%r
+set statusline+=%f
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#StatusLine#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %l:%c
+"}}}
+
 " folder tree {{{
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
@@ -60,7 +81,6 @@ call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
 Plug 'Chiel92/vim-autoformat'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
@@ -97,10 +117,6 @@ let g:nord_cursor_line_number_background = 1
 let g:nord_uniform_status_lines = 1
 let g:nord_italic = 1
 let g:nord_italic_comments = 1
-let g:airline_theme='nord'
-let g:airline_powerline_fonts = 1
-let g:nord_uniform_status_lines = 1
-set statusline+=%#warningmsg#
 "}}}
 
 " tagbar configurations {{{
