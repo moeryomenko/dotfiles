@@ -23,6 +23,12 @@ endif
 
 " Constraint to check that the string is no more than 120 characters.
 set cc=121
+" Force the cursor onto a new line after 80 characters.
+" However, in Git commit messages, let’s make it 72 characters.
+" Colour the 81st (or 73rd) column so that we don’t type over our limit.
+" In Git commit messages, also colour the 51st column (for titles).
+" Enables the spell checker when editing commit messages, underlining typos and other common mistakes.
+au FileType gitcommit setlocal tw=80 tw=72 cc=+1 cc+=51 spell spelllang=en_us
 "}}}
 
 " folding configurations {{{
@@ -87,29 +93,12 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
 Plug 'rust-lang/rust.vim'
-Plug 'rhysd/git-messenger.vim'
 Plug 'kristijanhusak/completion-tags'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 
 call plug#end()
 "}}}
-
-" git configurations {{{
-" view git messege and diff by <Leader>gm.
-let g:git_messenger_always_into_popup = 1
-let g:git_messenger_include_diff = 1
-hi gitmessengerPopupNormal term=None guifg=#eeeeee guibg=#333333 ctermfg=255 ctermbg=234
-hi gitmessengerHeader term=None guifg=#88b8f6 ctermfg=111
-hi gitmessengerHash term=None guifg=#f0eaaa ctermfg=229
-hi gitmessengerHistory term=None guifg=#fd8489 ctermfg=210
-" Force the cursor onto a new line after 80 characters.
-" However, in Git commit messages, let’s make it 72 characters.
-" Colour the 81st (or 73rd) column so that we don’t type over our limit.
-" In Git commit messages, also colour the 51st column (for titles).
-" Enables the spell checker when editing commit messages, underlining typos and other common mistakes.
-au FileType gitcommit setlocal tw=80 tw=72 cc=+1 cc+=51 spell spelllang=en_us
-" }}}
 
 " style configutations {{{
 colorscheme nord

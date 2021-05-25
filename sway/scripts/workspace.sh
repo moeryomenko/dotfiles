@@ -3,7 +3,7 @@
 IFS=' ' read -r -a state <<< "`swaymsg -t get_outputs | jq -jr '.[] | .focused," ",.current_workspace," "' | sed 's/"//g'| sed 's/true/1/g' | sed 's/false/0/g' | sed 's/\n/ /g'`"
 
 current=`for i in $(seq 0 2 ${#state[@]}); do
-if [[ ${state[$i]} == 1 ]]; then
+if [ ${state[$i]} == 1 ]; then
 	((i+=1))
 	echo ${state[$i]}
 	break
