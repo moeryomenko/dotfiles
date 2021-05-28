@@ -80,7 +80,7 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 15AE73521DFBFAED)
 
 if [ ! -e $HOME/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
 fi
 source $HOME/.asdf/asdf.sh
 source $HOME/.asdf/completions/asdf.bash
