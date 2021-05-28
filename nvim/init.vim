@@ -28,7 +28,8 @@ set cc=121
 " Colour the 81st (or 73rd) column so that we don’t type over our limit.
 " In Git commit messages, also colour the 51st column (for titles).
 " Enables the spell checker when editing commit messages, underlining typos and other common mistakes.
-au FileType gitcommit setlocal tw=80 tw=72 cc=+1 cc+=51 spell spelllang=en_us
+au FileType gitcommit setlocal tw=72 cc=+1 cc+=51 spell spelllang=en_us
+au FileType c setlocal tw=80 cc=+1
 "}}}
 
 " folding configurations {{{
