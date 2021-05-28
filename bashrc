@@ -60,7 +60,7 @@ alias ur='ls | xargs -P10 -I{} git -C {} pull'
 alias ll='ls -l --color=always'
 alias la='ll -a'
 alias gwds='ydiff -s -c always -w 0'
-alias fz="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+alias fz="sk --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
 export GDK_BACKEND=wayland
 export XKB_DEFAULT_LAYOUT=us
