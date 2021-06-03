@@ -146,7 +146,7 @@ nmap <F8> :TagbarToggle<CR>
 
 " code transformation {{{
 au BufWrite * :RemoveTrailingSpaces
-au BufWrite *.h,*.hpp,*.hh,*.c,*.cpp,*.cxx,*.cc,*.py,*.go,*.vim :Autoformat
+au BufWrite *go,*.vim :Autoformat
 noremap <F3> :Autoformat<CR>
 "}}}
 
