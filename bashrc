@@ -71,7 +71,7 @@ export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$HOME/.local/git-fuzzy/bin
-export PATH=$PATH:$HOME/.local/jdk/bin
+export PATH=$PATH:$HOME/.local/jdk/bin:$HOME/.cargo/bin
 export JAVA_HOME=$HOME/.local/jdk
 
 export GPG_TTY=$(tty)
