@@ -17,6 +17,7 @@
 	rc   = rabase --continue
 	co   = checkout
 	cm   = commit -s
+	cmm  = commit-modefied
 	s    = status
 	fp   = format-patch
 	sm   = send-email
@@ -25,6 +26,7 @@
 	rs   = restore
 	rmb  = remove-merged-branches
 	cp   = cherry-pick
+	cpc  = cherry-pick --continue
 	po   = push-origin
 [commit]
 	gpgsign  = true
@@ -39,3 +41,8 @@
 	insteadOf = https://github.com/
 [grep]
 	lineNumber = true
+[rerere]
+	enabled = true
+	autoUpdate = true
+[fetch]
+	prune = true
