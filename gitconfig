@@ -24,6 +24,7 @@
 	rs   = restore
 	rmb  = remove-merged-branches
 	cp   = cherry-pick
+	po   = push-origin
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
