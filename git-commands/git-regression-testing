@@ -1,0 +1,12 @@
+#!/bin/bash
+
+test_runner="'$*'"
+
+#First all, write new test untracked by git.
+nvim -c 'Vexplore'
+
+git bisect start HEAD $(git fuzzy log)
+
+git bisect run sh -c "eval $test_runner"
+
+git bisect reset

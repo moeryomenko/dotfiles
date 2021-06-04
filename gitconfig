@@ -28,6 +28,7 @@
 	cp   = cherry-pick
 	cpc  = cherry-pick --continue
 	po   = push-origin
+	rt   = regression-testing
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
