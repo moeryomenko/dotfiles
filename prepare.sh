@@ -14,7 +14,7 @@ for i in $(seq 1 $((cpus-1))); do
 done
 
 # Set scaling_governor to ‘performance’.
-sudo cpupower -c 0 frequency-set -g powersave
+sudo cpupower -c 0 frequency-set -g performance
 
 # Drop file system cache.
 echo 3 | sudo tee /proc/sys/vm/drop_caches
