@@ -47,3 +47,7 @@
 	autoUpdate = true
 [fetch]
 	prune = true
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = blue
