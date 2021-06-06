@@ -5,7 +5,7 @@ filetype plugin indent on
 set shell=bash
 set ai smarttab wildmenu
 set encoding=utf8
-set nu rnu
+set nu
 set termguicolors cursorline
 set background=dark
 set backspace=indent,eol,start
