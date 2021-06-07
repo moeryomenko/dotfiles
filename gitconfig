@@ -54,3 +54,5 @@
 	added = green
 	changed = yellow
 	untracked = blue
+[protocol]
+	version = 2
