@@ -22,7 +22,7 @@ if has("autocmd")
 endif
 
 " Constraint to check that the string is no more than 120 characters.
-set cc=121
+set tw=120 cc=+1
 " Force the cursor onto a new line after 80 characters.
 " However, in Git commit messages, let’s make it 72 characters.
 " Colour the 81st (or 73rd) column so that we don’t type over our limit.
