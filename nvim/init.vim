@@ -97,6 +97,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'kristijanhusak/completion-tags'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'pechorin/any-jump.vim'
 
 call plug#end()
 "}}}
@@ -205,6 +206,32 @@ EOF
 "}}}
 
 " completion configurations {{{
+" setting for anyjump.
+let g:any_jump_list_numbers = 1
+let g:any_jump_references_enabled = 1
+let g:any_jump_grouping_enabled = 1
+let g:any_jump_preview_lines_count = 5
+let g:any_jump_search_prefered_engine = 'rg'
+let g:any_jump_results_ui_style = 'filename_first'
+let g:any_jump_window_width_ratio  = 0.6
+let g:any_jump_window_height_ratio = 0.6
+let g:any_jump_window_top_offset   = 4
+let g:any_jump_colors = {
+			\"plain_text":         "Comment",
+			\"preview":            "Comment",
+			\"preview_keyword":    "Operator",
+			\"heading_text":       "Function",
+			\"heading_keyword":    "Identifier",
+			\"group_text":         "Comment",
+			\"group_name":         "Function",
+			\"more_button":        "Operator",
+			\"more_explain":       "Comment",
+			\"result_line_number": "Comment",
+			\"result_text":        "Statement",
+			\"result_path":        "String",
+			\"help":               "Comment"
+			\}
+let g:any_jump_references_only_for_current_filetype = 1
 " Use completion-nvim in every buffer.
 autocmd BufEnter * lua require'completion'.on_attach()
 " Set completeopt to have a better completion experience.
