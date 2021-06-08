@@ -31,6 +31,7 @@
 	cp   = cherry-pick
 	cpc  = cherry-pick --continue
 	po   = push-origin
+	pfo  = push-force-origin
 	rt   = regression-testing
 [commit]
 	gpgsign  = true
