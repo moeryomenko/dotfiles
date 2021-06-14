@@ -86,7 +86,7 @@ endif
 
 call plug#begin(stdpath('data') . '/plugged')
 
-Plug 'rhysd/vim-color-spring-night'
+Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Chiel92/vim-autoformat'
 Plug 'neovim/nvim-lspconfig'
@@ -103,7 +103,7 @@ call plug#end()
 "}}}
 
 " style configutations {{{
-colorscheme spring-night
+colorscheme nord
 hi Normal guibg=NONE ctermbg=NONE
 "}}}
 
