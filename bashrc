@@ -71,20 +71,13 @@ export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$GOPATH/bin:$NPM_CONFIG_PREFIX/bin:$HOME/.local/bin:$HOME/.local/git-fuzzy/bin
-export PATH=$PATH:$HOME/.local/jdk/bin:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/.local/jdk/bin
 export JAVA_HOME=$HOME/.local/jdk
 
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 15AE73521DFBFAED)
-
-if [ ! -e $HOME/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
-fi
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
-source $HOME/.cargo/env
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
         exec sway
