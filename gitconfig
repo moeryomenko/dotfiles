@@ -17,7 +17,7 @@
 	c    = clone
 	d    = diff
 	rb   = rebase -i
-	rc   = rabase --continue
+	rbc  = rabase --continue
 	co   = checkout
 	cm   = commit -s
 	cmm  = commit-modefied
