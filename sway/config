@@ -10,6 +10,8 @@ set $right l
 # Your preferred terminal emulator
 set $term kitty
 
+gaps inner 10
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -222,7 +224,7 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-	position top
+	position bottom
 	font Fira Code 10
 	status_command exec conky
 	colors {
