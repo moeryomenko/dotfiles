@@ -49,8 +49,9 @@ input type:touchpad {
 # Start a terminal
 bindsym $mod+Return exec $term
 
-# Start a browser
+# Start a browsers
 bindsym $mod+w exec GDK_BACKEND=wayland firefox -browser
+bindsym $mod+Shift+w exec chromium -enable-features=UseOzonePlatform -ozone-platform=wayland
 
 # Start Slack
 bindsym $mod+Shift+s exec flatpak run com.slack.Slack
