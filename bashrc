@@ -82,5 +82,3 @@ eval $(keychain --eval --agents gpg --quiet --gpg2 15AE73521DFBFAED)
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
         exec sway
 fi
-
-. ~/.profile

@@ -75,7 +75,7 @@ let g:netrw_keepdir = 0
 let g:netrw_retmap = 1
 let g:netrw_silent = 1
 let g:netrw_special_syntax = 1
-let g:netrw_winsize = 25
+let g:netrw_winsize = 20
 "}}}
 
 " plugins settings {{{
@@ -114,30 +114,30 @@ let g:tagbar_width=48
 let g:tagbar_type_go = {
 			\ 'ctagstype' : 'go',
 			\ 'kinds'     : [
-			\ 'p:package',
-			\ 'i:imports:1',
-			\ 'c:constants',
-			\ 'v:variables',
-			\ 't:types',
-			\ 'n:interfaces',
-			\ 'w:fields',
-			\ 'e:embedded',
-			\ 'm:methods',
-			\ 'r:constructor',
-			\ 'f:functions'
-			\ ],
-			\ 'sro' : '.',
-			\ 'kind2scope' : {
-			\ 't' : 'ctype',
-			\ 'n' : 'ntype'
-			\ },
-			\ 'scope2kind' : {
-			\ 'ctype' : 't',
-			\ 'ntype' : 'n'
-			\ },
-			\ 'ctagsbin'  : 'gotags',
-			\ 'ctagsargs' : '-sort -silent'
-			\ }
+				\ 'p:package',
+				\ 'i:imports:1',
+				\ 'c:constants',
+				\ 'v:variables',
+				\ 't:types',
+				\ 'n:interfaces',
+				\ 'w:fields',
+				\ 'e:embedded',
+				\ 'm:methods',
+				\ 'r:constructor',
+				\ 'f:functions'
+				\ ],
+				\ 'sro' : '.',
+				\ 'kind2scope' : {
+					\ 't' : 'ctype',
+					\ 'n' : 'ntype'
+					\ },
+					\ 'scope2kind' : {
+						\ 'ctype' : 't',
+						\ 'ntype' : 'n'
+						\ },
+						\ 'ctagsbin'  : 'gotags',
+						\ 'ctagsargs' : '-sort -silent'
+						\ }
 
 nmap <F8> :TagbarToggle<CR>
 "}}}
@@ -244,8 +244,8 @@ let g:neosnippet#snippets_directory = "~/.config/nvim/snippets"
 " combine tags, snippets with lsp.
 let g:completion_chain_complete_list = {
 			\ 'default': [
-			\    {'complete_items': ['lsp', 'tags', 'snippet']},
-			\  ]}
+				\    {'complete_items': ['lsp', 'tags', 'snippet']},
+				\  ]}
 " Use <Tab> and <S-Tab> to navigate through popup menu.
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

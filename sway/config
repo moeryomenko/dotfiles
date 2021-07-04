@@ -175,8 +175,8 @@ bindsym XF86MonBrightnessUp exec brightnessctl s $(($(brightnessctl g) + 25))
 # Audio
 #
 bindsym XF86AudioMute exec amixer set Master toggle
-bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
-bindsym XF86AudioLowerVolume exec amixer set Master 5%-
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 #
 # Scratchpad:
 #
