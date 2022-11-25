@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+git log --all --pretty=format:'%C(yellow)%h %ad%C(green)%d %Creset%s%C(yellow) [%an]%Creset' \
+        --decorate --graph --date=short --stat
