@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-git send-email --smtp-pass=$(pass show moeryomenko/emails/gmail) "$@"
