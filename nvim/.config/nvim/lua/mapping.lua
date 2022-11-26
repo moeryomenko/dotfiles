@@ -34,11 +34,6 @@ map("n", "]b", ":bnext<CR>")
 map("n", "<space>b", ":Telescope buffers<CR>")
 --#endregion
 
---#region NvimTree
-map("n", "<leader>o", ":NvimTreeToggle<CR>")
-map("n", "<leader>f", ":NvimTreeFocus<CR>")
---#endregion
---
 --#region Lsp
 map("n", "<space>s", ":Telescope lsp_document_symbols<CR>")
 map("n", "<space>d", ":Telescope lsp_definitions<CR>")
