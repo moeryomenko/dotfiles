@@ -13,6 +13,13 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
 Plug 'machakann/vim-sandwich'
 
+" lsp plugins {{{
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" }}}
+
 call plug#end()
 " }}}
 
@@ -180,4 +187,15 @@ endfunction
 nmap <silent> <leader>w :call ToggleNetrw()<CR>
 " }}}
 
+" }}}
+
+" lsp configuration {{{
+nnoremap gd :LspDefinition<CR>
+nnoremap pd :LspPeekDefinition<CR>
+nnoremap gi :LspImplementation<CR>
+nnoremap pi :LspPeekImplementation<CR>
+nnoremap gr :LspReferences<CR>
+nnoremap df :LspDocumentFormat<CR>
+nnoremap di :LspCallHierarchyIncoming<CR>
+nnoremap do :LspCallHierarchyOutgoing<CR>
 " }}}
