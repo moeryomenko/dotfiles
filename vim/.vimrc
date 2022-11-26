@@ -11,6 +11,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
+Plug 'machakann/vim-sandwich'
 
 call plug#end()
 " }}}
