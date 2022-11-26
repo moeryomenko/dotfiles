@@ -11,8 +11,8 @@ floating_modifier $super
 #autostart
 exec_always --no-startup-id flashfocus
 exec --no-startup-id xrandr --output DP-1 --scale 1.2 --right-of eDP-1
-exec --no-startup-id nitrogen --head=0 --set-scaled --save ~/pictures/wallpapers/edp.jpg
-exec --no-startup-id nitrogen --head=1 --set-scaled --save ~/pictures/wallpapers/dp.jpg
+exec --no-startup-id nitrogen --head=0 --set-scaled --save ~/pictures/wallpapers/wallpaper.jpg
+exec --no-startup-id nitrogen --head=1 --set-scaled --save ~/pictures/wallpapers/wallpaper.jpg
 exec --no-startup-id libinput-gestures > /dev/null 2>&1 &
 exec --no-startup-id xsettingsd &
 exec_always --no-startup-id picom &
