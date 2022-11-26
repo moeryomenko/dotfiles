@@ -139,6 +139,16 @@ nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
+" pair brackets {{{
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+" }}}
+
 " }}}
 
 " file explorer configuraitons {{{
