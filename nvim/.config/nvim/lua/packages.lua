@@ -93,7 +93,6 @@ require("packer").startup(function()
 	use("nvim-treesitter/nvim-treesitter-textobjects")
 	-- Debugger packages
 	use("mfussenegger/nvim-dap")
-	use("leoluz/nvim-dap-go")
 	use("Shatur/neovim-tasks")
 	use({
 		"rcarriga/nvim-dap-ui",

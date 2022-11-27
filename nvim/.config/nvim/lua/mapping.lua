@@ -65,7 +65,6 @@ map("n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint
 map("n", "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>")
 map("n", "<leader>ro", ":lua require'dap'.repl.open()<CR>")
 map("n", "<leader>dr", ":lua require'dap'.run()<CR>")
-map("n", "<leader>dt", ":lua require('dap-go').debug_test()<CR>")
 map("n", "<leader>do", ":lua require('dapui').open()<CR>")
 map("n", "<leader>dc", ":lua require('dapui').close()<CR>")
 map("n", "<leader>ut", ":lua require('dapui').toggle()<CR>")

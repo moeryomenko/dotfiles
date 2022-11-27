@@ -12,8 +12,6 @@ require("mason-null-ls").setup({
 	ensure_installed = {
 		"cpplint",
 		"clang_format",
-		"goimports",
-		"golangci_lint",
 		"yamllint",
 		"yamlfmt",
 		"gitlint",
@@ -31,18 +29,14 @@ local sources = {
 	b.formatting.clang_format,
 	b.formatting.cmake_format,
 	b.formatting.rustfmt,
-	b.formatting.goimports,
 	b.formatting.nginx_beautifier,
 	b.formatting.stylua,
-	b.formatting.qmlformat,
 	b.formatting.trim_newlines,
 	b.formatting.trim_whitespace,
 	b.formatting.yamlfmt,
 	-- diagnostics
 	b.diagnostics.ltrs,
 	b.diagnostics.gitlint,
-	b.diagnostics.golangci_lint,
-	b.diagnostics.qmllint,
 	b.diagnostics.yamllint,
 	-- code actions
 	b.code_actions.gitsigns,
