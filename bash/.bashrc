@@ -85,12 +85,8 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 export XKB_DEFAULT_LAYOUT=us
 
-export EDITOR=nvim
-export KUBE_EDITOR=nvim
+export EDITOR=vim
 
-export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-
-export GOPATH=$(go env GOPATH)
 export RUSTUP_HOME=$(asdf where rust)
 export RUSTUP_TOOLCHAIN=$RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
@@ -99,7 +95,6 @@ export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$GOPATH/bin
 export PATH=$RUSTUP_TOOLCHAIN/bin:$PATH
 
 export GPG_TTY=$(tty)
