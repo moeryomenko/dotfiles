@@ -26,6 +26,12 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
         ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
+if [ ! -e $HOME/.asdf ]; then
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
+fi
+source $HOME/.asdf/asdf.sh
+source $HOME/.asdf/completions/asdf.bash
+
 source $HOME/.config/bash-prompt
 source $HOME/.config/oneliners.sh
 
@@ -85,7 +91,7 @@ export KUBE_EDITOR=nvim
 export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
 
 export GOPATH=$(go env GOPATH)
-export RUSTUP_HOME=$HOME/.rustup
+export RUSTUP_HOME=$(asdf where rust)
 export RUSTUP_TOOLCHAIN=$RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
@@ -96,25 +102,15 @@ export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$GOPATH/bin
 export PATH=$RUSTUP_TOOLCHAIN/bin:$PATH
 
-source "$HOME/.cargo/env"
-
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
 
-if [ ! -e $HOME/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
-fi
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
-
 source <(rustup completions bash)
-source <(k3d completion bash)
-source <(kubectl completion bash)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-	    export GDK_BACKEND=wayland
+        export GDK_BACKEND=wayland
         exec sway
 fi
 
