@@ -186,6 +186,7 @@ nnoremap gi :LspImplementation<CR>
 nnoremap pi :LspPeekImplementation<CR>
 nnoremap gr :LspReferences<CR>
 nnoremap gk :LspHover<CR>
+nnoremap lr :LspRename<CR>
 nnoremap df :LspDocumentFormat<CR>
 nnoremap di :LspCallHierarchyIncoming<CR>
 nnoremap do :LspCallHierarchyOutgoing<CR>
