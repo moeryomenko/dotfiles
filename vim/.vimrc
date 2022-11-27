@@ -7,7 +7,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
@@ -100,17 +99,7 @@ set showcmd
 set showmode
 " }}}
 
-" colorscheme configurations {{{
-let g:nord_cursor_line_number_background = 1
-let g:nord_uniform_status_lines = 1
-let g:nord_bold_vertical_split_line = 1
-let g:nord_uniform_diff_background = 1
-let g:nord_bold = 1
-let g:nord_italic = 1
-let g:nord_italic_comments = 1
-let g:nord_underline = 1
-colorscheme nord
-" }}}
+colorscheme habamax
 
 " trailing space configurations {{{
 " Highlight trailing spaces
@@ -191,6 +180,7 @@ nmap <silent> <leader>w :call ToggleNetrw()<CR>
 
 " lsp configuration {{{
 nnoremap gd :LspDefinition<CR>
+nnoremap ld :LspDeclaration<CR>
 nnoremap pd :LspPeekDefinition<CR>
 nnoremap gi :LspImplementation<CR>
 nnoremap pi :LspPeekImplementation<CR>
