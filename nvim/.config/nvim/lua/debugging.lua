@@ -23,8 +23,6 @@ dap.configurations.cpp = {
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 
-require("dap-go").setup()
-
 local Path = require('plenary.path')
 require('tasks').setup({
   default_params = { -- Default module parameters with which `neovim.json` will be created.
