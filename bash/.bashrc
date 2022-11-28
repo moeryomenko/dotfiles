@@ -26,12 +26,6 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
         ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
-if [ ! -e $HOME/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.9.0
-fi
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
-
 source $HOME/.config/bash-prompt
 source $HOME/.config/oneliners.sh
 
@@ -87,22 +81,17 @@ export XKB_DEFAULT_LAYOUT=us
 
 export EDITOR=vim
 
-export RUSTUP_HOME=$(asdf where rust)
-export RUSTUP_TOOLCHAIN=$RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
 export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$RUSTUP_TOOLCHAIN/bin:$PATH
 
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
-
-source <(rustup completions bash)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
         export GDK_BACKEND=wayland
