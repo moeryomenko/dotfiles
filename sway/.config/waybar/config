@@ -29,9 +29,9 @@
       "10": []
     },
     "format-icons": {
-      "1": "一",
-      "2": "二",
-      "3": "三",
+      "1": "",
+      "2": "",
+      "3": "",
       "4": "四",
       "5": "五",
       "6": "六",
@@ -42,16 +42,16 @@
     }
   },
   "custom/date": {
-    "format": "󰸗 {}",
+    "format": " {}",
     "interval": 3600,
     "exec": "/home/moeryomenko/.config/waybar/waybar-date.sh"
   },
   "custom/power": {
-    "format": "󰐥",
+    "format": "拉",
     "on-click": "/home/moeryomenko/.config/waybar/waybar-power.sh"
   },
   "clock": {
-    "format": "󰅐 {:%H:%M}",
+    "format": " {:%H:%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%Y-%m-%d}"
   },
@@ -61,14 +61,14 @@
       "critical": 15
     },
     "format": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
-    "format-plugged": "󰂄{capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": "{capacity}%",
     "format-alt": "{time} {icon}",
-    "format-full": "󱈑 {capacity}%",
+    "format-full": " {capacity}%",
     "format-icons": [
-      "󱊡",
-      "󱊢",
-      "󱊣"
+      "",
+      "",
+      ""
     ]
   },
   "network": {
