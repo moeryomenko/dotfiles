@@ -19,8 +19,6 @@ setw -g window-status-current-style bg="#282a2e"
 setw -g window-status-current-style fg="#81a2be"
 
 ## highlight active window
-#setw -g window-style 'bg=#282a2e'
-#setw -g window-active-style 'bg=#202020'
 setw -g pane-active-border-style ''
 
 ## highlight activity in status bar
@@ -48,11 +46,6 @@ set -g message-style fg="#cc99cc"
 
 set -g mode-style bg="#202020"
 set -g mode-style fg="#de935f"
-
-# status bar right message
-set -g status-right-length 100
-set -g status-right-style fg=black
-set -g status-right-style bold
 
 # background window tab
 set-window-option -g window-status-style bg=default

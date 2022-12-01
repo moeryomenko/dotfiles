@@ -21,17 +21,14 @@ exec setxkbmap -layout us,ru
 exec setxkbmap -option 'grp:alt_shift_toggle'
 
 # start a terminal
-bindsym $super+Return exec kitty
+bindsym $super+Return exec alacritty
 
 # start dmenu (a program launcher)
 bindsym $super+d exec --no-startup-id rofi -show
 
 # common apps keybinds
-#bindsym Print exec scrot 'Cheese_%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f'
 bindsym $super+l exec i3lock -i ~/pictures/wallpapers/wallpaper10.jpg
 bindsym $super+Shift+w exec firefox
-#bindsym $super+Shift+f exec thunar;workspace 3;focus
-#bindsym $super+Shift+g exec geany
 bindsym $mod+Print exec --no-startup-id maim --select "/home/moeryomenko/pictures/screenshots/$(date).png"
 
 #change volume
