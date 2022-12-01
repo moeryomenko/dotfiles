@@ -13,7 +13,15 @@ local packer_bootstrap = ensure_packer()
 
 require("packer").startup(function()
 	use("wbthomason/packer.nvim")
-	use("arcticicestudio/nord-vim")
+	use("folke/tokyonight.nvim")
+	use({
+		"nvim-tree/nvim-tree.lua",
+		requires = {
+			"nvim-tree/nvim-web-devicons", -- optional, for file icons
+		},
+		tag = "nightly", -- optional, updated every week. (see issue #1193)
+	})
+	use("simrat39/symbols-outline.nvim")
 	use("machakann/vim-sandwich")
 	use({
 		"windwp/nvim-autopairs",
@@ -111,6 +119,6 @@ require("packer").startup(function()
 	use("https://git.sr.ht/~soywod/himalaya-vim")
 
 	if packer_bootstrap then
-		require('packer').sync()
+		require("packer").sync()
 	end
 end)

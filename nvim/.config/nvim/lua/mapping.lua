@@ -6,6 +6,18 @@ function map(mode, lhs, rhs, opts)
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
+--#region
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.opt.termguicolors = true
+
+require("nvim-tree").setup()
+require("symbols-outline").setup()
+map("n", "<space>w", ":NvimTreeToggle<CR>")
+map("n", "<space>os", ":SymbolsOutline<CR>")
+--#endregion
+
 --#region refactoring keymap
 map("v", "<leader>rr", ":lua require('telescope').extensions.refactoring.refactors()<CR>")
 --#endregion
