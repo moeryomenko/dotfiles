@@ -83,9 +83,9 @@ function prompt_command {
 		# build git status for prompt
 		if [[ ! -z $GIT_BRANCH ]]; then
 			if [[ -z $GIT_DIRTY ]]; then
-				PS1_GIT=" (git: ${color_green}${GIT_BRANCH}${color_off})"
+				PS1_GIT=" ${color_green} ${GIT_BRANCH}${color_off}"
 			else
-				PS1_GIT=" (git: ${color_red}${GIT_BRANCH}${color_off})"
+				PS1_GIT=" ${color_red} ${GIT_BRANCH}${color_off}"
 			fi
 		fi
 
@@ -94,7 +94,7 @@ function prompt_command {
 	fi
 
 	# set new color prompt
-	PS1="${color_user}${USER}${color_off}@${color_yellow}${LOCAL_HOSTNAME}${color_off}:${color_off}${PWDNAME}${color_off}${PS1_GIT}\n➜ "
+	PS1="${color_user}${USER} ${color_green} ${color_yellow}${LOCAL_HOSTNAME}  ${color_off}:${color_off}${PWDNAME}${color_off}${PS1_GIT}\n ${color_off} "
 
 	echo -en "\033[6n" && read -sdR CURPOS
 	[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
