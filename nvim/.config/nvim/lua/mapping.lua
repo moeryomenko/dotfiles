@@ -15,7 +15,7 @@ vim.opt.termguicolors = true
 require("nvim-tree").setup()
 require("symbols-outline").setup()
 map("n", "<space>w", ":NvimTreeToggle<CR>")
-map("n", "<space>os", ":SymbolsOutline<CR>")
+map("n", "<leader>s", ":SymbolsOutline<CR>")
 --#endregion
 
 --#region refactoring keymap
