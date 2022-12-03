@@ -71,6 +71,7 @@ require("packer").startup(function()
 	})
 	use("neovim/nvim-lspconfig")
 	use("simrat39/rust-tools.nvim")
+	use("saecki/crates.nvim")
 	use({
 		"williamboman/mason.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
