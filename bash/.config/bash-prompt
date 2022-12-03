@@ -47,12 +47,16 @@ function prompt_command {
 	local GIT_BRANCH=
 	local GIT_DIRTY=
 	local PWDNAME=$PWD
+DIR=' \w'
+if [[ "${PWD}" == "${HOME}" ]]; then
+	DIR=' \w'
+fi
 
 	# beautify working directory name
 	if [[ "${HOME}" == "${PWD}" ]]; then
-		PWDNAME="~"
+		PWDNAME="  "
 	elif [[ "${HOME}" == "${PWD:0:${#HOME}}" ]]; then
-		PWDNAME="~${PWD:${#HOME}}"
+		PWDNAME="  ${PWD:${#HOME}}"
 	fi
 
 	# parse git status and get git variables
