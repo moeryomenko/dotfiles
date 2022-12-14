@@ -27,6 +27,7 @@ local b = null_ls.builtins
 local sources = {
 	-- formatting
 	b.formatting.cmake_format,
+	b.formatting.clang_format,
 	b.formatting.rustfmt,
 	b.formatting.nginx_beautifier,
 	b.formatting.stylua,
