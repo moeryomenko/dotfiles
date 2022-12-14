@@ -26,7 +26,6 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
         ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
-source $HOME/.config/bash-prompt
 source $HOME/.config/oneliners.sh
 
 set colored-stats on
@@ -83,10 +82,16 @@ export EDITOR=vim
 
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
+. "$HOME/.cargo/env"
 export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$HOME/.cache/rebar3/bin:$PATH
+
+. <(rustup completions bash)
+. <(rustup completions bash cargo)
+
+eval "$(starship init bash)"
 
 export GPG_TTY=$(tty)
 
@@ -94,8 +99,8 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-        export GDK_BACKEND=wayland
-        exec sway
+       export GDK_BACKEND=wayland
+       exec sway
 fi
 
 # BEGIN_KITTY_SHELL_INTEGRATION
