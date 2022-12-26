@@ -86,7 +86,6 @@ export NPM_CONFIG_PREFIX=$HOME/.npm-global
 export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
-export PATH=$HOME/.cache/rebar3/bin:$PATH
 
 . <(rustup completions bash)
 . <(rustup completions bash cargo)
