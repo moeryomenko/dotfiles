@@ -11,6 +11,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
 Plug 'machakann/vim-sandwich'
+Plug 'bfrg/vim-cpp-modern'
 
 " lsp plugins {{{
 Plug 'prabirshrestha/vim-lsp'
@@ -99,6 +100,14 @@ set showmode
 " }}}
 
 colorscheme habamax
+
+" c++ highligt {{{
+" Enable highlighting of C++11 attributes
+let g:cpp_attributes_highlight = 1
+
+" Highlight struct/class member variables (affects both C and C++ files)
+let g:cpp_member_highlight = 1
+" }}}
 
 " trailing space configurations {{{
 " Highlight trailing spaces
