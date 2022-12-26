@@ -165,6 +165,11 @@ require("mason-lspconfig").setup_handlers({
 	end,
 })
 
+nvim_lsp["qmlls"].setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 require("clangd_extensions").setup({
 	server = {
 		on_attach = on_attach,
