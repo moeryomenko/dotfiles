@@ -26,6 +26,7 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
         ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
+source $HOME/.config/bash-prompt
 source $HOME/.config/oneliners.sh
 
 set colored-stats on
@@ -64,15 +65,11 @@ alias gpo='g po'
 alias gpfo='g pfo'
 alias ur='ls | xargs -P10 -I{} git -C {} pull'
 alias cor='ls | xargs -P10 -I{} git -C {} co main'
-alias ll='exa -l -h --git --classify --icons'
+alias ll='ls -l -h --color'
 alias la='ll -a'
 alias c=clear
 alias cs='cscope -b -q -k'
 alias bathelp='bat --plain --language=help'
-
-function help() {
-    "$@" --help 2>&1 | bathelp
-}
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
@@ -89,8 +86,6 @@ export PATH=$PATH:$HOME/.local/bin
 
 . <(rustup completions bash)
 . <(rustup completions bash cargo)
-
-eval "$(starship init bash)"
 
 export GPG_TTY=$(tty)
 

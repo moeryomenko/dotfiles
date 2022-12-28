@@ -12,6 +12,7 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
 Plug 'machakann/vim-sandwich'
 Plug 'bfrg/vim-cpp-modern'
+Plug 'rust-lang/rust.vim'
 
 " lsp plugins {{{
 Plug 'prabirshrestha/vim-lsp'
@@ -102,6 +103,9 @@ set showmode
 colorscheme habamax
 
 " c++ highligt {{{
+" Enable function highlighting
+let g:cpp_function_highlight = 1
+
 " Enable highlighting of C++11 attributes
 let g:cpp_attributes_highlight = 1
 

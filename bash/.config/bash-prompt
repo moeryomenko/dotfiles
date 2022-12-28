@@ -47,16 +47,12 @@ function prompt_command {
 	local GIT_BRANCH=
 	local GIT_DIRTY=
 	local PWDNAME=$PWD
-DIR=' \w'
-if [[ "${PWD}" == "${HOME}" ]]; then
-	DIR=' \w'
-fi
 
 	# beautify working directory name
 	if [[ "${HOME}" == "${PWD}" ]]; then
-		PWDNAME="  "
+		PWDNAME="~"
 	elif [[ "${HOME}" == "${PWD:0:${#HOME}}" ]]; then
-		PWDNAME="  ${PWD:${#HOME}}"
+		PWDNAME="~${PWD:${#HOME}}"
 	fi
 
 	# parse git status and get git variables
@@ -98,7 +94,7 @@ fi
 	fi
 
 	# set new color prompt
-	PS1="${color_user}${USER} ${color_green} ${color_yellow}${LOCAL_HOSTNAME}  ${color_off}:${color_off}${PWDNAME}${color_off}${PS1_GIT}\n ${color_off} "
+        PS1="${color_user}${USER}${color_off}@${color_yellow}${LOCAL_HOSTNAME}${color_off}:${color_off}${PWDNAME}${color_off}${PS1_GIT}\n➜ "
 
 	echo -en "\033[6n" && read -sdR CURPOS
 	[[ ${CURPOS##*;} -gt 1 ]] && echo "${color_error}↵${color_error_off}"
