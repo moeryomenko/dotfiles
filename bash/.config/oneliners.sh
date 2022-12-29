@@ -6,20 +6,9 @@ function find_failures {
 		sort | uniq -c | sort --numeric --reverse --key 1;
 }
 
-# TODO: in progress.
-# function tranfer() {
-# 	tar --create --directory /home/josevnz/tmp/ --file - *| \
-# 		ssh raspberrypi "tar --directory /home/josevnz \
-# 		--verbose --list --file -"
-# }
-
 function partition_size { lsblk --json | jq -c '.blockdevices[]|[.name,.size]'; }
 
 function files_type { test "$#" -gt 0 && stat --printf "%n: %F\n" "$@"; }
-
-# function git_update {
-# 	 for i in */.git; do cd $(dirname $i); git pull; cd ..; done
-# }
 
 function gwds { ydiff -s -c always -w 0; }
 function fz { sk --preview 'bat --color=always --style=numbers --line-range=:500 {}'; }
