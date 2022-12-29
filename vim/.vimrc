@@ -13,6 +13,7 @@ Plug 'majutsushi/tagbar'
 Plug 'machakann/vim-sandwich'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'rust-lang/rust.vim'
+Plug 'jiangmiao/auto-pairs'
 
 " lsp plugins {{{
 Plug 'prabirshrestha/vim-lsp'
@@ -145,16 +146,6 @@ nmap <silent> <leader>d :cs find g <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>r :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-" }}}
-
-" pair brackets {{{
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 " }}}
 
 " }}}
