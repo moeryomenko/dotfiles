@@ -12,6 +12,7 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
 Plug 'machakann/vim-sandwich'
 Plug 'bfrg/vim-cpp-modern'
+Plug 'cdelledonne/vim-cmake'
 Plug 'rust-lang/rust.vim'
 Plug 'jiangmiao/auto-pairs'
 
@@ -193,4 +194,18 @@ nnoremap lr :LspRename<CR>
 nnoremap df :LspDocumentFormat<CR>
 nnoremap di :LspCallHierarchyIncoming<CR>
 nnoremap do :LspCallHierarchyOutgoing<CR>
+" }}}
+
+" cmake configuration {{{
+let g:cmake_build_dir_location = 'build'
+let g:cmake_generate_options = [
+                        \ '-G Ninja',
+                        \ '-D CMAKE_EXE_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-D CMAKE_SHARED_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-D CMAKE_C_COMPILER=clang',
+                        \ '-D CMAKE_CXX_COMPILER=clang++',
+                        \ '-D CMAKE_C_COMPILER_LAUNCHER="/usr/bin/ccache"',
+                        \ '-D CMAKE_CXX_COMPILER_LAUNCHER="/usr/bin/ccache"']
+let g:cmake_link_compile_commands = 1
+let g:cmake_statusline = 1
 " }}}
