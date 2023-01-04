@@ -12,9 +12,10 @@ require("mason-null-ls").setup({
 	ensure_installed = {
 		"cpplint",
 		"clang_format",
+		"gersemi",
+		"gitlint",
 		"yamllint",
 		"yamlfmt",
-		"gitlint",
 	},
 	automatic_installation = true,
 })
@@ -26,7 +27,7 @@ local b = null_ls.builtins
 
 local sources = {
 	-- formatting
-	b.formatting.cmake_format,
+	b.formatting.gersemi,
 	b.formatting.clang_format,
 	b.formatting.rustfmt,
 	b.formatting.nginx_beautifier,
