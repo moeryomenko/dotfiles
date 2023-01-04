@@ -141,6 +141,11 @@ augroup END
 let mapleader ="\<Space>"
 nmap <leader>t :TagbarToggle<CR>
 
+" buffers navigation {{{
+nmap <silent> bn :bnext<CR>
+nmap <silent> bp :bprevious<CR>
+" }}}
+
 " cscope mapping {{{
 nmap <silent> <leader>i :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>d :cs find g <C-R>=expand("<cword>")<CR><CR>
