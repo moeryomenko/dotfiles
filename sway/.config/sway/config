@@ -234,12 +234,12 @@ default_border pixel 0
 include /etc/sway/config.d/*
 
 ### Idle and lock configuration
-# bindsym $mod+Alt+l exec swaylock -f -c 000000
-#exec swayidle -w \
-#	timeout 1600 'swaylock -f -c 000000' \
-#	timeout 3200 'swaymsg "output * dpms off"' \
-#	resume 'swaymsg "output * dpms on"' \
-#	before-sleep 'swaylock -f -c 000000'
+bindsym $mod+l exec swaylock -f -c 000000
+exec swayidle -w \
+	timeout 600 'swaylock -f -c 000000' \
+	timeout 420 'swaymsg "output * dpms off"' \
+	resume 'swaymsg "output * dpms on"' \
+	before-sleep 'swaylock -f -c 000000'
 
 #
 # Running mako for notifications
