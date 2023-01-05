@@ -7,6 +7,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
 Plug 'majutsushi/tagbar'
@@ -82,6 +84,8 @@ set showmode
 set showmatch
 " Use highlighting when doing a search.
 set hlsearch
+
+nnoremap <silent>rg :Rg<CR>
 " }}}
 
 " Set the commands to save in history default number is 20.
@@ -141,9 +145,13 @@ augroup END
 let mapleader ="\<Space>"
 nmap <leader>t :TagbarToggle<CR>
 
+" Source Vim configuration file and install plugins
+nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
+
 " buffers navigation {{{
 nmap <silent> bn :bnext<CR>
 nmap <silent> bp :bprevious<CR>
+nnoremap <silent><leader>l :Buffers<CR>
 " }}}
 
 " cscope mapping {{{
@@ -184,6 +192,8 @@ endfunction
 
 nmap <silent> <leader>w :call ToggleNetrw()<CR>
 " }}}
+
+nnoremap <silent>gf :GFiles<CR>
 
 " }}}
 
