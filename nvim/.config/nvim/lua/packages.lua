@@ -86,7 +86,7 @@ require("packer").startup(function()
 			require("lspsaga").init_lsp_saga()
 		end,
 	})
-	use("p00f/clangd_extensions.nvim")
+	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")
