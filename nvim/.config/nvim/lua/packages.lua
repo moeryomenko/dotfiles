@@ -87,6 +87,8 @@ require("packer").startup(function()
 		end,
 	})
 	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
+	use("mfussenegger/nvim-jdtls")
+	use("scalameta/nvim-metals")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")

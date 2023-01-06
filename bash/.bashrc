@@ -68,18 +68,28 @@ alias cor='ls | xargs -P10 -I{} git -C {} co main'
 alias ll='ls -l -h --color'
 alias la='ll -a'
 alias c=clear
-alias cs='cscope -b -q -k'
+alias csc='cscope -b -q -k'
 alias bathelp='bat --plain --language=help'
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
 export XKB_DEFAULT_LAYOUT=us
-
 export EDITOR=vim
-
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
-. "$HOME/.cargo/env"
+[[ -d "$HOME/.cargo" ]] && . "$HOME/.cargo/env"
+
+if [[ -d "$HOME/.sdkman" ]]; then
+	. "$HOME/.sdkman/bin/sdkman-init.sh"
+	sdk env >> /dev/null
+fi
+
+if [[ ! -d "$HOME/.asdf" ]]; then
+	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+fi
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
+export PATH=$PATH:$HOME/.local/share/coursier/bin
 export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin

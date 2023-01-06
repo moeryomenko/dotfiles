@@ -14,6 +14,7 @@ require("mason-null-ls").setup({
 		"clang_format",
 		"gersemi",
 		"gitlint",
+		"scalafmt",
 		"yamllint",
 		"yamlfmt",
 	},
@@ -30,13 +31,12 @@ local sources = {
 	b.formatting.gersemi,
 	b.formatting.clang_format,
 	b.formatting.rustfmt,
-	b.formatting.nginx_beautifier,
+	b.formatting.scalafmt,
 	b.formatting.stylua,
 	b.formatting.trim_newlines,
 	b.formatting.trim_whitespace,
 	b.formatting.yamlfmt,
 	-- diagnostics
-	b.diagnostics.ltrs,
 	b.diagnostics.gitlint,
 	b.diagnostics.yamllint,
 	-- code actions
