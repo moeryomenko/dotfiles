@@ -209,6 +209,7 @@ nnoremap lr :LspRename<CR>
 nnoremap df :LspDocumentFormat<CR>
 nnoremap di :LspCallHierarchyIncoming<CR>
 nnoremap do :LspCallHierarchyOutgoing<CR>
+nnoremap ls :LspStopServer<CR>
 " }}}
 
 " cmake configuration {{{
