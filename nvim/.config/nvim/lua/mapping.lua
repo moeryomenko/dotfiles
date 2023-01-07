@@ -67,8 +67,8 @@ map("n", "<space>k", ":Lspsaga hover_doc<CR>", { silent = true })
 map("n", "<space>rn", ":Lspsaga rename<CR>", { silent = true })
 map("n", "<space>f", ":Telescope find_files<CR>")
 map("n", "<space>g", ":Telescope live_grep<CR>")
-map("n", "<leader>ca", ":Lspsaga code_action<CR>", { silent = true })
-map("v", "<leader>ca", ":Lspsaga code_action<CR>", { silent = true })
+map("n", "<space>ca", ":Lspsaga code_action<CR>", { silent = true })
+map("v", "<space>ca", ":Lspsaga code_action<CR>", { silent = true })
 
 -- Show line diagnostics
 map("n", "<leader>cd", ":Lspsaga show_line_diagnostics<CR>", { silent = true })
