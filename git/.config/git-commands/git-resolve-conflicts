@@ -1,3 +1,4 @@
 #!/bin/bash
 
-git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'
+# git diff --name-only --relative -z --diff-filter=U | xargs -0 nvim -f -c 'tab all' -c 'tabd Gvdiff!'
+nvim +DiffviewOpen

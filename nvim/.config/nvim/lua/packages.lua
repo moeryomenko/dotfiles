@@ -50,7 +50,7 @@ require("packer").startup(function()
 			})
 		end,
 	})
-	use("tpope/vim-fugitive")
+	use("sindrets/diffview.nvim")
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
