@@ -51,12 +51,7 @@ require("packer").startup(function()
 		end,
 	})
 	use("sindrets/diffview.nvim")
-	use({
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup()
-		end,
-	})
+	use("TimUntersberger/neogit")
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
