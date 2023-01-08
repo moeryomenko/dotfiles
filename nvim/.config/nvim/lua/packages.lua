@@ -52,6 +52,12 @@ require("packer").startup(function()
 	})
 	use("sindrets/diffview.nvim")
 	use("TimUntersberger/neogit")
+	use({
+		"pwntester/octo.nvim",
+		config = function()
+			require("octo").setup()
+		end
+	})
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
