@@ -78,7 +78,7 @@ export NPM_CONFIG_PREFIX=$HOME/.npm-global
 
 [[ -d "$HOME/.cargo" ]] && . "$HOME/.cargo/env"
 
-if [[ -d "$HOME/.sdkman" ]]; then
+if [[ -d "$HOME/.sdkman" && -z "$JAVA_HOME" ]]; then
 	. "$HOME/.sdkman/bin/sdkman-init.sh"
 	sdk env >> /dev/null
 fi
