@@ -51,17 +51,17 @@ require("packer").startup(function()
 		end,
 	})
 	use("sindrets/diffview.nvim")
-	use("TimUntersberger/neogit")
 	use({
 		"pwntester/octo.nvim",
 		config = function()
 			require("octo").setup()
-		end
+		end,
 	})
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
 	use("nvim-telescope/telescope-ui-select.nvim")
+	use("olacin/telescope-gitmoji.nvim")
 	use("nvim-lualine/lualine.nvim")
 	use({ "akinsho/bufferline.nvim", tag = "v2.*" })
 	use({
