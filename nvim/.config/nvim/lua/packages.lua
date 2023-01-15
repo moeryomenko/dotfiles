@@ -65,6 +65,13 @@ require("packer").startup(function()
 	use("nvim-lualine/lualine.nvim")
 	use({ "akinsho/bufferline.nvim", tag = "v2.*" })
 	use({
+		"kwkarlwang/bufresize.nvim",
+		config = function()
+			require("bufresize").setup()
+		end,
+	})
+	use("mrjones2014/smart-splits.nvim")
+	use({
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("neoscroll").setup()
@@ -84,7 +91,7 @@ require("packer").startup(function()
 		"glepnir/lspsaga.nvim",
 		branch = "main",
 		config = function()
-			require("lspsaga").init_lsp_saga()
+			require("lspsaga").setup({})
 		end,
 	})
 	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
