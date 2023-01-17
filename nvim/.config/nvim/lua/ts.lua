@@ -34,3 +34,4 @@ telescope.setup({
 telescope.load_extension("ui-select")
 telescope.load_extension("refactoring")
 telescope.load_extension("gitmoji")
+telescope.load_extension("lazygit")

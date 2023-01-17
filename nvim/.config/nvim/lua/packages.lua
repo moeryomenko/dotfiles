@@ -50,6 +50,7 @@ require("packer").startup(function()
 			})
 		end,
 	})
+	use("kdheepak/lazygit.nvim")
 	use("sindrets/diffview.nvim")
 	use({
 		"pwntester/octo.nvim",
