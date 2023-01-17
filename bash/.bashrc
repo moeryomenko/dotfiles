@@ -104,6 +104,9 @@ eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
        export GDK_BACKEND=wayland
+	   export XDG_SESSION_TYPE=wayland
+	   export XDG_CURRENT_DESKTOP=sway
+	   export MOZ_ENABLE_WAYLAND=1
        exec sway
 fi
 
