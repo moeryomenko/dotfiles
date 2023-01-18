@@ -109,6 +109,7 @@ require("packer").startup(function()
 	use("L3MON4D3/LuaSnip")
 	use("rafamadriz/friendly-snippets")
 	use("pechorin/any-jump.vim")
+	use("m-demare/hlargs.nvim")
 	use("nvim-treesitter/nvim-treesitter")
 	use("nvim-treesitter/nvim-treesitter-textobjects")
 	-- Debugger packages

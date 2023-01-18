@@ -98,6 +98,8 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
+require("hlargs").setup()
+
 local nvim_lsp = require("lspconfig")
 local on_attach = function(client, bufnr)
 	-- Set autocommands conditional on server_capabilities
