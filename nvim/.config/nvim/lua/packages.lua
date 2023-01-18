@@ -112,6 +112,12 @@ require("packer").startup(function()
 	use("m-demare/hlargs.nvim")
 	use("nvim-treesitter/nvim-treesitter")
 	use("nvim-treesitter/nvim-treesitter-textobjects")
+	use({
+		"folke/todo-comments.nvim",
+		config = function()
+			require("todo-comments").setup()
+		end,
+	})
 	-- Debugger packages
 	use("mfussenegger/nvim-dap")
 	use("Shatur/neovim-tasks")
