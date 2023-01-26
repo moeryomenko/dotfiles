@@ -15,8 +15,12 @@ default_border none
 hide_edge_borders both
 font pango:Source Code Pro 10
 
+xwayland enable
+
 ### Output configuration
-output * bg ~/pictures/wallpapers/wallpaper.jpg fill
+output eDP-1 bg ~/pictures/wallpapers/edp.jpg fill
+output DP-2 bg ~/pictures/wallpapers/dp.jpg fill
+output DP-3 bg ~/pictures/wallpapers/dp.jpg fill
 output eDP-1 scale 1
 output DP-2 scale 0.8
 output DP-3 scale 0.8

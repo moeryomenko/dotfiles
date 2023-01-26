@@ -52,12 +52,6 @@ require("packer").startup(function()
 	})
 	use("kdheepak/lazygit.nvim")
 	use("sindrets/diffview.nvim")
-	use({
-		"pwntester/octo.nvim",
-		config = function()
-			require("octo").setup()
-		end,
-	})
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
@@ -121,6 +115,7 @@ require("packer").startup(function()
 	})
 	-- Debugger packages
 	use("mfussenegger/nvim-dap")
+	use("leoluz/nvim-dap-go")
 	use("Shatur/neovim-tasks")
 	use({
 		"rcarriga/nvim-dap-ui",

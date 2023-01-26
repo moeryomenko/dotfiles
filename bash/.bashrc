@@ -75,6 +75,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
 export NPM_CONFIG_PREFIX=$HOME/.npm-global
+export GOPATH=$(go env GOPATH)
 
 [[ -d "$HOME/.cargo" ]] && . "$HOME/.cargo/env"
 
@@ -93,6 +94,7 @@ export PATH=$PATH:$HOME/.local/share/coursier/bin
 export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$GOPATH/bin
 
 . <(rustup completions bash)
 . <(rustup completions bash cargo)

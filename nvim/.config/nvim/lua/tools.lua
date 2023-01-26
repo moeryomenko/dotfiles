@@ -1,8 +1,10 @@
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"clangd",
-		"rust-analyzer",
 		"codelldb",
+		"delve",
+		"gopls",
+		"rust-analyzer",
 	},
 	auto_update = true,
 	run_on_start = true,
@@ -14,6 +16,7 @@ require("mason-null-ls").setup({
 		"clang_format",
 		"gersemi",
 		"gitlint",
+		"goimports",
 		"scalafmt",
 		"yamllint",
 		"yamlfmt",
@@ -28,8 +31,9 @@ local b = null_ls.builtins
 
 local sources = {
 	-- formatting
-	b.formatting.gersemi,
 	b.formatting.clang_format,
+	b.formatting.gersemi,
+	b.formatting.goimports,
 	b.formatting.rustfmt,
 	b.formatting.scalafmt,
 	b.formatting.stylua,
