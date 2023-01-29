@@ -250,5 +250,4 @@ bindsym $mod+l exec swaylock -f -c 000000
 #
 exec mako
 exec waybar
-exec libinput-gestures-setup start
 exec wlsunset -t 2500 -T 4100 -S 6:30 -s 18:00
