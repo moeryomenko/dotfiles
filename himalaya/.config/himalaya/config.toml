@@ -19,19 +19,3 @@ smtp-port = 465
 smtp-login = "maxim_eryomenko@rambler.ru"
 smtp-starttls = true
 smtp-passwd-cmd = "pass show moeryomenko/emails/rambler"
-
-[gmail]
-email = "moeryomenko@gmail.com"
-
-backend = "imap"
-imap-host = "imap.gmail.com"
-imap-port = 993
-imap-login = "moeryomenko@gmail.com"
-imap-passwd-cmd = "pass show moeryomenko/emails/gmail"
-
-sender = "smtp"
-smtp-host = "smtp.gmail.com"
-smtp-port = 587
-smtp-login = "moeryomenko@gmail.com"
-smtp-starttls = true
-smtp-passwd-cmd = "pass show moeryomenko/emails/gmail"
