@@ -51,7 +51,7 @@ require("packer").startup(function()
 		end,
 	})
 	use("kdheepak/lazygit.nvim")
-	use("sindrets/diffview.nvim")
+	use("tpope/vim-fugitive")
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
