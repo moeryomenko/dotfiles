@@ -58,7 +58,8 @@ require("packer").startup(function()
 	use("nvim-telescope/telescope-ui-select.nvim")
 	use("olacin/telescope-gitmoji.nvim")
 	use("nvim-lualine/lualine.nvim")
-	use({ "akinsho/bufferline.nvim", tag = "v2.*" })
+	use({ "akinsho/bufferline.nvim", tag = "v3.*" })
+	use("tiagovla/scope.nvim")
 	use({
 		"kwkarlwang/bufresize.nvim",
 		config = function()
