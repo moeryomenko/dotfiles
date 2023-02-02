@@ -18,12 +18,23 @@ font pango:Source Code Pro 10
 xwayland enable
 
 ### Output configuration
-output eDP-1 bg ~/pictures/wallpapers/edp.jpg fill
-output DP-2 bg ~/pictures/wallpapers/dp.jpg fill
-output DP-3 bg ~/pictures/wallpapers/dp.jpg fill
-output eDP-1 scale 1
-output DP-2 scale 0.8
-output DP-3 scale 0.8
+output eDP-1 {
+	bg ~/pictures/wallpapers/edp.jpg fill
+	scale 1
+	adaptive_sync on
+}
+output DP-2 {
+	bg ~/pictures/wallpapers/dp.jpg fill
+	scale 0.8
+	scale_filter smart
+	adaptive_sync on
+}
+output DP-3 {
+	bg ~/pictures/wallpapers/edp.jpg fill
+	scale 0.8
+	scale_filter smart
+	adaptive_sync on
+}
 
 ### Input configuration
 #
