@@ -133,6 +133,12 @@ require("packer").startup(function()
 	use("rcarriga/cmp-dap")
 	use("gelguy/wilder.nvim")
 	use("https://git.sr.ht/~soywod/himalaya-vim")
+	use({
+		"jghauser/kitty-runner.nvim",
+		config = function()
+			require("kitty-runner").setup()
+		end,
+	})
 
 	if packer_bootstrap then
 		require("packer").sync()
