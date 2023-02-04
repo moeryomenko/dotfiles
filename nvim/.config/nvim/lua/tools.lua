@@ -36,6 +36,7 @@ local sources = {
 	b.formatting.goimports,
 	b.formatting.rustfmt,
 	b.formatting.scalafmt,
+	b.formatting.shfmt,
 	b.formatting.stylua,
 	b.formatting.trim_newlines,
 	b.formatting.trim_whitespace,

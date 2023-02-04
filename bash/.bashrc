@@ -2,28 +2,28 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 
 if [ -f /etc/bashrc ]; then
-        source /etc/bashrc
+	source /etc/bashrc
 fi
 
 if [ ! -f $HOME/.gdbinit ]; then
-        curl -fLo $HOME/.gdbinit \
-                https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
+	curl -fLo $HOME/.gdbinit \
+		https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
 fi
 
 if [ ! -f $HOME/.config/bash_completion ]; then
-        curl -fLo $HOME/.config/bash_completion \
-                https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
+	curl -fLo $HOME/.config/bash_completion \
+		https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
 fi
 source $HOME/.config/bash_completion
 
 if [ ! -f $HOME/.config/git-completion ]; then
-        curl -fLo $HOME/.config/git-completion \
-                https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+	curl -fLo $HOME/.config/git-completion \
+		https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 fi
 source $HOME/.config/git-completion
 
 if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
-        ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
+	ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
 source $HOME/.config/bash-prompt
@@ -81,7 +81,7 @@ export GOPATH=$(go env GOPATH)
 
 if [[ -d "$HOME/.sdkman" && -z "$JAVA_HOME" ]]; then
 	. "$HOME/.sdkman/bin/sdkman-init.sh"
-	sdk env >> /dev/null
+	sdk env >>/dev/null
 fi
 
 if [[ ! -d "$HOME/.asdf" ]]; then
@@ -105,11 +105,11 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-       export GDK_BACKEND=wayland
-	   export XDG_SESSION_TYPE=wayland
-	   export XDG_CURRENT_DESKTOP=sway
-	   export MOZ_ENABLE_WAYLAND=1
-       exec sway
+	export GDK_BACKEND=wayland
+	export XDG_SESSION_TYPE=wayland
+	export XDG_CURRENT_DESKTOP=sway
+	export MOZ_ENABLE_WAYLAND=1
+	exec sway
 fi
 
 # BEGIN_KITTY_SHELL_INTEGRATION

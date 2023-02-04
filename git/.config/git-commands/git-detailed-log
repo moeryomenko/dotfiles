@@ -2,18 +2,18 @@
 
 declare filter
 if [ -n $@ ] && [ -f $@ ]; then
-  filter="-- $@"
+	filter="-- $@"
 fi
 
 git log \
-  --no-merges --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ | \
-  sk \
-    --ansi --no-sort --reverse --tiebreak=index \
-	--preview "function f; set commit (echo -- \$argv | grep -o '[a-f0-9]\{7\}'); git show --color=always \$commit \$filter; end; f {}" \
-    --bind "j:down,k:up,alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+	--no-merges --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ |
+	sk \
+		--ansi --no-sort --reverse --tiebreak=index \
+		--preview "function f; set commit (echo -- \$argv | grep -o '[a-f0-9]\{7\}'); git show --color=always \$commit \$filter; end; f {}" \
+		--bind "j:down,k:up,alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
               echo \"\
 			  {}
 			  \" | \
 			  grep -o '[a-f0-9]\{7\}' | head -1 |
               xargs -I % sh -c 'git show --color=always % | delta --pager \"less -R\"' @- " \
-    --preview-window=right:70%
+		--preview-window=right:70%

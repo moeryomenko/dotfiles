@@ -2,4 +2,4 @@
 
 cd -- ${GIT_PREFIX:-.}
 
-echo "$1" >> .gitignore
+echo "$1" >>.gitignore

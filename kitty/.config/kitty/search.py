@@ -40,7 +40,9 @@ def reindex(text, pattern, right=False):
 
     return m.span()
 
+
 SCROLLMARK_FILE = Path(__file__).parent.absolute() / "scroll_mark.py"
+
 
 class Search(Handler):
     def __init__(self, cached_values, window_ids, error=''):
@@ -161,7 +163,8 @@ class Search(Handler):
             before, _ = self.line_edit.split_at_cursor()
 
             try:
-                start, _ = reindex(before, NON_ALPHANUM_PATTERN_END, right=True)
+                start, _ = reindex(
+                    before, NON_ALPHANUM_PATTERN_END, right=True)
             except ValueError:
                 start = -1
             else:
@@ -182,7 +185,8 @@ class Search(Handler):
             before, _ = self.line_edit.split_at_cursor()
 
             try:
-                start, _ = reindex(before, NON_ALPHANUM_PATTERN_END, right=True)
+                start, _ = reindex(
+                    before, NON_ALPHANUM_PATTERN_END, right=True)
             except ValueError:
                 start = -1
             else:
@@ -225,10 +229,12 @@ class Search(Handler):
             self.refresh()
         elif key_event.matches('up'):
             for match_arg in self.match_args():
-                remote_control.main(['', 'kitten', match_arg, str(SCROLLMARK_FILE)])
+                remote_control.main(
+                    ['', 'kitten', match_arg, str(SCROLLMARK_FILE)])
         elif key_event.matches('down'):
             for match_arg in self.match_args():
-                remote_control.main(['', 'kitten', match_arg, str(SCROLLMARK_FILE), 'next'])
+                remote_control.main(
+                    ['', 'kitten', match_arg, str(SCROLLMARK_FILE), 'next'])
         elif key_event.matches('enter'):
             self.quit(0)
         elif key_event.matches('esc'):
@@ -255,7 +261,8 @@ class Search(Handler):
             match_type = match_case + self.mode
             for match_arg in self.match_args():
                 try:
-                    remote_control.main(['', 'create-marker', match_arg, match_type, '1', text])
+                    remote_control.main(
+                        ['', 'create-marker', match_arg, match_type, '1', text])
                 except SystemExit:
                     self.remove_mark()
         else:
@@ -276,7 +283,8 @@ class Search(Handler):
 
 def main(args):
     try:
-        remote_control.main(['', 'resize-window', '--self', '--axis=vertical', '--increment', '-100'])
+        remote_control.main(['', 'resize-window', '--self',
+                            '--axis=vertical', '--increment', '-100'])
     except:
         pass
 
@@ -296,7 +304,8 @@ def main(args):
                     if kitty_window['id'] == window_id:
                         current_tab = tab
         if current_tab:
-            window_ids = [w['id'] for w in current_tab['windows'] if not w['is_focused']]
+            window_ids = [w['id']
+                          for w in current_tab['windows'] if not w['is_focused']]
         else:
             error = 'Error: Could not find the window id provided.'
 
