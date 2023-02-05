@@ -322,6 +322,7 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = "rg" },
 		{ name = "crates" },
+		{ name = "vim-dadbod-completion" },
 	},
 	formatting = {
 		format = lspkind.cmp_format({

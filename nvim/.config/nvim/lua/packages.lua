@@ -140,6 +140,20 @@ require("packer").startup(function()
 		end,
 	})
 
+	-- databases connector.
+	use({
+		"tpope/vim-dadbod",
+		opt = true,
+		requires = {
+			"kristijanhusak/vim-dadbod-ui",
+			"kristijanhusak/vim-dadbod-completion",
+		},
+		config = function()
+			require("db").setup()
+		end,
+		cmd = { "DBUIToggle", "DBUI", "DBUIAddConnection", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
+	})
+
 	if packer_bootstrap then
 		require("packer").sync()
 	end
