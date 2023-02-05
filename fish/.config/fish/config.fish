@@ -27,6 +27,12 @@ alias ll='exa -l -h --git --classify --icons'
 alias la='ll -a'
 alias g='git'
 
+if not test -d $HOME/.asdf
+	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+end
+source $HOME/.asdf/asdf.fish
+source $HOME/.asdf/completions/asdf.fish
+
 if set -q KITTY_INSTALLATION_DIR
     set --global KITTY_SHELL_INTEGRATION enabled
     source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
@@ -51,4 +57,10 @@ if status --is-login
 	if test (tty) = /dev/tty1
 		exec sway
 	end
+end
+
+if set -q KITTY_INSTALLATION_DIR
+    set --global KITTY_SHELL_INTEGRATION enabled
+    source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+    set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
 end
