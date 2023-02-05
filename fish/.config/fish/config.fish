@@ -5,6 +5,7 @@ end
 
 set -U EDITOR nvim
 set -U NPM_CONFIG_PREFIX $HOME/.npm-global
+set -U GOPATH (go env GOPATH)
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 fish_add_path $NPM_CONFIG_PREFIX/bin
