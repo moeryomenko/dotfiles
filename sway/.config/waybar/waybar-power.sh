@@ -1,2 +1,2 @@
 #!/bin/sh
-swaynag -t custom -m 'Are you sure you want to shutdown your device?' -b 'Poweroff' 'poweroff'
+swaynag -m 'Do you want shutdown or hibernate?' -b 'Poweroff' 'poweroff' -b 'Hibernate' 'systemctl hibernate'
