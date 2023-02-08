@@ -17,9 +17,6 @@ require("mason-null-ls").setup({
 		"gersemi",
 		"gitlint",
 		"goimports",
-		"scalafmt",
-		"yamllint",
-		"yamlfmt",
 	},
 	automatic_installation = true,
 })
@@ -35,15 +32,12 @@ local sources = {
 	b.formatting.gersemi,
 	b.formatting.goimports,
 	b.formatting.rustfmt,
-	b.formatting.scalafmt,
 	b.formatting.shfmt,
 	b.formatting.stylua,
 	b.formatting.trim_newlines,
 	b.formatting.trim_whitespace,
-	b.formatting.yamlfmt,
 	-- diagnostics
 	b.diagnostics.gitlint,
-	b.diagnostics.yamllint,
 	-- code actions
 	b.code_actions.gitrebase,
 	-- hover

@@ -12,6 +12,7 @@ fish_add_path $NPM_CONFIG_PREFIX/bin
 fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/go/bin
 
 set -U tide_git_icon 
 set -U tide_pwd_icon 
@@ -59,8 +60,6 @@ if status --is-login
 	end
 end
 
-if set -q KITTY_INSTALLATION_DIR
-    set --global KITTY_SHELL_INTEGRATION enabled
-    source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
-    set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+function fz
+	sk --preview 'bat --color=always --style=numbers --line-range=:500 {}'
 end

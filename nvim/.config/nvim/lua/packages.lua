@@ -91,8 +91,13 @@ require("packer").startup(function()
 		end,
 	})
 	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
-	use("mfussenegger/nvim-jdtls")
-	use("scalameta/nvim-metals")
+	use({
+		"ray-x/go.nvim",
+		config = function()
+			require("go").setup()
+		end,
+	})
+	use("ray-x/guihua.lua")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")

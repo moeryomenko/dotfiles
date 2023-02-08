@@ -123,55 +123,6 @@ end
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-local metals_config = require("metals").bare_config()
-
-metals_config.settings = {
-	showImplicitArguments = true,
-	excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-}
-
-metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-metals_config.on_attach = function(client, bufnr)
-	on_attach(client, bufnr)
-	require("metals").setup_dap()
-end
-
--- Autocmd that will actually be in charging of starting the whole thing
-local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
-api.nvim_create_autocmd("FileType", {
-	pattern = { "scala", "sbt" },
-	callback = function()
-		require("metals").initialize_or_attach(metals_config)
-	end,
-	group = nvim_metals_group,
-})
-
-require("rust-tools").setup({
-	tools = {
-		executor = require("rust-tools.executors").termopen,
-		reload_workspace_from_cargo_toml = true,
-		inlay_hints = {
-			auto = true,
-			show_parameter_hints = true,
-		},
-	},
-
-	server = {
-		on_attach = on_attach,
-		settings = {
-			["rust-analyzer"] = {
-				checkOnSave = { command = "clippy" },
-			},
-		},
-	},
-})
-
-nvim_lsp.qmlls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-
 nvim_lsp.neocmake.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
