@@ -23,38 +23,6 @@ dap.configurations.cpp = {
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
-dap.configurations.scala = {
-	{
-		type = "scala",
-		request = "launch",
-		name = "Run or test with input",
-		metals = {
-			runType = "runOrTestFile",
-			args = function()
-				local args_string = vim.fn.input("Arguments: ")
-				return vim.split(args_string, " +")
-			end,
-		},
-	},
-	{
-		type = "scala",
-		request = "launch",
-		name = "Run or Test",
-		metals = {
-			runType = "runOrTestFile",
-		},
-	},
-	{
-		type = "scala",
-		request = "launch",
-		name = "Test Target",
-		metals = {
-			runType = "testTarget",
-		},
-	},
-}
-
-require("metals").setup_dap()
 
 local Path = require("plenary.path")
 require("tasks").setup({
