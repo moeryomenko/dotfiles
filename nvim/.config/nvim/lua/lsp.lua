@@ -13,88 +13,11 @@ require("nvim-treesitter.configs").setup({
 		"toml",
 		"yaml",
 	},
-
 	-- Install languages synchronously (only applied to `ensure_installed`)
 	sync_install = true,
-
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
-	},
-	textobjects = {
-		select = {
-			enable = true,
-			-- Automatically jump forward to textobj, similar to targets.vim
-			lookahead = true,
-			keymaps = {
-				-- You can use the capture groups defined in textobjects.scm
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				-- You can optionally set descriptions to the mappings (used in the desc parameter of
-				-- nvim_buf_set_keymap) which plugins like which-key display
-				["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-			},
-			-- You can choose the select mode (default is charwise 'v')
-			--
-			-- Can also be a function which gets passed a table with the keys
-			-- * query_string: eg '@function.inner'
-			-- * method: eg 'v' or 'o'
-			-- and should return the mode ('v', 'V', or '<c-v>') or a table
-			-- mapping query_strings to modes.
-			selection_modes = {
-				["@parameter.outer"] = "v", -- charwise
-				["@function.outer"] = "V", -- linewise
-				["@class.outer"] = "<c-v>", -- blockwise
-			},
-			-- If you set this to `true` (default is `false`) then any textobject is
-			-- extended to include preceding or succeeding whitespace. Succeeding
-			-- whitespace has priority in order to act similarly to eg the built-in
-			-- `ap`.
-			--
-			-- Can also be a function which gets passed a table with the keys
-			-- * query_string: eg '@function.inner'
-			-- * selection_mode: eg 'v'
-			-- and should return true of false
-			include_surrounding_whitespace = true,
-		},
-		swap = {
-			enable = true,
-			swap_next = {
-				["<leader>a"] = "@parameter.inner",
-			},
-			swap_previous = {
-				["<leader>A"] = "@parameter.inner",
-			},
-		},
-		move = {
-			enable = true,
-			set_jumps = true, -- whether to set jumps in the jumplist
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = { query = "@class.outer", desc = "Next class start" },
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]["] = "@class.outer",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
-			},
-		},
-		lsp_interop = {
-			enable = true,
-			border = "none",
-			peek_definition_code = {
-				["<leader>df"] = "@function.outer",
-				["<leader>dF"] = "@class.outer",
-			},
-		},
 	},
 })
 
@@ -140,11 +63,6 @@ require("mason-lspconfig").setup_handlers({
 			capabilities = capabilities,
 		})
 	end,
-})
-
-nvim_lsp["qmlls"].setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
 })
 
 require("clangd_extensions").setup({
@@ -308,3 +226,47 @@ cmp.setup.filetype({ "dap-repl", "dapui_watches" }, {
 		{ name = "dap" },
 	},
 })
+
+local mason_registry = require("mason-registry")
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+local jdtls_dir = mason_registry.get_package("jdtls"):get_install_path()
+local java_debug = mason_registry.get_package("java-debug-adapter"):get_install_path()
+local java_test = mason_registry.get_package("java-test"):get_install_path()
+local workspace_dir = jdtls_dir .. "/workspace/" .. project_name
+local java_bundles = {
+	vim.fn.glob(java_debug .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
+}
+
+vim.list_extend(java_bundles, vim.split(vim.fn.glob(java_test .. "/extension/server/*.jar", 1), "\n"))
+
+require("jdtls").start_or_attach({
+	cmd = {
+		"java",
+		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+		"-Dosgi.bundles.defaultStartLevel=4",
+		"-Declipse.product=org.eclipse.jdt.ls.core.product",
+		"-Dlog.protocol=true",
+		"-Dlog.level=ALL",
+		"-Xms1g",
+		"-jar",
+		jdtls_dir .. "/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+		"-configuration",
+		jdtls_dir .. "/config_linux",
+		"-data",
+		workspace_dir,
+		"-javaagent",
+		jdtls_dir .. "/lombok.jar",
+	},
+	settings = {
+		java = {
+			signatureHelp = { enabled = true },
+		},
+	},
+	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
+	init_options = {
+		bundles = java_bundles,
+	},
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+require("jdtls").setup_dap({ hotcodereplace = "auto" })

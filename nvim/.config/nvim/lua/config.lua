@@ -1,4 +1,4 @@
-vim.cmd([[colorscheme tokyonight-moon]])
+vim.cmd([[colorscheme nordic]])
 vim.cmd([[set shell=bash]])
 vim.cmd([[set ts=4 sw=4 ai smarttab wildmenu]])
 vim.cmd([[set encoding=utf8]])
@@ -14,11 +14,7 @@ vim.cmd([[au BufNewFile,BufRead *.qml set ft=qmljs]])
 vim.cmd([[let g:himalaya_folder_picker = 'telescope']])
 vim.cmd([[let g:himalaya_folder_picker_telescope_preview = 1]])
 
-require("lualine").setup({
-	options = {
-		theme = "auto",
-	},
-})
+require("evilline")
 require("bufferline").setup({})
 
 local wilder = require("wilder")

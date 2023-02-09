@@ -14,6 +14,7 @@ local packer_bootstrap = ensure_packer()
 require("packer").startup(function()
 	use("wbthomason/packer.nvim")
 	use("folke/tokyonight.nvim")
+	use("AlexvZyl/nordic.nvim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
@@ -98,6 +99,7 @@ require("packer").startup(function()
 		end,
 	})
 	use("ray-x/guihua.lua")
+	use("mfussenegger/nvim-jdtls")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")

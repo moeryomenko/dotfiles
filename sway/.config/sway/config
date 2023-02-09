@@ -242,7 +242,7 @@ bindsym $mod+r mode "resize"
 # 	}
 # }
 
-assign [app_id="telegram"] workspace 1
+assign [app_id="mpv"] workspace 1
 assign [app_id="kitty"] workspace 2
 assign [app_id="firefox"] workspace 3
 assign [app_id="zathura"] workspace 4
