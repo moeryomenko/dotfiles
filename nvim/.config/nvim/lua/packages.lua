@@ -53,6 +53,12 @@ require("packer").startup(function()
 	})
 	use("kdheepak/lazygit.nvim")
 	use("tpope/vim-fugitive")
+	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end
+	})
 	use("yamatsum/nvim-cursorline")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")

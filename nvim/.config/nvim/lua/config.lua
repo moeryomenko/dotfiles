@@ -1,4 +1,4 @@
-vim.cmd([[colorscheme nordic]])
+vim.cmd([[colorscheme tokyonight-moon]])
 vim.cmd([[set shell=bash]])
 vim.cmd([[set ts=4 sw=4 ai smarttab wildmenu]])
 vim.cmd([[set encoding=utf8]])

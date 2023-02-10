@@ -4,6 +4,7 @@ require("mason-tool-installer").setup({
 		"codelldb",
 		"delve",
 		"gopls",
+		"stylua",
 		"rust-analyzer",
 	},
 	auto_update = true,

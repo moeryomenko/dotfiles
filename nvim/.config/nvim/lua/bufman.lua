@@ -19,9 +19,6 @@ vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right)
 
 require("bufferline").setup({
 	options = {
-		indicator = {
-			style = "underline",
-		},
 		diagnostics = "nvim_lsp",
 		diagnostics_indicator = function(count, level, diagnostics_dict, context)
 			local s = " "
