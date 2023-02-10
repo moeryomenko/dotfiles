@@ -53,10 +53,7 @@ nvim_lsp.neocmake.setup({
 
 require("mason-lspconfig").setup()
 
--- the above is enough, but if you want to replicate the "on_server_ready" behaviour
--- where your installed servers are setup "automatically" you can do the following
 require("mason-lspconfig").setup_handlers({
-	-- default handler - setup with default settings
 	function(server_name)
 		nvim_lsp[server_name].setup({
 			on_attach = on_attach,
@@ -158,7 +155,7 @@ cmp.setup({
 	mapping = {
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
+		["<C-d>"] = cmp.mapping.scroll_docs( -4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
@@ -178,7 +175,7 @@ cmp.setup({
 		["<S-Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
+			elseif luasnip.jumpable( -1) then
 				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
 			else
 				fallback()

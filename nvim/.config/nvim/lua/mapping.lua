@@ -56,6 +56,7 @@ map("v", "<leader>P", '"+P')
 map("n", "[b", ":bprevious<CR>")
 map("n", "]b", ":bnext<CR>")
 map("n", "<space>b", ":Telescope buffers<CR>")
+map("n", "<leader>t", ":lua require('telescope-tabs').list_tabs()<CR>")
 --#endregion
 
 --#region Lsp
