@@ -24,7 +24,6 @@ require("nvim-treesitter.configs").setup({
 
 require("hlargs").setup()
 
-local nvim_lsp = require("lspconfig")
 local on_attach = function(client, bufnr)
 	-- Set autocommands conditional on server_capabilities
 	if client.server_capabilities.document_highlight then
@@ -47,19 +46,17 @@ end
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-nvim_lsp.neocmake.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-
-require("mason-lspconfig").setup()
-
-require("mason-lspconfig").setup_handlers({
+local nvim_lsp = require("lspconfig")
+local mason_lsp = require("mason-lspconfig")
+mason_lsp.setup()
+mason_lsp.setup_handlers({
 	function(server_name)
-		nvim_lsp[server_name].setup({
-			on_attach = on_attach,
-			capabilities = capabilities,
-		})
+		if server_name ~= "jdtls" then
+			nvim_lsp[server_name].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+		end
 	end,
 })
 
@@ -156,7 +153,7 @@ cmp.setup({
 	mapping = {
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs( -4),
+		["<C-d>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
@@ -176,7 +173,7 @@ cmp.setup({
 		["<S-Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
-			elseif luasnip.jumpable( -1) then
+			elseif luasnip.jumpable(-1) then
 				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
 			else
 				fallback()
