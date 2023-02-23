@@ -24,19 +24,12 @@ output eDP-1 {
 	adaptive_sync on
 	pos 0 0 res 2160x1440
 }
-output DP-2 {
+output DP-1 {
 	bg ~/pictures/wallpapers/dp.jpg fill
 	scale 0.8
 	scale_filter smart
 	adaptive_sync on
-	pos 4560 0 res 2560x1080
-}
-output DP-3 {
-	bg ~/pictures/wallpapers/edp.jpg fill
-	scale 0.8
-	scale_filter smart
-	adaptive_sync on
-	pos 2160 0 res 1920x1080
+	pos 2160 0 res 2560x1080
 }
 
 ### Input configuration
