@@ -20,18 +20,6 @@ map("n", "<leader>s", ":SymbolsOutline<CR>")
 
 --#region refactoring keymap
 map("v", "<leader>rr", ":lua require('telescope').extensions.refactoring.refactors()<CR>")
-
-require("crates").setup()
-map("n", "<leader>ct", ":lua require('crates').toggle()<CR>", { silent = true })
-map("n", "<leader>cr", ":lua require('crates').reload()<CR>", { silent = true })
-map("n", "<leader>cv", ":lua require('crates').show_versions_popup()<CR>", { silent = true })
-map("n", "<leader>cf", ":lua require('crates').show_features_popup()<CR>", { silent = true })
-map("n", "<leader>cu", ":lua require('crates').update_crate()<CR>", { silent = true })
-map("v", "<leader>cu", ":lua require('crates').update_crates()<CR>", { silent = true })
-map("n", "<leader>ca", ":lua require('crates').upgrade_crate()<CR>", { silent = true })
-map("v", "<leader>ca", ":lua require('crates').upgrade_crates()<CR>", { silent = true })
-map("n", "<leader>cU", ":lua require('crates').update_all_crates()<CR>", { silent = true })
-map("n", "<leader>cA", ":lua require('crates').upgrade_all_crates()<CR>", { silent = true })
 --#endregion
 
 -- close other buffers, except for the current.

@@ -11,60 +11,24 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-require("packer").startup(function()
+local packer = require("packer")
+
+packer.startup(function(use)
 	use("wbthomason/packer.nvim")
+	use("nvim-lua/plenary.nvim")
+
+	-- UI plugins.
 	use("folke/tokyonight.nvim")
 	use("AlexvZyl/nordic.nvim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
-			"nvim-tree/nvim-web-devicons", -- optional, for file icons
+			"nvim-tree/nvim-web-devicons",
 		},
-		tag = "nightly", -- optional, updated every week. (see issue #1193)
+		tag = "nightly",
 	})
 	use("simrat39/symbols-outline.nvim")
-	use("machakann/vim-sandwich")
-	use({
-		"windwp/nvim-autopairs",
-		config = function()
-			require("nvim-autopairs").setup()
-		end,
-	})
-	use({
-		"ThePrimeagen/refactoring.nvim",
-		config = function()
-			require("refactoring").setup({
-				-- prompt for return type
-				prompt_func_return_type = {
-					go = true,
-					cpp = true,
-					c = true,
-					java = true,
-				},
-				-- prompt for function parameters
-				prompt_func_param_type = {
-					go = true,
-					cpp = true,
-					c = true,
-					java = true,
-				},
-			})
-		end,
-	})
-	use("kdheepak/lazygit.nvim")
-	use("tpope/vim-fugitive")
-	use({
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup()
-		end
-	})
 	use("yamatsum/nvim-cursorline")
-	use("nvim-lua/plenary.nvim")
-	use("nvim-telescope/telescope.nvim")
-	use("nvim-telescope/telescope-ui-select.nvim")
-	use("olacin/telescope-gitmoji.nvim")
-	use("LukasPietzschmann/telescope-tabs")
 	use("nvim-lualine/lualine.nvim")
 	use({ "akinsho/bufferline.nvim", tag = "v3.*" })
 	use("tiagovla/scope.nvim")
@@ -81,9 +45,50 @@ require("packer").startup(function()
 			require("neoscroll").setup()
 		end,
 	})
+	use("gelguy/wilder.nvim")
+	-- telescope plugins.
+	use({
+		"nvim-telescope/telescope.nvim",
+		"nvim-telescope/telescope-ui-select.nvim",
+		"olacin/telescope-gitmoji.nvim",
+		"LukasPietzschmann/telescope-tabs",
+	})
+
+	-- typing improvements.
+	use("machakann/vim-sandwich")
+	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup()
+		end,
+	})
+	use({
+		"ThePrimeagen/refactoring.nvim",
+		config = function()
+			require("refactoring").setup({
+				prompt_func_return_type = {
+					go = true,
+				},
+				prompt_func_param_type = {
+					go = true,
+				},
+			})
+		end,
+	})
+
+	-- git integration.
+	use("kdheepak/lazygit.nvim")
+	use("tpope/vim-fugitive")
+	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
+
+	-- LSP plugins.
 	use("neovim/nvim-lspconfig")
-	use("simrat39/rust-tools.nvim")
-	use("saecki/crates.nvim")
+	use("folke/neodev.nvim")
 	use({
 		"williamboman/mason.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -98,15 +103,14 @@ require("packer").startup(function()
 			require("lspsaga").setup({})
 		end,
 	})
-	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
 	use({
 		"ray-x/go.nvim",
 		config = function()
 			require("go").setup()
 		end,
 	})
-	use("ray-x/guihua.lua")
 	use("mfussenegger/nvim-jdtls")
+	use("ray-x/guihua.lua")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")
@@ -119,16 +123,18 @@ require("packer").startup(function()
 	use("L3MON4D3/LuaSnip")
 	use("rafamadriz/friendly-snippets")
 	use("pechorin/any-jump.vim")
-	use("m-demare/hlargs.nvim")
+
+	-- syntax highlighting.
 	use("nvim-treesitter/nvim-treesitter")
 	use("nvim-treesitter/nvim-treesitter-textobjects")
+	use("m-demare/hlargs.nvim")
 	use({
 		"folke/todo-comments.nvim",
 		config = function()
 			require("todo-comments").setup()
 		end,
 	})
-	-- Debugger packages
+	-- Debugger packages.
 	use("mfussenegger/nvim-dap")
 	use("leoluz/nvim-dap-go")
 	use("Shatur/neovim-tasks")
@@ -141,18 +147,13 @@ require("packer").startup(function()
 	use({
 		"theHamsta/nvim-dap-virtual-text",
 		config = function()
-			require("nvim-dap-virtual-text").setup()
+			require("nvim-dap-virtual-text").setup({})
 		end,
 	})
 	use("rcarriga/cmp-dap")
-	use("gelguy/wilder.nvim")
+
+	-- email integrations.
 	use("https://git.sr.ht/~soywod/himalaya-vim")
-	use({
-		"jghauser/kitty-runner.nvim",
-		config = function()
-			require("kitty-runner").setup()
-		end,
-	})
 
 	-- databases connector.
 	use({
@@ -167,8 +168,8 @@ require("packer").startup(function()
 		end,
 		cmd = { "DBUIToggle", "DBUI", "DBUIAddConnection", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
 	})
-
-	if packer_bootstrap then
-		require("packer").sync()
-	end
 end)
+
+if packer_bootstrap then
+	packer.sync()
+end
