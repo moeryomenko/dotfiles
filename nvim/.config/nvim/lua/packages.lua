@@ -88,7 +88,6 @@ packer.startup(function(use)
 
 	-- LSP plugins.
 	use("neovim/nvim-lspconfig")
-	use("folke/neodev.nvim")
 	use({
 		"williamboman/mason.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -111,6 +110,9 @@ packer.startup(function(use)
 	})
 	use("mfussenegger/nvim-jdtls")
 	use("ray-x/guihua.lua")
+	use("folke/neodev.nvim")
+	use("simrat39/rust-tools.nvim")
+	use("Saecki/crates.nvim")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")

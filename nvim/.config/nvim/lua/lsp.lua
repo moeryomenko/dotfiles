@@ -1,13 +1,28 @@
 local dap = require("dap")
 require("dap-go").setup()
 
+require("rust-tools").setup({
+	tools = {
+		reload_workspace_from_cargo_toml = true,
+	},
+	dap = {
+		adapter = {
+			type = "executable",
+			command = "lldb-vscode",
+			name = "rt_lldb",
+		},
+	},
+})
+
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"bash",
+		"lua",
 		"java",
 		"json",
 		"go",
 		"gomod",
+		"rust",
 		"toml",
 		"yaml",
 	},
@@ -30,9 +45,7 @@ mason_lsp.setup()
 mason_lsp.setup_handlers({
 	function(server_name)
 		if server_name ~= "jdtls" then
-			nvim_lsp[server_name].setup({
-				capabilities = capabilities,
-			})
+			nvim_lsp[server_name].setup({ capabilities = capabilities })
 		end
 	end,
 })
@@ -59,7 +72,7 @@ cmp.setup({
 	mapping = {
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
+		["<C-d>"] = cmp.mapping.scroll_docs( -4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
@@ -79,7 +92,7 @@ cmp.setup({
 		["<S-Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
+			elseif luasnip.jumpable( -1) then
 				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
 			else
 				fallback()

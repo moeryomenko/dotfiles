@@ -2,6 +2,7 @@ require("mason-tool-installer").setup({
 	ensure_installed = {
 		"delve",
 		"gopls",
+		"rust-analyzer",
 		"stylua",
 	},
 	auto_update = true,
@@ -13,6 +14,7 @@ require("mason-null-ls").setup({
 		"gersemi",
 		"gitlint",
 		"goimports",
+		"rustfmt",
 	},
 	automatic_installation = true,
 })
@@ -26,6 +28,7 @@ local sources = {
 	-- formatting
 	b.formatting.gersemi,
 	b.formatting.goimports,
+	b.formatting.rustfmt,
 	b.formatting.shfmt,
 	b.formatting.stylua,
 	b.formatting.trim_newlines,
