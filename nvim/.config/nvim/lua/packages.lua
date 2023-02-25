@@ -108,6 +108,7 @@ packer.startup(function(use)
 			require("go").setup()
 		end,
 	})
+	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
 	use("mfussenegger/nvim-jdtls")
 	use("ray-x/guihua.lua")
 	use("folke/neodev.nvim")
