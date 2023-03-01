@@ -1,5 +1,7 @@
 require("mason-tool-installer").setup({
 	ensure_installed = {
+		"codelldb",
+		"cpptools",
 		"delve",
 		"gopls",
 		"rust-analyzer",
@@ -11,6 +13,7 @@ require("mason-tool-installer").setup({
 
 require("mason-null-ls").setup({
 	ensure_installed = {
+		"clang-format",
 		"gersemi",
 		"gitlint",
 		"goimports",
@@ -25,7 +28,11 @@ local null_ls = require("null-ls")
 local b = null_ls.builtins
 
 local sources = {
+	-- completions
+	b.completion.luasnip,
+	b.completion.spell,
 	-- formatting
+	b.formatting.clang_format,
 	b.formatting.gersemi,
 	b.formatting.goimports,
 	b.formatting.rustfmt,
@@ -34,9 +41,12 @@ local sources = {
 	b.formatting.trim_newlines,
 	b.formatting.trim_whitespace,
 	-- diagnostics
+	b.diagnostics.clang_check,
+	b.diagnostics.cmake_lint,
 	b.diagnostics.gitlint,
 	-- code actions
 	b.code_actions.gitrebase,
+	b.code_actions.refactoring,
 	-- hover
 	b.hover.dictionary,
 }
