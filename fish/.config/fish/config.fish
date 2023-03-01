@@ -12,6 +12,7 @@ fish_add_path $NPM_CONFIG_PREFIX/bin
 fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path (rustup which --toolchain stable rust-analyzer)
 fish_add_path $HOME/go/bin
 
 set -U tide_git_icon 
@@ -27,6 +28,7 @@ set -U MOZ_ENABLE_WAYLAND 1
 alias ll='exa -l -h --git --classify --icons'
 alias la='ll -a'
 alias g='git'
+alias hx='helix'
 
 if not test -d $HOME/.asdf
 	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
