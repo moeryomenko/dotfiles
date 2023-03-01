@@ -1,3 +1,6 @@
+.classpath
+.project
+.settings/
 .tool-versions
 compile_commands.json
 neovim.json
