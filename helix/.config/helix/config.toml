@@ -7,6 +7,6 @@ true-color = true
 bufferline = "multiple"
 
 [editor.cursor-shape]
-insert = "underline"
-normal = "bar"
+insert = "bar"
+normal = "block"
 select = "block"
