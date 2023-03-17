@@ -1,4 +1,0 @@
-configuration {
- modi: "drun,combi";
- combi-modi: "drun";
-}
