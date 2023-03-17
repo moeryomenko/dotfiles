@@ -95,6 +95,7 @@ export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$(dirname $(rustup which --toolchain stable rust-analyzer))
 
 . <(rustup completions bash)
 . <(rustup completions bash cargo)

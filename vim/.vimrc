@@ -11,19 +11,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
-Plug 'majutsushi/tagbar'
-Plug 'machakann/vim-sandwich'
 Plug 'bfrg/vim-cpp-modern'
-Plug 'cdelledonne/vim-cmake'
-Plug 'rust-lang/rust.vim'
-Plug 'jiangmiao/auto-pairs'
-
-" lsp plugins {{{
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" }}}
+Plug 'majutsushi/tagbar'
 
 call plug#end()
 " }}}
@@ -62,9 +51,9 @@ set cursorline
 " }}}
 
 " tab confirations {{{
-" Set shift width to 4 spaces.
+" Set shift width to 8 spaces.
 set shiftwidth=8
-" Set tab width to 4 columns.
+" Set tab width to 8 columns.
 set tabstop=8
 " Use space characters instead of tabs.
 set expandtab
@@ -116,13 +105,11 @@ set showmode
 
 colorscheme habamax
 
-" c++ highligt {{{
+" c/c++ highlight {{{
 " Enable function highlighting
 let g:cpp_function_highlight = 1
-
 " Enable highlighting of C++11 attributes
 let g:cpp_attributes_highlight = 1
-
 " Highlight struct/class member variables (affects both C and C++ files)
 let g:cpp_member_highlight = 1
 " }}}
@@ -203,33 +190,4 @@ nmap <silent> <leader>w :call ToggleNetrw()<CR>
 
 nnoremap <silent>gf :GFiles<CR>
 
-" }}}
-
-" lsp configuration {{{
-nnoremap gd :LspDefinition<CR>
-nnoremap ld :LspDeclaration<CR>
-nnoremap pd :LspPeekDefinition<CR>
-nnoremap gi :LspImplementation<CR>
-nnoremap pi :LspPeekImplementation<CR>
-nnoremap gr :LspReferences<CR>
-nnoremap gk :LspHover<CR>
-nnoremap lr :LspRename<CR>
-nnoremap df :LspDocumentFormat<CR>
-nnoremap di :LspCallHierarchyIncoming<CR>
-nnoremap do :LspCallHierarchyOutgoing<CR>
-nnoremap ls :LspStopServer<CR>
-" }}}
-
-" cmake configuration {{{
-let g:cmake_build_dir_location = 'build'
-let g:cmake_generate_options = [
-                        \ '-G Ninja',
-                        \ '-D CMAKE_EXE_LINKER_FLAGS_INIT="-fuse-ld=mold"',
-                        \ '-D CMAKE_SHARED_LINKER_FLAGS_INIT="-fuse-ld=mold"',
-                        \ '-D CMAKE_C_COMPILER=clang',
-                        \ '-D CMAKE_CXX_COMPILER=clang++',
-                        \ '-D CMAKE_C_COMPILER_LAUNCHER="/usr/bin/ccache"',
-                        \ '-D CMAKE_CXX_COMPILER_LAUNCHER="/usr/bin/ccache"']
-let g:cmake_link_compile_commands = 1
-let g:cmake_statusline = 1
 " }}}
