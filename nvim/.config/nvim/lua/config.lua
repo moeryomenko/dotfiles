@@ -1,27 +1,28 @@
-vim.cmd([[colorscheme tokyonight-moon]])
+vim.cmd.colorscheme("tokyonight-moon")
+
 vim.cmd([[set shell=bash]])
 vim.cmd([[set ts=4 sw=4 ai smarttab wildmenu]])
 vim.cmd([[set encoding=utf8]])
-vim.cmd([[set nu]])
 vim.cmd([[set termguicolors cursorline]])
 vim.cmd([[set background=dark]])
 vim.cmd([[set backspace=indent,eol,start]])
 vim.cmd([[set tw=120 cc=+1]])
 vim.cmd([[au FileType gitcommit setlocal tw=72 cc=+1 cc+=51 spell spelllang=en_us]])
 vim.cmd([[au FileType c,cpp setlocal tw=80 cc=+1]])
-vim.cmd([[au BufNewFile,BufRead *.qml set ft=qmljs]])
 
-vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+--#region line number settings.
+vim.opt.number = true
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter" }, {
 	callback = function()
 		vim.opt.relativenumber = true
 	end,
 })
-
-vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave" }, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave" }, {
 	callback = function()
 		vim.opt.relativenumber = false
 	end,
 })
+--#endregion
 
 vim.cmd([[let g:himalaya_folder_picker = 'telescope']])
 vim.cmd([[let g:himalaya_folder_picker_telescope_preview = 1]])
