@@ -84,6 +84,10 @@ if [[ -d "$HOME/.sdkman" && -z "$JAVA_HOME" ]]; then
 	sdk env >>/dev/null
 fi
 
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+	export XDG_CONFIG_HOME=$HOME/.config
+fi
+
 if [[ ! -d "$HOME/.asdf" ]]; then
 	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
 fi
