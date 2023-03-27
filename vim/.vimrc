@@ -14,6 +14,8 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'majutsushi/tagbar'
 
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+
 call plug#end()
 " }}}
 
@@ -103,7 +105,8 @@ set showcmd
 set showmode
 " }}}
 
-colorscheme habamax
+set background=dark
+colorscheme catppuccin
 
 " c/c++ highlight {{{
 " Enable function highlighting
@@ -157,6 +160,19 @@ nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
+" split moves mappint {{{
+nmap <silent><c-l> <c-w>l
+nmap <silent><c-h> <c-w>h
+nmap <silent><c-j> <c-w>j
+nmap <silent><c-k> <c-w>k
+
+
+nmap <silent><A-l> <c-w>L
+nmap <silent><A-h> <c-w>H
+nmap <silent><A-j> <c-w>J
+nmap <silent><A-k> <c-w>K
+" }}}
+"
 " }}}
 
 " file explorer configuraitons {{{
