@@ -20,6 +20,7 @@ packer.startup(function(use)
 	-- UI plugins.
 	use("folke/tokyonight.nvim")
 	use("AlexvZyl/nordic.nvim")
+	use({ "catppuccin/nvim", as = "catppuccin" })
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {

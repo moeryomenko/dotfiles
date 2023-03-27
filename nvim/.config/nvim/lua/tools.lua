@@ -32,7 +32,7 @@ local sources = {
 	b.completion.luasnip,
 	b.completion.spell,
 	-- formatting
-	--b.formatting.clang_format,
+	b.formatting.clang_format,
 	b.formatting.google_java_format,
 	b.formatting.gersemi,
 	b.formatting.goimports,

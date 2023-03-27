@@ -1,10 +1,25 @@
-vim.cmd.colorscheme("tokyonight-moon")
+require("catppuccin").setup({
+	styles = {
+		comments = { "italic" },
+		conditionals = { "italic" },
+	},
+})
 
-vim.cmd([[set shell=bash]])
-vim.cmd([[set ts=4 sw=4 ai smarttab wildmenu]])
-vim.cmd([[set encoding=utf8]])
-vim.cmd([[set termguicolors cursorline]])
-vim.cmd([[set background=dark]])
+vim.opt.background = "dark"
+vim.cmd.colorscheme("catppuccin-macchiato")
+
+vim.opt.shell = "bash"
+
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.smarttab = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+
+vim.opt.wildmenu = true
+vim.opt.cursorline = true
+vim.opt.encoding = "utf8"
+
 vim.cmd([[set backspace=indent,eol,start]])
 vim.cmd([[set tw=120 cc=+1]])
 vim.cmd([[au FileType gitcommit setlocal tw=72 cc=+1 cc+=51 spell spelllang=en_us]])
@@ -24,8 +39,10 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave"
 })
 --#endregion
 
-vim.cmd([[let g:himalaya_folder_picker = 'telescope']])
-vim.cmd([[let g:himalaya_folder_picker_telescope_preview = 1]])
+--#region himalaya
+vim.g.himalaya_folder_picker = "telescope"
+vim.g.himalaya_folder_picker_telescope_preview = 1
+--#endregion
 
 require("evilline")
 require("bufferline").setup({})
