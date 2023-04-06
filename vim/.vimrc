@@ -12,7 +12,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
+Plug 'cdelledonne/vim-cmake'
+Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
+
+" lsp plugins {{{
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"}}}
 
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
@@ -106,7 +115,7 @@ set showmode
 " }}}
 
 set background=dark
-colorscheme catppuccin
+colorscheme habamax
 
 " c/c++ highlight {{{
 " Enable function highlighting
@@ -172,7 +181,22 @@ nmap <silent><A-h> <c-w>H
 nmap <silent><A-j> <c-w>J
 nmap <silent><A-k> <c-w>K
 " }}}
-"
+
+" lsp configuration {{{
+nnoremap gd :LspDefinition<CR>
+nnoremap ld :LspDeclaration<CR>
+nnoremap pd :LspPeekDefinition<CR>
+nnoremap gi :LspImplementation<CR>
+nnoremap pi :LspPeekImplementation<CR>
+nnoremap gr :LspReferences<CR>
+nnoremap gk :LspHover<CR>
+nnoremap lr :LspRename<CR>
+nnoremap df :LspDocumentFormat<CR>
+nnoremap di :LspCallHierarchyIncoming<CR>
+nnoremap do :LspCallHierarchyOutgoing<CR>
+nnoremap ls :LspStopServer<CR>
+" }}}
+
 " }}}
 
 " file explorer configuraitons {{{
@@ -206,4 +230,18 @@ nmap <silent> <leader>w :call ToggleNetrw()<CR>
 
 nnoremap <silent>gf :GFiles<CR>
 
+" }}}
+
+" cmake configuration {{{
+let g:cmake_build_dir_location = 'build'
+let g:cmake_generate_options = [
+                        \ '-GNinja',
+                        \ '-DEXE_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-DSHARED_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-DCMAKE_C_COMPILER=clang',
+                        \ '-DCMAKE_CXX_COMPILER=clang++',
+                        \ '-DC_COMPILER_LAUNCHER="/usr/bin/ccache"',
+                        \ '-DCXX_COMPILER_LAUNCHER="/usr/bin/ccache"']
+let g:cmake_link_compile_commands = 1
+let g:cmake_statusline = 1
 " }}}

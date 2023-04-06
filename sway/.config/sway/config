@@ -1,72 +1,7 @@
 ### Variables
-#
-# Logo key. Use Mod1 for Alt.
-set $mod Mod4
-# Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
-# Your preferred terminal emulator
-set $term kitty
 
-gaps inner 10
-default_border none
-hide_edge_borders both
-font pango:Source Code Pro 10
+include $HOME/.config/sway/config.d/*
 
-xwayland enable
-
-### Output configuration
-output eDP-1 {
-	bg ~/pictures/wallpapers/edp.jpg fill
-	scale 1
-	adaptive_sync on
-	pos 0 0 res 2160x1440
-}
-output DP-2 {
- 	bg ~/pictures/wallpapers/dp.jpg fill
- 	scale 0.8
- 	scale_filter smart
- 	adaptive_sync on
-	pos 4560 0 res 2560x1080
-}
-output DP-3 {
-	bg ~/pictures/wallpapers/edp.jpg fill
-	scale 0.8
-	scale_filter smart
-	adaptive_sync on
-	pos 2160 0 res 1920x1080
-}
-
-### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
-
-input type:keyboard {
-	xkb_layout us,ru
-	xkb_options grp:alt_shift_toggle
-}
-
-input type:touchpad {
-	tap enabled
-}
-
-### Key bindings
-#
-# Basics:
-#
-# Start a terminal
 bindsym $mod+Return exec $term
 
 # Kill focused window
@@ -75,11 +10,6 @@ bindsym $mod+Shift+q kill
 # Start your launcher
 bindsym $mod+d exec wofi --show run
 
-# Drag floating windows by holding down $mod and left mouse button.
-# Resize them with right mouse button + $mod.
-# Despite the name, also works for non-floating windows.
-# Change normal to inverse to use left mouse button for resizing and right
-# mouse button for dragging.
 floating_modifier $mod normal
 
 # Reload the configuration file
@@ -87,15 +17,8 @@ bindsym $mod+Shift+c reload
 
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -b 'Yes, exit sway' 'swaymsg exit'
-#
+
 # Moving around:
-#
-# Move your focus around
-#bindsym $mod+$left focus left
-#bindsym $mod+$down focus down
-#bindsym $mod+$up focus up
-#bindsym $mod+$right focus right
-# Or use $mod+[up|down|left|right]
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -111,10 +34,9 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-#
+
 # Workspaces:
-#
-# Switch to workspace
+## Switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -125,7 +47,7 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
-# Move focused container to workspace
+## Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
 bindsym $mod+Shift+3 move container to workspace 3
@@ -141,77 +63,48 @@ bindsym $mod+Alt+k workspace next
 bindsym $mod+Alt+j workspace prev
 bindgesture swipe:right workspace next
 bindgesture swipe:left workspace prev
-# Note: workspaces can have any name you want, not just numbers.
-# We just use 1-10 as the default.
-#
+
 # Layout stuff:
-#
-# You can "split" the current object of your focus with
-# $mod+b or $mod+v, for horizontal and vertical splits
-# respectively.
 bindsym $mod+b splith
 bindsym $mod+v splitv
-
-# Switch the current container between different layout styles
 bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
-
-# Make the current focus fullscreen
 bindsym $mod+f fullscreen
-
-# Toggle the current focus between tiling and floating mode
 bindsym $mod+Shift+space floating toggle
-
-# Swap focus between the tiling area and the floating area
 bindsym $mod+space focus mode_toggle
-
-# Move focus to the parent container
 bindsym $mod+a focus parent
 
-#
+
 # Display brightness
-#
 bindsym XF86MonBrightnessDown exec brightnessctl s $(($(brightnessctl g) - 25))
 bindsym XF86MonBrightnessUp exec brightnessctl s $(($(brightnessctl g) + 25))
 
-#
 # Audio
-#
 bindsym XF86AudioMute exec amixer set Master toggle
 bindsym XF86AudioPlay exec cmus-remote --pause
 bindsym XF86AudioPrev exec cmus-remote --prev
 bindsym XF86AudioNext exec cmus-remote --next
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-#
+
 # Scratchpad:
-#
-# Sway has a "scratchpad", which is a bag of holding for windows.
-# You can send windows there and get them back later.
-
-# Move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
-
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
+# Screenshot/screencast:
 bindsym Print exec grim -g "$(slurp)" - | swappy -f -
 bindsym $mod+Print exec wf-recorder -g "$(slurp)" -f ~/videos/screencast/recording_$(date +"%Y-%m-%d_%H:%M:%S.mp4")
 bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder
 
-#
+# Clipboard:
+bindsym Mod1+v exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
+
 # Resizing containers:
-#
+bindsym $mod+r mode "resize"
 mode "resize" {
-	# left will shrink the containers width
 	bindsym $left resize shrink width 10px
-	# right will grow the containers width
 	bindsym $down resize grow height 10px
-	# up will shrink the containers height
 	bindsym $up resize shrink height 10px
-	# down will grow the containers height
 	bindsym $right resize grow width 10px
 
 	# Ditto, with arrow keys
@@ -225,43 +118,5 @@ mode "resize" {
 	bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
-
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-# bar {
-# 	position top
-# 	font Fira Code 10
-# 	status_command exec conky
-# 	colors {
-# 		statusline #ffffff
-# 		background #323232
-# 		inactive_workspace #32323200 #32323200 #5c5c5c
-# 	}
-# }
-
-assign [app_id="mpv"] workspace 1
-assign [app_id="kitty"] workspace 2
-assign [app_id="firefox"] workspace 3
-assign [app_id="zathura"] workspace 4
-
-default_border pixel 0
-
-include /etc/sway/config.d/*
-
-### Idle and lock configuration
+# Idle and lock configuration
 bindsym $mod+l exec swaylock -f -c 000000
-# exec swayidle -w \
-# 	timeout 600 'swaylock -f -c 000000' \
-# 	timeout 420 'swaymsg "output * dpms off"' \
-# 	resume 'swaymsg "output * dpms on"' \
-# 	before-sleep 'swaylock -f -c 000000'
-
-#
-# Running mako for notifications
-#
-exec mako
-exec waybar
-exec wlsunset -t 2500 -T 4100 -S 6:30 -s 18:00

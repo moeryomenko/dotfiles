@@ -1,6 +1,4 @@
 local dap = require("dap")
-require("dap-go").setup()
-
 dap.adapters.lldb = {
 	type = "executable",
 	command = "/usr/bin/lldb-vscode", -- adjust as needed, must be absolute path
@@ -69,11 +67,7 @@ require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"bash",
 		"lua",
-		"kotlin",
-		"java",
 		"json",
-		"go",
-		"gomod",
 		"rust",
 		"toml",
 		"yaml",
@@ -93,61 +87,6 @@ require("neodev").setup()
 
 local nvim_lsp = require("lspconfig")
 local mason_lsp = require("mason-lspconfig")
-
-local fn = vim.fn
-local mason_registry = require("mason-registry")
-local project_name = fn.fnamemodify(fn.getcwd(), ":p:h:t")
-local jdtls_dir = mason_registry.get_package("jdtls"):get_install_path()
-local java_debug = mason_registry.get_package("java-debug-adapter"):get_install_path()
-local java_test = mason_registry.get_package("java-test"):get_install_path()
-local workspace_dir = jdtls_dir .. "/workspace/" .. project_name
-local java_bundles = {
-	fn.glob(java_debug .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
-}
-
-vim.list_extend(java_bundles, vim.split(fn.glob(java_test .. "/extension/server/*.jar", true), "\n"))
-
-local java_config = {
-	cmd = {
-		"java",
-		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
-		"-Dosgi.bundles.defaultStartLevel=4",
-		"-Declipse.product=org.eclipse.jdt.ls.core.product",
-		"-Dlog.protocol=true",
-		"-Dlog.level=ALL",
-		"-Xms1g",
-		"-jar",
-		jdtls_dir .. "/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
-		"-configuration",
-		jdtls_dir .. "/config_linux",
-		"-data",
-		workspace_dir,
-		"-javaagent",
-		jdtls_dir .. "/lombok.jar",
-	},
-	settings = {
-		java = {
-			signatureHelp = { enabled = true },
-			configuration = {
-				runtimes = {
-					{
-						name = "JavaSE-17",
-						path = "/home/moeryomenko/.sdkman/candidates/java/17.0.6-librca",
-					},
-					{
-						name = "JavaSE-19",
-						path = "/home/moeryomenko/.sdkman/candidates/java/19.0.2-librca",
-					},
-				},
-			},
-		},
-	},
-	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
-	init_options = {
-		bundles = java_bundles,
-	},
-	capabilities = capabilities,
-}
 
 mason_lsp.setup_handlers({
 	function(server_name)
@@ -182,7 +121,6 @@ mason_lsp.setup_handlers({
 						statement = "",
 						["template argument"] = "",
 					},
-
 					kind_icons = {
 						Compound = "",
 						Recovery = "",
@@ -192,7 +130,6 @@ mason_lsp.setup_handlers({
 						TemplateTemplateParm = "",
 						TemplateParamObject = "",
 					},
-
 					highlights = {
 						detail = "Comment",
 					},
@@ -221,30 +158,6 @@ mason_lsp.setup_handlers({
 			capabilities = capabilities,
 		})
 	end,
-	["kotlin_language_server"] = function()
-		nvim_lsp["kotlin_language_server"].setup({
-			capabilities = capabilities,
-			settings = {
-				kotlin = {
-					compiler = {
-						jvm = {
-							target = "17",
-						},
-					},
-				},
-			},
-		})
-	end,
-	["jdtls"] = function()
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = "java",
-			callback = function()
-				local jdtls = require("jdtls")
-				jdtls.start_or_attach(java_config)
-				jdtls.setup_dap({ hotcodereplace = "auto" })
-			end,
-		})
-	end,
 })
 
 -- luasnip setup
@@ -269,7 +182,7 @@ cmp.setup({
 	mapping = {
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs( -4),
+		["<C-d>"] = cmp.mapping.scroll_docs(-4),
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
@@ -289,7 +202,7 @@ cmp.setup({
 		["<S-Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
-			elseif luasnip.jumpable( -1) then
+			elseif luasnip.jumpable(-1) then
 				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
 			else
 				fallback()
@@ -307,7 +220,6 @@ cmp.setup({
 		format = lspkind.cmp_format({
 			mode = "symbol_text",
 			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-
 			-- The function below will be called before any actual modifications from lspkind
 			-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
 			before = function(_, vim_item)

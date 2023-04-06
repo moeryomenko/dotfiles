@@ -18,9 +18,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 
 	-- UI plugins.
-	use("folke/tokyonight.nvim")
-	use("AlexvZyl/nordic.nvim")
-	use({ "catppuccin/nvim", as = "catppuccin" })
+	use("sainnhe/gruvbox-material")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
@@ -103,15 +101,7 @@ packer.startup(function(use)
 			require("lspsaga").setup({})
 		end,
 	})
-	use({
-		"ray-x/go.nvim",
-		config = function()
-			require("go").setup()
-		end,
-	})
 	use("https://git.sr.ht/~p00f/clangd_extensions.nvim")
-	use("mfussenegger/nvim-jdtls")
-	use("ray-x/guihua.lua")
 	use("folke/neodev.nvim")
 	use("simrat39/rust-tools.nvim")
 	use("Saecki/crates.nvim")
@@ -140,7 +130,6 @@ packer.startup(function(use)
 	})
 	-- Debugger packages.
 	use("mfussenegger/nvim-dap")
-	use("leoluz/nvim-dap-go")
 	use("Shatur/neovim-tasks")
 	use({
 		"rcarriga/nvim-dap-ui",

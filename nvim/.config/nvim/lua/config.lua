@@ -1,12 +1,11 @@
-require("catppuccin").setup({
-	styles = {
-		comments = { "italic" },
-		conditionals = { "italic" },
-	},
-})
-
 vim.opt.background = "dark"
-vim.cmd.colorscheme("catppuccin-macchiato")
+vim.g.gruvbox_material_diagnostic_text_highlight = 1
+vim.g.gruvbox_material_diagnostic_virtual_text = 'colored'
+vim.g.gruvbox_material_menu_selection_background = 'purple'
+vim.g.gruvbox_material_better_performance = 1
+vim.g.gruvbox_material_background = 'soft'
+vim.g.gruvbox_material_foreground = 'material'
+vim.cmd('colorscheme gruvbox-material')
 
 vim.opt.shell = "bash"
 

@@ -2,8 +2,6 @@ require("mason-tool-installer").setup({
 	ensure_installed = {
 		"codelldb",
 		"cpptools",
-		"delve",
-		"gopls",
 		"rust-analyzer",
 		"stylua",
 	},
@@ -16,7 +14,6 @@ require("mason-null-ls").setup({
 		"clang-format",
 		"gersemi",
 		"gitlint",
-		"goimports",
 		"rustfmt",
 	},
 	automatic_installation = true,
@@ -33,9 +30,7 @@ local sources = {
 	b.completion.spell,
 	-- formatting
 	b.formatting.clang_format,
-	b.formatting.google_java_format,
 	b.formatting.gersemi,
-	b.formatting.goimports,
 	b.formatting.rustfmt,
 	b.formatting.shfmt,
 	b.formatting.stylua,

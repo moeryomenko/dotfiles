@@ -70,6 +70,7 @@ alias la='ll -a'
 alias c=clear
 alias csc='cscope -b -q -k'
 alias bathelp='bat --plain --language=help'
+alias hx='helix'
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export XKB_DEFAULT_LAYOUT=us
@@ -116,7 +117,3 @@ if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	export MOZ_ENABLE_WAYLAND=1
 	exec sway
 fi
-
-# BEGIN_KITTY_SHELL_INTEGRATION
-if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
-# END_KITTY_SHELL_INTEGRATION
