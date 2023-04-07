@@ -23,6 +23,10 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
 
 # Move the focused window with the same, but add Shift
 bindsym $mod+Shift+$left move left
@@ -97,7 +101,7 @@ bindsym $mod+Print exec wf-recorder -g "$(slurp)" -f ~/videos/screencast/recordi
 bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder
 
 # Clipboard:
-bindsym Mod1+v exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
+bindsym $mod+Mod1+v exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
 
 # Resizing containers:
 bindsym $mod+r mode "resize"
@@ -119,4 +123,4 @@ mode "resize" {
 }
 
 # Idle and lock configuration
-bindsym $mod+l exec swaylock -f -c 000000
+bindsym $mod+Mod1+l exec swaylock -f -c 000000

@@ -31,7 +31,8 @@
 	ab      = all-branches
 	rbc     = rebase --continue
 	rba     = rebase --abort
-	co      = checkout
+        co      = checkout
+        mc      = move-to-commit
 	cm      = commit -s
 	cmm     = commit-modefied
 	s       = status
