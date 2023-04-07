@@ -141,3 +141,10 @@ colors:
     magenta: '0xc678dd'
     cyan:    '0x56b6c2'
     white:   '0x828791'
+
+shell:
+  program: /bin/bash
+  args:
+    - -l
+    - -c
+    - "tmux attach || tmux"
