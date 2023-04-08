@@ -30,9 +30,19 @@ call plug#end()
 
 " Basic configuration {{{
 
-" file type configurations {{{
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
+set history=500
+set so=7
+set wrap
+
+" backup configuration {{{
+set nobackup
+set nowb
+set noswapfile
+" }}}
+
+" file type configurations {{{
 " Enable type file detection. Vim will be able to try to detect the type of file in use.
 filetype on
 " Enable plugins and load plugin for the detected file type.
@@ -68,13 +78,9 @@ set shiftwidth=8
 set tabstop=8
 " Use space characters instead of tabs.
 set expandtab
+set smarttab
+set ai
 " }}}
-
-" Do not save backup files.
-set nobackup
-" Do not let cursor scroll below or above N number of lines when scrolling.
-set scrolloff=10
-set wrap
 
 " search configuration {{{
 " While searching though a file incrementally highlight matching characters as you type.
@@ -96,26 +102,28 @@ set hlsearch
 nnoremap <silent>rg :Rg<CR>
 " }}}
 
-" Set the commands to save in history default number is 20.
-set history=1000
-
 " wildmenu configurations {{{
 " Enable auto completion menu after pressing TAB.
 set wildmenu
 " Make wildmenu behave like similar to Bash completion.
 set wildmode=list:longest
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 " }}}
 
 " status line configurations {{{
 set laststatus=2
-set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %b\ 0x%B\ %l,%c%V\ %P
+set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ %b\ 0x%B\ %l,%c%V\ %P
 set ruler
 set showcmd
 set showmode
 " }}}
 
+" colorscheme settings {{{
 set background=dark
 colorscheme habamax
+" }}}
 
 " c/c++ highlight {{{
 " Enable function highlighting
