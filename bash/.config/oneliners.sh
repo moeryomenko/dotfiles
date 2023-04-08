@@ -33,5 +33,5 @@ function cscope_gen {
 }
 
 function vf {
-	vim $(sk --ansi --preview "bat --color always {}" --preview-window=right:70%)
+	nvim $(sk --ansi --preview "bat --color always {}" --preview-window=right:70%)
 }

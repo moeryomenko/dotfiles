@@ -18,7 +18,6 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 
 	-- UI plugins.
-	use("sainnhe/gruvbox-material")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
