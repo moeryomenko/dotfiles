@@ -1,5 +1,6 @@
 vim.opt.background = "dark"
-vim.cmd('colorscheme habamax')
+vim.opt.termguicolors = true
+vim.cmd.colorscheme("melange")
 
 vim.opt.shell = "bash"
 

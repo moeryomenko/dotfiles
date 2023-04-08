@@ -18,6 +18,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 
 	-- UI plugins.
+	use("savq/melange-nvim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
