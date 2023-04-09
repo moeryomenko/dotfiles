@@ -10,8 +10,10 @@ function partition_size { lsblk --json | jq -c '.blockdevices[]|[.name,.size]'; 
 
 function files_type { test "$#" -gt 0 && stat --printf "%n: %F\n" "$@"; }
 
-function gwds { ydiff -s -c always -w 0; }
-function fz { sk --preview 'bat --color=always --style=numbers --line-range=:500 {}'; }
+function fz {
+        sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' \
+           --preview-window=right:70%;
+}
 
 function b64d {
 	echo "$1" | base64 -d
@@ -30,8 +32,4 @@ function cscope_gen {
 	find . -name "*.c" -o -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hh" -o -name "*.hpp" >cscope.files
 	cscope -q -R -b -i cscope.files
 	echo "The cscope database is generated"
-}
-
-function vf {
-	nvim $(sk --ansi --preview "bat --color always {}" --preview-window=right:70%)
 }

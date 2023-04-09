@@ -71,6 +71,7 @@ alias c=clear
 alias csc='cscope -b -q -k'
 alias bathelp='bat --plain --language=help'
 alias hx='helix'
+alias vf='vim $(fz)'
 
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export XKB_DEFAULT_LAYOUT=us
