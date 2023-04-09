@@ -1,6 +1,15 @@
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
-vim.cmd.colorscheme("melange")
+require('nightfox').setup({
+	options = {
+		styles = {
+			comments = "italic",
+			keywords = "bold",
+			types = "italic,bold",
+		}
+	}
+})
+vim.cmd.colorscheme("nightfox")
 
 vim.opt.shell = "bash"
 
