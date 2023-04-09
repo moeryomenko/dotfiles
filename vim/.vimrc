@@ -198,8 +198,11 @@ nnoremap gi :LspImplementation<CR>
 nnoremap pi :LspPeekImplementation<CR>
 nnoremap gr :LspReferences<CR>
 nnoremap gk :LspHover<CR>
+nnoremap ga :LspCodeAction<CR>
 nnoremap lr :LspRename<CR>
 nnoremap df :LspDocumentFormat<CR>
+nnoremap dn :LspNextDiagnostic<CR>
+nnoremap wn :LspNextWarning<CR>
 nnoremap di :LspCallHierarchyIncoming<CR>
 nnoremap do :LspCallHierarchyOutgoing<CR>
 nnoremap ls :LspStopServer<CR>
