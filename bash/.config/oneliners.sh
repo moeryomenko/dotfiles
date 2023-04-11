@@ -6,6 +6,14 @@ function find_failures {
 		sort | uniq -c | sort --numeric --reverse --key 1
 }
 
+function pm_pkg_clean {
+        sudo pacman -Rncs `pacman -Qdtq`
+}
+
+function pm_cache_clean {
+        sudo pacman -Scc
+}
+
 function partition_size { lsblk --json | jq -c '.blockdevices[]|[.name,.size]'; }
 
 function files_type { test "$#" -gt 0 && stat --printf "%n: %F\n" "$@"; }
@@ -34,7 +42,7 @@ function cscope_gen {
 	echo "The cscope database is generated"
 }
 
-function ex() {
+function ex {
 	case $1 in
 	*.tar.bz2) tar xjf $1 ;;
 	*.tar.gz) tar xzf $1 ;;
