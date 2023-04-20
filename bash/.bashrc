@@ -76,8 +76,6 @@ alias vf='vim $(fz)'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
-export NPM_CONFIG_PREFIX=$HOME/.npm-global
-export GOPATH=$(go env GOPATH)
 
 [[ -d "$HOME/.cargo" ]] && . "$HOME/.cargo/env"
 
@@ -97,10 +95,8 @@ fi
 . $HOME/.asdf/completions/asdf.bash
 
 export PATH=$PATH:$HOME/.local/share/coursier/bin
-export PATH=$PATH:$NPM_CONFIG_PREFIX/bin
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$(dirname $(rustup which --toolchain stable rust-analyzer))
 
 . <(rustup completions bash)
@@ -112,6 +108,8 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_moeryomenko)
 eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
+	# export WLR_RENDERER=vulkan
+	export RADV_VIDEO_DECODE=1
 	export GDK_BACKEND=wayland
 	export XDG_SESSION_TYPE=wayland
 	export XDG_CURRENT_DESKTOP=sway
