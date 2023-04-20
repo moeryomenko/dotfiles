@@ -79,11 +79,6 @@ export EDITOR=vim
 
 [[ -d "$HOME/.cargo" ]] && . "$HOME/.cargo/env"
 
-if [[ -d "$HOME/.sdkman" && -z "$JAVA_HOME" ]]; then
-	. "$HOME/.sdkman/bin/sdkman-init.sh"
-	sdk env >>/dev/null
-fi
-
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
 	export XDG_CONFIG_HOME=$HOME/.config
 fi
