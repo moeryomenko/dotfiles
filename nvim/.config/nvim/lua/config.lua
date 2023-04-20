@@ -1,13 +1,13 @@
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
-require('nightfox').setup({
+require("nightfox").setup({
 	options = {
 		styles = {
 			comments = "italic",
 			keywords = "bold",
 			types = "italic,bold",
-		}
-	}
+		},
+	},
 })
 vim.cmd.colorscheme("nightfox")
 
@@ -64,3 +64,16 @@ wilder.set_option(
 		right = { " ", wilder.popupmenu_scrollbar() },
 	}))
 )
+
+--#region GLSL filetype autocmd
+vim.api.nvim_create_autocmd({
+	"BufNewFile",
+	"BufRead",
+}, {
+	pattern = "*.vert,*.frag,*.comp,*.glsl",
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		vim.api.nvim_buf_set_option(buf, "filetype", "glsl")
+	end,
+})
+--#endregion
