@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git log -n 50 --pretty=format:'%h %s' --no-merges | sk | cut -c -7 | xargs -o git commit --fixup
