@@ -1,0 +1,6 @@
+font=pango:Source Code Pro 10
+background-color=#282C34
+text-color=#ABB2BF
+border-size=0
+default-timeout=1800
+border-radius=7

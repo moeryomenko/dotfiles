@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+declare filter
+if [ -n $@ ] && [ -f $@ ]; then
+	filter="-- $@"
+fi
+
+git log \
+	--no-merges --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ |
+	fzf \
+		--ansi --no-sort --reverse --tiebreak=index \
+		--preview "echo \"\
+				   {}
+				   \" | \
+				   grep -o '[a-f0-9]\{7\}' | head -1 |
+				   xargs -I % sh -c 'git show --color=always % | less -FX' @- " \
+		--bind "j:down,k:up,alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+              echo \"\
+			  {}
+			  \" | \
+			  grep -o '[a-f0-9]\{7\}' | head -1 |
+              xargs -I % sh -c 'git show --color=always % | less -XR' @- " \
+		--preview-window=right:70%

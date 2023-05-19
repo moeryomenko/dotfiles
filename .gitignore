@@ -1,0 +1,7 @@
+nvim/.config/nvim/plugin/
+fish/.config/fish/*
+!fish/.config/fish/config.fish
+nvim/.config/nvim/db_ui/
+vim/.vim/autoload/
+vim/.vim/plugged/
+*.netrwhist

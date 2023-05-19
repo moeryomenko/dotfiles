@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# force push current branch to origin.
+git push -f --set-upstream origin "$(git rev-parse --abbrev-ref HEAD)"
