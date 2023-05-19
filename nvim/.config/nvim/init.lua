@@ -1,0 +1,7 @@
+require("packages")
+require("tools")
+require("ts")
+require("config")
+require("mapping")
+require("bufman")
+require("lsp")
