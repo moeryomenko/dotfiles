@@ -7,7 +7,7 @@
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com
-	# signingkey = BDEFC42C5E88B8C5
+	signingkey = BDEFC42C5E88B8C5
 [alias]
 	clog    = log --no-merges --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog    = log-graph
@@ -53,14 +53,14 @@
 	smtpencryption = tls
 [init]
 	defaultBranch = main
-# [url "git@github.com:"]
-# 	insteadOf = https://github.com/
-# [url "git@gitlab.freedesktop.org:"]
-# 	insteadOf = https://gitlab.freedesktop.org/
-# [url "git@gitlab.gnome.org:"]
-# 	insteadOf = https://gitlab.gnome.org/
-# [url "git@gitlab.kitware.com:"]
-# 	insteadOf= https://gitlab.kitware.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[url "git@gitlab.freedesktop.org:"]
+	insteadOf = https://gitlab.freedesktop.org/
+[url "git@gitlab.gnome.org:"]
+	insteadOf = https://gitlab.gnome.org/
+[url "git@gitlab.kitware.com:"]
+	insteadOf= https://gitlab.kitware.com/
 [grep]
 	lineNumber = true
 [rerere]
