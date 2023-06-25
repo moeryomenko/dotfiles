@@ -11,7 +11,7 @@ require("nightfox").setup({
 })
 vim.cmd.colorscheme("nightfox")
 
-vim.opt.shell = "bash"
+vim.opt.shell = "fish"
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -47,8 +47,11 @@ vim.g.himalaya_folder_picker = "telescope"
 vim.g.himalaya_folder_picker_telescope_preview = 1
 --#endregion
 
-require("feline").setup({})
-require("bufferline").setup({})
+require("staline").setup({
+	defaults = {
+		line_column = "[%l/%L] :%c %p%% ",
+	},
+})
 
 local wilder = require("wilder")
 wilder.setup({ modes = { ":", "/", "?" } })
