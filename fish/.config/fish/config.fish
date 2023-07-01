@@ -7,7 +7,10 @@ end
 if not test -f ~/.config/fish/fish_plugins
   curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
   fisher install IlanCosman/tide@v5
+  fisher install PatrickF1/fzf.fish
 end
+
+fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
 
 if not test -d $HOME/.asdf
   git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.3
@@ -27,12 +30,6 @@ fish_add_path (rustup show home)/bin
 set -U tide_git_icon 󰊢
 set -U tide_pwd_icon 󰉋
 set -U tide_pwd_icon_home 󱂵
-
-# wayland env vars.
-set -U GDK_BACKEND wayland
-set -U XDG_SESSION_TYPE wayland
-set -U XDG_CURRENT_DESKTOP sway
-set -U MOZ_ENABLE_WAYLAND 1
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
@@ -57,6 +54,11 @@ end
 function fz
   sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%
 end
+alias vf='nvim (fz)'
+
+function compress
+	XZ_OPT=-9 tar cJF $argv.tar.xz $argv
+end
 
 if test (tty) = /dev/tty1
 	export RADV_VIDEO_DECODE=1
@@ -67,6 +69,3 @@ if test (tty) = /dev/tty1
 	export MOZ_ENABLE_WAYLAND=1
 	exec sway
 end
-
-
-alias vf='nvim (fz)'
