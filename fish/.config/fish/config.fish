@@ -13,7 +13,10 @@ source $HOME/.asdf/completions/asdf.fish
 if not test -d $HOME/.sdkman
 		curl -s "https://get.sdkman.io" | bash
 		fisher install reitzig/sdkman-for-fish@v1.4.0
+		fisher install PatrickF1/fzf.fish
 end
+
+fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
 
 if test -d $HOME/.sdkman
         export SDKMAN_DIR="$HOME/.sdkman"
