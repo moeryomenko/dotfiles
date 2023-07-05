@@ -1,9 +1,19 @@
 [core]
 	editor = nvim
 	excludesfile = ~/.config/gitignore-global
-	pager = less -FX
+	pager = delta
 [add.interactive]
 	useBuiltin = false
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	light = false
+	side-by-side = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
 [user]
 	name = Maxim Eryomenko
 	email = moeryomenko@gmail.com
