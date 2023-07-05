@@ -25,9 +25,11 @@ end
 
 set -U EDITOR nvim
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -U GOPATH (go env GOPATH)
 
 fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
+fish_add_path (go env GOPATH)/bin
 # fish_add_path (rustup show home)/bin
 
 set -U tide_git_icon 󰊢
