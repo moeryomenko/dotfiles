@@ -68,7 +68,7 @@ wilder.set_option(
 	}))
 )
 
---#region GLSL filetype autocmd
+--#region filetypes autocmd
 vim.api.nvim_create_autocmd({
 	"BufNewFile",
 	"BufRead",
@@ -77,6 +77,17 @@ vim.api.nvim_create_autocmd({
 	callback = function()
 		local buf = vim.api.nvim_get_current_buf()
 		vim.api.nvim_buf_set_option(buf, "filetype", "glsl")
+	end,
+})
+
+vim.api.nvim_create_autocmd({
+	"BufNewFile",
+	"BufRead",
+}, {
+	pattern = "*.qml",
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		vim.api.nvim_buf_set_option(buf, "filetype", "qmljs")
 	end,
 })
 --#endregion
