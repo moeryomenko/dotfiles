@@ -85,9 +85,6 @@ require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lsp = require("mason-lspconfig")
 
-local nvim_lsp = require("lspconfig")
-local mason_lsp = require("mason-lspconfig")
-
 local fn = vim.fn
 local mason_registry = require("mason-registry")
 local project_name = fn.fnamemodify(fn.getcwd(), ":p:h:t")
@@ -138,6 +135,8 @@ local java_config = {
 	},
 	capabilities = capabilities,
 }
+
+nvim_lsp.qmlls.setup({ capabilities = capabilities })
 
 mason_lsp.setup_handlers({
 	function(server_name)
