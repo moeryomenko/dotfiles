@@ -28,6 +28,7 @@ local sources = {
 	b.completion.spell,
 	-- formatting
 	b.formatting.clang_format,
+	b.formatting.gofumpt,
 	b.formatting.gersemi,
 	b.formatting.shfmt,
 	b.formatting.stylua,
