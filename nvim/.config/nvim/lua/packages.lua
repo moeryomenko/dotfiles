@@ -51,6 +51,7 @@ packer.startup(function(use)
 		"nvim-telescope/telescope-ui-select.nvim",
 		"LukasPietzschmann/telescope-tabs",
 		"aaronhallaert/advanced-git-search.nvim",
+		"crusj/bookmarks.nvim",
 	})
 
 	-- typing improvements.

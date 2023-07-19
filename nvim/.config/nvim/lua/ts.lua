@@ -45,7 +45,9 @@ telescope.setup({
 })
 
 require("telescope-tabs").setup()
+require("bookmarks").setup()
 telescope.load_extension("ui-select")
 telescope.load_extension("refactoring")
 telescope.load_extension("advanced_git_search")
 telescope.load_extension("lazygit")
+telescope.load_extension("bookmarks")
