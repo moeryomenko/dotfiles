@@ -30,7 +30,7 @@ set -U GOPATH (go env GOPATH)
 fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path (go env GOPATH)/bin
-# fish_add_path (rustup show home)/bin
+fish_add_path $HOME/.cargo/bin
 
 set -U tide_git_icon 󰊢
 set -U tide_pwd_icon 󰉋
@@ -38,7 +38,10 @@ set -U tide_pwd_icon_home 󱂵
 
 alias ll='exa -l -h --git --classify --icons'
 alias la='ll -a'
+alias tree='ll --long --tree'
 alias g='git'
+alias ur='ls | xargs -P10 -I{} git -C {} pull'
+alias hx='helix'
 
 if set -q KITTY_INSTALLATION_DIR
     set --global KITTY_SHELL_INTEGRATION enabled
