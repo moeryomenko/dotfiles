@@ -137,6 +137,7 @@ packer.startup(function(use)
 	})
 	-- Debugger packages.
 	use("mfussenegger/nvim-dap")
+	use("leoluz/nvim-dap-go")
 	use("Shatur/neovim-tasks")
 	use({
 		"rcarriga/nvim-dap-ui",

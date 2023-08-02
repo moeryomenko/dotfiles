@@ -1,4 +1,6 @@
 local dap = require("dap")
+require("dap-go").setup()
+
 dap.adapters.lldb = {
 	type = "executable",
 	command = "/usr/bin/lldb-vscode", -- adjust as needed, must be absolute path
