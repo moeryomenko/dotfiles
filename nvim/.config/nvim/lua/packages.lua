@@ -152,6 +152,20 @@ packer.startup(function(use)
 	})
 	use("rcarriga/cmp-dap")
 	use("LiadOz/nvim-dap-repl-highlights")
+
+	-- databases connector.
+	use({
+		"tpope/vim-dadbod",
+		opt = true,
+		requires = {
+			"kristijanhusak/vim-dadbod-ui",
+			"kristijanhusak/vim-dadbod-completion",
+		},
+		config = function()
+			require("db").setup()
+		end,
+		cmd = { "DBUIToggle", "DBUI", "DBUIAddConnection", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
+	})
 end)
 
 if packer_bootstrap then
