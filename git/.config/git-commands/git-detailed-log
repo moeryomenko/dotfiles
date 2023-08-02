@@ -7,7 +7,7 @@ fi
 
 git log \
 	--no-merges --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ |
-	fzf \
+	sk \
 		--ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo \"\
 				   {}
