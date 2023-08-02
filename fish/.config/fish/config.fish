@@ -10,6 +10,8 @@ end
 source $HOME/.asdf/asdf.fish
 source $HOME/.asdf/completions/asdf.fish
 
+source (pack completion --shell fish)
+
 if not test -d $HOME/.sdkman
 		curl -s "https://get.sdkman.io" | bash
 		fisher install reitzig/sdkman-for-fish@v1.4.0
