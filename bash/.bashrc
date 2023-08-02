@@ -65,11 +65,12 @@ alias gpo='g po'
 alias gpfo='g pfo'
 alias ur='ls | xargs -P10 -I{} git -C {} pull'
 alias cor='ls | xargs -P10 -I{} git -C {} co main'
-alias ll='ls -l -h --color'
+alias ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
 alias la='ll -a'
 alias c=clear
 alias csc='cscope -b -q -k'
 alias vf='nvim $(fz)'
+alias hx='helix'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
@@ -83,6 +84,7 @@ if [[ ! -d "$HOME/.asdf" ]]; then
 fi
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
+. $HOME/.cargo/env
 
 if [[ -d "$HOME/.sdkman" ]]; then
         export SDKMAN_DIR="$HOME/.sdkman"
@@ -108,4 +110,3 @@ if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	export MOZ_ENABLE_WAYLAND=1
 	exec sway
 fi
-. "$HOME/.cargo/env"
