@@ -22,6 +22,8 @@ map("n", "<leader>s", ":SymbolsOutline<CR>")
 map("v", "<leader>rr", ":lua require('telescope').extensions.refactoring.refactors()<CR>")
 --#endregion
 
+map("n", "<A-b>", "Telescope bookmarks<CR>", { silent = true })
+
 -- close other buffers, except for the current.
 map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 map("n", "<space>t", ":Lspsaga open_floaterm<CR>", { silent = true })
