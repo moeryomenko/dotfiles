@@ -7,15 +7,3 @@ line-number = "relative"
 insert = "bar"
 normal = "block"
 select = "block"
-
-[editor.whitespace.render]
-space = "all"
-tab = "all"
-newline = "none"
-
-[editor.whitespace.characters]
-space = "·"
-nbsp = "⍽"
-tab = "→"
-newline = "⏎"
-tabpad = "·"
