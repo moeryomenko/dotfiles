@@ -55,4 +55,8 @@ function fz
   sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%
 end
 
+function check_ping
+	ping -c 1 -W 3 google.com
+end
+
 alias vf='nvim (fz)'
