@@ -16,8 +16,8 @@
 	colorMoved = default
 [user]
 	name = Maxim Eryomenko
-	email = moeryomenko@gmail.com
-	signingkey = BDEFC42C5E88B8C5
+	email = maxim_eryomenko@rambler.ru
+	signingkey = 12A5CF1067A4958B
 [alias]
 	clog    = log --no-merges --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog    = log-graph
@@ -55,7 +55,7 @@
 	rnb     = rename-branch
 	rcb     = rename-current-branch
 [commit]
-	# gpgsign  = true
+	gpgsign  = true
 	template = ~/.config/gitmessage
 [sendemail]
 	smtpserver = smtp.gmail.com
@@ -95,7 +95,7 @@
 	autoCorrect = prompt
 [committer]
 	name = Maxim Eryomenko
-	email = moeryomenko@gmail.com
+	email = maxim_eryomenko@rambler.ru
 [advice]
 	skippedCherryPicks = false
 [tag]

@@ -11,7 +11,7 @@ require("nightfox").setup({
 })
 vim.cmd.colorscheme("nightfox")
 
-vim.opt.shell = "fish"
+vim.opt.shell = "bash"
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
