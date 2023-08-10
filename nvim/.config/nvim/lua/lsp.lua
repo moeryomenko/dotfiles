@@ -87,72 +87,11 @@ require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lsp = require("mason-lspconfig")
 
-local fn = vim.fn
-local mason_registry = require("mason-registry")
-local project_name = fn.fnamemodify(fn.getcwd(), ":p:h:t")
-local jdtls_dir = mason_registry.get_package("jdtls"):get_install_path()
-local java_debug = mason_registry.get_package("java-debug-adapter"):get_install_path()
-local java_test = mason_registry.get_package("java-test"):get_install_path()
-local workspace_dir = jdtls_dir .. "/workspace/" .. project_name
-local java_bundles = {
-	fn.glob(java_debug .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
-}
-
-vim.list_extend(java_bundles, vim.split(fn.glob(java_test .. "/extension/server/*.jar", true), "\n"))
-
-local java_config = {
-	cmd = {
-		"java",
-		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
-		"-Dosgi.bundles.defaultStartLevel=4",
-		"-Declipse.product=org.eclipse.jdt.ls.core.product",
-		"-Dlog.protocol=true",
-		"-Dlog.level=ALL",
-		"-Xms1g",
-		"-jar",
-		jdtls_dir .. "/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar",
-		"-configuration",
-		jdtls_dir .. "/config_mac",
-		"-data",
-		workspace_dir,
-		"-javaagent",
-		jdtls_dir .. "/lombok.jar",
-	},
-	settings = {
-		java = {
-			signatureHelp = { enabled = true },
-			configuration = {
-				runtimes = {
-					{
-						name = "JavaSE-17",
-						path = "/home/moeryomenko/.sdkman/candidates/java/17.0.7-librca",
-					},
-				},
-			},
-		},
-	},
-	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
-	init_options = {
-		bundles = java_bundles,
-	},
-	capabilities = capabilities,
-}
-
 nvim_lsp.qmlls.setup({ capabilities = capabilities })
 
 mason_lsp.setup_handlers({
 	function(server_name)
 		nvim_lsp[server_name].setup({ capabilities = capabilities })
-	end,
-	["jdtls"] = function()
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = "java",
-			callback = function()
-				local jdtls = require("jdtls")
-				jdtls.start_or_attach(java_config)
-				jdtls.setup_dap({ hotcodereplace = "auto" })
-			end,
-		})
 	end,
 	["clangd"] = function()
 		require("clangd_extensions").setup({

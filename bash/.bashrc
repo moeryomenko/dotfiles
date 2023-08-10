@@ -84,13 +84,6 @@ if [[ ! -d "$HOME/.asdf" ]]; then
 fi
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
-. $HOME/.cargo/env
-
-if [[ -d "$HOME/.sdkman" ]]; then
-        export SDKMAN_DIR="$HOME/.sdkman"
-        . $HOME/.sdkman/bin/sdkman-init.sh > /dev/null
-        export JAVA_HOME=$(sdk home java current)
-fi
 
 export PATH=$PATH:$HOME/.config/git-commands
 export PATH=$PATH:$HOME/.local/bin
@@ -98,7 +91,7 @@ export PATH=$PATH:$HOME/.local/bin
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
-eval $(keychain --eval --agents gpg --quiet --gpg2 BDEFC42C5E88B8C5)
+eval $(keychain --eval --agents gpg --quiet --gpg2 12A5CF1067A4958B)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	# export WLR_RENDERER=vulkan
