@@ -1,5 +1,4 @@
 local dap = require("dap")
-require("dap-go").setup()
 
 dap.adapters.lldb = {
 	type = "executable",
@@ -72,9 +71,14 @@ require("nvim-treesitter.configs").setup({
 		"yaml",
 	},
 	sync_install = true,
+	auto_install = true,
+	ignore_install = {},
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
+	},
+	indent = {
+		enable = true,
 	},
 })
 
@@ -87,63 +91,57 @@ require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lsp = require("mason-lspconfig")
 
-nvim_lsp.qmlls.setup({ capabilities = capabilities })
+-- nvim_lsp.qmlls.setup({ capabilities = capabilities })
 
 mason_lsp.setup_handlers({
 	function(server_name)
 		nvim_lsp[server_name].setup({ capabilities = capabilities })
 	end,
-	["clangd"] = function()
-		require("clangd_extensions").setup({
-			server = {
-				capabilities = capabilities,
-			},
-			extensions = {
-				autoSetHints = true,
-				inlay_hints = {
-					only_current_line = true,
-					only_current_line_autocmd = "CursorHold",
-					show_parameter_hints = true,
-					parameter_hints_prefix = "<- ",
-					other_hints_prefix = "=> ",
-					max_len_align = false,
-					max_len_align_padding = 1,
-					right_align = false,
-					right_align_padding = 7,
-					highlight = "Comment",
-					priority = 100,
-				},
-				ast = {
-					role_icons = {
-						type = "",
-						declaration = "",
-						expression = "",
-						specifier = "",
-						statement = "",
-						["template argument"] = "",
-					},
-					kind_icons = {
-						Compound = "",
-						Recovery = "",
-						TranslationUnit = "",
-						PackExpansion = "",
-						TemplateTypeParm = "",
-						TemplateTemplateParm = "",
-						TemplateParamObject = "",
-					},
-					highlights = {
-						detail = "Comment",
-					},
-					memory_usage = {
-						border = "none",
-					},
-					symbol_info = {
-						border = "none",
-					},
-				},
-			},
-		})
-	end,
+})
+
+require("clangd_extensions").setup({
+	autoSetHints = true,
+	inlay_hints = {
+		only_current_line = true,
+		only_current_line_autocmd = "CursorHold",
+		show_parameter_hints = true,
+		parameter_hints_prefix = "<- ",
+		other_hints_prefix = "=> ",
+		max_len_align = false,
+		max_len_align_padding = 1,
+		right_align = false,
+		right_align_padding = 7,
+		highlight = "Comment",
+		priority = 100,
+	},
+	ast = {
+		role_icons = {
+			type = "",
+			declaration = "",
+			expression = "",
+			specifier = "",
+			statement = "",
+			["template argument"] = "",
+		},
+		kind_icons = {
+			Compound = "",
+			Recovery = "",
+			TranslationUnit = "",
+			PackExpansion = "",
+			TemplateTypeParm = "",
+			TemplateTemplateParm = "",
+			TemplateParamObject = "",
+		},
+		highlights = {
+			detail = "Comment",
+		},
+		memory_usage = {
+			border = "none",
+		},
+		symbol_info = {
+			border = "none",
+		},
+	},
 })
 
 -- luasnip setup
@@ -218,6 +216,7 @@ cmp.setup({
 			cmp.config.compare.offset,
 			cmp.config.compare.exact,
 			cmp.config.compare.recently_used,
+			require("clangd_extensions.cmp_scores"),
 			cmp.config.compare.kind,
 			cmp.config.compare.sort_text,
 			cmp.config.compare.length,
