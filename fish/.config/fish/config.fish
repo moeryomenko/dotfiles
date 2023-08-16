@@ -1,7 +1,7 @@
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
-	keychain --eval --agents gpg --quiet --gpg2 -Q BDEFC42C5E88B8C5 | source
+	keychain --eval --agents gpg --quiet --gpg2 -Q 12A5CF1067A4958B | source
 end
 
 if not test -d $HOME/.asdf
@@ -10,20 +10,7 @@ end
 source $HOME/.asdf/asdf.fish
 source $HOME/.asdf/completions/asdf.fish
 
-source (pack completion --shell fish)
-
-if not test -d $HOME/.sdkman
-		curl -s "https://get.sdkman.io" | bash
-		fisher install reitzig/sdkman-for-fish@v1.4.0
-		fisher install PatrickF1/fzf.fish
-end
-
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
-
-if test -d $HOME/.sdkman
-        export SDKMAN_DIR="$HOME/.sdkman"
-        export JAVA_HOME=$(sdk home java current)
-end
 
 set -U EDITOR nvim
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
