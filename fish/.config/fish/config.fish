@@ -46,4 +46,9 @@ function check_ping
 	ping -c 1 -W 3 google.com
 end
 
+function cscope_gen
+	find . -regex '.*\.\(c\|h\)' > cscope.files
+	cscope -b -q -k
+end
+
 alias vf='nvim (fz)'
