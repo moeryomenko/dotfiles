@@ -5,6 +5,7 @@
 compile_commands.json
 neovim.json
 build/
+_build/
 .clangd/
 .cache/
 .gdb_history
