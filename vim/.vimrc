@@ -14,6 +14,7 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'cdelledonne/vim-cmake'
 Plug 'majutsushi/tagbar'
+Plug 'nordtheme/vim'
 
 call plug#end()
 " }}}
@@ -112,7 +113,15 @@ set showmode
 
 " colorscheme settings {{{
 set background=dark
-colorscheme habamax
+let g:nord_cursor_line_number_background = 1
+let g:nord_uniform_status_lines = 1
+let g:nord_bold_vertical_split_line = 1
+let g:nord_uniform_diff_background = 1
+let g:nord_bold = 0
+let g:nord_italic = 0
+let g:nord_italic_comments = 1
+let g:nord_underline = 1
+colorscheme nord
 " }}}
 
 " c/c++ highlight {{{
