@@ -19,6 +19,7 @@ packer.startup(function(use)
 
 	-- UI plugins.
 	use("EdenEast/nightfox.nvim")
+	use("nordtheme/vim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {

@@ -12,6 +12,8 @@ source $HOME/.asdf/completions/asdf.fish
 
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
 
+direnv hook fish | source
+
 set -U EDITOR nvim
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -U GOPATH (go env GOPATH)
@@ -25,11 +27,17 @@ set -U tide_git_icon 󰊢
 set -U tide_pwd_icon 󰉋
 set -U tide_pwd_icon_home 󱂵
 
-alias ll='exa -l -h --git --classify --icons'
-alias la='ll -a'
-alias tree='ll --long --tree'
-alias g='git'
-alias ur='ls | xargs -P10 -I{} git -C {} pull'
+abbr --add ll         "exa -l -h --git --classify --icons"
+abbr --add la         "exa -l -h --git --classify --icons -a"
+abbr --add tree       "exa -l -h --git --classify --icons --long --tree"
+abbr --add g          "git"
+abbr --add glog       "git dlog"
+abbr --add ur         "ls | xargs -P10 -I{} git -C {} pull"
+abbr --add nv         "nvim"
+abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
+abbr --add check_ping "ping -c 1 -W 3 google.com"
+abbr --add vf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+
 alias hx='helix'
 
 if set -q KITTY_INSTALLATION_DIR
@@ -38,17 +46,7 @@ if set -q KITTY_INSTALLATION_DIR
     set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
 end
 
-function fz
-  sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%
-end
-
-function check_ping
-	ping -c 1 -W 3 google.com
-end
-
 function cscope_gen
 	find . -regex '.*\.\(c\|h\)' > cscope.files
 	cscope -b -q -k
 end
-
-alias vf='nvim (fz)'

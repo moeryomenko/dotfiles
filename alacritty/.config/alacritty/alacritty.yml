@@ -6,7 +6,7 @@ shell:
   program: /usr/bin/fish
   args:
     - -l
-    - -c 
+    - -c
     - "tmux attach || tmux"
 
 # Windows
@@ -21,7 +21,7 @@ window:
   decorations: full
   startup_mode: Windowed
   dynamic_title: true
-  opacity: 0.85
+  opacity: 0.98
 
 # Scrolling
 scrolling:
