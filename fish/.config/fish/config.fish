@@ -49,6 +49,6 @@ if set -q KITTY_INSTALLATION_DIR
 end
 
 function cscope_gen
-	find . -regex '.*\.\(c\|h\)' > cscope.files
+	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\)' > cscope.files
 	cscope -b -q -k
 end
