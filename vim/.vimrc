@@ -162,6 +162,8 @@ nmap <leader>t :TagbarToggle<CR>
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
 " buffers navigation {{{
 nmap <silent><leader>bn :bnext<CR>
 nmap <silent><leader>bp :bprevious<CR>
