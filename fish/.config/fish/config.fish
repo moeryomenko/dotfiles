@@ -14,8 +14,6 @@ fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=
 
 direnv hook fish | source
 
-starship init fish | source
-
 set -U EDITOR nvim
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -U GOPATH (go env GOPATH)
