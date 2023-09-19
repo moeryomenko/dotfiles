@@ -16,6 +16,13 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'majutsushi/tagbar'
 Plug 'sainnhe/everforest'
 
+" lsp plugins {{{
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"}}}
+
 call plug#end()
 " }}}
 
@@ -184,6 +191,21 @@ nmap <silent><A-j> <c-w>J
 nmap <silent><A-k> <c-w>K
 " }}}
 
+" lsp configuration {{{
+nnoremap gd :LspDefinition<CR>
+nnoremap ld :LspDeclaration<CR>
+nnoremap pd :LspPeekDefinition<CR>
+nnoremap gi :LspImplementation<CR>
+nnoremap pi :LspPeekImplementation<CR>
+nnoremap gr :LspReferences<CR>
+nnoremap gk :LspHover<CR>
+nnoremap lr :LspRename<CR>
+nnoremap df :LspDocumentFormat<CR>
+nnoremap di :LspCallHierarchyIncoming<CR>
+nnoremap do :LspCallHierarchyOutgoing<CR>
+nnoremap ls :LspStopServer<CR>
+" }}}
+
 " }}}
 
 " file explorer configuraitons {{{
@@ -217,4 +239,18 @@ nmap <silent> <leader>w :call ToggleNetrw()<CR>
 
 nnoremap <silent>gf :GFiles<CR>
 
+" }}}
+
+" cmake configuration {{{
+let g:cmake_build_dir_location = 'build'
+let g:cmake_generate_options = [
+                        \ '-GNinja',
+                        \ '-DEXE_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-DSHARED_LINKER_FLAGS_INIT="-fuse-ld=mold"',
+                        \ '-DCMAKE_C_COMPILER=clang',
+                        \ '-DCMAKE_CXX_COMPILER=clang++',
+                        \ '-DC_COMPILER_LAUNCHER="/usr/bin/ccache"',
+                        \ '-DCXX_COMPILER_LAUNCHER="/usr/bin/ccache"']
+let g:cmake_link_compile_commands = 1
+let g:cmake_statusline = 1
 " }}}
