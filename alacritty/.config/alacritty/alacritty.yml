@@ -1,6 +1,6 @@
 # Alacritty Configuration
 env:
-  TERM: xterm-256color
+  TERM: tmux-256color
 
 shell:
   program: /usr/bin/fish
