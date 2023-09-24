@@ -1,3 +1,5 @@
+set -U TERM tmux-256color
+
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
