@@ -15,13 +15,8 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'cdelledonne/vim-cmake'
 Plug 'majutsushi/tagbar'
 Plug 'sainnhe/everforest'
-
-" lsp plugins {{{
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-"}}}
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 " }}}
@@ -33,6 +28,9 @@ set nocompatible
 set history=500
 set so=7
 set wrap
+
+let g:airline#extensions#tabline#enabled = 1
+
 
 " backup configuration {{{
 set nobackup
@@ -186,21 +184,6 @@ nmap <silent><A-l> <c-w>L
 nmap <silent><A-h> <c-w>H
 nmap <silent><A-j> <c-w>J
 nmap <silent><A-k> <c-w>K
-" }}}
-
-" lsp configuration {{{
-nnoremap gd :LspDefinition<CR>
-nnoremap ld :LspDeclaration<CR>
-nnoremap pd :LspPeekDefinition<CR>
-nnoremap gi :LspImplementation<CR>
-nnoremap pi :LspPeekImplementation<CR>
-nnoremap gr :LspReferences<CR>
-nnoremap gk :LspHover<CR>
-nnoremap lr :LspRename<CR>
-nnoremap df :LspDocumentFormat<CR>
-nnoremap di :LspCallHierarchyIncoming<CR>
-nnoremap do :LspCallHierarchyOutgoing<CR>
-nnoremap ls :LspStopServer<CR>
 " }}}
 
 " }}}
