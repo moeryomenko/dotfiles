@@ -27,6 +27,7 @@ local sources = {
 	b.completion.luasnip,
 	b.completion.spell,
 	-- formatting
+	b.formatting.gofumpt,
 	b.formatting.gersemi,
 	b.formatting.shfmt,
 	b.formatting.stylua,
