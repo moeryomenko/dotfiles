@@ -110,15 +110,12 @@ set wildignore=*.o,*~,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 " }}}
 
-" status line configurations {{{
-set laststatus=2
-set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ %b\ 0x%B\ %l,%c%V\ %P
-set ruler
-set showcmd
-set showmode
-" }}}
-
 " colorscheme settings {{{
+if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+set termguicolors
 set background=dark
 colorscheme everforest
 " }}}
