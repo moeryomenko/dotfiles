@@ -1,5 +1,3 @@
-set -U TERM tmux-256color
-
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
@@ -29,6 +27,10 @@ set -U tide_git_icon 󰊢
 set -U tide_pwd_icon 󰉋
 set -U tide_pwd_icon_home 󱂵
 
+# Flatpak settings
+set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
+set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+
 abbr --add ll         "exa -l -h --git --classify --icons"
 abbr --add la         "exa -l -h --git --classify --icons -a"
 abbr --add tree       "exa -l -h --git --classify --icons --long --tree"
@@ -51,4 +53,18 @@ end
 function cscope_gen
 	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\)' > cscope.files
 	cscope -b -q -k
+end
+
+function compress
+	XZ_OPT=-9 tar cJF $argv.tar.xz $argv
+end
+
+if test (tty) = /dev/tty1
+	export RADV_VIDEO_DECODE=1
+	export SDL_VIDEODRIVER=wayland
+	export GDK_BACKEND=wayland
+	export XDG_SESSION_TYPE=wayland
+	export XDG_CURRENT_DESKTOP=sway
+	export MOZ_ENABLE_WAYLAND=1
+	exec sway
 end
