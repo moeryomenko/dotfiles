@@ -1,4 +1,5 @@
 local dap = require("dap")
+require("dap-go").setup()
 
 dap.adapters.lldb = {
 	type = "executable",
