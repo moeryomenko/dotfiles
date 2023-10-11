@@ -40,7 +40,7 @@ abbr --add ur         "ls | xargs -P10 -I{} git -C {} pull"
 abbr --add nv         "nvim"
 abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
 abbr --add check_ping "ping -c 1 -W 3 google.com"
-abbr --add vf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 alias hx='helix'
 
