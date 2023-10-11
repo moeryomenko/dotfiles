@@ -21,7 +21,7 @@ window:
   decorations: None
   startup_mode: Windowed
   dynamic_title: true
-  opacity: 1
+  opacity: 0.9
 
 # Scrolling
 scrolling:
