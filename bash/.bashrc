@@ -26,6 +26,12 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
 	ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
+if [ ! -f $HOME/.config/abbrev-alias.plugin.bash ]; then
+        curl -fLo $HOME/.config/abbrev-alias.plugin.bash \
+                https://raw.githubusercontent.com/momo-lab/bash-abbrev-alias/master/abbrev-alias.plugin.bash
+fi
+source $HOME/.config/abbrev-alias.plugin.bash
+
 source $HOME/.config/bash-prompt
 source $HOME/.config/oneliners.sh
 
@@ -51,26 +57,27 @@ bind "set menu-complete-display-prefix on"
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
-alias g=git
-alias gco='g co'
-alias glog='g glog'
-alias ga='g a'
-alias grb='g rb'
-alias grbc='g rbc'
-alias gcm='g cm'
-alias gcmm='g cmm'
-alias grc='g rc'
-alias gcp='g cp'
-alias gpo='g po'
-alias gpfo='g pfo'
-alias ur='ls | xargs -P10 -I{} git -C {} pull'
-alias cor='ls | xargs -P10 -I{} git -C {} co main'
-alias ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
-alias la='ll -a'
-alias c=clear
-alias csc='cscope -b -q -k'
-alias vf='nvim $(fz)'
-alias hx='helix'
+abbrev-alias -g g='git'
+abbrev-alias -g gco='git co'
+abbrev-alias -g glog='git dlog'
+abbrev-alias -g ga='git a'
+abbrev-alias -g grb='git rb'
+abbrev-alias -g grbc='git rbc'
+abbrev-alias -g gcm='git cm'
+abbrev-alias -g gcmm='git cmm'
+abbrev-alias -g grc='git rc'
+abbrev-alias -g gcp='git cp'
+abbrev-alias -g gpo='git po'
+abbrev-alias -g gpfo='git pfo'
+abbrev-alias -g ur='ls | xargs -P10 -I{} git -C {} pull'
+abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
+abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
+abbrev-alias -g la='exa -l -h --git --classify --icons -a'
+abbrev-alias -g tree='exa -l -h --git --classify --icons --long --tree'
+abbrev-alias -g la='ll -a'
+abbrev-alias -g c=clear
+abbrev-alias -g vf='vim $(fz)'
+abbrev-alias -g hx='helix'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
