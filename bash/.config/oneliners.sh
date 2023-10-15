@@ -37,8 +37,8 @@ function check_ping { ping -c 1 -W 3 google.com; }
 function rand_pass { cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 32 | head -n 1; }
 
 function cscope_gen {
-	find . -name "*.c" -o -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hh" -o -name "*.hpp" >cscope.files
-	cscope -q -R -b -i cscope.files
+	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\)' > cscope.files
+	cscope -b -q -k
 	echo "The cscope database is generated"
 }
 
