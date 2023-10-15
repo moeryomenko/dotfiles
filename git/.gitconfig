@@ -28,7 +28,7 @@
 	rtg     = remote get-url
 	cleanup = gc --prune=now --aggressive
 	h       = log --decorate --all --oneline --graph
-	a       = add
+	a       = add -p
 	c       = clone
 	cr      = clone --recursive
 	d       = diff
