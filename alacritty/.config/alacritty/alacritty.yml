@@ -3,7 +3,7 @@ env:
   TERM: tmux-256color
 
 shell:
-  program: /usr/bin/fish
+  program: /usr/bin/bash
   args:
     - -l
     - -c
