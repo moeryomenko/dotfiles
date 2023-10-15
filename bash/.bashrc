@@ -101,7 +101,7 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
 eval $(keychain --eval --agents gpg --quiet --gpg2 12A5CF1067A4958B)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-	# export WLR_RENDERER=vulkan
+	export WLR_RENDERER=vulkan
 	export RADV_VIDEO_DECODE=1
 	export SDL_VIDEODRIVER=wayland
 	export GDK_BACKEND=wayland
