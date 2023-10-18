@@ -18,6 +18,8 @@ Plug 'sainnhe/everforest'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'tikhomirov/vim-glsl'
+
 call plug#end()
 " }}}
 
@@ -125,6 +127,10 @@ let g:cpp_function_highlight = 1
 let g:cpp_attributes_highlight = 1
 " Highlight struct/class member variables (affects both C and C++ files)
 let g:cpp_member_highlight = 1
+" }}}
+
+" glsl highlight {{{
+autocmd! BufNewFile,BufRead *.vs,*.fs,*.tess,*.tesc,*.comp,*.vert,*.frag,*.glsl,*.mesh set ft=glsl
 " }}}
 
 " trailing space configurations {{{
