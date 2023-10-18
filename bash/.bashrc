@@ -74,7 +74,6 @@ abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
 abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
 abbrev-alias -g la='exa -l -h --git --classify --icons -a'
 abbrev-alias -g tree='exa -l -h --git --classify --icons --long --tree'
-abbrev-alias -g la='ll -a'
 abbrev-alias -g c=clear
 abbrev-alias -g vf='vim $(fz)'
 abbrev-alias -g hx='helix'
