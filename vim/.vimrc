@@ -176,6 +176,7 @@ nmap <silent> <leader>i :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>d :cs find g <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>r :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
+nmap <silent> <leader>c :cs find t class <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
