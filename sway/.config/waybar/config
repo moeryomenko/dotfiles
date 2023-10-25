@@ -9,11 +9,15 @@
     "network",
     "battery",
     "custom/date",
+    "sway/language",
     "clock",
     "custom/power"
   ],
   "sway/workspaces": {
-	  "format": "{icon}",
+    "format": "{icon}"
+  },
+  "sway/language": {
+    "format": " {short} {variant}"
   },
   "custom/date": {
     "format": " {}",
