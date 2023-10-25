@@ -35,6 +35,7 @@ window#waybar {
 }
 
 #custom-date,
+#language,
 #clock,
 #battery,
 #pulseaudio,
