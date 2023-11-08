@@ -168,7 +168,7 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 " buffers navigation {{{
 nmap <silent><leader>bn :bnext<CR>
 nmap <silent><leader>bp :bprevious<CR>
-nnoremap <silent><leader>l :Buffers<CR>
+nnoremap <silent><leader>p :Buffers<CR>
 " }}}
 
 " cscope mapping {{{
@@ -180,17 +180,16 @@ nmap <silent> <leader>c :cs find t class <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
-" split moves mappint {{{
+" split mapping {{{
 nmap <silent><c-l> <c-w>l
 nmap <silent><c-h> <c-w>h
 nmap <silent><c-j> <c-w>j
 nmap <silent><c-k> <c-w>k
 
-
-nmap <silent><A-l> <c-w>L
-nmap <silent><A-h> <c-w>H
-nmap <silent><A-j> <c-w>J
-nmap <silent><A-k> <c-w>K
+nmap <silent>`l :vert res +10<CR>
+nmap <silent>`h :vert res -10<CR>
+nmap <silent>`j :res -10<CR>
+nmap <silent>`k :res +10<CR>
 " }}}
 
 " }}}
