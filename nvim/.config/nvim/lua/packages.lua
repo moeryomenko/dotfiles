@@ -31,12 +31,6 @@ packer.startup(function(use)
 	use("tamton-aquib/staline.nvim")
 	use({ "akinsho/bufferline.nvim", tag = "v3.*" })
 	use("tiagovla/scope.nvim")
-	use({
-		"kwkarlwang/bufresize.nvim",
-		config = function()
-			require("bufresize").setup()
-		end,
-	})
 	use("mrjones2014/smart-splits.nvim")
 	use({
 		"karb94/neoscroll.nvim",
