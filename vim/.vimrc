@@ -33,7 +33,6 @@ set wrap
 
 let g:airline#extensions#tabline#enabled = 1
 
-
 " backup configuration {{{
 set nobackup
 set nowb
@@ -163,7 +162,13 @@ nmap <leader>t :TagbarToggle<CR>
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 
+" search selected pattern {{{
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+" }}}
+
+" clipboard {{{
+vnoremap <leader>y ""y:call system("wl-copy", @")<CR>
+" }}}
 
 " buffers navigation {{{
 nmap <silent><leader>bn :bnext<CR>
