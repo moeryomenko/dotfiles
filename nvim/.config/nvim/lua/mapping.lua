@@ -28,6 +28,12 @@ map("n", "<A-b>", "Telescope bookmarks<CR>", { silent = true })
 map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 map("n", "<space>t", ":Lspsaga open_floaterm<CR>", { silent = true })
 
+-- split resize
+map("n", "<A-l>", ":vert res +10<CR>", { silent = true })
+map("n", "<A-h>", ":vert res -10<CR>", { silent = true })
+map("n", "<A-j>", ":res -10<CR>", { silent = true })
+map("n", "<A-k>", ":res +10<CR>", { silent = true })
+
 --#region copy to clipboard
 map("v", "<leader>y", '"+y')
 map("n", "<leader>Y", '"+yg_')
