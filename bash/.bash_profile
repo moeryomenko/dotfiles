@@ -6,4 +6,8 @@ if test -z "${XDG_RUNTIME_DIR}"; then
         fi
 fi
 
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+	export XDG_CONFIG_HOME=$HOME/.config
+fi
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc

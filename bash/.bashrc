@@ -10,30 +10,30 @@ if [ ! -f $HOME/.gdbinit ]; then
 		https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
 fi
 
-if [ ! -f $HOME/.config/bash_completion ]; then
-	curl -fLo $HOME/.config/bash_completion \
+if [ ! -f $XDG_CONFIG_HOME/bash_completion ]; then
+	curl -fLo $XDG_CONFIG_HOME/bash_completion \
 		https://raw.githubusercontent.com/scop/bash-completion/master/bash_completion
 fi
-source $HOME/.config/bash_completion
+source $XDG_CONFIG_HOME/bash_completion
 
-if [ ! -f $HOME/.config/git-completion ]; then
-	curl -fLo $HOME/.config/git-completion \
+if [ ! -f $XDG_CONFIG_HOME/git-completion ]; then
+	curl -fLo $XDG_CONFIG_HOME/git-completion \
 		https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 fi
-source $HOME/.config/git-completion
+source $XDG_CONFIG_HOME/git-completion
 
 if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
-	ln -sf $HOME/.config/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
+	ln -sf $XDG_CONFIG_HOME/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
-if [ ! -f $HOME/.config/abbrev-alias.plugin.bash ]; then
-        curl -fLo $HOME/.config/abbrev-alias.plugin.bash \
+if [ ! -f $XDG_CONFIG_HOME/abbrev-alias.plugin.bash ]; then
+        curl -fLo $XDG_CONFIG_HOME/abbrev-alias.plugin.bash \
                 https://raw.githubusercontent.com/momo-lab/bash-abbrev-alias/master/abbrev-alias.plugin.bash
 fi
-source $HOME/.config/abbrev-alias.plugin.bash
+source $XDG_CONFIG_HOME/abbrev-alias.plugin.bash
 
-source $HOME/.config/bash-prompt
-source $HOME/.config/oneliners.sh
+source $XDG_CONFIG_HOME/bash-prompt
+source $XDG_CONFIG_HOME/oneliners.sh
 
 set colored-stats on
 set mark-simlinked-directories on
@@ -75,16 +75,11 @@ abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
 abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
 abbrev-alias -g la='exa -l -h --git --classify --icons -a'
 abbrev-alias -g tree='exa -l -h --git --classify --icons --long --tree'
-abbrev-alias -g c=clear
 abbrev-alias -g vf='vim $(fz)'
 abbrev-alias -g hx='helix'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
-
-if [[ -z "$XDG_CONFIG_HOME" ]]; then
-	export XDG_CONFIG_HOME=$HOME/.config
-fi
 
 if [[ ! -d "$HOME/.asdf" ]]; then
 	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.3
@@ -92,7 +87,9 @@ fi
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 
-export PATH=$PATH:$HOME/.config/git-commands
+. $XDG_CONFIG_HOME/broot/launcher/bash/br
+
+export PATH=$PATH:$XDG_CONFIG_HOME/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
 
