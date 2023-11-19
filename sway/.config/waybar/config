@@ -1,76 +1,99 @@
 {
+  "layer": "top",
   "position": "top",
+  "margin-top": 10,
+  "margin-left": 10,
+  "margin-right": 10,
   "height": 30,
+  "spacing": 0,
   "modules-left": [
+    "custom/launcher",
+    "cpu",
+    "memory"
+  ],
+  "modules-center": [
     "sway/workspaces"
   ],
   "modules-right": [
-    "pulseaudio",
+    "tray",
     "network",
-    "battery",
-    "custom/date",
-    "sway/language",
+    "pulseaudio",
     "clock",
-    "custom/power"
+    "custom/powermenu"
   ],
   "sway/workspaces": {
+    "on-click": "activate",
     "format": "{icon}"
   },
-  "sway/language": {
-    "format": " {short} {variant}"
+  "memory": {
+    "interval": 3,
+    "format": "   {}% ",
+    "max-length": 10
   },
-  "custom/date": {
-    "format": " {}",
-    "interval": 3600,
-    "exec": "/home/moeryomenko/.config/waybar/waybar-date.sh"
+  "cpu": {
+    "interval": 1,
+    "format": "   {}% ",
+    "max-length": 10
   },
-  "custom/power": {
-    "format": "",
-    "on-click": "wlogout"
+  "tray": {
+    "spacing": 10
   },
   "clock": {
-    "format": "󰃰 {:%H:%M}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": " {:%Y-%m-%d}"
-  },
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "format-alt": "   {:%a, %d %b %Y} ",
+    "format": " 󰃰  {:%H:%M} ",
+    "calendar": {
+      "weeks-pos": "none",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#8fbcbb'><b>{}</b></span>",
+        "days": "<span color='#8a909e'>{}</span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#81a1c1'><b>{}</b></span>",
+        "today": "<span color='#88c0d0'><b>{}</b></span>"
+      }
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󱊦 {capacity}%",
-    "format-plugged": "󱊦 {capacity}%",
-    "format-alt": "{time} {icon}",
-    "format-full": "󱊣 {capacity}%",
-    "format-icons": [
-      "󱊡",
-      "󱊢",
-      "󱊣"
-    ]
+    "actions": {
+      "on-click-right": "none",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
   },
   "network": {
-    "format-wifi": "  {essid}",
+    "format-wifi": " ",
     "format-ethernet": "{ifname}: {ipaddr}/{cidr} 󰈀",
     "format-linked": "{ifname} (No IP) 󰈀",
-    "format-disconnected": "󰤮 Disconnected",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    "format-disconnected": "󰤭 ",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "nospacing": 1
   },
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-muted": "󰖁 Muted",
+    "format": "{icon}",
+    "nospacing": 1,
+    "tooltip-format": "Volume : {volume}%",
+    "format-muted": "󰝟 ",
     "format-icons": {
-      "headphone": "󰋋",
-      "headset": "󰋎",
-      "phone": "",
-      "portable": "",
-      "car": "",
+      "headphone": " ",
       "default": [
-        "󰕿",
-        "󰖀",
-        "󰕾"
+        "󰕿 ",
+        "󰖀 ",
+        "󰕾 "
       ]
     },
-    "on-click": "pavucontrol"
+    "on-click": "pamixer -t",
+    "on-click-right": "pavucontrol",
+    "scroll-step": 5
+  },
+  "custom/launcher": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "wofi --show run"
+  },
+  "custom/powermenu": {
+    "format": "⏻ ",
+    "tooltip": false,
+    "on-click": "wlogout"
   }
 }
