@@ -18,11 +18,6 @@ function partition_size { lsblk --json | jq -c '.blockdevices[]|[.name,.size]'; 
 
 function files_type { test "$#" -gt 0 && stat --printf "%n: %F\n" "$@"; }
 
-function fz {
-	sk --preview 'cat {}' \
-		--preview-window=right:70%
-}
-
 function b64d {
 	echo "$1" | base64 -d
 	echo
@@ -31,8 +26,6 @@ function b64d {
 function b64e { echo -n "$1" | base64; }
 
 function replace_all { grep -rl $1 . | xargs sed -i "s/$1/$2/g"; }
-
-function check_ping { ping -c 1 -W 3 google.com; }
 
 function rand_pass { cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 32 | head -n 1; }
 

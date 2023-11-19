@@ -75,8 +75,9 @@ abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
 abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
 abbrev-alias -g la='exa -l -h --git --classify --icons -a'
 abbrev-alias -g tree='exa -l -h --git --classify --icons --long --tree'
-abbrev-alias -g vf='vim $(fz)'
+abbrev-alias -g fz="sk --preview 'cat {}' --preview-window=right:70%"
 abbrev-alias -g hx='helix'
+abbrev-alias -g chping='ping -c 1 -W 3 google.com'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
@@ -99,7 +100,7 @@ eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
 eval $(keychain --eval --agents gpg --quiet --gpg2 12A5CF1067A4958B)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-	export WLR_RENDERER=vulkan
+	#export WLR_RENDERER=vulkan
 	export RADV_VIDEO_DECODE=1
 	export SDL_VIDEODRIVER=wayland
 	export GDK_BACKEND=wayland
