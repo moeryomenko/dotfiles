@@ -1,6 +1,6 @@
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
-vim.cmd.colorscheme("everforest")
+vim.cmd.colorscheme("tokyonight-storm")
 
 vim.opt.shell = "bash"
 
