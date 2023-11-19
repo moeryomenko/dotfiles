@@ -10,20 +10,18 @@ end
 source $HOME/.asdf/asdf.fish
 source $HOME/.asdf/completions/asdf.fish
 
+set -U XDG_CONFIG_HOME $HOME/.config
+
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
 
+starship init fish | source
 direnv hook fish | source
 
 set -U EDITOR nvim
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
-fish_add_path $HOME/.config/git-commands
+fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
-
-set -U tide_git_icon 󰊢
-set -U tide_pwd_icon 󰉋
-set -U tide_pwd_icon_home 󱂵
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
@@ -42,12 +40,6 @@ abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --l
 abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 alias hx='helix'
-
-if set -q KITTY_INSTALLATION_DIR
-    set --global KITTY_SHELL_INTEGRATION enabled
-    source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
-    set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
-end
 
 function cscope_gen
 	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\)' > cscope.files
