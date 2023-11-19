@@ -14,7 +14,7 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'cdelledonne/vim-cmake'
 Plug 'majutsushi/tagbar'
-Plug 'sainnhe/everforest'
+Plug 'ghifarit53/tokyonight-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -116,7 +116,9 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 endif
 set termguicolors
 set background=dark
-colorscheme everforest
+let g:tokyonight_style = 'storm'
+let g:tokyonight_enable_italic = 1
+colorscheme tokyonight
 " }}}
 
 " c/c++ highlight {{{

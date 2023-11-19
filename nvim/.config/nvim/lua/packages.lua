@@ -18,7 +18,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 
 	-- UI plugins.
-        use("sainnhe/everforest")
+        use("folke/tokyonight.nvim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {

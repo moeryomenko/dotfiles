@@ -12,10 +12,13 @@
 	url = git@github.com:tmux-plugins/tmux-resurrect.git
 [submodule "tmux/.tmux/plugins/tmux-continuum"]
 	path = tmux/.tmux/plugins/tmux-continuum
-	url = https://github.com/tmux-plugins/tmux-continuum
+	url = git@github.com:tmux-plugins/tmux-continuum
 [submodule "tmux/.tmux/plugins/tmux-net-speed"]
 	path = tmux/.tmux/plugins/tmux-net-speed
-	url = https://git::@github.com/sainnhe/tmux-net-speed
+	url = git@github.com:sainnhe/tmux-net-speed
 [submodule "tmux/.tmux/plugins/tmux-plugin-sysstat"]
 	path = tmux/.tmux/plugins/tmux-plugin-sysstat
-	url = https://git::@github.com/sainnhe/tmux-plugin-sysstat
+	url = git@github.com:sainnhe/tmux-plugin-sysstat
+[submodule "tmux/.tmux/plugins/tokyo-night-tmux"]
+	path = tmux/.tmux/plugins/tokyo-night-tmux
+	url = git@github.com:janoamaral/tokyo-night-tmux.git
