@@ -1,55 +1,51 @@
-/* ::root{ */
-/*     --accent: #5291e2; */
-/*     --dark: #383C4A; */
-/*     --light: #7C818C; */
-/*     --ld: #404552; */
-/*     --dl: #4B5162 */
-/*     --white: white; */
-/* } */
-
-*{
-    font-family: monospace;
-}
-
-window {
-    background-color: #7C818C;
+#window {
+  margin: 0px;
+  border: 2px solid #414868;
+  border-radius: 8px;
+  background-color: rgba(21, 22, 30, 0.5);
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 16px;
 }
 
 #input {
-    margin: 5px;
-    border-radius: 0px;
-    border: none;
-    border-bottom: 3px solid black;
-    background-color: #383C4A;
-    color: white;
+  margin: 5px;
+  border: 1px solid #1a1b26;
+  color: #c0caf5
+}
+
+#input image {
+	color: #c0caf5;
 }
 
 #inner-box {
-    background-color: #383C4A;
-
+  margin: 5px;
+  border: none;
+  background-color: rgba(21, 22, 30, 0.0);
 }
 
 #outer-box {
-    margin: 5px;
-    padding:20px;
-    background-color: #383C4A;
+  margin: 5px;
+  border: none;
+  background-color: rgba(21, 22, 30, 0.5);
 }
 
 #scroll {
+  margin: 0px;
+  border: none;
 }
 
 #text {
-padding: 5px;
-color: white;
-}
-
-#entry:nth-child(even){
-    background-color: #404552;
-}
+  margin: 5px;
+  border: none;
+  color: #c0caf5;
+} 
 
 #entry:selected {
-    background-color: #5291e2;
+	background-color: #414868;
+	font-weight: normal;
 }
 
 #text:selected {
+	background-color: #414868;
+	font-weight: normal;
 }
