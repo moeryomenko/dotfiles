@@ -230,6 +230,27 @@ endfunction
 nmap <silent> <leader>w :call ToggleNetrw()<CR>
 " }}}
 
+" netrw mapping {{{
+function! NetrwMapping()
+        nmap <buffer> H u
+        nmap <buffer> h -^
+        nmap <buffer> l <CR>
+
+        nmap <buffer> . gh
+        nmap <buffer> P <C-w>z
+
+        nmap <buffer> L <CR>:Lexplore<CR>
+        nmap <buffer> ff %:w<CR>:buffer #<CR>
+
+        nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
+endfunction
+
+augroup netrw_mapping
+  autocmd!
+  autocmd filetype netrw call NetrwMapping()
+augroup END
+" }}}
+
 nnoremap <silent>gf :GFiles<CR>
 
 " }}}
