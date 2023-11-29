@@ -18,7 +18,7 @@ packer.startup(function(use)
 	use("nvim-lua/plenary.nvim")
 
 	-- UI plugins.
-        use("folke/tokyonight.nvim")
+	use("folke/tokyonight.nvim")
 	use({
 		"nvim-tree/nvim-tree.lua",
 		requires = {
@@ -79,6 +79,7 @@ packer.startup(function(use)
 			require("gitsigns").setup()
 		end,
 	})
+	use("rhysd/committia.vim")
 
 	-- LSP plugins.
 	use("neovim/nvim-lspconfig")
