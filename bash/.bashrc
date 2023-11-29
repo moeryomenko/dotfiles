@@ -58,18 +58,6 @@ bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
 abbrev-alias -g g='git'
-abbrev-alias -g gco='git co'
-abbrev-alias -g glog='git dlog'
-abbrev-alias -g ga='git a'
-abbrev-alias -g gp='git pull'
-abbrev-alias -g grb='git rb'
-abbrev-alias -g grbc='git rbc'
-abbrev-alias -g gcm='git cm'
-abbrev-alias -g gcmm='git cmm'
-abbrev-alias -g grc='git rc'
-abbrev-alias -g gcp='git cp'
-abbrev-alias -g gpo='git po'
-abbrev-alias -g gpfo='git pfo'
 abbrev-alias -g ur='ls | xargs -P10 -I{} git -C {} pull'
 abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
 abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
@@ -90,6 +78,7 @@ fi
 
 . $XDG_CONFIG_HOME/broot/launcher/bash/br
 
+. "$HOME/.cargo/env"
 export PATH=$PATH:$XDG_CONFIG_HOME/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
