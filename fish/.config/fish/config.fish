@@ -15,7 +15,6 @@ set -U XDG_CONFIG_HOME $HOME/.config
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
 
 starship init fish | source
-direnv hook fish | source
 
 set -U EDITOR nvim
 
