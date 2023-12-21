@@ -1,17 +1,4 @@
-local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
 --#region
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
-vim.opt.termguicolors = true
-
 require("nvim-tree").setup()
 require("symbols-outline").setup()
 map("n", "<space>w", ":NvimTreeToggle<CR>")
@@ -23,37 +10,7 @@ map("v", "<leader>rr", ":lua require('telescope').extensions.refactoring.refacto
 --#endregion
 
 map("n", "<A-b>", "Telescope bookmarks<CR>", { silent = true })
-
--- close other buffers, except for the current.
-map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 map("n", "<space>t", ":Lspsaga open_floaterm<CR>", { silent = true })
-
--- split resize
-map("n", "<A-l>", ":vert res +10<CR>", { silent = true })
-map("n", "<A-h>", ":vert res -10<CR>", { silent = true })
-map("n", "<A-j>", ":res -10<CR>", { silent = true })
-map("n", "<A-k>", ":res +10<CR>", { silent = true })
-
---#region copy to clipboard
-map("v", "<leader>y", '"+y')
-map("n", "<leader>Y", '"+yg_')
-map("n", "<leader>y", '"+y')
-map("n", "<leader>yy ", '"+yy')
---#endregion
-
---#region paste from clipboard
-map("n", "<leader>p", '"+p')
-map("n", "<leader>P", '"+P')
-map("v", "<leader>p", '"+p')
-map("v", "<leader>P", '"+P')
---#endregion
-
---#region buffer navigation
-map("n", "[b", ":bprevious<CR>")
-map("n", "]b", ":bnext<CR>")
-map("n", "<space>b", ":Telescope buffers<CR>")
-map("n", "<leader>t", ":lua require('telescope-tabs').list_tabs()<CR>")
---#endregion
 
 --#region Lsp
 map("n", "<space>s", ":Telescope lsp_document_symbols<CR>")
