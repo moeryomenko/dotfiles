@@ -283,4 +283,4 @@ schemes:
       white:   '#acb0d0'
 
 # Apply
-colors: *everforest_dark_soft
+colors: *tokyo-night-storm
