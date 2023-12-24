@@ -43,6 +43,7 @@ return {
 			"RRethy/nvim-treesitter-endwise",
 			"RRethy/nvim-treesitter-textsubjects",
 			"windwp/nvim-ts-autotag",
+			"m-demare/hlargs.nvim",
 		},
 		config = load_config("lang.treesitter"),
 		event = { "BufReadPre", "BufNewFile" },
@@ -98,6 +99,7 @@ return {
 			"hrsh7th/cmp-nvim-lua",
 			"saadparwaiz1/cmp_luasnip",
 			"windwp/nvim-autopairs",
+			"lukas-reineke/cmp-rg",
 		},
 		config = load_config("lang.cmp"),
 		event = "InsertEnter",
@@ -110,6 +112,31 @@ return {
 		event = "InsertEnter",
 	},
 	-- DAP
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"leoluz/nvim-dap-go",
+			"rcarriga/nvim-dap-ui",
+			"theHamsta/nvim-dap-virtual-text",
+			"rcarriga/cmp-dap",
+			"LiadOz/nvim-dap-repl-highlights",
+		},
+		config = load_config("lang.dap"),
+		cmd = { "DapUIToggle", "DapToggleRepl", "DapToggleBreakpoint" },
+		keys = {
+			{ "<F5>", ":lua require'dap'.continue()<CR>" },
+			{ "<F10>", ":lua require'dap'.step_over()<CR>" },
+			{ "<F11>", ":lua require'dap'.step_into()<CR>" },
+			{ "<F12>", ":lua require'dap'.step_out()<CR>" },
+			{ "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>" },
+			{ "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>" },
+			{ "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>" },
+			{ "<leader>ro", ":lua require'dap'.repl.open()<CR>" },
+			{ "<leader>dt", ":lua require('dap-go').debug_test()<CR>" },
+			{ "<leader>dr", ":lua require('dap').run()<CR>" },
+			{ "<leader>do", ":DapUIToggle<CR>" },
+		},
+	},
 	-- git
 	{
 		"lewis6991/gitsigns.nvim",
