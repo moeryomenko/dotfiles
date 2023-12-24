@@ -202,4 +202,9 @@ return {
 		config = load_config("tools.autopairs"),
 		event = "InsertEnter",
 	},
+	{
+		"shellRaining/hlchunk.nvim",
+		event = { "UIEnter" },
+		config = load_config("tools.hlchunk"),
+	},
 }
