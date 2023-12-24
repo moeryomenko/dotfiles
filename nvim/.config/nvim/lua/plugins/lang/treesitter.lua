@@ -5,6 +5,8 @@ end
 
 local textobjects = require("plugins.lang.textobjects")
 
+require("hlargs").setup()
+
 configs.setup({
 	ensure_installed = {
 		"bash",
