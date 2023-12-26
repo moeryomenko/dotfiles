@@ -17,6 +17,7 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'majutsushi/tagbar'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'sainnhe/everforest'
+Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -120,7 +121,7 @@ set termguicolors
 set background=dark
 let g:tokyonight_style = 'storm'
 let g:tokyonight_enable_italic = 1
-colorscheme tokyonight
+colorscheme nord
 " }}}
 
 " c/c++ highlight {{{
