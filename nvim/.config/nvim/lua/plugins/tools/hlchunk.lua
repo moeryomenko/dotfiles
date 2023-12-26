@@ -16,7 +16,7 @@ hlchunk.setup({
 		},
 	},
 	indent = {
-		enable = true,
+		enable = false,
 	},
 	line_num = {
 		enable = true,

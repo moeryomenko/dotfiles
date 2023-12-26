@@ -7,10 +7,10 @@ end
 return {
 	-- UI
 	{
-		"navarasu/onedark.nvim",
-		config = load_config("ui.onedark"),
+		"AlexvZyl/nordic.nvim",
 		lazy = false,
 		priority = 1000,
+		config = load_config("ui.nord"),
 	},
 	{
 		"nvim-lualine/lualine.nvim",

@@ -52,7 +52,7 @@ lazy.setup({
 		-- install missing plugins on startup. This doesn't increase startup time.
 		missing = true,
 		-- try to load one of these colorschemes when starting an installation during startup
-		colorscheme = { "onedark" },
+		colorscheme = { "nordic" },
 	},
 	ui = {
 		-- a number <1 is a percentage., >1 is a fixed size

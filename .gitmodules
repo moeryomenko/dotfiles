@@ -19,6 +19,6 @@
 [submodule "tmux/.tmux/plugins/tmux-plugin-sysstat"]
 	path = tmux/.tmux/plugins/tmux-plugin-sysstat
 	url = git@github.com:sainnhe/tmux-plugin-sysstat
-[submodule "tmux/.tmux/plugins/tokyo-night-tmux"]
-	path = tmux/.tmux/plugins/tokyo-night-tmux
-	url = git@github.com:janoamaral/tokyo-night-tmux.git
+[submodule "tmux/.tmux/plugins/nord-tmux"]
+	path = tmux/.tmux/plugins/nord-tmux
+	url = git@github.com:arcticicestudio/nord-tmux
