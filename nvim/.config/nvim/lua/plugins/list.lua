@@ -202,4 +202,12 @@ return {
 		config = load_config("tools.autopairs"),
 		event = "InsertEnter",
 	},
+	{
+		"Shatur/neovim-tasks",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = load_config("tools.tasks"),
+		cmd = "Task",
+	},
 }
