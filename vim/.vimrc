@@ -172,7 +172,7 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 " }}}
 
 " clipboard {{{
-vnoremap <leader>y ""y:call system("wl-copy", @")<CR>
+vnoremap <silent> <leader>y ""y:call system("wl-copy", @")<CR>
 " }}}
 
 " buffers navigation {{{
