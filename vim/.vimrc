@@ -22,6 +22,13 @@ Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" lsp plugins {{{
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" }}}
+
 Plug 'tikhomirov/vim-glsl'
 
 call plug#end()
@@ -190,6 +197,13 @@ nmap <silent> <leader>r :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
 nmap <silent> <leader>c :cs find t class <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+" }}}
+
+" lsp mapping  {{{
+nmap <silent> gd :LspDefinition<CR>
+nmap <silent> gi :LspImplementation<CR>
+nmap <silent> th :LspHover<CR>
+nmap <silent> gr :LspReferences<CR>
 " }}}
 
 " split mapping {{{
