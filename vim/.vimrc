@@ -162,7 +162,8 @@ augroup END
 
 " mapping configurations {{{
 let mapleader ="\<Space>"
-nmap <leader>t :TagbarToggle<CR>
+" tagbar
+nmap <silent> <leader>t :TagbarToggle<CR>
 
 " Source Vim configuration file and install plugins
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
