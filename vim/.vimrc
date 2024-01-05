@@ -287,3 +287,19 @@ let g:cmake_generate_options = [
 let g:cmake_link_compile_commands = 1
 let g:cmake_statusline = 1
 " }}}
+
+" sessions {{{
+fu! SaveSess()
+    execute 'mksession!'
+endfunction
+
+fu! RestoreSess()
+if filereadable(getcwd() . '/Session.vim')
+        execute 'so ' . getcwd() . '/Session.vim'
+endif
+endfunction
+
+autocmd VimLeave * call SaveSess()
+autocmd VimEnter * call RestoreSess()
+
+" }}}
