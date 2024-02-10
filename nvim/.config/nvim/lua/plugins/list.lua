@@ -7,10 +7,10 @@ end
 return {
 	-- UI
 	{
-		"AlexvZyl/nordic.nvim",
+		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		config = load_config("ui.nord"),
+		config = load_config("ui.tokyonight"),
 	},
 	{
 		"nvim-lualine/lualine.nvim",
