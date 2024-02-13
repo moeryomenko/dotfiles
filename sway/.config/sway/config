@@ -105,6 +105,9 @@ bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder
 # Clipboard:
 bindsym $mod+Mod1+v exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
 
+# Flatpak application launcher:
+bindsym $mod+Mod1+f exec flatpak list --app --columns=application | wofi --dmenu | xargs flatpak run
+
 # Resizing containers:
 bindsym $mod+r mode "resize"
 mode "resize" {
