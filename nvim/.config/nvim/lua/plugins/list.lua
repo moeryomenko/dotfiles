@@ -190,7 +190,31 @@ return {
 		config = load_config("tools.nvim-tree"),
 		cmd = "NvimTreeToggle",
 		keys = {
-			{ "<leader>w", "<cmd>NvimTreeToggle<cr>" },
+			{ "<space>w", "<cmd>NvimTreeToggle<cr>" },
+		},
+	},
+	{
+		"hedyhli/outline.nvim",
+		config = function()
+			require("outline").setup({})
+		end,
+		keys = {
+			{ "<leader>w", "<cmd>Outline<cr>" },
+		},
+	},
+	{
+		"dhananjaylatkar/cscope_maps.nvim",
+		dependencies = {
+			"folke/which-key.nvim",
+			"nvim-telescope/telescope.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = load_config("tools.cscope"),
+		keys = {
+			{ "gi", '<cmd>exe "Cscope find s" expand("<cword>")<CR><CR>' },
+			{ "gd", '<cmd>exe "Cscope find g" expand("<cword>")<CR><CR>' },
+			{ "gr", '<cmd>exe "Cscope find c" expand("<cword>")<CR><CR>' },
+			{ "gf", '<cmd>exe "Cscope find f" expand("<cfile>")<CR><CR>' },
 		},
 	},
 	{
