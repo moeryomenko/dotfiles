@@ -7,6 +7,29 @@ lsp_zero.on_attach(function(_, bufnr)
 	lsp_zero.default_keymaps({ buffer = bufnr })
 end)
 
+vim.diagnostic.config({
+	virtual_text = false,
+	signs = true,
+	update_in_insert = false,
+	underline = true,
+	severity_sort = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
+})
+
+lsp_zero.set_sign_icons({
+	error = "✘",
+	warn = "▲",
+	hint = "⚑",
+	info = "",
+})
+
 require("mason").setup({})
 require("mason-lspconfig").setup({
 	ensure_installed = {},
