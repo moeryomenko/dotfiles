@@ -7,10 +7,10 @@ end
 return {
 	-- UI
 	{
-		"folke/tokyonight.nvim",
+		"catppuccin/nvim",
 		lazy = false,
 		priority = 1000,
-		config = load_config("ui.tokyonight"),
+		config = load_config("ui.catppuccin"),
 	},
 	{
 		"nvim-lualine/lualine.nvim",
