@@ -78,17 +78,17 @@ TERM = "tmux-256color"
 size = 15.0
 
 [font.bold]
-family = "Hack"
+family = "Rec Mono Casual"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Hack"
+family = "Rec Mono Casual"
 
 [font.normal]
-family = "Hack"
+family = "Rec Mono Casual"
 
 [font.offset]
 x = 0
