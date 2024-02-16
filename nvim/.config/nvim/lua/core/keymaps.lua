@@ -17,10 +17,15 @@ map("n", "<A-k>", ":res +10<CR>", { silent = true })
 --#endregion
 
 --#region copy to clipboard
-map("v", "<leader>y", '"+y')
+map("v", "<space>y", '"+y')
 map("n", "<leader>Y", '"+yg_')
-map("n", "<leader>y", '"+y')
+map("n", "<space>y", '"+y')
 map("n", "<leader>yy ", '"+yy')
+--#endregion
+
+--#region
+map("n", "<leader>zi", ":tab split<CR>", { silent = true })
+map("n", "<leader>zo", ":tab close<CR>", { silent = true })
 --#endregion
 
 --#region paste from clipboard
