@@ -43,7 +43,7 @@ abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --
 alias hx='helix'
 
 function cscope_gen
-	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\)' > cscope.files
+	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\|comp\|vert\|frag\)' > cscope.files
 	cscope -b -q -k
 end
 
