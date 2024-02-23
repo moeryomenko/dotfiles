@@ -149,6 +149,13 @@ return {
 		"tpope/vim-fugitive",
 		cmd = "Git",
 	},
+	{
+		"rbong/vim-flog",
+		cmd = { "Flog", "Flogsplit", "Floggit" },
+		dependencies = {
+			"tpope/vim-fugitive",
+		},
+	},
 	-- Telescope
 	{
 		"nvim-telescope/telescope.nvim",
