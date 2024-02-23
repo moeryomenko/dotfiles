@@ -176,9 +176,11 @@ return {
 			{ "grn", ":Lspsaga rename<CR>" },
 			{ "gf", ":Telescope git_files<CR>" },
 			{ "gb", ":Telescope buffers<CR>" },
+			{ "[e", ":lua vim.diagnostic.goto_prev()<CR>" },
+			{ "]e", ":lua vim.diagnostic.goto_next()<CR>" },
 			{ "<space>g", ":Telescope live_grep<CR>" },
 			{ "<space>ca", ":Lspsaga code_action<CR>" },
-			{ "<space>ca", ":Lspsaga code_action<CR>" },
+			{ "<space>cd", ":Lspsaga show_line_diagnostics<CR>" },
 		},
 	},
 	-- tools
