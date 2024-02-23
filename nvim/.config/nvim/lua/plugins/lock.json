@@ -37,10 +37,10 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-rg": { "branch": "master", "commit": "677a7874ee8f1afc648c2e7d63a97bc21a7663c5" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
-  "conform.nvim": { "branch": "master", "commit": "61cff430c9f15770d0c5e68c1b08067223bd94ab" },
+  "conform.nvim": { "branch": "master", "commit": "192a6d2ddace343f1840a8f72efe2315bd392243" },
   "cscope_maps.nvim": { "branch": "main", "commit": "065fcdd059eb69d013a10d94846d20f1b8fd8ef6" },
   "dressing.nvim": { "branch": "master", "commit": "6f212262061a2120e42da0d1e87326e8a41c0478" },
-  "friendly-snippets": { "branch": "main", "commit": "5cc1f45c6aac699ad008fb85f6ae03236062667d" },
+  "friendly-snippets": { "branch": "main", "commit": "dbd45e9ba76d535e4cba88afa1b7aa43bb765336" },
   "gitsigns.nvim": { "branch": "main", "commit": "2c2463dbd82eddd7dbab881c3a62cfbfbe3c67ae" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
 <<<<<<< HEAD
@@ -140,21 +140,30 @@
   "hlargs.nvim": { "branch": "main", "commit": "e881f3a424139cc70c83121ec548732efdd67682" },
   "lazy.nvim": { "branch": "main", "commit": "aedcd79811d491b60d0a6577a9c1701063c2a609" },
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "abac76482ec3012a2b359ba956a74e2ffd33d46f" },
-  "lspsaga.nvim": { "branch": "main", "commit": "db74412e0282505ea1e63a42060728fb74c1968e" },
+  "lspsaga.nvim": { "branch": "main", "commit": "b1b140aa20a0cf353cd3e282870429b48b30a169" },
   "lualine.nvim": { "branch": "master", "commit": "7d131a8d3ba5016229e8a1d08bf8782acea98852" },
-  "mason-lspconfig.nvim": { "branch": "main", "commit": "fe4cce44dec93c69be17dad79b21de867dde118a" },
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "21d33d69a81f6351e5a5f49078b2e4f0075c8e73" },
   "mason.nvim": { "branch": "main", "commit": "c43eeb5614a09dc17c03a7fb49de2e05de203924" },
-  "neodev.nvim": { "branch": "main", "commit": "de3685b8c1cd439dd96b7958793f6f381f98652d" },
+  "neodev.nvim": { "branch": "main", "commit": "b0ccf605c952eb0d1efe3692d5b241c52ceee187" },
   "neovim-tasks": { "branch": "master", "commit": "12fbbff7e91b1d07498f0574505e9d48baa9d7bf" },
   "nvim": { "branch": "main", "commit": "9703f227bfab20d04bcee62d2f08f1795723b4ae" },
-  "nvim-autopairs": { "branch": "master", "commit": "096d0baecc34f6c5d8a6dd25851e9d5ad338209b" },
+  "nvim-autopairs": { "branch": "master", "commit": "90f824d37c0cb079d2764927e73af77faa9ba0ef" },
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
+<<<<<<< HEAD
   "nvim-dap": { "branch": "master", "commit": "0406598c8079c5441b96ff4a2f245acc085ebcd6" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "nvim-dap-go": { "branch": "main", "commit": "a5cc8dcad43f0732585d4793deb02a25c4afb766" },
+||||||| parent of 2ca8744 (feat(nvim): add mapping for show diagnostic message)
+  "nvim-dap": { "branch": "master", "commit": "0406598c8079c5441b96ff4a2f245acc085ebcd6" },
+  "nvim-dap-go": { "branch": "main", "commit": "a5cc8dcad43f0732585d4793deb02a25c4afb766" },
+=======
+  "nvim-dap": { "branch": "master", "commit": "fc880e82059eb21c0fa896be60146e5f17680648" },
+  "nvim-dap-go": { "branch": "main", "commit": "64f73400761e2d19459e664a52ea478f3a4420e7" },
+>>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
   "nvim-dap-repl-highlights": { "branch": "master", "commit": "902d533b2682c26d6be4f8a4d1dfd895cbba4840" },
-  "nvim-dap-ui": { "branch": "master", "commit": "d845ebd798ad1cf30aa4abd4c4eff795cdcfdd4f" },
+  "nvim-dap-ui": { "branch": "master", "commit": "9720eb5fa2f41988e8770f973cd11b76dd568a5d" },
   "nvim-dap-virtual-text": { "branch": "master", "commit": "d4542ac257d3c7ee4131350db6179ae6340ce40b" },
+<<<<<<< HEAD
 <<<<<<< HEAD
   "nvim-lspconfig": { "branch": "master", "commit": "0d9e870d01894c592d7ea93cfe0fa451916d9a7f" },
   "nvim-notify": { "branch": "master", "commit": "ebcdd8219e2a2cbc0a4bef68002f6867f1fde269" },
@@ -173,12 +182,20 @@
 =======
   "nvim-lspconfig": { "branch": "master", "commit": "d1bab4cf4b69e49d6058028fd933d8ef5e74e680" },
   "nvim-notify": { "branch": "master", "commit": "7138c86b28de61b6866c8cae60289136f0d539fa" },
+||||||| parent of 2ca8744 (feat(nvim): add mapping for show diagnostic message)
+  "nvim-lspconfig": { "branch": "master", "commit": "d1bab4cf4b69e49d6058028fd933d8ef5e74e680" },
+  "nvim-notify": { "branch": "master", "commit": "7138c86b28de61b6866c8cae60289136f0d539fa" },
+=======
+  "nvim-lspconfig": { "branch": "master", "commit": "6b9f4bbe0aa1f351fd4845dc5fd4f3450b010f88" },
+  "nvim-notify": { "branch": "master", "commit": "5371f4bfc1f6d3adf4fe9d62cd3a9d44356bfd15" },
+>>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
   "nvim-surround": { "branch": "main", "commit": "8f2af76134f37058dc4c27a24bc5f86c9cae76dc" },
-  "nvim-tree.lua": { "branch": "master", "commit": "863cf832ceb0b2377c913b7696dd7d64f4978941" },
-  "nvim-treesitter": { "branch": "master", "commit": "d49a8f82f107b43b7cdded278dab4873024a6f36" },
+  "nvim-tree.lua": { "branch": "master", "commit": "030defdb6522f5f716d8201d20ca1a2baa57ca66" },
+  "nvim-treesitter": { "branch": "master", "commit": "19bf991be2403c10fa379fa0fb11b7de2560ac31" },
   "nvim-treesitter-endwise": { "branch": "master", "commit": "60e8c288e011403f248b5f6478dde12bed8a6c55" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "nvim-treesitter-refactor": { "branch": "master", "commit": "65ad2eca822dfaec2a3603119ec3cc8826a7859e" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -230,14 +247,27 @@
   "refactoring.nvim": { "branch": "master", "commit": "156532476deb10b1b2a32cb38e1078b3f9951c42" },
 =======
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "dd0b2036c3a27cb6e6486f8bd24188c6ca43af0b" },
+||||||| parent of 2ca8744 (feat(nvim): add mapping for show diagnostic message)
+  "nvim-treesitter-textobjects": { "branch": "master", "commit": "dd0b2036c3a27cb6e6486f8bd24188c6ca43af0b" },
+=======
+  "nvim-treesitter-textobjects": { "branch": "master", "commit": "7f00d94543f1fd37cab2afa2e9a6cd54e1c6b9ef" },
+>>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
   "nvim-treesitter-textsubjects": { "branch": "master", "commit": "55d11124c45e9bb506703f73e5775652ed5357e9" },
   "nvim-ts-autotag": { "branch": "main", "commit": "531f48334c422222aebc888fd36e7d109cb354cd" },
-  "nvim-web-devicons": { "branch": "master", "commit": "7f30f2da3c3641841ceb0e2c150281f624445e8f" },
+  "nvim-web-devicons": { "branch": "master", "commit": "14ac5887110b06b89a96881d534230dac3ed134d" },
   "outline.nvim": { "branch": "main", "commit": "a8d40aecb799196303ff3521c0e31c87bba57198" },
   "plenary.nvim": { "branch": "master", "commit": "4f71c0c4a196ceb656c824a70792f3df3ce6bb6d" },
+<<<<<<< HEAD
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "586f44d21ef687a4d41b5b24c1566d686ae84250" },
   "refactoring.nvim": { "branch": "master", "commit": "fb4990a0546c59136930ea624b8640d07957f281" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
+||||||| parent of 2ca8744 (feat(nvim): add mapping for show diagnostic message)
+  "rainbow-delimiters.nvim": { "branch": "master", "commit": "586f44d21ef687a4d41b5b24c1566d686ae84250" },
+  "refactoring.nvim": { "branch": "master", "commit": "fb4990a0546c59136930ea624b8640d07957f281" },
+=======
+  "rainbow-delimiters.nvim": { "branch": "master", "commit": "161eb67a82ee269d1037df64c6d5a05bd5860d32" },
+  "refactoring.nvim": { "branch": "master", "commit": "1b593e7203b31c7bde3fa638e6869144698df3b6" },
+>>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
 <<<<<<< HEAD
   "telescope-menufacture": { "branch": "main", "commit": "6d02935d732fc208fd59fca9922964d796fcb659" },
