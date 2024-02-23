@@ -186,7 +186,7 @@ vnoremap <silent> <leader>y ""y:call system("wl-copy", @")<CR>
 " buffers navigation {{{
 nmap <silent><leader>bn :bnext<CR>
 nmap <silent><leader>bp :bprevious<CR>
-nnoremap <silent><leader>p :Buffers<CR>
+nnoremap <silent>gb :Buffers<CR>
 " }}}
 
 " cscope mapping {{{
