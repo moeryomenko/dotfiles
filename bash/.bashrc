@@ -76,9 +76,6 @@ fi
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 
-. $XDG_CONFIG_HOME/broot/launcher/bash/br
-
-. "$HOME/.cargo/env"
 export PATH=$PATH:$XDG_CONFIG_HOME/git-commands
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
@@ -86,7 +83,7 @@ export PATH=$PATH:$HOME/.cargo/bin
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
-eval $(keychain --eval --agents gpg --quiet --gpg2 12A5CF1067A4958B)
+eval $(keychain --eval --agents gpg --quiet --gpg2 1937E38E38379BE1)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	#export WLR_RENDERER=vulkan

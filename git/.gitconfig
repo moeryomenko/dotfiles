@@ -17,7 +17,7 @@
 [user]
 	name = Maxim Eryomenko
 	email = maxim_eryomenko@rambler.ru
-	signingkey = 12A5CF1067A4958B
+	signingkey = 1937E38E38379BE1
 [alias]
 	clog    = log --no-merges --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog    = log-graph
