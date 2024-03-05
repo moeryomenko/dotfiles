@@ -299,7 +299,7 @@ if filereadable(getcwd() . '/Session.vim')
 endif
 endfunction
 
-autocmd VimLeave * call SaveSess()
-autocmd VimEnter * call RestoreSess()
+command SaveSession :call SaveSess()
+command RestoreSession :call RestoreSess()
 
 " }}}
