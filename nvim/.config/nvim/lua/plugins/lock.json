@@ -152,7 +152,7 @@
   "mason.nvim": { "branch": "main", "commit": "3b5068f0fc565f337d67a2d315d935f574848ee7" },
   "neodev.nvim": { "branch": "main", "commit": "84e0290f5600e8b89c0dfcafc864f45496a53400" },
   "neovim-tasks": { "branch": "master", "commit": "12fbbff7e91b1d07498f0574505e9d48baa9d7bf" },
-  "nvim": { "branch": "main", "commit": "c0de3b46811fe1ce3912e2245a9dfbea6b41c300" },
+  "nvim": { "branch": "main", "commit": "045e3499d9ec8d84635fb08877ae44fd33f6a38d" },
   "nvim-autopairs": { "branch": "master", "commit": "c6139ca0d5ad7af129ea6c89cb4c56093f2c034a" },
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
 <<<<<<< HEAD
@@ -205,8 +205,14 @@
   "nvim-lspconfig": { "branch": "master", "commit": "d5b6d4366dfd7a1071b930defd365e6d0be258de" },
 =======
   "nvim-dap-virtual-text": { "branch": "master", "commit": "a5fc69240869c0fee8ff176bc9e4efdf8bdfb596" },
+<<<<<<< HEAD
   "nvim-lspconfig": { "branch": "master", "commit": "a1c9b24a0b4aae7db95fff3c5017d1b2fb69922e" },
 >>>>>>> e39a945 (feat(vim): save session by command)
+||||||| parent of cad028a (chore: update configuration for new installation)
+  "nvim-lspconfig": { "branch": "master", "commit": "a1c9b24a0b4aae7db95fff3c5017d1b2fb69922e" },
+=======
+  "nvim-lspconfig": { "branch": "master", "commit": "9ad7021267c6caeb01f839c91ad8f15fb608807e" },
+>>>>>>> cad028a (chore: update configuration for new installation)
   "nvim-notify": { "branch": "master", "commit": "5371f4bfc1f6d3adf4fe9d62cd3a9d44356bfd15" },
 <<<<<<< HEAD
 >>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
@@ -311,6 +317,7 @@
 =======
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "cfc3f53cfa0fbabd95bd33747288aea24fe45211" },
   "refactoring.nvim": { "branch": "master", "commit": "93d69cce9f0cbee8afae5b2380b296323792645f" },
+<<<<<<< HEAD
 >>>>>>> e39a945 (feat(vim): save session by command)
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
 <<<<<<< HEAD
@@ -319,6 +326,11 @@
 ||||||| parent of c6436de (feat(nvim): change core mapping)
   "telescope-menufacture": { "branch": "main", "commit": "6d02935d732fc208fd59fca9922964d796fcb659" },
 =======
+||||||| parent of cad028a (chore: update configuration for new installation)
+  "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
+=======
+  "telescope-fzf-native.nvim": { "branch": "main", "commit": "9ef21b2e6bb6ebeaf349a0781745549bbb870d27" },
+>>>>>>> cad028a (chore: update configuration for new installation)
   "telescope-menufacture": { "branch": "main", "commit": "2f342d275feab92cd6e7eb80c418d3c4370d4174" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "telescope-symbols.nvim": { "branch": "master", "commit": "a6d0127a53d39b9fc2af75bd169d288166118aec" },
