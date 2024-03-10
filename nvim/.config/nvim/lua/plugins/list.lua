@@ -33,6 +33,11 @@ return {
 		config = load_config("ui.dressing"),
 		event = { "BufReadPre", "BufNewFile" },
 	},
+	{
+		"ellisonleao/glow.nvim",
+		config = load_config("ui.glow"),
+		cmd = "Glow",
+	},
 	-- Tressiter
 	{
 		"nvim-treesitter/nvim-treesitter",
