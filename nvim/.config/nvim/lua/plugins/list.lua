@@ -218,7 +218,7 @@ return {
 			"nvim-telescope/telescope.nvim",
 			"nvim-tree/nvim-web-devicons",
 		},
-		config = load_config("tools.cscope"),
+		config = load_config("tools.cscope_map"),
 		keys = {
 			{ "<space>i", '<cmd>exe "Cscope find s" expand("<cword>")<CR><CR>' },
 			{ "<space>d", '<cmd>exe "Cscope find g" expand("<cword>")<CR><CR>' },
