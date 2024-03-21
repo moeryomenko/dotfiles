@@ -39,6 +39,8 @@ abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-r
 abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
+abbr --add pkgcache   "sudo pacman -Scc"
 
 alias hx='helix'
 
@@ -49,6 +51,10 @@ end
 
 function compress
 	XZ_OPT=-9 tar cJF $argv.tar.xz $argv
+end
+
+function replace_all
+	rg -l $argv[1] . | xargs sed -i "s/$argv[1]/$argv[2]/g"
 end
 
 if test (tty) = /dev/tty1
