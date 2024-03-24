@@ -83,7 +83,7 @@ export PATH=$PATH:$HOME/.cargo/bin
 export GPG_TTY=$(tty)
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
-eval $(keychain --eval --agents gpg --quiet --gpg2 1937E38E38379BE1)
+eval $(keychain --eval --agents gpg --quiet --gpg2 DA18DB431829C349)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	#export WLR_RENDERER=vulkan
