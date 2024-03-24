@@ -206,6 +206,7 @@
   "nvim": { "branch": "main", "commit": "56fb98218d22d5c326387bf9e4076227e7372e6b" },
   "nvim-autopairs": { "branch": "master", "commit": "dbfc1c34bed415906395db8303c71039b3a3ffb4" },
 <<<<<<< HEAD
+<<<<<<< HEAD
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -225,6 +226,11 @@
 =======
   "nvim-cmp": { "branch": "main", "commit": "6ed1c93465c33f6a53b4c3f103bf9d1ab696382a" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
+||||||| parent of 42e4193 (feat(himalaya): update configuration)
+  "nvim-cmp": { "branch": "main", "commit": "6ed1c93465c33f6a53b4c3f103bf9d1ab696382a" },
+=======
+  "nvim-cmp": { "branch": "main", "commit": "c34fa793eafe4623979f780a67f4be6465df5ab5" },
+>>>>>>> 42e4193 (feat(himalaya): update configuration)
   "nvim-dap": { "branch": "master", "commit": "c1695e500c7d552a0a19953a9aefcc89178fb1af" },
 >>>>>>> 22f1bdf (chore(nvim): update deps)
   "nvim-dap-go": { "branch": "main", "commit": "64f73400761e2d19459e664a52ea478f3a4420e7" },

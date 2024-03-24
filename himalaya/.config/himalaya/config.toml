@@ -1,21 +1,25 @@
-display-name = "Maxim Eryomenko"
-downloads-dir = "/home/moeryomenko/downloads/emails"
-email-listing-page-size = 100
-
-[rambler]
-default = true
-email = "maxim_eryomenko@rambler.ru"
-
+["Maxim Eryomenko"]
 backend = "imap"
+email = "maxim_eryomenko@rambler.ru"
+default = true
+display-name = "Maxim Eryomenko"
 imap-host = "imap.rambler.ru"
 imap-port = 143
-imap-login = "maxim_eryomenko@rambler.ru"
 imap-starttls = true
-imap-passwd-cmd = "pass show moeryomenko/emails/rambler"
-
+imap-login = "maxim_eryomenko@rambler.ru"
+imap-auth = "passwd"
 sender = "smtp"
 smtp-host = "smtp.rambler.ru"
-smtp-port = 465
-smtp-login = "maxim_eryomenko@rambler.ru"
+smtp-port = 587
 smtp-starttls = true
-smtp-passwd-cmd = "pass show moeryomenko/emails/rambler"
+smtp-login = "maxim_eryomenko@rambler.ru"
+smtp-auth = "passwd"
+
+["Maxim Eryomenko".imap-passwd]
+cmd = "pass show eryoma/emails/rambler"
+
+["Maxim Eryomenko".smtp-passwd]
+cmd = "pass show eryoma/emails/rambler"
+
+["Maxim Eryomenko".pgp]
+backend = "none"
