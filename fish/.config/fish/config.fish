@@ -22,6 +22,7 @@ set -U EDITOR nvim
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/go/bin
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
