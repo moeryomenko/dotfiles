@@ -27,7 +27,12 @@
   "LuaSnip": { "branch": "master", "commit": "118263867197a111717b5f13d954cd1ab8124387" },
 =======
   "LuaSnip": { "branch": "master", "commit": "8ae1dedd988eb56441b7858bd1e8554dfadaa46d" },
+<<<<<<< HEAD
 >>>>>>> c6436de (feat(nvim): change core mapping)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+=======
+  "bufferline.nvim": { "branch": "main", "commit": "64e2c5def50dfd6b6f14d96a45fa3d815a4a1eef" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
   "cmp-cmdline": { "branch": "main", "commit": "d250c63aa13ead745e3a40f61fdd3470efde3923" },
   "cmp-dap": { "branch": "master", "commit": "ea92773e84c0ad3288c3bc5e452ac91559669087" },
@@ -44,6 +49,7 @@
   "gitsigns.nvim": { "branch": "main", "commit": "078041e9d060a386b0c9d3a8c7a7b019a35d3fb0" },
   "glow.nvim": { "branch": "main", "commit": "238070a686c1da3bccccf1079700eb4b5e19aea4" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   "hlargs.nvim": { "branch": "main", "commit": "872c332dcc65324604011fa6056c4d71253e399b" },
@@ -143,7 +149,12 @@
 ||||||| parent of e39a945 (feat(vim): save session by command)
   "hlargs.nvim": { "branch": "main", "commit": "e881f3a424139cc70c83121ec548732efdd67682" },
 =======
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+=======
+  "himalaya-vim": { "branch": "master", "commit": "d33295fe9b9ad2247b9e88eda2842eb2c0d9f078" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "hlargs.nvim": { "branch": "main", "commit": "0f2dbf02ff948e8fc8ebe07b215f3174a12bbe3c" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> e39a945 (feat(vim): save session by command)
@@ -186,6 +197,13 @@
   "lazy.nvim": { "branch": "main", "commit": "af6afefbb46ab29a8a1db69536b04290a9403876" },
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "5dac9c57b6445d4193c10d86ec96f7b79e3b3750" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "lazy.nvim": { "branch": "main", "commit": "af6afefbb46ab29a8a1db69536b04290a9403876" },
+  "lsp-zero.nvim": { "branch": "v3.x", "commit": "5dac9c57b6445d4193c10d86ec96f7b79e3b3750" },
+=======
+  "lazy.nvim": { "branch": "main", "commit": "08954f723bf2d442ea020551e3acc956f4dc6dc7" },
+  "lsp-zero.nvim": { "branch": "v3.x", "commit": "2b5e9a39b3bf60bfb0cc7c35d5f2e879d4cd72ea" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "lspsaga.nvim": { "branch": "main", "commit": "d5aa1a02a23b5725054928426b1de6932a6d3bc3" },
   "lualine.nvim": { "branch": "master", "commit": "b5e8bb642138f787a2c1c5aedc2a78cb2cebbd67" },
 <<<<<<< HEAD
@@ -203,8 +221,8 @@
   "neodev.nvim": { "branch": "main", "commit": "6a533ed9d3435dcaa456380d833ea04da37ea2ed" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
   "neovim-tasks": { "branch": "master", "commit": "12fbbff7e91b1d07498f0574505e9d48baa9d7bf" },
-  "nvim": { "branch": "main", "commit": "56fb98218d22d5c326387bf9e4076227e7372e6b" },
   "nvim-autopairs": { "branch": "master", "commit": "dbfc1c34bed415906395db8303c71039b3a3ffb4" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
@@ -231,10 +249,21 @@
 =======
   "nvim-cmp": { "branch": "main", "commit": "c34fa793eafe4623979f780a67f4be6465df5ab5" },
 >>>>>>> 42e4193 (feat(himalaya): update configuration)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "nvim-cmp": { "branch": "main", "commit": "c34fa793eafe4623979f780a67f4be6465df5ab5" },
+=======
+  "nvim-cmp": { "branch": "main", "commit": "97dc716fc914c46577a4f254035ebef1aa72558a" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-dap": { "branch": "master", "commit": "c1695e500c7d552a0a19953a9aefcc89178fb1af" },
+<<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
   "nvim-dap-go": { "branch": "main", "commit": "64f73400761e2d19459e664a52ea478f3a4420e7" },
 >>>>>>> 2ca8744 (feat(nvim): add mapping for show diagnostic message)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "nvim-dap-go": { "branch": "main", "commit": "64f73400761e2d19459e664a52ea478f3a4420e7" },
+=======
+  "nvim-dap-go": { "branch": "main", "commit": "36abe1d320cb61bfdf094d4e0fe815ef58f2302a" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-dap-repl-highlights": { "branch": "master", "commit": "902d533b2682c26d6be4f8a4d1dfd895cbba4840" },
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -335,6 +364,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "nvim-tree.lua": { "branch": "master", "commit": "efafd73efa9bc8c26282aed563ba0f01c7465b06" },
   "nvim-treesitter": { "branch": "master", "commit": "cc6b108ea1251bd361f091b7d5a0dd41c04f8611" },
 >>>>>>> e39a945 (feat(vim): save session by command)
@@ -365,6 +395,13 @@
   "nvim-tree.lua": { "branch": "master", "commit": "85c502e9076d9c82e2f04addabb3614846ae7558" },
   "nvim-treesitter": { "branch": "master", "commit": "5e4f959d5979730ddb2ee9ae60f5133081502b23" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "nvim-tree.lua": { "branch": "master", "commit": "85c502e9076d9c82e2f04addabb3614846ae7558" },
+  "nvim-treesitter": { "branch": "master", "commit": "5e4f959d5979730ddb2ee9ae60f5133081502b23" },
+=======
+  "nvim-tree.lua": { "branch": "master", "commit": "e20966ae558524f8d6f93dc37f5d2a8605f893e2" },
+  "nvim-treesitter": { "branch": "master", "commit": "965f2e7239ab5e1c5f133d498591f1e70746410c" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-treesitter-endwise": { "branch": "master", "commit": "60e8c288e011403f248b5f6478dde12bed8a6c55" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "nvim-treesitter-refactor": { "branch": "master", "commit": "65ad2eca822dfaec2a3603119ec3cc8826a7859e" },
@@ -436,9 +473,16 @@
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "b7a0bfa3e93697ca5b61b15df633404bf8f45883" },
 =======
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4" },
+<<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
   "nvim-treesitter-textsubjects": { "branch": "master", "commit": "55d11124c45e9bb506703f73e5775652ed5357e9" },
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "nvim-treesitter-textsubjects": { "branch": "master", "commit": "55d11124c45e9bb506703f73e5775652ed5357e9" },
+=======
+  "nvim-treesitter-textsubjects": { "branch": "master", "commit": "9f9a6b307fb122f13708f78483222abd43b7bb3a" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-ts-autotag": { "branch": "main", "commit": "531f48334c422222aebc888fd36e7d109cb354cd" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   "nvim-web-devicons": { "branch": "master", "commit": "75df79feb02d5e0ec114e447453775d4d291ea03" },
@@ -474,7 +518,13 @@
 =======
   "nvim-web-devicons": { "branch": "master", "commit": "6ed787740a3b275b748328eb2dc7dd22dae1c064" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "nvim-web-devicons": { "branch": "master", "commit": "6ed787740a3b275b748328eb2dc7dd22dae1c064" },
+=======
+  "nvim-web-devicons": { "branch": "master", "commit": "6662f059bf78e6092ba90cd1929599625f448f55" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "outline.nvim": { "branch": "main", "commit": "bdfd2da90e9a7686d00e55afa9f772c4b6809413" },
+<<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
   "plenary.nvim": { "branch": "master", "commit": "f7adfc4b3f4f91aab6caebf42b3682945fbc35be" },
 <<<<<<< HEAD
@@ -502,10 +552,20 @@
 ||||||| parent of 74b6e93 (feat(fish): add golang bin to path)
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "2200900e3c1aae21dadb65c2ea2e91bcc39ca368" },
 =======
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+  "plenary.nvim": { "branch": "master", "commit": "f7adfc4b3f4f91aab6caebf42b3682945fbc35be" },
+=======
+  "plenary.nvim": { "branch": "master", "commit": "8aad4396840be7fc42896e3011751b7609ca4119" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "580bc045c7ab3ab3ebd267774038c0d8cc19c789" },
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
   "refactoring.nvim": { "branch": "master", "commit": "d2786877c91aa409c824f27b4ce8a9f560dda60a" },
+<<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
+||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
+=======
+  "solarized-osaka.nvim": { "branch": "main", "commit": "f7615ec5972ba52a0eba2d553c12aebea06247b9" },
+>>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "9ef21b2e6bb6ebeaf349a0781745549bbb870d27" },
 <<<<<<< HEAD
 >>>>>>> cad028a (chore: update configuration for new installation)
