@@ -57,7 +57,8 @@
 	gpgsign  = true
 	template = ~/.config/gitmessage
 [sendemail]
-	smtpserver = smtp.gmail.com
+	smtpserver     = smtp.rambler.ru
+	smtpuser       = maxim_eryomenko@rambler.ru
 	smtpserverport = 587
 	smtpencryption = tls
 [init]
