@@ -6,11 +6,17 @@ end
 
 return {
 	-- UI
+	-- {
+	-- 	"catppuccin/nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = load_config("ui.catppuccin"),
+	-- },
 	{
-		"catppuccin/nvim",
+		"craftzdog/solarized-osaka.nvim",
 		lazy = false,
 		priority = 1000,
-		config = load_config("ui.catppuccin"),
+		config = load_config("ui.osaka"),
 	},
 	{
 		"nvim-lualine/lualine.nvim",
