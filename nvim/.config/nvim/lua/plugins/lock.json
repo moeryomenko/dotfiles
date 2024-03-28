@@ -28,11 +28,16 @@
 =======
   "LuaSnip": { "branch": "master", "commit": "8ae1dedd988eb56441b7858bd1e8554dfadaa46d" },
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> c6436de (feat(nvim): change core mapping)
 ||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
 =======
   "bufferline.nvim": { "branch": "main", "commit": "64e2c5def50dfd6b6f14d96a45fa3d815a4a1eef" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "bufferline.nvim": { "branch": "main", "commit": "64e2c5def50dfd6b6f14d96a45fa3d815a4a1eef" },
+=======
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
   "cmp-cmdline": { "branch": "main", "commit": "d250c63aa13ead745e3a40f61fdd3470efde3923" },
   "cmp-dap": { "branch": "master", "commit": "ea92773e84c0ad3288c3bc5e452ac91559669087" },
@@ -42,13 +47,14 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-rg": { "branch": "master", "commit": "677a7874ee8f1afc648c2e7d63a97bc21a7663c5" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
-  "conform.nvim": { "branch": "master", "commit": "bf109f061fc3cd75394b7823923187ae045cbf22" },
+  "conform.nvim": { "branch": "master", "commit": "9d5ba06d6ee7418c674f498634617416d15b6239" },
   "cscope_maps.nvim": { "branch": "main", "commit": "b2568dadcac84c511533b726e279d38e9e67a37c" },
   "dressing.nvim": { "branch": "master", "commit": "18e5beb3845f085b6a33c24112b37988f3f93c06" },
   "friendly-snippets": { "branch": "main", "commit": "dcd4a586439a1c81357d5b9d26319ae218cc9479" },
   "gitsigns.nvim": { "branch": "main", "commit": "078041e9d060a386b0c9d3a8c7a7b019a35d3fb0" },
   "glow.nvim": { "branch": "main", "commit": "238070a686c1da3bccccf1079700eb4b5e19aea4" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,7 +159,12 @@
 =======
   "himalaya-vim": { "branch": "master", "commit": "d33295fe9b9ad2247b9e88eda2842eb2c0d9f078" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "himalaya-vim": { "branch": "master", "commit": "d33295fe9b9ad2247b9e88eda2842eb2c0d9f078" },
+=======
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "hlargs.nvim": { "branch": "main", "commit": "0f2dbf02ff948e8fc8ebe07b215f3174a12bbe3c" },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -202,6 +213,11 @@
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "5dac9c57b6445d4193c10d86ec96f7b79e3b3750" },
 =======
   "lazy.nvim": { "branch": "main", "commit": "08954f723bf2d442ea020551e3acc956f4dc6dc7" },
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "lazy.nvim": { "branch": "main", "commit": "08954f723bf2d442ea020551e3acc956f4dc6dc7" },
+=======
+  "lazy.nvim": { "branch": "main", "commit": "e753eb602539bdad9f0709066d5893a788cb5db9" },
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "2b5e9a39b3bf60bfb0cc7c35d5f2e879d4cd72ea" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "lspsaga.nvim": { "branch": "main", "commit": "d5aa1a02a23b5725054928426b1de6932a6d3bc3" },
@@ -253,6 +269,7 @@
   "nvim-cmp": { "branch": "main", "commit": "c34fa793eafe4623979f780a67f4be6465df5ab5" },
 =======
   "nvim-cmp": { "branch": "main", "commit": "97dc716fc914c46577a4f254035ebef1aa72558a" },
+<<<<<<< HEAD
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-dap": { "branch": "master", "commit": "c1695e500c7d552a0a19953a9aefcc89178fb1af" },
 <<<<<<< HEAD
@@ -262,6 +279,11 @@
 ||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-dap-go": { "branch": "main", "commit": "64f73400761e2d19459e664a52ea478f3a4420e7" },
 =======
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "nvim-dap": { "branch": "master", "commit": "c1695e500c7d552a0a19953a9aefcc89178fb1af" },
+=======
+  "nvim-dap": { "branch": "master", "commit": "405df1dcc2e395ab5173a9c3d00e03942c023074" },
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "nvim-dap-go": { "branch": "main", "commit": "36abe1d320cb61bfdf094d4e0fe815ef58f2302a" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
   "nvim-dap-repl-highlights": { "branch": "master", "commit": "902d533b2682c26d6be4f8a4d1dfd895cbba4840" },
@@ -365,6 +387,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "nvim-tree.lua": { "branch": "master", "commit": "efafd73efa9bc8c26282aed563ba0f01c7465b06" },
   "nvim-treesitter": { "branch": "master", "commit": "cc6b108ea1251bd361f091b7d5a0dd41c04f8611" },
 >>>>>>> e39a945 (feat(vim): save session by command)
@@ -402,6 +425,13 @@
   "nvim-tree.lua": { "branch": "master", "commit": "e20966ae558524f8d6f93dc37f5d2a8605f893e2" },
   "nvim-treesitter": { "branch": "master", "commit": "965f2e7239ab5e1c5f133d498591f1e70746410c" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "nvim-tree.lua": { "branch": "master", "commit": "e20966ae558524f8d6f93dc37f5d2a8605f893e2" },
+  "nvim-treesitter": { "branch": "master", "commit": "965f2e7239ab5e1c5f133d498591f1e70746410c" },
+=======
+  "nvim-tree.lua": { "branch": "master", "commit": "e508bdc4184c33c6d9705c503cf7f0e029601788" },
+  "nvim-treesitter": { "branch": "master", "commit": "23ba63028c6acca29be6462c0a291fc4a1b9eae8" },
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "nvim-treesitter-endwise": { "branch": "master", "commit": "60e8c288e011403f248b5f6478dde12bed8a6c55" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "nvim-treesitter-refactor": { "branch": "master", "commit": "65ad2eca822dfaec2a3603119ec3cc8826a7859e" },
@@ -485,6 +515,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "nvim-web-devicons": { "branch": "master", "commit": "75df79feb02d5e0ec114e447453775d4d291ea03" },
   "outline.nvim": { "branch": "main", "commit": "a8d40aecb799196303ff3521c0e31c87bba57198" },
 <<<<<<< HEAD
@@ -523,6 +554,11 @@
 =======
   "nvim-web-devicons": { "branch": "master", "commit": "6662f059bf78e6092ba90cd1929599625f448f55" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "nvim-web-devicons": { "branch": "master", "commit": "6662f059bf78e6092ba90cd1929599625f448f55" },
+=======
+  "nvim-web-devicons": { "branch": "master", "commit": "3ee60deaa539360518eaab93a6c701fe9f4d82ef" },
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "outline.nvim": { "branch": "main", "commit": "bdfd2da90e9a7686d00e55afa9f772c4b6809413" },
 <<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
@@ -561,11 +597,16 @@
 >>>>>>> 74b6e93 (feat(fish): add golang bin to path)
   "refactoring.nvim": { "branch": "master", "commit": "d2786877c91aa409c824f27b4ce8a9f560dda60a" },
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
 ||||||| parent of 8580c3b (style(nvim): use solarized-osaka theme)
 =======
   "solarized-osaka.nvim": { "branch": "main", "commit": "f7615ec5972ba52a0eba2d553c12aebea06247b9" },
 >>>>>>> 8580c3b (style(nvim): use solarized-osaka theme)
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "solarized-osaka.nvim": { "branch": "main", "commit": "f7615ec5972ba52a0eba2d553c12aebea06247b9" },
+=======
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "9ef21b2e6bb6ebeaf349a0781745549bbb870d27" },
 <<<<<<< HEAD
 >>>>>>> cad028a (chore: update configuration for new installation)
@@ -578,6 +619,7 @@
 >>>>>>> 22f1bdf (chore(nvim): update deps)
   "telescope-symbols.nvim": { "branch": "master", "commit": "a6d0127a53d39b9fc2af75bd169d288166118aec" },
 <<<<<<< HEAD
+<<<<<<< HEAD
   "telescope-undo.nvim": { "branch": "main", "commit": "51be9ae7c42fc27c0b05505e3a0162e0f05fbb6a" },
   "telescope.nvim": { "branch": "0.1.x", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" },
   "vim-fugitive": { "branch": "master", "commit": "0444df68cd1cdabc7453d6bd84099458327e5513" }
@@ -589,9 +631,15 @@
 }
 =======
   "telescope-undo.nvim": { "branch": "main", "commit": "d3afc1c105535a90caec092ce27a113f77ba7b84" },
+||||||| parent of d0b7848 (style(nvim): use tokyonight theme)
+  "telescope-undo.nvim": { "branch": "main", "commit": "d3afc1c105535a90caec092ce27a113f77ba7b84" },
+=======
+  "telescope-undo.nvim": { "branch": "main", "commit": "d19e2edc8b18d03283bd91f67310ac300ad003ce" },
+>>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "telescope.nvim": { "branch": "0.1.x", "commit": "6312868392331c9c0f22725041f1ec2bef57c751" },
+  "tokyonight.nvim": { "branch": "main", "commit": "f4b415bfbce390866a83277db42cf6aa94230728" },
   "vim-flog": { "branch": "master", "commit": "6289ab2e237ceeefdbcc7eb584b63d144bf88d94" },
-  "vim-fugitive": { "branch": "master", "commit": "193ba9b393931bad768c1d2eed688b0bcc240858" },
+  "vim-fugitive": { "branch": "master", "commit": "2377e16e6641418565b934990cf49068855987c6" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" }
 }
 >>>>>>> c6436de (feat(nvim): change core mapping)
