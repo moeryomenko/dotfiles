@@ -263,6 +263,7 @@
   "neodev.nvim": { "branch": "main", "commit": "ce9a2e8eaba5649b553529c5498acb43a6c317cd" },
 >>>>>>> 8fed768 (style(sway): change background)
   "neovim-tasks": { "branch": "master", "commit": "12fbbff7e91b1d07498f0574505e9d48baa9d7bf" },
+  "nord.nvim": { "branch": "main", "commit": "a6f4979566e44a69ddc80c9df73e960af1ab1840" },
   "nvim-autopairs": { "branch": "master", "commit": "dbfc1c34bed415906395db8303c71039b3a3ffb4" },
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -725,7 +726,6 @@
   "telescope-undo.nvim": { "branch": "main", "commit": "d19e2edc8b18d03283bd91f67310ac300ad003ce" },
 >>>>>>> d0b7848 (style(nvim): use tokyonight theme)
   "telescope.nvim": { "branch": "0.1.x", "commit": "6312868392331c9c0f22725041f1ec2bef57c751" },
-  "tokyonight.nvim": { "branch": "main", "commit": "9bf9ec53d5e87b025e2404069b71e7ebdc3a13e5" },
   "vim-flog": { "branch": "master", "commit": "6289ab2e237ceeefdbcc7eb584b63d144bf88d94" },
   "vim-fugitive": { "branch": "master", "commit": "c0b03f1cac242d96837326d300f42a660306fc1a" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" }
