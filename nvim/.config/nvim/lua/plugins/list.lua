@@ -13,6 +13,13 @@ return {
 		opts = load_config("ui.tokyonight"),
 	},
 	{
+		"brenoprata10/nvim-highlight-colors",
+		config = function()
+			vim.opt.termguicolors = true
+			require("nvim-highlight-colors").setup({})
+		end,
+	},
+	{
 		"nvim-lualine/lualine.nvim",
 		config = load_config("ui.lualine"),
 		event = { "BufReadPre", "BufNewFile" },
@@ -123,6 +130,7 @@ return {
 		dependencies = {
 			"leoluz/nvim-dap-go",
 			"rcarriga/nvim-dap-ui",
+			"nvim-neotest/nvim-nio",
 			"theHamsta/nvim-dap-virtual-text",
 			"rcarriga/cmp-dap",
 			"LiadOz/nvim-dap-repl-highlights",
