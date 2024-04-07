@@ -251,8 +251,14 @@
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "74441a6309cf12232da52520e210387dc95412f8" },
   "lspsaga.nvim": { "branch": "main", "commit": "a4d442896a9ff1f83ee3db965d81b659ebc977d5" },
   "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
+<<<<<<< HEAD
 >>>>>>> eea242b (chore(nvim): update deps)
   "mason-lspconfig.nvim": { "branch": "main", "commit": "9dfcf2036c223920826140f0151d929a43f9eceb" },
+||||||| parent of fc6b8a3 (style(nvim): lualine nord theme)
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "9dfcf2036c223920826140f0151d929a43f9eceb" },
+=======
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "44509689b9bf3984d729cc264aacb31cb7f41668" },
+>>>>>>> fc6b8a3 (style(nvim): lualine nord theme)
   "mason.nvim": { "branch": "main", "commit": "751b1fcbf3d3b783fcf8d48865264a9bcd8f9b10" },
 <<<<<<< HEAD
   "neodev.nvim": { "branch": "main", "commit": "6a533ed9d3435dcaa456380d833ea04da37ea2ed" },
@@ -264,6 +270,7 @@
 >>>>>>> 8fed768 (style(sway): change background)
   "neovim-tasks": { "branch": "master", "commit": "12fbbff7e91b1d07498f0574505e9d48baa9d7bf" },
   "nord.nvim": { "branch": "main", "commit": "a6f4979566e44a69ddc80c9df73e960af1ab1840" },
+<<<<<<< HEAD
   "nvim-autopairs": { "branch": "master", "commit": "dbfc1c34bed415906395db8303c71039b3a3ffb4" },
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -319,6 +326,11 @@
 ||||||| parent of eea242b (chore(nvim): update deps)
   "nvim-cmp": { "branch": "main", "commit": "7aa3f71932c419d716290e132cacbafbaf5bea1c" },
 =======
+||||||| parent of fc6b8a3 (style(nvim): lualine nord theme)
+  "nvim-autopairs": { "branch": "master", "commit": "dbfc1c34bed415906395db8303c71039b3a3ffb4" },
+=======
+  "nvim-autopairs": { "branch": "master", "commit": "4f41e5940bc0443fdbe5f995e2a596847215cd2a" },
+>>>>>>> fc6b8a3 (style(nvim): lualine nord theme)
   "nvim-cmp": { "branch": "main", "commit": "ce16de5665c766f39c271705b17fff06f7bcb84f" },
 >>>>>>> eea242b (chore(nvim): update deps)
   "nvim-dap": { "branch": "master", "commit": "405df1dcc2e395ab5173a9c3d00e03942c023074" },
@@ -594,6 +606,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "nvim-web-devicons": { "branch": "master", "commit": "75df79feb02d5e0ec114e447453775d4d291ea03" },
   "outline.nvim": { "branch": "main", "commit": "a8d40aecb799196303ff3521c0e31c87bba57198" },
 <<<<<<< HEAD
@@ -642,6 +655,11 @@
 =======
   "nvim-web-devicons": { "branch": "master", "commit": "e2e3475c7bffbafbda19df2be6ffd04f6d1a3e16" },
 >>>>>>> eea242b (chore(nvim): update deps)
+||||||| parent of fc6b8a3 (style(nvim): lualine nord theme)
+  "nvim-web-devicons": { "branch": "master", "commit": "e2e3475c7bffbafbda19df2be6ffd04f6d1a3e16" },
+=======
+  "nvim-web-devicons": { "branch": "master", "commit": "93ddac6966d5d3416f96df728d7b92e27aaa4452" },
+>>>>>>> fc6b8a3 (style(nvim): lualine nord theme)
   "outline.nvim": { "branch": "main", "commit": "bdfd2da90e9a7686d00e55afa9f772c4b6809413" },
 <<<<<<< HEAD
 >>>>>>> 22f1bdf (chore(nvim): update deps)
