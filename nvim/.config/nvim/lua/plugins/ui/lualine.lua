@@ -151,7 +151,7 @@ local config = {
 		-- Disable sections and component separators
 		component_separators = "",
 		-- section_separators = '',
-		theme = "nord",
+		theme = "tokyonight",
 		disabled_filetypes = {
 			"dashboard",
 		},
