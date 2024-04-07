@@ -141,10 +141,6 @@ local function mode(icon)
 		function()
 			return icon
 		end,
-		-- TODO: enable.
-		-- color = function()
-		--     return { fg = mode_color[vim.fn.mode()] }
-		-- end,
 		padding = { left = 1, right = 0 },
 	}
 end
@@ -155,12 +151,11 @@ local config = {
 		-- Disable sections and component separators
 		component_separators = "",
 		-- section_separators = '',
-		theme = "onedark",
+		theme = "nord",
 		disabled_filetypes = {
 			"dashboard",
 		},
 	},
-	-- extensions = { 'quickfix', 'man', 'mason', 'lazy', 'toggleterm', 'nvim-tree' },
 	tabline = {
 		lualine_a = {},
 		lualine_b = { mode(), { "buffers", use_mode_colors = true } },
