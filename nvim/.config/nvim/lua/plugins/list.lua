@@ -7,10 +7,10 @@ end
 return {
 	-- UI
 	{
-		"gbprod/nord.nvim",
+		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		opts = load_config("ui.nord"),
+		opts = load_config("ui.tokyonight"),
 	},
 	{
 		"brenoprata10/nvim-highlight-colors",
