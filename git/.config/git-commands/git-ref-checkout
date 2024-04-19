@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git reflog --no-merges --abbrev=7 | \
+    sk --ansi --no-sort --tiebreak=index \
+       --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+               echo \"{}\" | \
+               grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git checkout %' @- "+abort
