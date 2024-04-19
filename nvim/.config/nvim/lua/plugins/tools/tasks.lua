@@ -9,7 +9,7 @@ tasks.setup({
 	default_params = {
 		cmake = {
 			cmd = "cmake",
-			build_dir = tostring(Path:new("{cwd}", "build")),
+			build_dir = tostring(Path:new("{cwd}", "_build")),
 			build_type = "Debug",
 			dap_name = "lldb",
 			args = {
