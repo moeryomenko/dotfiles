@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-git log -n 50 --pretty=format:'%h %s' --no-merges | sk | cut -c -7 | xargs -o git commit --fixup
+SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | sk | cut -c -7 | xargs -o`
+
+git commit --fixup=$SHA
+
+GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash "$SHA^"
