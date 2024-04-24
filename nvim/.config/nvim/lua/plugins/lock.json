@@ -53,9 +53,9 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-rg": { "branch": "master", "commit": "677a7874ee8f1afc648c2e7d63a97bc21a7663c5" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
-  "conform.nvim": { "branch": "master", "commit": "7a205c944d228ca0a5ec67656f59d20ba11ccca2" },
+  "conform.nvim": { "branch": "master", "commit": "475c096d24562cf1fa992731869e17ea6d75d2d9" },
   "cscope_maps.nvim": { "branch": "main", "commit": "40686cb8ed2740c80355b5d8712e221d2daca6de" },
-  "dressing.nvim": { "branch": "master", "commit": "3858609d683ca395ebce2f01d42e031d95a5eccc" },
+  "dressing.nvim": { "branch": "master", "commit": "5162edb1442a729a885c45455a07e9a89058be2f" },
   "friendly-snippets": { "branch": "main", "commit": "ea068f1becd91bcd4591fceb6420d4335e2e14d3" },
   "gitsigns.nvim": { "branch": "main", "commit": "035da036e68e509ed158414416c827d022d914bd" },
   "glow.nvim": { "branch": "main", "commit": "238070a686c1da3bccccf1079700eb4b5e19aea4" },
@@ -486,7 +486,7 @@
 =======
   "nvim-dap-virtual-text": { "branch": "master", "commit": "3e8e207513e6ef520894950acd76b79902714103" },
   "nvim-highlight-colors": { "branch": "main", "commit": "432dc7a817a4973041f02b418169667c491f60fd" },
-  "nvim-lspconfig": { "branch": "master", "commit": "94874383aea04f259a81cf9e40750be60d5bcb30" },
+  "nvim-lspconfig": { "branch": "master", "commit": "cfa386fc4027e847156ee16141ea1f4c0bc2f0a4" },
   "nvim-nio": { "branch": "master", "commit": "5800f585def265d52f1d8848133217c800bcb25d" },
 >>>>>>> eea242b (chore(nvim): update deps)
   "nvim-notify": { "branch": "master", "commit": "5371f4bfc1f6d3adf4fe9d62cd3a9d44356bfd15" },
@@ -569,6 +569,7 @@
 =======
   "nvim-surround": { "branch": "main", "commit": "a4e30d33add8a9743b4f518b3a788b3c8e5def71" },
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> b6c7d2c (chore(nvim|cmake): unify build dir for meson and cmake)
   "nvim-tree.lua": { "branch": "master", "commit": "81eb8d519233c105f30dc0a278607e62b20502fd" },
 <<<<<<< HEAD
@@ -598,6 +599,13 @@
   "nvim-tree.lua": { "branch": "master", "commit": "ae8e46e8fabb32fa3ae5319383ea2c8763f14caa" },
   "nvim-treesitter": { "branch": "master", "commit": "dc71d94fe223763d28ab49ee3de4fd7081a84891" },
 >>>>>>> 3d272d9 (style: return nord colors)
+||||||| parent of 2ed45b2 (feat(hyprland): configure)
+  "nvim-tree.lua": { "branch": "master", "commit": "ae8e46e8fabb32fa3ae5319383ea2c8763f14caa" },
+  "nvim-treesitter": { "branch": "master", "commit": "dc71d94fe223763d28ab49ee3de4fd7081a84891" },
+=======
+  "nvim-tree.lua": { "branch": "master", "commit": "62008e5cf2e8745c9d23bb599ef642963131057e" },
+  "nvim-treesitter": { "branch": "master", "commit": "b04ccbd0e041bb05f3eef271124da02497d9d10c" },
+>>>>>>> 2ed45b2 (feat(hyprland): configure)
   "nvim-treesitter-endwise": { "branch": "master", "commit": "60e8c288e011403f248b5f6478dde12bed8a6c55" },
 >>>>>>> c6436de (feat(nvim): change core mapping)
   "nvim-treesitter-refactor": { "branch": "master", "commit": "65ad2eca822dfaec2a3603119ec3cc8826a7859e" },

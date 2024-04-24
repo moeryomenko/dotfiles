@@ -2,7 +2,7 @@
   "position": "top",
   "height": 30,
   "modules-left": [
-    "sway/workspaces"
+    "hyprland/workspaces"
   ],
   "modules-right": [
     "pulseaudio",
