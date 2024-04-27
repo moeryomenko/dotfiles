@@ -4,7 +4,7 @@ if not status_ok then
 end
 
 tokyonight.setup({
-	style = "storm",
+	style = "night",
 	transparent = false,
 	terminal_colors = true,
 	styles = {

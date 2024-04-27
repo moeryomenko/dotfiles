@@ -4,12 +4,6 @@ if status is-interactive
 	keychain --eval --agents gpg --quiet --gpg2 -Q DA18DB431829C349 | source
 end
 
-if not test -d $HOME/.asdf
-  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.3
-end
-source $HOME/.asdf/asdf.fish
-source $HOME/.asdf/completions/asdf.fish
-
 set -U XDG_CONFIG_HOME $HOME/.config
 
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp

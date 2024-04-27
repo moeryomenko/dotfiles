@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/themes/themes/tokyo-night-storm.toml"]
+import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
 
 [bell]
 animation = "EaseOutExpo"

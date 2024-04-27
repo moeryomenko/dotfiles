@@ -1,9 +1,6 @@
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
-[submodule "tmux/.tmux/plugins/tmux"]
-	path = tmux/.tmux/plugins/tmux
-	url = git@github.com:catppuccin/tmux.git
 [submodule "tmux/.tmux/plugins/tmux-yank"]
 	path = tmux/.tmux/plugins/tmux-yank
 	url = git@github.com:tmux-plugins/tmux-yank.git
@@ -19,9 +16,6 @@
 [submodule "tmux/.tmux/plugins/tmux-plugin-sysstat"]
 	path = tmux/.tmux/plugins/tmux-plugin-sysstat
 	url = git@github.com:sainnhe/tmux-plugin-sysstat
-[submodule "tmux/.tmux/plugins/nord-tmux"]
-	path = tmux/.tmux/plugins/nord-tmux
-	url = git@github.com:arcticicestudio/nord-tmux
 [submodule "alacritty/.config/alacritty/themes"]
 	path = alacritty/.config/alacritty/themes
 	url = git@github.com:alacritty/alacritty-theme.git
