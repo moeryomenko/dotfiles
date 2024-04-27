@@ -23,9 +23,9 @@ fish_add_path $HOME/go/bin
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 
-abbr --add ll         "exa -l -h --git --classify --icons"
-abbr --add la         "exa -l -h --git --classify --icons -a"
-abbr --add tree       "exa -l -h --git --classify --icons --long --tree"
+abbr --add ll         "eza -l -h --git --classify --icons"
+abbr --add la         "eza -l -h --git --classify --icons -a"
+abbr --add tree       "eza -l -h --git --classify --icons --long --tree"
 abbr --add g          "git"
 abbr --add lg         "lazygit"
 abbr --add glog       "git dlog"
