@@ -10,6 +10,7 @@ fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=
 
 starship init fish | source
 direnv hook fish | source
+zoxide init fish | source
 
 set -U EDITOR nvim
 
