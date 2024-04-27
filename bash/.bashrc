@@ -26,6 +26,13 @@ if [ ! -f $HOME/.gnupg/gpg-agent.conf ]; then
 	ln -sf $XDG_CONFIG_HOME/gpg-agent.conf $HOME/.gnupg/gpg-agent.conf
 fi
 
+
+if [ ! -f $XDG_CONFIG_HOME/fzf-git.sh ]; then
+	curl -fLo $XDG_CONFIG_HOME/fzf-git.sh \
+                https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh
+fi
+source $XDG_CONFIG_HOME/fzf-git.sh
+
 if [ ! -f $XDG_CONFIG_HOME/abbrev-alias.plugin.bash ]; then
         curl -fLo $XDG_CONFIG_HOME/abbrev-alias.plugin.bash \
                 https://raw.githubusercontent.com/momo-lab/bash-abbrev-alias/master/abbrev-alias.plugin.bash
@@ -75,6 +82,20 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.cargo/bin
 
 export GPG_TTY=$(tty)
+
+eval "$(fzf --bash)"
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CRTL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+function _fzf_compgen_path {
+        fd --hidden --exclude .git . "$1"
+}
+
+function _fzf_compgen_dir {
+        fd --type=d --hidden --exclude .git . "$1"
+}
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
 eval $(keychain --eval --agents gpg --quiet --gpg2 DA18DB431829C349)
