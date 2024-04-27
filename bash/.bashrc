@@ -60,21 +60,15 @@ bind '"\e[B":history-search-forward'
 abbrev-alias -g g='git'
 abbrev-alias -g ur='ls | xargs -P10 -I{} git -C {} pull'
 abbrev-alias -g cor='ls | xargs -P10 -I{} git -C {} co main'
-abbrev-alias -g ll='exa -l -h --git --classify --icons' #'ls -l -h --color'
-abbrev-alias -g la='exa -l -h --git --classify --icons -a'
-abbrev-alias -g tree='exa -l -h --git --classify --icons --long --tree'
+abbrev-alias -g ll='eza -l -h --git --classify --icons' #'ls -l -h --color'
+abbrev-alias -g la='eza -l -h --git --classify --icons -a'
+abbrev-alias -g tree='eza -l -h --git --classify --icons --long --tree'
 abbrev-alias -g fz="sk --preview 'cat {}' --preview-window=right:70%"
 abbrev-alias -g hx='helix'
 abbrev-alias -g chping='ping -c 1 -W 3 google.com'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
-
-if [[ ! -d "$HOME/.asdf" ]]; then
-	git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.11.3
-fi
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
 
 export PATH=$PATH:$XDG_CONFIG_HOME/git-commands
 export PATH=$PATH:$HOME/.local/bin

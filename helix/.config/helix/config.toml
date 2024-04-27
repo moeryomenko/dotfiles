@@ -1,4 +1,4 @@
-theme = "nord-night"
+theme = "tokyonight"
 
 [editor]
 line-number = "relative"
