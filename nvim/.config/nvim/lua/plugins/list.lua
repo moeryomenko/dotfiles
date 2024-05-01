@@ -100,6 +100,15 @@ return {
 			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 		end,
 	},
+	-- Languages
+	{
+		"scalameta/nvim-metals",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		ft = { "scala", "sbt", "java" },
+		config = load_config("lang.metals"),
+	},
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",

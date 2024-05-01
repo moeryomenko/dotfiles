@@ -77,6 +77,25 @@ dap.configurations.cpp = {
 }
 dap.configurations.c = dap.configurations.cpp
 
+dap.configurations.scala = {
+	{
+		type = "scala",
+		request = "launch",
+		name = "RunOrTest",
+		metals = {
+			runType = "runOrTestFile",
+		},
+	},
+	{
+		type = "scala",
+		request = "launch",
+		name = "Test Target",
+		metals = {
+			runType = "testTarget",
+		},
+	},
+}
+
 vim.api.nvim_create_user_command("DapUIToggle", function()
 	require("dapui").toggle()
 end, {})
