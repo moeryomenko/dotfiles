@@ -38,8 +38,17 @@ abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --l
 abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
 abbr --add pkgcache   "sudo pacman -Scc"
+abbr --add sw         "cd (worktree)"
 
 alias hx='helix'
+
+function worktree
+    git worktree list | awk '{ print $1}' | \
+    	sk --ansi --no-sort --reverse --tiebreak=index \
+    	--preview "git -C {} log --no-merges --date=relative -p" \
+    	--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,crtl-b:preview-page-up,q:abort,ctrl-m:exec:echo {}" \
+    	--preview-window=right:70%
+end
 
 function cscope_gen
 	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\|comp\|vert\|frag\)' > cscope.files
