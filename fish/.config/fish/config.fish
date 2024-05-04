@@ -3,7 +3,6 @@ fish_add_path /opt/homebrew/bin
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
-	# keychain --eval --agents gpg --quiet --gpg2 -Q DA18DB431829C349 | source
 end
 
 export GPG_TTY=$(tty)
@@ -23,12 +22,6 @@ fish_add_path $HOME/.sbm-cli/usr/bin
 direnv hook fish | source
 starship init fish | source
 zoxide init fish | source
-
-# wayland env vars.
-set -U GDK_BACKEND wayland
-set -U XDG_SESSION_TYPE wayland
-set -U XDG_CURRENT_DESKTOP sway
-set -U MOZ_ENABLE_WAYLAND 1
 
 abbr --add ll   "eza -l -h --git --classify --icons"
 abbr --add la   "eza -l -h --git --classify --icons -a"
@@ -70,10 +63,10 @@ abbr --add sw        "cd (worktree)"
 
 function worktree
     git worktree list | awk '{ print $1}' | \
-		sk --ansi --no-sort --reverse --tiebreak=index \
-		--preview "git -C {} log --no-merges --date=relative -p" \
-		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,crtl-b:preview-page-up,q:abort,ctrl-m:exec:echo {}" \
-		--preview-window=right:70%
+    	sk --ansi --no-sort --reverse --tiebreak=index \
+    	--preview "git -C {} clog" \
+    	--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,crtl-b:preview-page-up,q:abort,ctrl-m:exec:echo {}" \
+    	--preview-window=right:70%
 end
 
 function b64e

@@ -61,7 +61,7 @@ args = ["-l", "-c", "tmux attach || tmux"]
 program = "/usr/local/bin/fish"
 
 [window]
-decorations = "Full"
+decorations = "None"
 dynamic_padding = false
 dynamic_title = true
 opacity = 0.95
