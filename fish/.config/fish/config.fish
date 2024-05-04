@@ -1,46 +1,72 @@
+fish_add_path /opt/homebrew/bin
+
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
-	keychain --eval --agents gpg --quiet --gpg2 -Q DA18DB431829C349 | source
+	# keychain --eval --agents gpg --quiet --gpg2 -Q DA18DB431829C349 | source
 end
 
-set -U XDG_CONFIG_HOME $HOME/.config
-
-fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
-
-starship init fish | source
-direnv hook fish | source
-zoxide init fish | source
+export GPG_TTY=$(tty)
 
 set -U EDITOR nvim
+set -U NPM_CONFIG_PREFIX $HOME/.npm-global
+set -U GOPATH (go env GOPATH)
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
-fish_add_path $XDG_CONFIG_HOME/git-commands
+fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/Library/Python/3.10/bin
 fish_add_path $HOME/go/bin
-fish_add_path $HOME/.local/share/coursier/bin
+fish_add_path $HOME/.sbm-cli/usr/bin
 
-# Flatpak settings
-set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
-set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+direnv hook fish | source
+starship init fish | source
+zoxide init fish | source
 
-abbr --add ll         "eza -l -h --git --classify --icons"
-abbr --add la         "eza -l -h --git --classify --icons -a"
-abbr --add tree       "eza -l -h --git --classify --icons --long --tree"
-abbr --add g          "git"
-abbr --add lg         "lazygit"
-abbr --add glog       "git dlog"
-abbr --add ur         "ls | xargs -P10 -I{} git -C {} pull"
-abbr --add nv         "nvim"
-abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
-abbr --add check_ping "ping -c 1 -W 3 google.com"
-abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
-abbr --add pkgcache   "sudo pacman -Scc"
-abbr --add sw         "cd (worktree)"
+# wayland env vars.
+set -U GDK_BACKEND wayland
+set -U XDG_SESSION_TYPE wayland
+set -U XDG_CURRENT_DESKTOP sway
+set -U MOZ_ENABLE_WAYLAND 1
 
-alias hx='helix'
+abbr --add ll   "eza -l -h --git --classify --icons"
+abbr --add la   "eza -l -h --git --classify --icons -a"
+abbr --add tree "eza -l -h --git --classify --icons --long --tree"
+abbr --add g    "git"
+abbr --add ga   "git a"
+abbr --add lg   "lazygit"
+abbr --add nv   "nvim"
+
+set fzf_preview_dir_cmd ll
+set fzf_preview_file_cmd bat
+set fzf_fd_opts --hidden --exclude=.git
+
+bind \cx edit_command_buffer
+
+function fz
+	sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%
+end
+
+abbr --add htpf       "set pods (kubectl -n paas-content-operations-shifts get po -l app.kubernetes.io/component=perf-test --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}'); for i in (seq (count \$pods)); fish -c \"kubectl -n paas-content-operations-shifts port-forward \\\$argv[1] 301\\\$argv[2]:3010\" \$pods[\$i] (math \$i - 1) & ; end"
+
+
+abbr --add nslist    "kubectl get namespaces -l paas.sbermarket.tech/service=paas-content-operations-shifts -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:set -U NAMESPACE (echo {} | sed 's/namespace\\///')\"+abort"
+abbr --add kubestg   "kubectl config --context teleport.sbmt.io-stage use-context teleport.sbmt.io-stage"
+abbr --add kubeprod  "kubectl config --context teleport.sbmt.io-k8s-prod use-context teleport.sbmt.io-k8s-prod"
+abbr --add gpo       "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instance=paas-content-operations-shifts-paas"
+abbr --add gpao      "kubectl -n \$NAMESPACE get po"
+abbr --add rwpf      "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6432:6432"
+abbr --add ropf      "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6532:6532"
+abbr --add stgpf     "kubectl -n paas-content-operations-shifts port-forward postgresql-0 5431:5432"
+abbr --add restartpo "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instance=\$NAMESPACE-paas --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
+abbr --add restartw  "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/component=workers --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
+abbr --add swiss     "kubectl -n \$NAMESPACE scale deployment/swissknife --replicas"
+abbr --add redispf   "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6379:6379"
+abbr --add gdpod     "kubectl -n \$NAMESPACE get po -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:kubectl -n \$NAMESPACE describe po (echo {} | sed 's/pod\///') | less\"+abort"
+abbr --add ppf       "kubectl -n \$NAMESPACE port-forward (kubectl -n \$NAMESPACE get po -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:echo {}\"+abort) "
+abbr --add logsof    "kubectl -n \$NAMESPACE get rollouts.argoproj.io -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:stern --color=always -n \$NAMESPACE -l app.kubernetes.io/component=(echo {} | sed 's/rollout.argoproj.io\///') -c app\"+abort"
+abbr --add sw        "cd (worktree)"
 
 function worktree
     git worktree list | awk '{ print $1}' | \
@@ -50,25 +76,15 @@ function worktree
 		--preview-window=right:70%
 end
 
-function cscope_gen
-	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\|comp\|vert\|frag\)' > cscope.files
-	cscope -b -q -k
+function b64e
+	echo -n "$argv[1]" | base64
 end
 
-function compress
-	XZ_OPT=-9 tar cJF $argv.tar.xz $argv
+function b64d
+	echo -n "$argv[1]" | base64 -d
+	echo
 end
 
 function replace_all
-	rg -l $argv[1] . | xargs sed -i "s/$argv[1]/$argv[2]/g"
-end
-
-if test (tty) = /dev/tty1
-	export RADV_VIDEO_DECODE=1
-	export SDL_VIDEODRIVER=wayland
-	export GDK_BACKEND=wayland
-	export XDG_SESSION_TYPE=wayland
-	export XDG_CURRENT_DESKTOP=sway
-	export MOZ_ENABLE_WAYLAND=1
-	exec Hyprland
+	rg -l $argv[1] . | xargs sed -i'' 's/$argv[1]/$argv[2]/g'
 end
