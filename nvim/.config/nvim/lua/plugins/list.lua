@@ -122,6 +122,7 @@ return {
 			"saadparwaiz1/cmp_luasnip",
 			"windwp/nvim-autopairs",
 			"lukas-reineke/cmp-rg",
+			"onsails/lspkind.nvim",
 		},
 		config = load_config("lang.cmp"),
 		event = "InsertEnter",
