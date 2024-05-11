@@ -231,7 +231,7 @@ return {
 			require("outline").setup({})
 		end,
 		keys = {
-			{ "<leader>w", "<cmd>Outline<cr>" },
+			{ "\\w", "<cmd>Outline<cr>" },
 		},
 	},
 	{
