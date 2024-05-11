@@ -8,6 +8,11 @@ if not snip_status_ok then
 	return
 end
 
+local kind_status_ok, lspkind = pcall(require, "lspkind")
+if not kind_status_ok then
+	return
+end
+
 require("luasnip/loaders/from_vscode").lazy_load()
 
 local compare = require("cmp.config.compare")
@@ -72,18 +77,23 @@ cmp.setup({
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
 		expandable_indicator = true,
-		format = function(entry, vim_item)
-			-- Kind icons
-			vim_item.kind = kind_icons[vim_item.kind]
+		format = lspkind.cmp_format({
+			mode = "symbol",
+			maxwidth = 50,
 
-			vim_item.menu = ({
-				nvim_lsp = "[LSP]",
-				luasnip = "[Snippet]",
-				buffer = "[Buffer]",
-				path = "[Path]",
-			})[entry.source.name]
-			return vim_item
-		end,
+			ellipsis_char = "...",
+			show_labelDetails = true,
+
+			before = function(entry, vim_item)
+				vim_item.menu = ({
+					nvim_lsp = "[LSP]",
+					luasnip = "[Snippet]",
+					buffer = "[Buffer]",
+					path = "[Path]",
+				})[entry.source.name]
+				return vim_item
+			end,
+		}),
 	},
 	sources = {
 		{ name = "nvim_lsp" },
