@@ -9,6 +9,13 @@ end
 -- close other buffers, except for the current.
 map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 
+--#region move to window using <ctrl> hjkl keys.
+map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", silent = true, noremap = true })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", silent = true, noremap = true })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", silent = true, noremap = true })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", silent = true, noremap = true })
+--#endregion
+
 --#region split resize
 map("n", "<A-l>", ":vert res +10<CR>", { silent = true })
 map("n", "<A-h>", ":vert res -10<CR>", { silent = true })
