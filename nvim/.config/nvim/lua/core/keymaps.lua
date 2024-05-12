@@ -9,6 +9,9 @@ end
 -- close other buffers, except for the current.
 map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 
+-- search modified files
+map("n", "<Leader>m", ":Telescope git_status<CR>", opts)
+
 --#region move to window using <ctrl> hjkl keys.
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", silent = true, noremap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", silent = true, noremap = true })
