@@ -22,10 +22,6 @@ return {
 			},
 			"hrsh7th/nvim-cmp",
 			{
-				"artemave/workspace-diagnostics.nvim",
-				enabled = false,
-			},
-			{
 				"j-hui/fidget.nvim",
 				enabled = false, -- TODO: figure out how this status shows without fidget
 				opts = {},

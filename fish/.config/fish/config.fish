@@ -37,6 +37,8 @@ set fzf_fd_opts --hidden --exclude=.git
 
 bind \cx edit_command_buffer
 
+fzf_configure_bindings --history=\ch
+
 function fz
 	sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%
 end
@@ -51,14 +53,14 @@ abbr --add gpo       "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instanc
 abbr --add gpao      "kubectl -n \$NAMESPACE get po"
 abbr --add rwpf      "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6432:6432"
 abbr --add ropf      "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6532:6532"
-abbr --add stgpf     "kubectl -n paas-content-operations-shifts port-forward postgresql-0 5431:5432"
+abbr --add stgpf     "kubectl -n \$NAMESPACE port-forward postgresql-0 5432:5432"
 abbr --add restartpo "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instance=\$NAMESPACE-paas --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
 abbr --add restartw  "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/component=workers --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
 abbr --add swiss     "kubectl -n \$NAMESPACE scale deployment/swissknife --replicas"
 abbr --add redispf   "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6379:6379"
 abbr --add gdpod     "kubectl -n \$NAMESPACE get po -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:kubectl -n \$NAMESPACE describe po (echo {} | sed 's/pod\///') | less\"+abort"
 abbr --add ppf       "kubectl -n \$NAMESPACE port-forward (kubectl -n \$NAMESPACE get po -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:echo {}\"+abort) "
-abbr --add logsof    "kubectl -n \$NAMESPACE get rollouts.argoproj.io -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:stern --color=always -n \$NAMESPACE -l app.kubernetes.io/component=(echo {} | sed 's/rollout.argoproj.io\///') -c app\"+abort"
+abbr --add logsof    "kubectl -n \$NAMESPACE get rollouts.argoproj.io -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:stern --color=always -n \$NAMESPACE -l app.kubernetes.io/component=(echo {} | sed 's/rollout.argoproj.io\///') -o raw -c app | jlog \"+abort"
 abbr --add sw        "cd (worktree)"
 
 function worktree

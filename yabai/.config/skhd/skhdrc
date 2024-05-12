@@ -43,4 +43,4 @@ alt - p : yabai -m window --focus stack.prev
 
 # applications
 
-alt - return : open -a "Alacritty" -n
+# ctrl - return : open -a "Alacritty" -n

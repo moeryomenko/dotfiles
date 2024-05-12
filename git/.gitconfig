@@ -2,6 +2,7 @@
 	editor = vim
 	excludesfile = ~/.config/gitignore-global
 	pager = delta
+	hookspath = /Users/eremenko.mo/.git_settings/hooks
 [add.interactive]
 	useBuiltin = false
 [interactive]

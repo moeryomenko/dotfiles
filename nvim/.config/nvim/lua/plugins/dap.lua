@@ -80,6 +80,7 @@ return {
 		"rcarriga/cmp-dap",
 		"LiadOz/nvim-dap-repl-highlights",
 	},
+	event = "LspAttach",
 	cmd = { "DapUIToggle", "DapToggleRepl", "DapToggleBreakpoint" },
 	keys = {
 		{ "<F5>", ":lua require'dap'.continue()<CR>" },
@@ -90,8 +91,8 @@ return {
 		{ "\\B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>" },
 		{ "\\lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>" },
 		{ "\\ro", ":lua require'dap'.repl.open()<CR>" },
-		{ "\\dr", ":lua require('dap').run()<CR>" },
 		{ "\\dt", ":lua require('dap-go').debug_test()<CR>" },
+		{ "\\dr", ":lua require('dap').run()<CR>" },
 		{ "\\do", ":DapUIToggle<CR>" },
 	},
 	config = function(_, opts)
