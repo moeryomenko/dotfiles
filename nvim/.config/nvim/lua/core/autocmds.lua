@@ -84,3 +84,16 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
 })
+
+-- wrap words "softly" (no carriage return) in mail buffer
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "mail",
+	callback = function()
+		vim.opt.textwidth = 0
+		vim.opt.wrapmargin = 0
+		vim.opt.wrap = true
+		vim.opt.linebreak = true
+		vim.opt.columns = 80
+		vim.opt.colorcolumn = "80"
+	end,
+})
