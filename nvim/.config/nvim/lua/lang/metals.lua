@@ -1,3 +1,5 @@
+local map = require("core.utils").map
+
 return {
 	"scalameta/nvim-metals",
 	dependencies = {
