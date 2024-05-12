@@ -22,8 +22,7 @@ lazy.setup({
 	root = vim.fn.stdpath("data") .. "/lazy",
 	spec = {
 		{ import = "plugins" },
-		-- TODO: adopt
-		-- { import = "lang" },
+		{ import = "lang" },
 	},
 	lockfile = vim.fn.stdpath("config") .. "/lua/plugins/lock.json",
 	concurrency = 16,
