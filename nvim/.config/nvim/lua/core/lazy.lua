@@ -17,17 +17,14 @@ if not status_ok then
 end
 
 local icons = require("core.icons")
-local plugins = require("plugins.list")
 
 lazy.setup({
 	root = vim.fn.stdpath("data") .. "/lazy",
-	spec = plugins,
-	-- TODO: adopt
-	-- spec = {
-	-- 	{ import = "plugins" },
-	-- 	-- import language configs
-	-- 	{ import = "lang" },
-	-- },
+	spec = {
+		{ import = "plugins" },
+		-- TODO: adopt
+		-- { import = "lang" },
+	},
 	lockfile = vim.fn.stdpath("config") .. "/lua/plugins/lock.json",
 	concurrency = 16,
 	git = {
