@@ -46,14 +46,12 @@ return {
 		},
 	},
 	event = "InsertEnter",
-	config = function()
+	opts = function(_, _)
 		local cmp = require("cmp")
+		local compare = require("cmp.config.compare")
 		local luasnip = require("luasnip")
 		local lspkind = require("lspkind")
-		require("luasnip/loaders/from_vscode").lazy_load()
-		local compare = require("cmp.config.compare")
-		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-		cmp.setup({
+		return {
 			snippet = {
 				expand = function(args)
 					luasnip.lsp_expand(args.body) -- For `luasnip` users.
@@ -168,7 +166,13 @@ return {
 			experimental = {
 				ghost_text = true,
 			},
-		})
+		}
+	end,
+	config = function(_, opts)
+		local cmp = require("cmp")
+		require("luasnip/loaders/from_vscode").lazy_load()
+		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		cmp.setup(opts)
 		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 	end,
 }
