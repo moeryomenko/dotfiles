@@ -161,7 +161,7 @@ function M.setup_lsp_keymaps(event)
 
 	-- Fuzzy find all the symbols in your current workspace
 	--  Similar to document symbols, except searches over your whole project.
-	map("gs", builtins.lsp_dynamic_workspace_symbols, "Workspace [s]ymbols (telescope)")
+	map("gs", builtins.lsp_document_symbols, "Buffer [s]ymbols (telescope)")
 
 	-- Opens a popup that displays documentation about the word under your cursor
 	--  See `:help K` for why this keymap
