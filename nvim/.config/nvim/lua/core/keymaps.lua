@@ -30,8 +30,8 @@ map("n", "<leader>yy ", '"+yy')
 --#endregion
 
 --#region
-map("n", "<leader>zi", ":tab split<CR>", { silent = true })
-map("n", "<leader>zo", ":tab close<CR>", { silent = true })
+map("n", "\\zi", ":tab split<CR>", { silent = true })
+map("n", "\\zo", ":tab close<CR>", { silent = true })
 --#endregion
 
 --#region paste from clipboard
