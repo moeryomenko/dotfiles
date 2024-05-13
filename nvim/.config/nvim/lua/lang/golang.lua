@@ -75,7 +75,6 @@ return {
 		},
 		ft = { "go", "gomod", "gowork", "gotmpl" },
 	},
-
 	{
 		"nvim-neotest/neotest",
 		ft = { "go" },
@@ -96,7 +95,6 @@ return {
 			}
 		end,
 	},
-
 	{
 		"andythigpen/nvim-coverage",
 		ft = { "go" },
@@ -111,7 +109,6 @@ return {
 			},
 		},
 	},
-
 	{
 		"mfussenegger/nvim-dap",
 		ft = { "go" },
@@ -127,25 +124,9 @@ return {
 			},
 			{
 				"leoluz/nvim-dap-go",
-				opts = {},
-			},
-		},
-		opts = {
-			configurations = {
-				go = {
-					-- See require("dap-go") source for full dlv setup.
-					{
-						type = "go",
-						name = "Debug test (manually enter test name)",
-						request = "launch",
-						mode = "test",
-						program = "./${relativeFileDirname}",
-						args = function()
-							local testname = vim.fn.input("Test name (^regexp$ ok): ")
-							return { "-test.run", testname }
-						end,
-					},
-				},
+				config = function()
+					require("dap-go").setup()
+				end,
 			},
 		},
 	},
