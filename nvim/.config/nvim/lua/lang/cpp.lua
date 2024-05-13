@@ -87,4 +87,59 @@ return {
 			},
 		},
 	},
+	{
+		"mfussenegger/nvim-dap",
+		ft = { "cpp" },
+		dependencies = {
+			{
+				"jay-babu/mason-nvim-dap.nvim",
+				dependencies = {
+					"williamboman/mason.nvim",
+				},
+				opts = {
+					ensure_installed = { "codelldb" },
+				},
+			},
+		},
+		opts = {
+			adapters = {
+				lldb = {
+					type = "executable",
+					command = "/usr/bin/lldb-vscode", -- adjust as needed, must be absolute path
+					env = {
+						LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES",
+					},
+					name = "lldb",
+				},
+			},
+			configurations = {
+				c = {
+					{
+						name = "Launch",
+						type = "lldb",
+						request = "launch",
+						program = function()
+							return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+						end,
+						cwd = "${workspaceFolder}",
+						stopOnEntry = false,
+						args = {},
+					},
+				},
+				cpp = {
+					{
+						name = "Launch",
+						type = "lldb",
+						request = "launch",
+						program = function()
+							return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+						end,
+						cwd = "${workspaceFolder}",
+						stopOnEntry = false,
+						args = {},
+					},
+				},
+			},
+		},
+	},
 }

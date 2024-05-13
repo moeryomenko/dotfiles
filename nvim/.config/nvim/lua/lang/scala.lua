@@ -90,4 +90,38 @@ return {
 			group = nvim_metals_group,
 		})
 	end,
+	{
+		"mfussenegger/nvim-dap",
+		ft = { "scala", "sbt", "java" },
+		dependencies = {
+			{
+				"jay-babu/mason-nvim-dap.nvim",
+				dependencies = {
+					"williamboman/mason.nvim",
+				},
+			},
+		},
+		opts = {
+			configurations = {
+				scala = {
+					{
+						type = "scala",
+						request = "launch",
+						name = "RunOrTest",
+						metals = {
+							runType = "runOrTestFile",
+						},
+					},
+					{
+						type = "scala",
+						request = "launch",
+						name = "Test Target",
+						metals = {
+							runType = "testTarget",
+						},
+					},
+				},
+			},
+		},
+	},
 }
