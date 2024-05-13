@@ -152,6 +152,8 @@ function M.setup_lsp_keymaps(event)
 	--  To jump back, press <C-t>.
 	map("gd", builtins.lsp_definitions, "[G]oto [D]efinition")
 
+	map("<leader>k", ":Lspsaga peek_definition<CR>", "Pee[k] definition")
+
 	-- Find references for the word under your cursor.
 	map("gr", ':lua require("telescope.builtin").lsp_references({ show_line = false })<CR>', "[G]oto [R]eferences")
 
