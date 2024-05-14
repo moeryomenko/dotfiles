@@ -20,6 +20,42 @@ return {
 				end,
 			},
 		},
+		opts = {
+			icons = {
+				child_indent = "│",
+				child_prefix = "├",
+				collapsed = "─",
+				expanded = "╮",
+				failed = "✘",
+				final_child_indent = " ",
+				final_child_prefix = "╰",
+				non_collapsible = "─",
+				passed = "✓",
+				running = "",
+				running_animated = { "/", "|", "\\", "-", "/", "|", "\\", "-" },
+				skipped = "↓",
+				unknown = "",
+			},
+			status = {
+				enabled = true,
+				signs = true,
+				virtual_text = true,
+			},
+			floating = {
+				enabled = true,
+				border = "rounded",
+				max_height = 0.9,
+				max_width = 0.9,
+				options = {},
+			},
+			-- output = { open_on_run = true },
+			quickfix = {
+				enabled = true,
+				open = function()
+					vim.cmd("Trouble quickfix")
+				end,
+			},
+		},
 		config = function(_, opts)
 			if opts.adapters then
 				local adapters = {}
