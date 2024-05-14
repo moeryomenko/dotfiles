@@ -5,3 +5,4 @@ nvim/.config/nvim/db_ui/
 vim/.vim/autoload/
 vim/.vim/plugged/
 *.netrwhist
+nvim/.config/nvim/lua/plugins/lock.json
