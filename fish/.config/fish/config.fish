@@ -56,6 +56,7 @@ abbr --add ropf      "kubectl -n paas-content-operations-shifts port-forward (ku
 abbr --add stgpf     "kubectl -n \$NAMESPACE port-forward postgresql-0 5432:5432"
 abbr --add restartpo "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instance=\$NAMESPACE-paas --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
 abbr --add restartw  "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/component=workers --template '{{range.items}}{{.metadata.name}}{{\"\\n\"}}{{end}}' | xargs kubectl -n paas-content-operations-shifts delete po"
+abbr --add prodpgcli "pass -c shifts/prod/pg && pgcli -h localhost -U content_operations_shifts -d content_operations_shifts -p 6432"
 abbr --add swiss     "kubectl -n \$NAMESPACE scale deployment/swissknife --replicas"
 abbr --add redispf   "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6379:6379"
 abbr --add gdpod     "kubectl -n \$NAMESPACE get po -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:kubectl -n \$NAMESPACE describe po (echo {} | sed 's/pod\///') | less\"+abort"
