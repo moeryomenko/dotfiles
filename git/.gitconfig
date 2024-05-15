@@ -67,6 +67,14 @@
 	defaultBranch = main
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
+[url "git@gitlab.freedesktop.org:"]
+	insteadOf = https://gitlab.freedesktop.org/
+[url "git@gitlab.gnome.org:"]
+	insteadOf = https://gitlab.gnome.org/
+[url "git@gitlab.kitware.com:"]
+	insteadOf= https://gitlab.kitware.com/
 [url "git@git.sbermarket.tech:"]
 	insteadOf = https://gitlab.sbermarket.tech
 [url "ssh://git@gitlab.sbmt.io:"]
