@@ -200,6 +200,7 @@ nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 
 " lsp mapping  {{{
 nmap <silent> gd :LspDefinition<CR>
+nmap <silent> gk :LspPeekDefinition<CR>
 nmap <silent> gi :LspImplementation<CR>
 nmap <silent> th :LspHover<CR>
 nmap <silent> gr :LspReferences<CR>
