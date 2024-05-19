@@ -107,6 +107,7 @@ bindsym $mod+Mod1+v exec cliphist list | wofi --dmenu | cliphist decode | wl-cop
 
 # Flatpak application launcher:
 bindsym $mod+Mod1+f exec flatpak list --app --columns=application | wofi --dmenu | xargs flatpak run
+bindsym $mod+Shift+k exec flatpak ps --columns=application | sort | uniq | wofi --dmenu | xargs flatpak kill
 
 # Resizing containers:
 bindsym $mod+r mode "resize"
