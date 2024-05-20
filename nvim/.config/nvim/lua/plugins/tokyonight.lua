@@ -3,7 +3,7 @@ return {
 	lazy = false,
 	priority = 1000,
 	config = function()
-		tokyonight = require("tokyonight")
+		local tokyonight = require("tokyonight")
 		tokyonight.setup({
 			style = "night",
 			transparent = false,
