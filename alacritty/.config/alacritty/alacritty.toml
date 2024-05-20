@@ -64,7 +64,6 @@ program = "/usr/local/bin/fish"
 decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-opacity = 0.95
 startup_mode = "Windowed"
 
 [window.dimensions]
