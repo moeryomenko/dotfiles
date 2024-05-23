@@ -60,19 +60,6 @@ return {
 			vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
 		end,
 	},
-	{
-		"nvim-neotest/neotest",
-		dependencies = {
-			"mrcjkb/rustaceanvim",
-		},
-		optional = true,
-		opts = function(_, opts)
-			opts.adapters = opts.adapters or {}
-			vim.list_extend(opts.adapters, {
-				require("rustaceanvim.neotest"),
-			})
-		end,
-	},
 	-- Ensure Rust debugger is installed
 	{
 		"williamboman/mason.nvim",
