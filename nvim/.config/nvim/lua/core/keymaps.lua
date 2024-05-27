@@ -89,7 +89,7 @@ function M.setup_lsp_keymaps(event)
 	map("grn", ":Lspsaga rename<CR>", "Code [R]e[n]ame")
 	-- Execute a code action, usually your cursor needs to be on top of an error
 	-- or a suggestion from your LSP for this to activate.
-	map("<leader>ca", ":Lspsaga code_action<CR>", "[C]ode [A]ction")
+	map("<leader>ca", require("actions-preview").code_actions, "[C]ode [A]ction")
 end
 
 return M
