@@ -6,14 +6,6 @@ function find_failures {
 		sort | uniq -c | sort --numeric --reverse --key 1
 }
 
-function pm_pkg_clean {
-	sudo pacman -Rncs $(pacman -Qdtq)
-}
-
-function pm_cache_clean {
-	sudo pacman -Scc
-}
-
 function partition_size { lsblk --json | jq -c '.blockdevices[]|[.name,.size]'; }
 
 function files_type { test "$#" -gt 0 && stat --printf "%n: %F\n" "$@"; }
