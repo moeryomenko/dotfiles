@@ -12,8 +12,8 @@ window#waybar {
 #window, #clock, #system, #keyboard, #hardware {
     margin: 5px;
     padding: 0 10px;
-    background-color: #272E33;
-    border: 2px solid #3D484D;
+    background-color: #2E3440;
+    border: 2px solid #3B4252;
     border-radius: 15px;
 }
 
@@ -22,7 +22,7 @@ window#waybar {
 }
 
 #clock {
-    background-color: #A7C080;
+    background-color: #81A1C1;
     border: 2px solid #2D353B;
     color: #2D353B;
     font-weight: bold;
@@ -41,13 +41,13 @@ window#waybar {
 }
 
 #workspaces button.active {
-    background-color: #A7C080;
+    background-color: #81A1C1;
     color: #2D353B;
     transition: all 0.3s ease-in-out;
 }
 
 #workspaces button.focused {
-    background-color: #A7C080;
+    background-color: #81A1C1;
 }
 
 #workspaces button:hover {
@@ -65,6 +65,6 @@ window#waybar {
 #custom-wlogout {
     margin-left: 7px;
     padding: 0 15px;
-    background-color: #A7C080;
+    background-color: #81A1C1;
     color: #2D353B;
 }
