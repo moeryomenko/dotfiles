@@ -6,11 +6,9 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"RRethy/nvim-treesitter-endwise",
 		"RRethy/nvim-treesitter-textsubjects",
-		"m-demare/hlargs.nvim",
 	},
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
-		require("hlargs").setup()
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = {
 				"bash",
