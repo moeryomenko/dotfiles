@@ -1,43 +1,83 @@
-* {
-	background-image: none;
-}
+/*
+
+██╗    ██╗██╗      ██████╗  ██████╗  ██████╗ ██╗   ██╗████████╗
+██║    ██║██║     ██╔═══██╗██╔════╝ ██╔═══██╗██║   ██║╚══██╔══╝
+██║ █╗ ██║██║     ██║   ██║██║  ███╗██║   ██║██║   ██║   ██║   
+██║███╗██║██║     ██║   ██║██║   ██║██║   ██║██║   ██║   ██║   
+╚███╔███╔╝███████╗╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝   ██║   
+ ╚══╝╚══╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   
+
+WLogout Config File by Arfan Zubi
+
+*/
+
 window {
-	background-color: rgba(12, 12, 12, 0.9);
+    color: #D3C6AA;
+    background-color: rgba(45, 53, 59, 0.7);
+    font-family: 'FiraCode Nerd Font', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
 }
+
 button {
-	background-color: #1E1E1E;
-	border-style: solid;
-	border-width: 2px;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 25%;
+    margin: 5px;
+    color: #D3C6AA;
+    background-color: #272E33;
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 5px solid #3D484D;
+    border-radius: 15px;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    transition: background-color 0.2s ease-in-out;
 }
 
 button:focus, button:active, button:hover {
-	background-color: #3700B3;
-	outline-style: none;
+    color: #2D353B;
+    background-color: #A7C080;
+    text-shadow: none;
 }
 
 #lock {
-    background-image: image(url("/usr/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+    background-image: image(url("./icons/lock.png"));
+}
+#lock:hover, #lock:focus {
+    background-image: image(url("./icons/lock-hover.png"));
 }
 
 #logout {
-    background-image: image(url("/usr/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+    background-image: image(url("./icons/logout.png"));
+}
+#logout:hover, #logout:focus {
+    background-image: image(url("./icons/logout-hover.png"));
 }
 
 #suspend {
-    background-image: image(url("/usr/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+    background-image: image(url("./icons/suspend.png"));
+}
+#suspend:hover, #suspend:focus {
+    background-image: image(url("./icons/suspend-hover.png"));
 }
 
 #hibernate {
-    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+    background-image: image(url("./icons/hibernate.png"));
+}
+#hibernate:hover, #hibernate:focus {
+    background-image: image(url("./icons/hibernate-hover.png"));
 }
 
 #shutdown {
-    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+    background-image: image(url("./icons/shutdown.png"));
+}
+#shutdown:hover, #shutdown:focus {
+    background-image: image(url("./icons/shutdown-hover.png"));
 }
 
 #reboot {
-    background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+    background-image: image(url("./icons/reboot.png"));
+}
+#reboot:hover, #reboot:focus {
+    background-image: image(url("./icons/reboot-hover.png"));
 }

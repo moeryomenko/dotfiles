@@ -1,76 +1,36 @@
 {
-  "position": "top",
-  "height": 30,
-  "modules-left": [
-    "hyprland/workspaces"
-  ],
-  "modules-right": [
-    "pulseaudio",
-    "network",
-    "battery",
-    "custom/date",
-    "sway/language",
-    "clock",
-    "custom/power"
-  ],
-  "sway/workspaces": {
-    "format": "{icon}"
-  },
-  "sway/language": {
-    "format": " {short} {variant}"
-  },
-  "custom/date": {
-    "format": " {}",
-    "interval": 3600,
-    "exec": "/home/moeryomenko/.config/waybar/waybar-date.sh"
-  },
-  "custom/power": {
-    "format": "",
-    "on-click": "wlogout"
-  },
-  "clock": {
-    "format": "󰃰 {:%H:%M}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": " {:%Y-%m-%d}"
-  },
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15
+    "layer": "top",
+    "height": 40,
+
+    "include": ["$HOME/.config/waybar/modules.json"],
+
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["group/system", "group/keyboard", "group/hardware", "custom/wlogout"],
+
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": [
+            "backlight",
+            "pulseaudio",
+            "network"
+        ]
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": "󱊦 {capacity}%",
-    "format-plugged": "󱊦 {capacity}%",
-    "format-alt": "{time} {icon}",
-    "format-full": "󱊣 {capacity}%",
-    "format-icons": [
-      "󱊡",
-      "󱊢",
-      "󱊣"
-    ]
-  },
-  "network": {
-    "format-wifi": "  {essid}",
-    "format-ethernet": "{ifname}: {ipaddr}/{cidr} 󰈀",
-    "format-linked": "{ifname} (No IP) 󰈀",
-    "format-disconnected": "󰤮 Disconnected",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
-  },
-  "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-muted": "󰖁 Muted",
-    "format-icons": {
-      "headphone": "󰋋",
-      "headset": "󰋎",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": [
-        "󰕿",
-        "󰖀",
-        "󰕾"
-      ]
+
+    "group/keyboard": {
+        "orientation": "horizontal",
+        "modules": [
+            "hyprland/language",
+            "keyboard-state"
+        ]
     },
-    "on-click": "pavucontrol"
-  }
+
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "disk",
+            "cpu",
+            "memory"
+        ]
+    }
 }
