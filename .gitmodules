@@ -19,6 +19,6 @@
 [submodule "alacritty/.config/alacritty/themes"]
 	path = alacritty/.config/alacritty/themes
 	url = git@github.com:alacritty/alacritty-theme.git
-[submodule "tmux/.tmux/plugins/tokyo-night-tmux"]
-	path = tmux/.tmux/plugins/tokyo-night-tmux
-	url = git@github.com:janoamaral/tokyo-night-tmux.git
+[submodule "tmux/.tmux/plugins/tmux-everforest"]
+	path = tmux/.tmux/plugins/tmux-everforest
+	url = git@github.com:TanglingTreats/tmux-everforest.git
