@@ -73,6 +73,8 @@ abbrev-alias -g tree='eza -l -h --git --classify --icons --long --tree'
 abbrev-alias -g fz="sk --preview 'cat {}' --preview-window=right:70%"
 abbrev-alias -g hx='helix'
 abbrev-alias -g chping='ping -c 1 -W 3 google.com'
+abbrev-alias -g pkgclean='sudo pacman -Rncs $(pacman -Qdtq)'
+abbrev-alias -g pkgcache='sudo pacman -Scc'
 
 export XKB_DEFAULT_LAYOUT=us
 export EDITOR=vim
