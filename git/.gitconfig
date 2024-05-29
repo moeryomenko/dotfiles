@@ -10,8 +10,6 @@
 	navigate = true
 	light = false
 	side-by-side = true
-[merge]
-	conflictstyle = diff3
 [diff]
 	colorMoved = default
 [user]
