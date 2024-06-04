@@ -1,9 +1,8 @@
 return {
-	"gbprod/nord.nvim",
+	"rmehri01/onenord.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		require("nord").setup({})
-		vim.cmd.colorscheme("nord")
+		require("onenord").setup({})
 	end,
 }
