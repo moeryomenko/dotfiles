@@ -47,8 +47,8 @@ abbr --add htpf       "set pods (kubectl -n paas-content-operations-shifts get p
 
 
 abbr --add nslist    "kubectl get namespaces -l paas.sbermarket.tech/service=paas-content-operations-shifts -o name | sk --ansi --no-sort --reverse --tiebreak=index --bind \"j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:set -U NAMESPACE (echo {} | sed 's/namespace\\///')\"+abort"
-abbr --add kubestg   "kubectl config --context teleport.sbmt.io-stage use-context teleport.sbmt.io-stage"
-abbr --add kubeprod  "kubectl config --context teleport.sbmt.io-k8s-prod use-context teleport.sbmt.io-k8s-prod"
+abbr --add kubestg   "tsh kube login stage && kubectl config --context teleport.sbmt.io-stage use-context teleport.sbmt.io-stage"
+abbr --add kubeprod  "tsh kube login k8s-prod && kubectl config --context teleport.sbmt.io-k8s-prod use-context teleport.sbmt.io-k8s-prod"
 abbr --add gpo       "kubectl -n \$NAMESPACE get po -l app.kubernetes.io/instance=paas-content-operations-shifts-paas"
 abbr --add gpao      "kubectl -n \$NAMESPACE get po"
 abbr --add rwpf      "kubectl -n paas-content-operations-shifts port-forward (kubectl -n paas-content-operations-shifts get po --template '{{(index .items 0).metadata.name}}') 6432:6432"
