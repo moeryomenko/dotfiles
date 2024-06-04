@@ -1,10 +1,8 @@
 return {
-	"nordtheme/vim",
+	"rmehri01/onenord.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		-- Optionally configure and load the colorscheme
-		-- directly inside the plugin declaration.
-		vim.cmd.colorscheme("nord")
+		require("onenord").setup({})
 	end,
 }
