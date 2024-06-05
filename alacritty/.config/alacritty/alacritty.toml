@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/themes/themes/nord.toml"]
+import = ["~/.config/alacritty/themes/themes/one_dark.toml"]
 
 [bell]
 animation = "EaseOutExpo"
@@ -61,7 +61,7 @@ program = "/usr/bin/fish"
 decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-opacity = 0.95
+opacity = 0.8
 startup_mode = "Windowed"
 
 [window.dimensions]
