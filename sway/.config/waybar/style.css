@@ -1,5 +1,5 @@
 * {
-	font-family: "JetBrainsMono Nerd Font";
+	font-family: "Cascadia Code";
 	font-size: 12pt;
 	font-weight: bold;
 	border-radius: 8px;
@@ -84,7 +84,8 @@ tooltip label {
 #temperature,
 #pulseaudio,
 #network,
-#custom-powermenu {
+#custom-powermenu,
+#tray {
 	padding-left: 10px;
 	padding-right: 10px;
 }
