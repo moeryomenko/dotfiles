@@ -1,70 +1,117 @@
 * {
-    font-family: 'FiraCode Nerd Font', sans-serif;
-    font-size: 12px;
-    min-height: 0;
+	font-family: "JetBrainsMono Nerd Font";
+	font-size: 12pt;
+	font-weight: bold;
+	border-radius: 8px;
+	transition-property: background-color;
+	transition-duration: 0.5s;
+}
+
+@keyframes blink_red {
+	to {
+		background-color: rgb(242, 143, 173);
+		color: rgb(26, 24, 38);
+	}
+}
+
+.warning,
+.critical,
+.urgent {
+	animation-name: blink_red;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
 }
 
 window#waybar {
-    background: transparent;
-    color: #D3C6AA;
+	background-color: transparent;
 }
 
-#window, #clock, #system, #keyboard, #hardware {
-    margin: 5px;
-    padding: 0 10px;
-    background-color: #2E3440;
-    border: 2px solid #3B4252;
-    border-radius: 15px;
-}
-
-#window {
-    font-weight: bold;
-}
-
-#clock {
-    background-color: #81A1C1;
-    border: 2px solid #2D353B;
-    color: #2D353B;
-    font-weight: bold;
+window>box {
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 5px;
+	background-color: #1e1e2a;
+	padding: 3px;
+	padding-left: 8px;
+	border: 2px none #33ccff;
 }
 
 #workspaces {
-    margin-right: 10px;
-    font-weight: bold;
+	padding-left: 0px;
+	padding-right: 4px;
 }
 
 #workspaces button {
-    border: none;
-    border-radius: 0;
-    color: #D3C6AA;
-    transition: all 0.3s ease-in-out;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 #workspaces button.active {
-    background-color: #81A1C1;
-    color: #2D353B;
-    transition: all 0.3s ease-in-out;
+	background-color: rgb(181, 232, 224);
+	color: rgb(26, 24, 38);
 }
 
-#workspaces button.focused {
-    background-color: #81A1C1;
+#workspaces button.urgent {
+	color: rgb(26, 24, 38);
 }
 
 #workspaces button:hover {
-    box-shadow: inherit;
-    text-shadow: inherit;
-    background: #3D484D;
-    border: none;
-    color: #D3C6AA;
+	background-color: rgb(248, 189, 150);
+	color: rgb(26, 24, 38);
 }
 
-#keyboard-state {
-    margin-right: 7px;
+tooltip {
+	background: rgb(48, 45, 65);
 }
 
-#custom-wlogout {
-    margin-left: 7px;
-    padding: 0 15px;
-    background-color: #81A1C1;
-    color: #2D353B;
+tooltip label {
+	color: rgb(217, 224, 238);
+}
+
+#custom-launcher {
+	font-size: 20px;
+	padding-left: 8px;
+	padding-right: 6px;
+	color: #7ebae4;
+}
+
+#clock,
+#temperature,
+#temperature,
+#pulseaudio,
+#network,
+#custom-powermenu {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#clock {
+	color: rgb(217, 224, 238);
+}
+
+#hyprland-language,
+#keyboard-state,
+#temperature {
+	color: rgb(150, 205, 251);
+}
+
+#pulseaudio {
+	color: rgb(245, 224, 220);
+}
+
+#network {
+	color: #ABE9B3;
+}
+
+#network.disconnected {
+	color: rgb(255, 255, 255);
+}
+
+#custom-powermenu {
+	color: rgb(242, 143, 173);
+	padding-right: 8px;
 }
