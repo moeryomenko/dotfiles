@@ -1,36 +1,67 @@
 {
-    "layer": "top",
-    "height": 40,
-
-    "include": ["$HOME/.config/waybar/modules.json"],
-
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock"],
-    "modules-right": ["group/system", "group/keyboard", "group/hardware", "custom/wlogout"],
-
-    "group/system": {
-        "orientation": "horizontal",
-        "modules": [
-            "backlight",
-            "pulseaudio",
-            "network"
-        ]
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+    "custom/launcher",
+    "temperature"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "backlight",
+    "network",
+    "hyprland/language",
+    "keyboard-state",
+    "tray",
+    "custom/powermenu"
+  ],
+  "clock": {
+    "format": "󰃰 {:%H:%M %Y/%m/%d}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+  },
+  "custom/launcher": {
+    "format": "󰣇 ",
+    "on-click": "exec flatpak list --app --columns=application | wofi --dmenu | xargs flatpak run",
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "scroll-step": 1,
+    "format": "{icon} {volume}%",
+    "format-muted": "󰖁 Muted",
+    "format-icons": {
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
-
-    "group/keyboard": {
-        "orientation": "horizontal",
-        "modules": [
-            "hyprland/language",
-            "keyboard-state"
-        ]
-    },
-
-    "group/hardware": {
-        "orientation": "horizontal",
-        "modules": [
-            "disk",
-            "cpu",
-            "memory"
-        ]
+    "on-click": "pavucontrol",
+    "tooltip": false
+  },
+  "hyprland/language": {
+    "format": "<span foreground=\"#81a1c1\">󰌌 {short} |</span>"
+  },
+  "keyboard-state": {
+    "capslock": true,
+    "format": " <span foreground=\"#81A1C1\">󰪛</span> {icon}",
+    "format-icons": {
+      "locked": "",
+      "unlocked": ""
     }
+  },
+  "network": {
+    "format-disconnected": "󰯡 Disconnected",
+    "format-ethernet": "󰈀 {ifname}",
+    "format-linked": "󰖪 {essid} (No IP)",
+    "format-wifi": "󰖩 {essid}",
+    "interval": 1,
+    "tooltip": false
+  },
+  "custom/powermenu": {
+    "format": "",
+    "on-click": "wlogout",
+    "tooltip": false
+  }
 }
