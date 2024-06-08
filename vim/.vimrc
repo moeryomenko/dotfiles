@@ -18,6 +18,7 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
 Plug 'nordtheme/vim'
+Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -28,7 +29,7 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " }}}
 
-Plug 'tikhomirov/vim-glsl'
+Plug 'charlespascoe/vim-go-syntax'
 
 call plug#end()
 " }}}
@@ -61,6 +62,7 @@ syntax on
 
 au FileType gitcommit setlocal tw=72 cc=+1 cc+=51 spell spelllang=en_us
 au FileType c,cpp setlocal tw=80 cc=+1
+au FileType go setlocal tw=120 cc=+1
 "}}}
 
 " navigation configuration {{{
@@ -126,7 +128,7 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 endif
 set termguicolors
 set background=dark
-colorscheme nord
+colorscheme onedark
 " }}}
 
 " c/c++ highlight {{{
@@ -202,6 +204,7 @@ nmap <silent> gk :LspPeekDefinition<CR>
 nmap <silent> gi :LspImplementation<CR>
 nmap <silent> th :LspHover<CR>
 nmap <silent> gr :LspReferences<CR>
+nmap <silent> gs :LspDocumentSymbolSearch<CR>
 " }}}
 
 " split mapping {{{

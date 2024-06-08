@@ -15,6 +15,7 @@ return {
 				"c",
 				"cpp",
 				"go",
+				"printf",
 				"vimdoc",
 				"lua",
 				"json",

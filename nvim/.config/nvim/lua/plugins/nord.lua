@@ -1,8 +1,11 @@
 return {
-	"rmehri01/onenord.nvim",
+	"navarasu/onedark.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		require("onenord").setup({})
+		require("onedark").setup({
+			style = "deep",
+		})
+		require("onedark").load()
 	end,
 }
