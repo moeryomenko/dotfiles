@@ -1,5 +1,6 @@
 return {
 	"kylechui/nvim-surround",
+	lazy = false,
 	keys = { "cs", "ds", "ys" },
 	config = function()
 		require("nvim-surround").setup({
