@@ -18,7 +18,7 @@ Plug 'cdelledonne/vim-cmake'
 Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
 Plug 'nordtheme/vim'
-Plug 'joshdick/onedark.vim'
+Plug 'ghifarit53/tokyonight-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -128,7 +128,9 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 endif
 set termguicolors
 set background=dark
-colorscheme onedark
+let g:tokyonight_style = 'storm'
+let g:tokyonight_enable_italic = 1
+colorscheme tokyonight
 " }}}
 
 " c/c++ highlight {{{
