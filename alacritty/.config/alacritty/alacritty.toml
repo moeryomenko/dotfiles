@@ -104,7 +104,6 @@ decorations = "None"
 dynamic_padding = false
 dynamic_title = true
 startup_mode = "Windowed"
-opacity = 0.9
 
 [window.dimensions]
 columns = 0
