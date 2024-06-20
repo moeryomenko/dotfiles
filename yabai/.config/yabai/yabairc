@@ -41,7 +41,7 @@ yabai -m config \
 
 
 
-yabai -m config external_bar          all:16:0
+yabai -m config external_bar          all:32:0
 yabai -m config window_border off
 yabai -m config window_border_width 0
 yabai -m config active_window_border_color 0xff775759
