@@ -6,3 +6,4 @@ vim/.vim/autoload/
 vim/.vim/plugged/
 *.netrwhist
 nvim/.config/nvim/lua/plugins/lock.json
+gtk/.config/gtk-3.0/bookmarks
