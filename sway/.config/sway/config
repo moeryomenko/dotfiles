@@ -12,8 +12,6 @@ bindsym $mod+d exec wofi --show run
 
 floating_modifier $mod normal
 
-bindsym --release Caps_Lock exec swayosd-client --caps-lock
-
 # Reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -82,16 +80,16 @@ bindsym $mod+a focus parent
 
 
 # Display brightness
-bindsym XF86MonBrightnessDown exec swayosd-client --brightness lower
-bindsym XF86MonBrightnessUp exec swayosd-client --brightness raise
+# bindsym XF86MonBrightnessDown exec swayosd-client --brightness lower
+# bindsym XF86MonBrightnessUp exec swayosd-client --brightness raise
 
 # Audio
-bindsym XF86AudioMute exec swayosd-client --output-volume mute-toggle
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioRaiseVolume exec swayosd-client --output-volume raise
-bindsym XF86AudioLowerVolume exec swayosd-client --output-volume lower
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10%
 
 # Scratchpad:
 bindsym $mod+Shift+minus move scratchpad
