@@ -204,6 +204,7 @@ nmap <silent> gk :LspPeekDefinition<CR>
 nmap <silent> gi :LspImplementation<CR>
 nmap <silent> th :LspHover<CR>
 nmap <silent> gr :LspReferences<CR>
+nmap <silent> gs :LspDocumentSymbolSearch<CR>
 " }}}
 
 " split mapping {{{
