@@ -86,8 +86,6 @@
 	insteadOf= https://gitlab.kitware.com/
 [url "git@git.sbermarket.tech:"]
 	insteadOf = https://gitlab.sbermarket.tech
-[url "ssh://git@gitlab.sbmt.io:"]
-	insteadof = https://gitlab.sbmt.io
 [grep]
 	lineNumber = true
 [rerere]
@@ -119,3 +117,5 @@
 	forceSignAnnotated = true
 [pack]
 	useBitmapBoundaryTraversal = true
+[url "ssh://git@gitlab.sbmt.io:"]
+	insteadof = https://gitlab.sbmt.io

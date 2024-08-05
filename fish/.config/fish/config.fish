@@ -51,6 +51,7 @@ fish_add_path $HOME/.config/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/Library/Python/3.10/bin
+fish_add_path $HOME/Library/Python/3.9/bin
 fish_add_path $HOME/go/bin
 fish_add_path $HOME/.sbm-cli/usr/bin
 
@@ -61,6 +62,7 @@ zoxide init fish | source
 abbr --add ll   "eza -l -h --git --classify --icons"
 abbr --add la   "eza -l -h --git --classify --icons -a"
 abbr --add tree "eza -l -h --git --classify --icons --long --tree"
+abbr --add ur   "ls | xargs -P10 -I{} git -C {} pull"
 abbr --add g    "git"
 abbr --add ga   "git a"
 abbr --add lg   "lazygit"

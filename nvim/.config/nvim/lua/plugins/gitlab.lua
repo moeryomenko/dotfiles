@@ -9,7 +9,7 @@ return {
 	end,
 	config = function()
 		local gitlab = require("gitlab")
-		vim.keymap.set("n", "\\gl", gitlab.choose_merge_request)
+		vim.keymap.set("n", "glb", gitlab.choose_merge_request)
 		vim.keymap.set("n", "gls", gitlab.summary)
 		vim.keymap.set("n", "glr", gitlab.review)
 		vim.keymap.set("n", "glo", gitlab.open_in_browser)
