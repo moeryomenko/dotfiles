@@ -105,7 +105,7 @@ return {
 			adapters = {
 				lldb = {
 					type = "executable",
-					command = "/usr/bin/lldb-vscode", -- adjust as needed, must be absolute path
+					command = "/usr/bin/lldb-dap", -- adjust as needed, must be absolute path
 					env = {
 						LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES",
 					},
