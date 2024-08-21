@@ -74,5 +74,15 @@ return {
 				end,
 			},
 		},
+		-- opts = {
+		-- 	adapters = {
+		-- 		go = function(callback, config)
+		-- 			-- Wait for delve to start
+		-- 			vim.defer_fn(function()
+		-- 				callback({ type = "server", host = "shifts-web.local", port = "2345" })
+		-- 			end, 100)
+		-- 		end,
+		-- 	},
+		-- },
 	},
 }

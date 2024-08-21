@@ -2,7 +2,6 @@ local icons = require("core.icons")
 
 return {
 	"mfussenegger/nvim-dap",
-	event = "VeryLazy",
 	dependencies = {
 		{
 			"rcarriga/nvim-dap-ui",
@@ -97,6 +96,7 @@ return {
 	},
 	config = function(_, opts)
 		local dap = require("dap")
+		require("dap.ext.vscode").load_launchjs(nil, {})
 
 		vim.fn.sign_define(
 			"DapBreakpoint",
