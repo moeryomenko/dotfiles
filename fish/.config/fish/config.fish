@@ -1,7 +1,7 @@
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
-	keychain --eval --agents gpg --quiet --gpg2 -Q DA18DB431829C349 | source
+ 	keychain --eval --agents gpg --quiet --gpg2 -Q 5318919FE71A1E81 | source
 end
 
 set -U XDG_CONFIG_HOME $HOME/.config

@@ -100,7 +100,7 @@ function _fzf_compgen_dir {
 }
 
 eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
-eval $(keychain --eval --agents gpg --quiet --gpg2 DA18DB431829C349)
+eval $(keychain --eval --agents gpg --quiet --gpg2 5318919FE71A1E81)
 
 if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
 	#export WLR_RENDERER=vulkan
