@@ -32,7 +32,7 @@ lazy.setup({
 		url_format = "https://github.com/%s.git",
 		filter = true,
 	},
-	install = { colorscheme = { "nord" } },
+	install = { colorscheme = { "onedark" } },
 	dev = {
 		-- directory where you store your local plugin projects
 		path = "~/workspace",
