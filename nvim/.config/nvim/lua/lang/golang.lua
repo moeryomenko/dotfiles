@@ -59,13 +59,7 @@ return {
 			{
 				"williamboman/mason-lspconfig.nvim",
 				dependencies = {
-					{
-						"williamboman/mason.nvim",
-					},
-					{
-						"artemave/workspace-diagnostics.nvim",
-						enabled = true,
-					},
+					"williamboman/mason.nvim",
 				},
 				opts = function(_, opts)
 					opts.ensure_installed = opts.ensure_installed or {}
