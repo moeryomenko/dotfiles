@@ -2,6 +2,7 @@ if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
  	keychain --eval --agents gpg --quiet --gpg2 -Q 5318919FE71A1E81 | source
+ 	keychain --eval --agents gpg --quiet --gpg2 -Q 4B065CE067340C25 | source
 end
 
 set -U XDG_CONFIG_HOME $HOME/.config
@@ -50,11 +51,12 @@ direnv hook fish | source
 zoxide init fish | source
 
 set -U EDITOR nvim
+set -U GOPATH (go env GOPATH)
 
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
-fish_add_path $HOME/go/bin
+fish_add_path $GOPATH/bin
 fish_add_path $HOME/.local/share/coursier/bin
 
 # Flatpak settings
