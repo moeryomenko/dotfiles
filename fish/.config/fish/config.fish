@@ -78,6 +78,8 @@ abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
 abbr --add pkgcache   "sudo pacman -Scc"
 abbr --add sw         "cd (worktree)"
 
+abbr --add gotest     "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s"
+
 alias hx='helix'
 
 function worktree
