@@ -52,6 +52,9 @@ zoxide init fish | source
 
 set -U EDITOR nvim
 set -U GOPATH (go env GOPATH)
+set NPM_PACKAGES "$HOME/.npm-packages"
+set PATH $PATH $NPM_PACKAGES/bin
+set MANPATH $NPM_PACKAGES/share/man $MANPATH
 
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
