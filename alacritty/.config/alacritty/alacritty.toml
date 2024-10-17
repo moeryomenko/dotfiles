@@ -41,17 +41,17 @@ TERM = "tmux-256color"
 size = 13.0
 
 [font.bold]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.normal]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.offset]
 x = 0
