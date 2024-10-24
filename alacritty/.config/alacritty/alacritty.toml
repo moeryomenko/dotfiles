@@ -92,7 +92,7 @@ hide_when_typing = false
 history = 100000
 multiplier = 3
 
-[shell]
+[terminal.shell]
 args = ["-l", "-c", "tmux attach || tmux"]
 program = "/usr/bin/fish"
 
@@ -109,3 +109,5 @@ lines = 0
 [window.padding]
 x = 0
 y = 0
+
+[terminal]
