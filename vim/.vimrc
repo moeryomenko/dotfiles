@@ -22,10 +22,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " lsp plugins {{{
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'mattn/vim-lsp-settings'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " }}}
 
 Plug 'tikhomirov/vim-glsl'
@@ -198,12 +198,12 @@ nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
 " lsp mapping  {{{
-nmap <silent> gd :LspDefinition<CR>
-nmap <silent> gk :LspPeekDefinition<CR>
-nmap <silent> gi :LspImplementation<CR>
-nmap <silent> th :LspHover<CR>
-nmap <silent> gr :LspReferences<CR>
-nmap <silent> gs :LspDocumentSymbolSearch<CR>
+" nmap <silent> gd :LspDefinition<CR>
+" nmap <silent> gk :LspPeekDefinition<CR>
+" nmap <silent> gi :LspImplementation<CR>
+" nmap <silent> th :LspHover<CR>
+" nmap <silent> gr :LspReferences<CR>
+" nmap <silent> gs :LspDocumentSymbolSearch<CR>
 " }}}
 
 " split mapping {{{
