@@ -4,10 +4,6 @@
 background = '#24283b'
 foreground = '#c0caf5'
 
-#[colors.cursor]
-#cursor = '#c0caf5'
-#text = '#24283b'
-
 # Normal colors
 [colors.normal]
 black = '#1d202f'
