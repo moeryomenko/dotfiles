@@ -17,7 +17,7 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'cdelledonne/vim-cmake'
 Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
-Plug 'ghifarit53/tokyonight-vim'
+Plug 'lunacookies/vim-substrata'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -126,10 +126,8 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 endif
 set termguicolors
 set background=dark
-let g:tokyonight_style = 'storm' " available: night, storm
-let g:tokyonight_enable_italic = 1
 
-colorscheme tokyonight
+colorscheme substrata
 " }}}
 
 " c/c++ highlight {{{
