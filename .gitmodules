@@ -22,3 +22,6 @@
 [submodule "tmux/.tmux/plugins/tmux"]
 	path = tmux/.tmux/plugins/tmux
 	url = git@github.com:catppuccin/tmux.git
+[submodule "tmux/.tmux/plugins/kube-tmux"]
+	path = tmux/.tmux/plugins/kube-tmux
+	url = git@github.com:jonmosco/kube-tmux.git
