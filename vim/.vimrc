@@ -22,10 +22,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " lsp plugins {{{
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'mattn/vim-lsp-settings'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " }}}
 
 Plug 'tikhomirov/vim-glsl'
@@ -189,21 +189,21 @@ nnoremap <silent>gb :Buffers<CR>
 " }}}
 
 " cscope mapping {{{
-nmap <silent> <leader>i :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <silent> <leader>d :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <silent> <leader>r :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <silent> <leader>s :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
-nmap <silent> <leader>c :cs find t class <C-R>=expand("<cword>")<CR><CR>
-nmap <silent> <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <silent> gi :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> gd :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> gr :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> gs :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
+nmap <silent> gc :cs find t class <C-R>=expand("<cword>")<CR><CR>
+nmap <silent> gp :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
 " lsp mapping  {{{
-nmap <silent> gd :LspDefinition<CR>
-nmap <silent> gk :LspPeekDefinition<CR>
-nmap <silent> gi :LspImplementation<CR>
-nmap <silent> th :LspHover<CR>
-nmap <silent> gr :LspReferences<CR>
-nmap <silent> gs :LspDocumentSymbolSearch<CR>
+" nmap <silent> gd :LspDefinition<CR>
+" nmap <silent> gk :LspPeekDefinition<CR>
+" nmap <silent> gi :LspImplementation<CR>
+" nmap <silent> th :LspHover<CR>
+" nmap <silent> gr :LspReferences<CR>
+" nmap <silent> gs :LspDocumentSymbolSearch<CR>
 " }}}
 
 " split mapping {{{
