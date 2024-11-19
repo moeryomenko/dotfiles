@@ -113,6 +113,7 @@ return {
 					maxwidth = 50,
 
 					ellipsis_char = "...",
+					symbol_map = { Codeium = "" },
 					show_labelDetails = true,
 
 					before = function(entry, vim_item)
@@ -128,6 +129,7 @@ return {
 			},
 			sources = {
 				{ name = "nvim_lsp" },
+				{ name = "codeium" },
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
 				{ name = "rg" },
