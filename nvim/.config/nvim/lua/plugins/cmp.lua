@@ -115,6 +115,7 @@ return {
 					ellipsis_char = "...",
 					symbol_map = { Codeium = "" },
 					show_labelDetails = true,
+					symbol_map = { Codeium = "" },
 
 					before = function(entry, vim_item)
 						vim_item.menu = ({
@@ -131,6 +132,7 @@ return {
 				{ name = "nvim_lsp" },
 				{ name = "codeium" },
 				{ name = "nvim_lsp_signature_help" },
+				{ name = "codeium" },
 				{ name = "luasnip" },
 				{ name = "rg" },
 				{ name = "nvim_lua" },
