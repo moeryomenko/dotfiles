@@ -23,12 +23,12 @@ return {
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
 		adapters = {
-			deepseek_coder = function()
+			qwen2 = function()
 				return require("codecompanion.adapters").extend("ollama", {
-					name = "deepseek_coder",
+					name = "qwen2",
 					schema = {
 						model = {
-							default = "deepseek-coder-v2:latest",
+							default = "qwen2.5-coder:32b",
 						},
 					},
 				})
@@ -36,7 +36,7 @@ return {
 		},
 		strategies = {
 			chat = {
-				adapter = "deepseek_coder",
+				adapter = "qwen2",
 				roles = {
 					llm = "  CodeCompanion",
 					user = " " .. user:sub(1, 1):upper() .. user:sub(2),
@@ -46,8 +46,8 @@ return {
 					stop = { modes = { n = "<C-c>" } },
 				},
 			},
-			inline = { adapter = "deepseek_coder" },
-			agent = { adapter = "deepseek_coder" },
+			inline = { adapter = "qwen2" },
+			agent = { adapter = "qwen2" },
 		},
 		display = {
 			chat = {
