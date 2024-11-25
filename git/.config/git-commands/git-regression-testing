@@ -5,9 +5,20 @@ test_runner="'$*'"
 trap "git bisect reset" SIGHUP SIGINT SIGTERM
 
 #First all, write new test untracked by git.
-nvim -c 'Vexplore'
+nvim -c 'NvimTreeToggle'
 
-git bisect start HEAD $(git fuzzy log)
+SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | sk  \
+    --preview-window=right:70% \
+    --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
+    --preview "echo \"\
+           {}
+           \" | \
+           grep -o '[a-f0-9]\{7\}' | head -1 |
+           xargs -I % sh -c 'git show --color=always % | bat ' @- " | cut -c -7  | xargs -o`
+
+[ -z $SHA ] && exit
+
+git bisect start HEAD $SHA
 
 git bisect run sh -c "eval $test_runner"
 
