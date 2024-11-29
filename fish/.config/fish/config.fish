@@ -60,6 +60,7 @@ fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
+fish_add_path $HOME/.krew/bin
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
