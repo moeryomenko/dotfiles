@@ -107,6 +107,11 @@ function replace_all
 	rg -l $argv[1] . | xargs sed -i "s/$argv[1]/$argv[2]/g"
 end
 
+if not test -d $HOME/.asdf
+	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+end
+source ~/.asdf/asdf.fish
+
 if test (tty) = /dev/tty1
 	export RADV_VIDEO_DECODE=1
 	export SDL_VIDEODRIVER=wayland
