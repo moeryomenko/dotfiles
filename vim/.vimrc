@@ -29,6 +29,7 @@ Plug 'vim-airline/vim-airline-themes'
 " }}}
 
 Plug 'tikhomirov/vim-glsl'
+Plug 'kalvinpearce/ShaderHighlight'
 
 call plug#end()
 " }}}
