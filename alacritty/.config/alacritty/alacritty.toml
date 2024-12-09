@@ -1,30 +1,43 @@
 # TokyoNight Alacritty Colors
 # Default colors
 [colors.primary]
-background = '#191c25'
-foreground = '#b5b4c9'
+background = '#24283b'
+foreground = '#c0caf5'
+
+#[colors.cursor]
+#cursor = '#c0caf5'
+#text = '#24283b'
 
 # Normal colors
 [colors.normal]
-black = '#191c25'
-red = '#cf8164'
-green = '#76a065'
-yellow = '#ab924c'
-blue = '#8296b0'
-magenta = '#a18daf'
-cyan = '#659ea2'
-white = '#b5b4c9'
+black = '#1d202f'
+red = '#f7768e'
+green = '#9ece6a'
+yellow = '#e0af68'
+blue = '#7aa2f7'
+magenta = '#bb9af7'
+cyan = '#7dcfff'
+white = '#a9b1d6'
 
 # Bright colors
 [colors.bright]
-black = '#5b5f71'
-red = '#fe9f7c'
-green = '#92c47e'
-yellow = '#d2b45f'
-blue = '#a0b9d8'
-magenta = '#c6aed7'
-cyan = '#7dc2c7'
-white = '#f0ecfe'
+black = '#414868'
+red = '#f7768e'
+green = '#9ece6a'
+yellow = '#e0af68'
+blue = '#7aa2f7'
+magenta = '#bb9af7'
+cyan = '#7dcfff'
+white = '#c0caf5'
+
+# Indexed Colors
+[[colors.indexed_colors]]
+index = 16
+color = '#ff9e64'
+
+[[colors.indexed_colors]]
+index = 17
+color = '#db4b4b'
 
 [bell]
 animation = "EaseOutExpo"
@@ -41,17 +54,17 @@ TERM = "tmux-256color"
 size = 13.0
 
 [font.bold]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.normal]
-family = "Rec Mono Casual"
+family = "Cascadia Code"
 
 [font.offset]
 x = 0
