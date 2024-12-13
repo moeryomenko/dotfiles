@@ -19,5 +19,5 @@ git log \
 			  {}
 			  \" | \
 			  grep -o '[a-f0-9]\{7\}' | head -1 |
-              xargs -I % sh -c 'git show --color=always % | delta --pager \"less -R\"' @- " \
+              xargs -I % sh -c 'git show-commit %' @- " \
 		--preview-window=right:70%
