@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+git diff-tree --no-commit-id --name-only -r $1 | \
+	sk --ansi --no-sort --reverse --tiebreak=index \
+		--preview "echo \"\
+		  {}
+		  \" | \
+          xargs -I % sh -c 'git show --color=always $1 % | bat ' @- " \
+		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+          echo \"\
+		  {}
+		  \" | \
+          xargs -I % sh -c 'git show --color=always $1 % | delta --pager \"less -R\"' @- " \
+		--preview-window=right:70%
