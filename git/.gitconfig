@@ -1,7 +1,7 @@
 [core]
 	editor = vim
 	excludesfile = ~/.config/gitignore-global
-	pager = delta
+	attributesfile = ~/.gitattributes
 [add.interactive]
 	useBuiltin = false
 [interactive]
@@ -21,8 +21,17 @@
 	plus-empty-line-marker-style  = syntax "#283b4d"
 	line-numbers-plus-style       = "#266d6a"
 	line-numbers-zero-style       = "#3b4261"
+[merge "mergiraf"]
+	name = mergiraf
+	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P
 [diff]
+	external = difft
 	colorMoved = default
+	tool = difftastic
+[difftool]
+	prompt = false
+[pager]
+	difftool = true
 [user]
 	name = Maxim Eryomenko
 	email = maxim_eryomenko@rambler.ru
