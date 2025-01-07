@@ -22,3 +22,6 @@
 [submodule "tmux/.tmux/plugins/tmux"]
 	path = tmux/.tmux/plugins/tmux
 	url = git@github.com:catppuccin/tmux.git
+[submodule "tmux/.tmux/plugins/vim-tmux-navigator"]
+	path = tmux/.tmux/plugins/vim-tmux-navigator
+	url = git@github.com:christoomey/vim-tmux-navigator.git

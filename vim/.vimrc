@@ -20,6 +20,7 @@ Plug 'majutsushi/tagbar'
 Plug 'arcticicestudio/nord-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'christoomey/vim-tmux-navigator'
 
 " lsp plugins {{{
 " Plug 'prabirshrestha/vim-lsp'
@@ -220,10 +221,13 @@ nmap <silent> gp :cs find f <C-R>=expand("<cfile>")<CR><CR>
 " }}}
 
 " split mapping {{{
-nmap <silent><c-l> <c-w>l
-nmap <silent><c-h> <c-w>h
-nmap <silent><c-j> <c-w>j
-nmap <silent><c-k> <c-w>k
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <c-h> :<C-U>TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :<C-U>TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :<C-U>TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :<C-U>TmuxNavigateRight<cr>
+nnoremap <silent> <c-\\> :<C-U>TmuxNavigatePrevious<cr>
 
 nmap <silent>`l :vert res +10<CR>
 nmap <silent>`h :vert res -10<CR>
