@@ -44,7 +44,7 @@ set -g fish_pager_color_selected_background --background=$selection
 
 export GPG_TTY=$(tty)
 
-fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\ch --processes=\cp
+fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\cy --processes=\cp
 
 starship init fish | source
 direnv hook fish | source
