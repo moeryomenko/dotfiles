@@ -1,16 +1,40 @@
 return {
-	"shaunsingh/nord.nvim",
+	"folke/tokyonight.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		vim.g.nord_contrast = true
-		vim.g.nord_borders = true
-		vim.g.nord_disable_background = false
-		vim.g.nord_italic = true
-		vim.g.nord_uniform_diff_background = true
-		vim.g.nord_bold = true
-
-		-- Load the colorscheme
-		require("nord").set()
+		require("tokyonight").setup({
+			on_highlights = function(hl, c)
+				local prompt = "#2d3149"
+				hl.TelescopeNormal = {
+					bg = c.bg_dark,
+					fg = c.fg_dark,
+				}
+				hl.TelescopeBorder = {
+					bg = c.bg_dark,
+					fg = c.bg_dark,
+				}
+				hl.TelescopePromptNormal = {
+					bg = prompt,
+				}
+				hl.TelescopePromptBorder = {
+					bg = prompt,
+					fg = prompt,
+				}
+				hl.TelescopePromptTitle = {
+					bg = prompt,
+					fg = prompt,
+				}
+				hl.TelescopePreviewTitle = {
+					bg = c.bg_dark,
+					fg = c.bg_dark,
+				}
+				hl.TelescopeResultsTitle = {
+					bg = c.bg_dark,
+					fg = c.bg_dark,
+				}
+			end,
+		})
+		vim.cmd([[colorscheme tokyonight]])
 	end,
 }
