@@ -33,6 +33,7 @@ return {
 		},
 		opts = {
 			servers = {},
+			external = {},
 		},
 		config = function(_, opts)
 			require("core.utils").setup_diagnostics()
@@ -57,6 +58,12 @@ return {
 				if server_opts then
 					server_opts = server_opts == true and {} or server_opts
 					ensure_installed[#ensure_installed + 1] = server
+				end
+			end
+
+			for server, server_opts in pairs(opts.external) do
+				if server_opts then
+					lspconfig[server].setup(server_opts)
 				end
 			end
 
