@@ -11,13 +11,7 @@ return {
 		"windwp/nvim-autopairs",
 		"lukas-reineke/cmp-rg",
 		"onsails/lspkind.nvim",
-		{
-			"L3MON4D3/LuaSnip",
-			version = "v2.*",
-			dependencies = { "rafamadriz/friendly-snippets" },
-			build = "make install_jsregexp",
-			event = "InsertEnter",
-		},
+		"L3MON4D3/LuaSnip",
 		{
 			"windwp/nvim-autopairs",
 			event = "InsertEnter",
