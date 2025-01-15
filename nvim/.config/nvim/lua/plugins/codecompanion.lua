@@ -19,6 +19,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		"hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
 		"nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+		{ "echasnovski/mini.nvim", version = "*" },
 	},
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
@@ -51,7 +52,24 @@ return {
 		},
 		display = {
 			chat = {
-				show_settings = true,
+				show_settings = false,
+				diff = {
+					enabled = true,
+					close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+					layout = "vertical", -- vertical|horizontal split for default provider
+					opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+					provider = "mini_diff", -- default|mini_diff
+				},
+				slash_commands = {
+					["file"] = {
+						callback = "strategies.chat.slash_commands.file",
+						description = "Select a file using Telescope",
+						opts = {
+							provider = "telescope", -- Other options include 'default', 'mini_pick', 'fzf_lua'
+							contains_code = true,
+						},
+					},
+				},
 			},
 		},
 	},
