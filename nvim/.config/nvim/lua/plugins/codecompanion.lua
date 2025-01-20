@@ -31,6 +31,9 @@ return {
 						model = {
 							default = "qwen2.5-coder:32b",
 						},
+						num_ctx = {
+							default = 16384,
+						},
 					},
 				})
 			end,
