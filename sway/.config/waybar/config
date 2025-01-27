@@ -1,67 +1,100 @@
 {
-  "layer": "top",
-  "position": "top",
-  "modules-left": [
-    "custom/launcher",
-    "temperature"
-  ],
-  "modules-center": [
-    "clock"
-  ],
-  "modules-right": [
-    "pulseaudio",
-    "backlight",
-    "network",
-    "hyprland/language",
-    "keyboard-state",
-    "tray",
-    "custom/powermenu"
-  ],
-  "clock": {
-    "format": "󰃰 {:%H:%M %Y/%m/%d}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-  },
-  "custom/launcher": {
-    "format": "󰣇 ",
-    "on-click": "exec flatpak list --app --columns=application | wofi --dmenu | xargs flatpak run",
-    "tooltip": false
-  },
-  "pulseaudio": {
-    "scroll-step": 1,
-    "format": "{icon} {volume}%",
-    "format-muted": "󰖁 Muted",
-    "format-icons": {
-      "default": [
-        "",
-        "",
-        ""
-      ]
-    },
-    "on-click": "pavucontrol",
-    "tooltip": false
-  },
-  "hyprland/language": {
-    "format": "<span foreground=\"#81a1c1\">󰌌 {short} |</span>"
-  },
-  "keyboard-state": {
-    "capslock": true,
-    "format": " <span foreground=\"#81A1C1\">󰪛</span> {icon}",
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
-    }
-  },
-  "network": {
-    "format-disconnected": "󰯡 Disconnected",
-    "format-ethernet": "󰈀 {ifname}",
-    "format-linked": "󰖪 {essid} (No IP)",
-    "format-wifi": "󰖩 {essid}",
-    "interval": 1,
-    "tooltip": false
-  },
-  "custom/powermenu": {
-    "format": "",
-    "on-click": "wlogout",
-    "tooltip": false
-  }
+	"position": "top",
+	"height": 5,
+	"modules-left": [
+		"hyprland/workspaces"
+	],
+	"modules-right": [
+		"wireplumber",
+		"network",
+		"clock",
+		"tray",
+		"hyprland/language",
+		"custom/powermenu"
+	],
+	"mpd": {
+		"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ ",
+		"format-disconnected": "Disconnected ",
+		"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+		"unknown-tag": "N/A",
+		"interval": 2,
+		"consume-icons": {
+			"on": " "
+		},
+		"random-icons": {
+			"off": "<span color=\"#f53c3c\"></span> ",
+			"on": " "
+		},
+		"repeat-icons": {
+			"on": " "
+		},
+		"single-icons": {
+			"on": "1 "
+		},
+		"state-icons": {
+			"paused": "",
+			"playing": ""
+		},
+		"tooltip-format": "MPD (connected)",
+		"tooltip-format-disconnected": "MPD (disconnected)"
+	},
+	"hyprland/workspaces": {
+		"format": "{windows}",
+		"on-click": "activate",
+		"format-icons": {
+			"1": "\uf489",
+			"2": "\udb80\ude39",
+			"3": "\udb82\ude1e",
+			"4": "\uf001",
+			"5": "\ue217"
+		},
+		"icon-size": 50,
+		"sort-by-number": true,
+		"special-visible-only": false,
+		"format-window-separator": "  ",
+		"window-rewrite-default": "",
+		"window-rewrite": {
+			"alacritty": "\uf489",
+			"class<firefox>": "",
+			"zathura": "󰈦",
+			"telegram": ""
+		}
+	},
+	"tray": {
+		"spacing": 10
+	},
+	"clock": {
+		"format": "{:%I:%M }",
+		"format-alt": "{:%Y-%m-%d}"
+	},
+	"network": {
+		"format": "",
+		"format-ethernet": "\udb83\udc9d ",
+		"format-wifi": "{icon} ",
+		"format-disconnected": "\udb83\udc9c ",
+		"format-icons": [
+			"\udb82\udd2f",
+			"\udb82\udd1f",
+			"\udb82\udd22",
+			"\udb82\udd25",
+			"\udb82\udd28"
+		],
+		"tooltip-format-wifi": "{essid} ({signalStrength}%)",
+		"tooltip-format-ethernet": "{ifname}",
+		"tooltip-format-disconnected": "Disconnected"
+	},
+	"wireplumber": {
+		"format": "\udb81\udd7e  {volume}%",
+		"max-volume": 100,
+		"scroll-step": 5,
+		"on-click": "pavucontrol"
+	},
+	"hyprland/language": {
+		"format": "{short}"
+	},
+	"custom/powermenu": {
+		"format": "",
+		"on-click": "wlogout",
+		"tooltip": false
+	}
 }
