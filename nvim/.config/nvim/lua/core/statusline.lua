@@ -97,7 +97,32 @@ local function lsp()
 end
 
 local function filetype()
-	return string.format(" %s ", vim.bo.filetype):upper()
+	local ft = vim.bo.filetype
+	local lang_icons = {
+		["c"] = "",
+		["cpp"] = "",
+		["go"] = "",
+		["rust"] = "",
+		["json"] = "",
+		["yaml"] = "",
+		["dockerfile"] = "",
+		["lua"] = "",
+		["css"] = "",
+		["asm"] = "",
+		["toml"] = "",
+		["glsl"] = "",
+		["python"] = "",
+		["ruby"] = "",
+		["html"] = "",
+		["java"] = "",
+		["sh"] = "",
+		["fish"] = "",
+		["javascript"] = "",
+		["typescript"] = "",
+		["scala"] = "",
+		["clojure"] = "",
+	}
+	return string.format(" %s ", lang_icons[ft] or ""):upper()
 end
 
 local function lineinfo()
@@ -107,7 +132,7 @@ local function lineinfo()
 	return " %P %l:%c "
 end
 
-local vcs = function()
+local function vcs()
 	local git_info = vim.b.gitsigns_status_dict
 	if not git_info or git_info.head == "" then
 		return ""

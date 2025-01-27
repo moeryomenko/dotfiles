@@ -35,6 +35,6 @@ return {
 				}
 			end,
 		})
-		vim.cmd([[colorscheme tokyonight]])
+		vim.cmd([[colorscheme tokyonight-storm]])
 	end,
 }
