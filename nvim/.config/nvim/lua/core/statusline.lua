@@ -121,6 +121,8 @@ local function filetype()
 		["typescript"] = "",
 		["scala"] = "",
 		["clojure"] = "",
+		["markdown"] = "",
+		["qml"] = "",
 	}
 	return string.format(" %s ", lang_icons[ft] or ""):upper()
 end
