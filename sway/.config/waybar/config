@@ -57,7 +57,9 @@
 			"alacritty": "\uf489",
 			"class<firefox>": "",
 			"zathura": "󰈦",
-			"telegram": ""
+			"telegram": "",
+			"discord": "",
+			"steam": ""
 		}
 	},
 	"tray": {
