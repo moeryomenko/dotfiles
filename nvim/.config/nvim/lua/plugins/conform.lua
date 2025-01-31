@@ -10,6 +10,7 @@ return {
 			formatters_by_ft = {
 				go = { "goimports", "gofumpt" },
 				lua = { "stylua" },
+				proto = { "buf" },
 			},
 			format_on_save = {
 				timeout_ms = 500,
