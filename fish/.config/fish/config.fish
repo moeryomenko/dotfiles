@@ -1,7 +1,7 @@
 if status is-interactive
 	set -lx SHELL fish
 	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
- 	keychain --eval --agents gpg --quiet --gpg2 -Q 5318919FE71A1E81 | source
+	keychain --eval --agents gpg --quiet --gpg2 -Q 5318919FE71A1E81 | source
  	keychain --eval --agents gpg --quiet --gpg2 -Q 4B065CE067340C25 | source
 end
 
@@ -44,8 +44,6 @@ set -g fish_pager_color_selected_background --background=$selection
 
 export GPG_TTY=$(tty)
 
-export OLLAMA_API_BASE=http://127.0.0.1:11434
-
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\cy --processes=\cp
 
 starship init fish | source
@@ -62,7 +60,6 @@ fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
-fish_add_path $HOME/.krew/bin
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
