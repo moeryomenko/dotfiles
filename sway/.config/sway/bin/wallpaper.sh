@@ -5,7 +5,7 @@ while true; do
 	swaybg -i `find $HOME/pictures/wallpapers/ -type f | shuf -n1` -m fill &
 	sleep 1
 	kill $PID
-	sleep 300
+	sleep 30
 done
 
 # mpvpaper -o "--volume=30" -v HDMI-A-1 ~/videos/dark_outpost_2.mkv &
