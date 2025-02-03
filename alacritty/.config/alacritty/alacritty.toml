@@ -1,5 +1,5 @@
 [general]
-import = ["~/.config/alacritty/themes/themes/tokyo-night-storm.toml"]
+import = ["~/.config/alacritty/themes/themes/nord.toml"]
 
 [colors]
 draw_bold_text_with_bright_colors = true
