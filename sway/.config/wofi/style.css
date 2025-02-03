@@ -1,94 +1,52 @@
-/* Everforest */
-@define-color accent #81A1C1;
-@define-color txt #D3C6AA;
-@define-color bg #3B4252;
-@define-color bg2 #3B4252;
+window {
+margin: 0px;
+border: 2px solid #414868;
+border-radius: 5px;
+background-color: #24283b;
+font-family: monospace;
+font-size: 12px;
+}
 
- * {
-    font-family: 'CaskaydiaCove Nerd Font mono';
-    font-size: 14px;
- }
+#input {
+margin: 5px;
+border: 1px solid #24283b;
+color: #c0caf5;
+background-color: #24283b;
+}
 
- /* Window */
- window {
-    margin: 0px;
-    padding: 10px;
-    border: 3px solid @accent;
-    border-radius: 7px;
-    background-color: @bg;
-    animation: slideIn 0.5s ease-in-out both;
- }
+#input image {
+	color: #c0caf5;
+}
 
- /* Slide In */
- @keyframes slideIn {
-    0% {
-       opacity: 0;
-    }
+#inner-box {
+margin: 5px;
+border: none;
+background-color: #24283b;
+}
 
-    100% {
-       opacity: 1;
-    }
- }
+#outer-box {
+margin: 5px;
+border: none;
+background-color: #24283b;
+}
 
- /* Inner Box */
- #inner-box {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    background-color: @bg;
-    animation: fadeIn 0.5s ease-in-out both;
- }
+#scroll {
+margin: 0px;
+border: none;
+}
 
- /* Fade In */
- @keyframes fadeIn {
-    0% {
-       opacity: 0;
-    }
+#text {
+margin: 5px;
+border: none;
+color: #c0caf5;
+}
 
-    100% {
-       opacity: 1;
-    }
- }
+#entry:selected {
+	background-color: #414868;
+	font-weight: normal;
+}
 
- /* Outer Box */
- #outer-box {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    background-color: @bg;
- }
-
- /* Scroll */
- #scroll {
-    margin: 0px;
-    padding: 10px;
-    border: none;
- }
-
- /* Input */
- #input {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    color: @accent;
-    background-color: @bg2;
-    animation: fadeIn 0.5s ease-in-out both;
- }
-
- /* Text */
- #text {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    color: @txt;
-    animation: fadeIn 0.5s ease-in-out both;
- }
-
- /* Selected Entry */
- #entry:selected {
-   background-color: @accent;
- }
-
- #entry:selected #text {
-    color: @bg;
- }
+#text:selected {
+	background-color: #414868;
+	font-weight: normal;
+}

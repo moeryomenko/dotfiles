@@ -1,5 +1,5 @@
 [general]
-import = ["~/.config/alacritty/themes/themes/tokyo-night-storm.toml"]
+import = ["~/.config/alacritty/themes/themes/nord.toml"]
 
 [bell]
 animation = "EaseOutExpo"
@@ -16,17 +16,17 @@ TERM = "tmux-256color"
 size = 13.0
 
 [font.bold]
-family = "Inconsolata"
+family = "Cascadia Code"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Inconsolata"
+family = "Cascadia Code"
 
 [font.normal]
-family = "Inconsolata"
+family = "Cascadia Code"
 
 [font.offset]
 x = 0

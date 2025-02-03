@@ -109,8 +109,22 @@ local function filetype()
 		["lua"] = "",
 		["css"] = "",
 		["asm"] = "",
+		["toml"] = "",
+		["glsl"] = "",
+		["python"] = "",
+		["ruby"] = "",
+		["html"] = "",
+		["java"] = "",
+		["sh"] = "",
+		["fish"] = "",
+		["javascript"] = "",
+		["typescript"] = "",
+		["scala"] = "",
+		["clojure"] = "",
+		["markdown"] = "",
+		["qml"] = "",
 	}
-	return string.format(" %s ", lang_icons[ft] or ft):upper()
+	return string.format(" %s ", lang_icons[ft] or ""):upper()
 end
 
 local function lineinfo()
