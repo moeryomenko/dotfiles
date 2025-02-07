@@ -11,6 +11,7 @@ return {
 				go = { "goimports", "gofumpt" },
 				lua = { "stylua" },
 				proto = { "buf" },
+				python = { "black" },
 			},
 			format_on_save = {
 				timeout_ms = 500,
