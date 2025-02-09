@@ -12,6 +12,7 @@ return {
 				lua = { "stylua" },
 				proto = { "buf" },
 				python = { "black" },
+				cmake = { "gersemi" },
 			},
 			format_on_save = {
 				timeout_ms = 500,
