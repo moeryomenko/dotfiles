@@ -34,6 +34,9 @@ return {
 					fg = c.bg_dark,
 				}
 			end,
+			on_colors = function(colors)
+				colors.fg = "#7dcfff"
+			end,
 		})
 		vim.cmd([[colorscheme tokyonight-storm]])
 	end,
