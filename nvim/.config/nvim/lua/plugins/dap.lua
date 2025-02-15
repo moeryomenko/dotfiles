@@ -79,6 +79,7 @@ return {
 		"theHamsta/nvim-dap-virtual-text",
 		"rcarriga/cmp-dap",
 		"LiadOz/nvim-dap-repl-highlights",
+		"ldelossa/nvim-dap-projects",
 	},
 	cmd = { "DapUIToggle", "DapToggleRepl", "DapToggleBreakpoint" },
 	keys = {
@@ -110,5 +111,7 @@ return {
 			local merged = require("core.utils").deep_tbl_extend(dap.configurations, opts.configurations)
 			dap.configurations = merged
 		end
+
+		require("nvim-dap-projects").search_project_config()
 	end,
 }
