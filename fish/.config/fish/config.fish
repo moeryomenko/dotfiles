@@ -5,7 +5,7 @@ if status is-interactive
  	keychain --eval --agents gpg --quiet --gpg2 -Q 4B065CE067340C25 | source
 end
 
-set -U XDG_CONFIG_HOME $HOME/.config
+export XDG_CONFIG_HOME=$HOME/.config
 
 # TokyoNight Color Palette
 set -l foreground c0caf5
