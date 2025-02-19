@@ -135,13 +135,14 @@ return {
 		"trun",
 		fmt(
 			[[
-        t.Run({}, func(t *testing.T) {{
-            {}
-        }})
+		for caseName, tc := range testcases {{
+			t.Run(caseName, func(t *testing.T) {{
+				{}
+			}})
+		}}
         ]],
 			{
-				i(1, "test case"),
-				i(2, ""),
+				i(1, ""),
 			}
 		),
 		in_test_fn
