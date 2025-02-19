@@ -12,8 +12,8 @@ WLogout Config File by Arfan Zubi
 */
 
 window {
-    color: #D3C6AA;
-    background-color: rgba(45, 53, 59, 0.7);
+    color: #292e42;
+    background-color: rgba(18, 25, 28, 0.7);
     font-family: 'FiraCode Nerd Font', sans-serif;
     font-weight: bold;
     font-size: 20px;
@@ -21,12 +21,12 @@ window {
 
 button {
     margin: 5px;
-    color: #D3C6AA;
-    background-color: #272E33;
+    color: #292e42;
+    background-color: #1f2335;
     background-size: 20%;
     background-repeat: no-repeat;
     background-position: center;
-    border: 5px solid #3D484D;
+    border: 5px solid #3d59a1;
     border-radius: 15px;
     box-shadow: none;
     text-shadow: none;
@@ -35,8 +35,8 @@ button {
 }
 
 button:focus, button:active, button:hover {
-    color: #2D353B;
-    background-color: #81A1C1;
+    color: #24283b;
+    background-color: #3d59a1;
     text-shadow: none;
 }
 
