@@ -95,7 +95,7 @@ function worktree
 end
 
 function cscope_gen
-	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|hlsl\|glsl\|comp\|vert\|frag\)' > cscope.files
+	find . -regex '.*\.\(c\|h\|cc\|hh\|cpp\|hpp\|cxx\|hxx\|hlsl\|glsl\|comp\|vert\|frag\)' > cscope.files
 	cscope -b -q -k
 end
 
