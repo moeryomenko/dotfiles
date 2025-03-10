@@ -46,12 +46,8 @@ export GPG_TTY=$(tty)
 
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\cy --processes=\cp
 
-starship init fish | source
-direnv hook fish | source
-zoxide init fish | source
-
-set -U EDITOR nvim
-set -U GOPATH (go env GOPATH)
+set -Ux EDITOR nvim
+set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
@@ -60,6 +56,11 @@ fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
+
+starship init fish | source
+direnv hook fish | source
+zoxide init fish | source
+fx --comp fish | source
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
