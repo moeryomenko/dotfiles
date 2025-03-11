@@ -54,6 +54,31 @@ return {
 		},
 	},
 	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			{
+				"fredrikaverpil/neotest-golang",
+				dependencies = {
+					{
+						"leoluz/nvim-dap-go",
+						opts = {},
+					},
+				},
+				branch = "main",
+			},
+		},
+		opts = function(_, opts)
+			opts.adapters = opts.adapters or {}
+			opts.adapters["neotest-golang"] = {
+				go_test_args = {
+					"-v",
+					"-race",
+					"-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
+				},
+			}
+		end,
+	},
+	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			{
