@@ -16,3 +16,6 @@
 [submodule "tmux/.tmux/plugins/vim-tmux-navigator"]
 	path = tmux/.tmux/plugins/vim-tmux-navigator
 	url = git@github.com:christoomey/vim-tmux-navigator.git
+[submodule "tmux/.tmux/plugins/tmux-nerd-font-window-name"]
+	path = tmux/.tmux/plugins/tmux-nerd-font-window-name
+	url = git@github.com:joshmedeski/tmux-nerd-font-window-name.git

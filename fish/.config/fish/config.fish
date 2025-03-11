@@ -46,12 +46,8 @@ export GPG_TTY=$(tty)
 
 fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\cy --processes=\cp
 
-starship init fish | source
-direnv hook fish | source
-zoxide init fish | source
-
-set -U EDITOR nvim
-set -U GOPATH (go env GOPATH)
+set -Ux EDITOR nvim
+set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
@@ -60,6 +56,11 @@ fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
+
+starship init fish | source
+direnv hook fish | source
+zoxide init fish | source
+fx --comp fish | source
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
@@ -74,6 +75,7 @@ abbr --add glog       "git dlog"
 abbr --add ur         "ls | xargs -P10 -I{} git -C {} pull"
 abbr --add nv         "nvim"
 abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
+abbr --add cdfz       "z (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
