@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git stash list | \
+	sk \
+		--ansi --no-sort --reverse --tiebreak=index \
+		--preview "echo {} | grep -oP '@{\\K\\d+' | xargs -I % sh -c 'git stash show --color=always \'stash@{%}\''" \
+		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+			echo {} | \
+			awk -F'\[@\{\}\]' '{print \$3}' | \
+			xargs -I % sh -c 'git dsf %' @-" \
+		--preview-window=right:70%
