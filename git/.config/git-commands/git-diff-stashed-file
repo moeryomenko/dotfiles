@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+git stash show "stash@{$1}" | grep -v 'files changed' | cut -d '|' -f1 | sed 's/ *$//' | \
+	sk --ansi --no-sort --reverse --tiebreak=index \
+		--preview "echo \"\
+		  {}
+		  \" | \
+          xargs -I % sh -c 'git diff stash@\{$1\}^1 stash@\{$1\} -- %' @- " \
+		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+          echo \"\
+		  {}
+		  \" | \
+          xargs -I % sh -c 'git diff stash@\{$1\}^1 stash@\{$1\} -- %' @- " \
+		--preview-window=right:70%

@@ -73,6 +73,7 @@
 	rnb     = rename-branch
 	rcb     = rename-current-branch
 	scf     = stash-changed-files
+	dsf     = diff-stashed-file
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
