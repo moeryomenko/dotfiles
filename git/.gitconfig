@@ -72,6 +72,7 @@
 	rt      = regression-testing
 	rnb     = rename-branch
 	rcb     = rename-current-branch
+	scf     = stash-changed-files
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage

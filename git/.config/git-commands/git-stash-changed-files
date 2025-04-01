@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+git status --short | grep '[A|M]' | grep -E -o '[^ ]*$' | xargs -I % echo "./"% | \
+	sk \
+		--ansi --no-sort --reverse --tiebreak=index -m \
+		--preview "echo \"\
+				   {}
+				   \" | \
+				   xargs -I % sh -c 'git diff HEAD % | bat ' @- " \
+		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" | \
+	tr '\n' ' ' | xargs -I % bash -c "git stash push -m \"$1\" -- %"
