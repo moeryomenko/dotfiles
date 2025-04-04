@@ -14,7 +14,6 @@ Plug 'rbong/vim-flog'
 Plug 'rhysd/committia.vim'
 Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
-Plug 'cdelledonne/vim-cmake'
 Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
 Plug 'ghifarit53/tokyonight-vim'
@@ -287,20 +286,6 @@ augroup END
 
 nnoremap <silent>gf :GFiles<CR>
 
-" }}}
-
-" cmake configuration {{{
-let g:cmake_build_dir_location = 'build'
-let g:cmake_generate_options = [
-                        \ '-GNinja',
-                        \ '-DEXE_LINKER_FLAGS_INIT="-fuse-ld=mold"',
-                        \ '-DSHARED_LINKER_FLAGS_INIT="-fuse-ld=mold"',
-                        \ '-DCMAKE_C_COMPILER=clang',
-                        \ '-DCMAKE_CXX_COMPILER=clang++',
-                        \ '-DC_COMPILER_LAUNCHER="/usr/bin/ccache"',
-                        \ '-DCXX_COMPILER_LAUNCHER="/usr/bin/ccache"']
-let g:cmake_link_compile_commands = 1
-let g:cmake_statusline = 1
 " }}}
 
 " sessions {{{
