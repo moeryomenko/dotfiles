@@ -124,5 +124,6 @@
 	skippedCherryPicks = false
 [tag]
 	forceSignAnnotated = true
+	sort = -version:refname
 [pack]
 	useBitmapBoundaryTraversal = true
