@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+version=$(git tag | head -1 | awk -F'[v.]' '{printf "v%d.%d.%d\n", $2, $3, $4+1}')
+
+git release-tag $version
+
