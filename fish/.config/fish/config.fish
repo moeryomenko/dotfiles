@@ -85,7 +85,7 @@ abbr --add sw         "cd (worktree)"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
 abbr --add fmtgou     "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
 
-abbr --add gotest     "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s"
+abbr --add gotest     "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
 
 alias hx='helix'
 
