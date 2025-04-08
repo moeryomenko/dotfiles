@@ -11,17 +11,19 @@ TERM = "tmux-256color"
 size = 13.0
 
 [font.bold]
-family = "Cascadia Code"
+family = "IBM Plex Mono"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Cascadia Code"
+family = "IBM Plex Mono"
+style = "Medium Italic"
 
 [font.normal]
-family = "Cascadia Code"
+family = "IBM Plex Mono"
+style = "Medium"
 
 [font.offset]
 x = 0
