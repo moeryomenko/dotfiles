@@ -8,7 +8,7 @@ draw_bold_text_with_bright_colors = true
 TERM = "tmux-256color"
 
 [font]
-size = 13.0
+size = 12.0
 
 [font.bold]
 family = "IBM Plex Mono"
