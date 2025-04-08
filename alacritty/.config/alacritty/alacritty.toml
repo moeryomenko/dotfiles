@@ -81,7 +81,7 @@ white = "#2d4a7a"      # Darker text
 TERM = "tmux-256color"
 
 [font]
-size = 13.0
+size = 12.0
 
 [font.bold]
 family = "Cascadia Code"

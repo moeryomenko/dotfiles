@@ -1,6 +1,6 @@
 {
 	"position": "top",
-	"output": "DP-1",
+	"output": "eDP-1",
 	"height": 5,
 	"modules-left": [
 		"hyprland/workspaces"
