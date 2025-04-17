@@ -7,3 +7,9 @@ vim/.vim/plugged/
 *.netrwhist
 nvim/.config/nvim/lua/plugins/lock.json
 gtk/.config/gtk-3.0/bookmarks
+cmus/.config/cmus/autosave
+cmus/.config/cmus/cache
+cmus/.config/cmus/command-history
+cmus/.config/cmus/lib.pl
+cmus/.config/cmus/playlists/
+cmus/.config/cmus/search-history
