@@ -1,8 +1,8 @@
 if status is-interactive
-	set -lx SHELL fish
-	keychain --eval --agents ssh --quiet -Q ~/.ssh/id_ed25519 | source
-	keychain --eval --agents gpg --quiet --gpg2 -Q 5318919FE71A1E81 | source
- 	keychain --eval --agents gpg --quiet --gpg2 -Q 4B065CE067340C25 | source
+    set -lx SHELL fish
+    keychain --eval --ssh-allow-forwarded --quiet /home/eryoma/.ssh/id_ed25519 | source
+    keychain --eval --quiet --gpg2 5318919FE71A1E81 | source
+    keychain --eval --quiet --gpg2 4B065CE067340C25 | source
 end
 
 export XDG_CONFIG_HOME=$HOME/.config
