@@ -125,3 +125,5 @@
 	sort = -version:refname
 [pack]
 	useBitmapBoundaryTraversal = true
+[includeIf "gitdir:~/work/"]
+	path = ~/work/.gitconfig
