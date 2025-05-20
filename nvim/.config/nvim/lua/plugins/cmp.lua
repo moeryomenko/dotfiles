@@ -12,6 +12,7 @@ return {
 		"lukas-reineke/cmp-rg",
 		"onsails/lspkind.nvim",
 		"L3MON4D3/LuaSnip",
+		"davidsierradz/cmp-conventionalcommits",
 		{
 			"windwp/nvim-autopairs",
 			event = "InsertEnter",
@@ -115,6 +116,12 @@ return {
 							luasnip = "[Snippet]",
 							buffer = "[Buffer]",
 							path = "[Path]",
+							git = "[git]",
+							codecompanion = "[ai]",
+							codecompanion_models = "[ai-models]",
+							codecompanion_tools = "[ai-tools]",
+							codecompanion_variables = "[ai-vars]",
+							codecompanion_slash_commands = "[ai-cmds]",
 						})[entry.source.name]
 						return vim_item
 					end,
@@ -122,12 +129,16 @@ return {
 			},
 			sources = {
 				{ name = "nvim_lsp" },
+				{ name = "codecompanion" },
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
 				{ name = "rg" },
 				{ name = "nvim_lua" },
 				{ name = "buffer" },
 				{ name = "path" },
+			},
+			performance = {
+				fetching_timeout = 2000,
 			},
 			sorting = {
 				priority_weight = 2,

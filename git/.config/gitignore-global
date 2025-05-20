@@ -24,3 +24,4 @@ graph_info.json
 Session.vim
 .aider.*
 coverage.out
+.vectorcode/
