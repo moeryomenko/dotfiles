@@ -24,12 +24,12 @@ return {
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
 		adapters = {
-			qwen2 = function()
+			qwen3 = function()
 				return require("codecompanion.adapters").extend("ollama", {
-					name = "qwen2",
+					name = "qwen3",
 					schema = {
 						model = {
-							default = "qwen2.5-coder:latest",
+							default = "qwen3:14b",
 						},
 						num_ctx = {
 							default = 16384,
@@ -40,7 +40,7 @@ return {
 		},
 		strategies = {
 			chat = {
-				adapter = "qwen2",
+				adapter = "qwen3",
 				roles = {
 					llm = "  CodeCompanion",
 					user = " " .. user:sub(1, 1):upper() .. user:sub(2),
@@ -50,8 +50,8 @@ return {
 					stop = { modes = { n = "<C-c>" } },
 				},
 			},
-			inline = { adapter = "qwen2" },
-			agent = { adapter = "qwen2" },
+			inline = { adapter = "qwen3" },
+			agent = { adapter = "qwen3" },
 		},
 		display = {
 			chat = {
