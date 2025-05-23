@@ -25,3 +25,4 @@ Session.vim
 .aider.*
 coverage.out
 .vectorcode/
+__pycache__/
