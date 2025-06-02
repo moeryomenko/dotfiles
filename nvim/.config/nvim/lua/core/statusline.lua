@@ -139,16 +139,16 @@ local function vcs()
 	if not git_info or git_info.head == "" then
 		return ""
 	end
-	local added = git_info.added and ("%#GitSignsAdd#+" .. git_info.added .. " ") or ""
-	local changed = git_info.changed and ("%#GitSignsChange#~" .. git_info.changed .. " ") or ""
-	local removed = git_info.removed and ("%#GitSignsDelete#-" .. git_info.removed .. " ") or ""
+	local added = git_info.added and ("+" .. git_info.added .. " ") or ""
+	local changed = git_info.changed and ("~" .. git_info.changed .. " ") or ""
+	local removed = git_info.removed and ("-" .. git_info.removed .. " ") or ""
 	return table.concat({
 		" ",
 		added,
 		changed,
 		removed,
 		" ",
-		"%#GitSignsAdd# ",
+		" ",
 		git_info.head,
 		" %#Normal#",
 	})
