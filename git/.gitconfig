@@ -2,6 +2,7 @@
 	editor = vim
 	excludesfile = ~/.config/gitignore-global
 	attributesfile = ~/.gitattributes
+	#hooksPath = ~/.config/githooks
 [add.interactive]
 	useBuiltin = false
 [interactive]

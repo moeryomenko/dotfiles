@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+COMMIT_MSG_FILE=$1
+
+MSG=$(git commit-msg)
+
+awk -v msg="$MSG" '
+    {
+        print
+    }
+    $0 == "# <type change>(scope): brief commit summary in around 50 characters or less" {
+        if (msg) {
+            print msg
+        }
+    }
+' "$COMMIT_MSG_FILE" > "$COMMIT_MSG_FILE.tmp" && mv "$COMMIT_MSG_FILE.tmp" "$COMMIT_MSG_FILE"
