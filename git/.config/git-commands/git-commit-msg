@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Capture staged changes safely
+output=$(git diff --no-ext-diff --staged 2>&1)
+
+# Create the prompt with proper formatting
+read -r -d '' prompt <<EOF
+You are an expert at following the Conventional Commit specification. Given the git diff listed below, write short commit messages:
+
+- The first line should be a short summary of the changes
+- template: '<type change>(scope): brief commit summary in around 50 characters or less'
+- Remember to mention the files that were changed, and what was changed
+- Explain the 'why' behind changes
+- Use bullet points for multiple changes
+- If there are no changes, or the input is blank - then return a blank string
+
+Rules:
+- Separate subject from body with a blank line
+- Limit the subject line to 50 characters
+- Capitalize the subject line
+- Do not end the subject line with a period
+- Use the imperative mood in the subject line
+- Wrap the body at 72 characters
+- Use the body to explain what and why vs. how
+
+
+Think carefully before you write your commit message.
+
+\`\`\`diff
+$output
+\`\`\`
+EOF
+
+# Pass the prompt to the model
+echo "$prompt" | ollama run qwen3-committer:latest | sed -e '/<think>/,/<\/think>/d' | awk 'NF {p=1} p'
