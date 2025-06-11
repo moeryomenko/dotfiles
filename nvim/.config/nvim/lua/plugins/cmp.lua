@@ -2,6 +2,7 @@ return {
 	"hrsh7th/nvim-cmp",
 	dependencies = {
 		"hrsh7th/cmp-buffer",
+		"zbirenbaum/copilot-cmp",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/cmp-nvim-lsp",
@@ -109,6 +110,10 @@ return {
 
 					ellipsis_char = "...",
 					show_labelDetails = true,
+					symbol_map = {
+						Codeium = "",
+						Copilot = "",
+					},
 
 					before = function(entry, vim_item)
 						vim_item.menu = ({
@@ -117,19 +122,16 @@ return {
 							buffer = "[Buffer]",
 							path = "[Path]",
 							git = "[git]",
-							codecompanion = "[ai]",
-							codecompanion_models = "[ai-models]",
-							codecompanion_tools = "[ai-tools]",
-							codecompanion_variables = "[ai-vars]",
-							codecompanion_slash_commands = "[ai-cmds]",
+							copilot = "",
 						})[entry.source.name]
 						return vim_item
 					end,
 				}),
 			},
 			sources = {
+				{ name = "copilot" },
+				{ name = "codeium" },
 				{ name = "nvim_lsp" },
-				{ name = "codecompanion" },
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
 				{ name = "rg" },
