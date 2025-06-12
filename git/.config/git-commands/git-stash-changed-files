@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git status --short | grep '[A|M]' | grep -E -o '[^ ]*$' | xargs -I % echo "./"% | \
+git diff --no-ext-diff --name-only | xargs -I % echo "./"% | \
 	sk \
 		--ansi --no-sort --reverse --tiebreak=index -m \
 		--preview "echo \"\
