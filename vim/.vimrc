@@ -21,15 +21,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'christoomey/vim-tmux-navigator'
 
-" lsp plugins {{{
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'mattn/vim-lsp-settings'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" }}}
-
-Plug 'tikhomirov/vim-glsl'
-Plug 'kalvinpearce/ShaderHighlight'
 Plug 'charlespascoe/vim-go-syntax'
 
 call plug#end()
@@ -206,15 +197,6 @@ nmap <silent> gr :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> gs :cs find t struct <C-R>=expand("<cword>")<CR> {<CR>
 nmap <silent> gc :cs find t class <C-R>=expand("<cword>")<CR><CR>
 nmap <silent> gp :cs find f <C-R>=expand("<cfile>")<CR><CR>
-" }}}
-
-" lsp mapping  {{{
-" nmap <silent> gd :LspDefinition<CR>
-" nmap <silent> gk :LspPeekDefinition<CR>
-" nmap <silent> gi :LspImplementation<CR>
-" nmap <silent> th :LspHover<CR>
-" nmap <silent> gr :LspReferences<CR>
-" nmap <silent> gs :LspDocumentSymbolSearch<CR>
 " }}}
 
 " split mapping {{{
