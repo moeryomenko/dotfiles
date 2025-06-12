@@ -8,7 +8,7 @@ return {
 			mode = "buffers",
 			offsets = {
 				{
-					filetype = "NvimTree",
+					filetype = "netrw",
 					text = " File Explorer",
 					highlight = "Directory",
 					separator = false,

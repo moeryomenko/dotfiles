@@ -2,6 +2,29 @@ local M = {}
 
 local map = require("core.utils").map
 
+vim.g.NetrwIsOpen = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_browse_split = 4
+vim.g.netrw_altv = 1
+vim.g.netrw_winsize = 16
+
+function ToggleNetrw()
+	if vim.g.NetrwIsOpen == 1 then
+		for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+			if vim.bo[bufnr].filetype == "netrw" then
+				vim.api.nvim_buf_delete(bufnr, { force = true })
+			end
+		end
+		vim.g.NetrwIsOpen = 0
+	else
+		vim.g.NetrwIsOpen = 1
+		vim.cmd("silent Lexplore")
+	end
+end
+
+vim.keymap.set("n", "<leader>w", ToggleNetrw, { silent = true })
+
 -- close other buffers, except for the current.
 map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 

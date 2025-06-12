@@ -25,8 +25,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
 
 -- netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- skip startup screen
 vim.opt.shortmess:append("I")
