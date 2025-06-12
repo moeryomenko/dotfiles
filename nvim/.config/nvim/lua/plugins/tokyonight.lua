@@ -45,14 +45,14 @@ return {
 
 		require("tokyonight").setup({
 			on_highlights = function(hl, c)
-				local prompt = "#2d3149"
+				local prompt = "#08080b"
 				hl.TelescopeNormal = {
-					bg = c.bg_dark,
-					fg = c.fg_dark,
+					bg = styles.custom.bg,
+					fg = styles.custom.fg,
 				}
 				hl.TelescopeBorder = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
+					bg = styles.custom.bg,
+					fg = styles.custom.bg,
 				}
 				hl.TelescopePromptNormal = {
 					bg = prompt,
@@ -66,13 +66,16 @@ return {
 					fg = prompt,
 				}
 				hl.TelescopePreviewTitle = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
+					bg = styles.custom.bg,
+					fg = styles.custom.bg,
 				}
 				hl.TelescopeResultsTitle = {
-					bg = c.bg_dark,
-					fg = c.bg_dark,
+					bg = styles.custom.bg,
+					fg = styles.custom.bg,
 				}
+			end,
+			on_colors = function(colors)
+				colors.fg = "#7dcfff"
 			end,
 		})
 
