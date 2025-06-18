@@ -119,7 +119,7 @@ function cscope_gen
 end
 
 function compress
-	XZ_OPT=-9 tar cJF $argv.tar.xz $argv
+	XZ_OPT=-9 tar cjf $argv.tar.xz $argv
 end
 
 function replace_all
