@@ -48,7 +48,7 @@ set -g fish_pager_color_selected_background --background=$selection
 export GPG_TTY=$(tty)
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
-fzf_configure_bindings --directory=\cf --git_log=\cl --git_status=\cs --history=\cy --processes=\cp
+fzf_configure_bindings --directory=\cf --git_log=\ct --git_status=\cs --history=\cy --processes=\cp
 
 if test -z $ASDF_DATA_DIR
     set _asdf_shims "$HOME/.asdf/shims"
