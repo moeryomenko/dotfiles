@@ -15,14 +15,53 @@ return {
 	"olimorris/codecompanion.nvim",
 	lazy = false,
 	dependencies = {
+		"ravitemer/codecompanion-history.nvim",
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
 		"hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
 		"nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+		"zbirenbaum/copilot.lua",
 		{ "echasnovski/mini.nvim", version = "*" },
+		{
+			"ravitemer/mcphub.nvim", -- Manage MCP servers
+			cmd = "MCPHub",
+			build = "npm install -g mcp-hub@latest",
+			config = true,
+		},
+		-- {
+		-- 	"Davidyz/VectorCode", -- Index and search code in your repositories
+		-- 	version = "*",
+		-- 	build = "pipx upgrade vectorcode",
+		-- 	dependencies = { "nvim-lua/plenary.nvim" },
+		-- },
 	},
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
+		extensions = {
+			history = {
+				enabled = true,
+				opts = {
+					keymap = "gh",
+					save_chat_keymap = "sc",
+					auto_save = false,
+					auto_generate_title = true,
+					continue_last_chat = false,
+					delete_on_clearing_chat = false,
+					picker = "snacks",
+					enable_logging = false,
+					dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+				},
+			},
+			mcphub = {
+				callback = "mcphub.extensions.codecompanion",
+				opts = {
+					make_vars = true,
+					make_slash_commands = true,
+					show_result_in_chat = true,
+				},
+			},
+			-- "vectorcode", -- Uncomment to enable VectorCode extension
+		},
 		adapters = {
 			qwen3 = function()
 				return require("codecompanion.adapters").extend("ollama", {
@@ -37,10 +76,17 @@ return {
 					},
 				})
 			end,
+			opts = {
+				proxy = string.gsub(tostring(os.getenv("COPILOT_PROXY_URL")), "https", "http"),
+				allow_insecure = false, -- Allow insecure connections
+			},
 		},
 		strategies = {
 			chat = {
-				adapter = "qwen3",
+				adapter = {
+					name = "copilot",
+					model = "claude-3.7-sonnet",
+				},
 				roles = {
 					llm = "  CodeCompanion",
 					user = " " .. user:sub(1, 1):upper() .. user:sub(2),
@@ -49,13 +95,33 @@ return {
 					close = { modes = { n = "q", i = "<C-c>" } },
 					stop = { modes = { n = "<C-c>" } },
 				},
+				tools = {
+					["next_edit_suggestion"] = {
+						opts = {
+							--- the default is to open in a new tab, and reuse existing tabs
+							--- where possible
+							---@type string|fun(path: string):integer?
+							jump_action = "tabnew",
+						},
+					},
+				},
 			},
-			inline = { adapter = "qwen3" },
-			agent = { adapter = "qwen3" },
+			inline = {
+				adapter = {
+					name = "copilot",
+					model = "claude-3.7-sonnet",
+				},
+			},
+			agent = {
+				adapter = {
+					name = "copilot",
+					model = "claude-3.7-sonnet",
+				},
+			},
 		},
 		display = {
 			chat = {
-				show_settings = false,
+				show_settings = true,
 				diff = {
 					enabled = true,
 					close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
