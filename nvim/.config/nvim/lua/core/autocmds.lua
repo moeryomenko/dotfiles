@@ -118,3 +118,37 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	group = augroup("helm_detection"),
+	pattern = { "*.yaml", "*.yml" },
+	callback = function()
+		local function check_for_chart_yaml(dir)
+			local chart_path = dir .. "/Chart.yaml"
+			local stats = vim.loop.fs_stat(chart_path)
+			return stats ~= nil
+		end
+
+		local file_dir = vim.fn.expand("%:p:h")
+		local current_dir = file_dir
+		local max_depth = 3 -- Check up to 3 parent directories
+		local depth = 0
+
+		-- Check current directory and parent directories
+		while depth < max_depth do
+			if check_for_chart_yaml(current_dir) then
+				vim.cmd("set filetype=helm")
+				break
+			end
+
+			-- Go to parent directory
+			local parent_dir = vim.fn.fnamemodify(current_dir, ":h")
+			if parent_dir == current_dir then
+				-- Reached root directory
+				break
+			end
+			current_dir = parent_dir
+			depth = depth + 1
+		end
+	end,
+})
