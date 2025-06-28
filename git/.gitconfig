@@ -66,6 +66,7 @@
 	dsf     = diff-stashed-file
 	lsd     = list-stash-diff
 	pss     = pop-selected-stash
+	rss     = remove-selected-stash
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
