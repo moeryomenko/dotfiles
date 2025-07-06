@@ -2,8 +2,8 @@
 
 message="$@
 
-$(git shortlog $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges)"
+$(git shortlog "$(git describe --tags --abbrev=0)"..HEAD --oneline --no-merges)"
 
-git tag --annotate -m "${message}" -s --edit $@
+git tag --annotate -m "$message" -s --edit "$@"
 
 git push --tags origin

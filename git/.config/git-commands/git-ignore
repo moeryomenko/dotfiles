@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd -- ${GIT_PREFIX:-.}
+cd -- "${GIT_PREFIX:-.}"
 
 echo "$1" >>.gitignore

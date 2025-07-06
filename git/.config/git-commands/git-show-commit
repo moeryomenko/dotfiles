@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git diff-tree --no-commit-id --name-only -r $1 | \
+git diff-tree --no-commit-id --name-only -r "$1" | \
 	sk --ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo \"\
 		  {}

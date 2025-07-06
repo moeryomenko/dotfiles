@@ -2,4 +2,4 @@
 
 # Rename the current branch to the new name and push to remote.
 # git rename-branch $(git rev-parse --abbrev-ref HEAD) $1
-git rename-branch $(git branch --show-current) $1
+git rename-branch "$(git branch --show-current)" "$1"

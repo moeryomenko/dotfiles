@@ -7,7 +7,7 @@ selected_stash=$(git stash list | \
 		--preview-window=right:70% \
 		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up")
 
-if [ -n "$selected_stash" ]; then
+if [ "$selected_stash" != "" ]; then
 	# Extract the stash number
 	stash_number=$(echo "$selected_stash" | grep -oP '@{\K\d+')
 	echo "Dropping stash@{$stash_number}..."

@@ -9,8 +9,8 @@ SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | sk  \
            grep -o '[a-f0-9]\{7\}' | head -1 |
            xargs -I % sh -c 'git show --color=always % | bat ' @- " | cut -c -7  | xargs -o`
 
-[ -z $SHA ] && exit
+[ "$SHA" = "" ] && exit
 
-git commit --fixup=$SHA
+git commit --fixup="$SHA"
 
 GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash "$SHA^"

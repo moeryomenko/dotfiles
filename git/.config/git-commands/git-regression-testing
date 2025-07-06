@@ -16,9 +16,9 @@ SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | sk  \
            grep -o '[a-f0-9]\{7\}' | head -1 |
            xargs -I % sh -c 'git show --color=always % | bat ' @- " | cut -c -7  | xargs -o`
 
-[ -z $SHA ] && exit
+[ "$SHA" = "" ] && exit
 
-git bisect start HEAD $SHA
+git bisect start HEAD "$SHA"
 
 git bisect run sh -c "eval $test_runner"
 
