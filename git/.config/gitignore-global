@@ -26,3 +26,4 @@ Session.vim
 coverage.out
 .vectorcode/
 __pycache__/
+.claude/

@@ -1,4 +1,5 @@
 local prefix = "<leader>a"
+local load_secret = require("core.functions").load_secret
 local user = vim.env.USER or "User"
 
 vim.api.nvim_create_autocmd("User", {
@@ -28,12 +29,6 @@ return {
 			build = "npm install -g mcp-hub@latest",
 			config = true,
 		},
-		-- {
-		-- 	"Davidyz/VectorCode", -- Index and search code in your repositories
-		-- 	version = "*",
-		-- 	build = "pipx upgrade vectorcode",
-		-- 	dependencies = { "nvim-lua/plenary.nvim" },
-		-- },
 	},
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
@@ -76,16 +71,24 @@ return {
 					},
 				})
 			end,
+			anthropic = function()
+				return require("codecompanion.adapters").extend("anthropic", {
+					name = "anthropic",
+					env = {
+						api_key = load_secret("anthropic/dev-key"),
+					},
+				})
+			end,
 			opts = {
-				proxy = string.gsub(tostring(os.getenv("COPILOT_PROXY_URL")), "https", "http"),
+				-- proxy = string.gsub(tostring(os.getenv("COPILOT_PROXY_URL")), "https", "http"),
 				allow_insecure = false, -- Allow insecure connections
 			},
 		},
 		strategies = {
 			chat = {
 				adapter = {
-					name = "copilot",
-					model = "claude-3.7-sonnet",
+					name = "anthropic",
+					model = "claude-4-sonnet-20250514",
 				},
 				roles = {
 					llm = "  CodeCompanion",
@@ -108,14 +111,14 @@ return {
 			},
 			inline = {
 				adapter = {
-					name = "copilot",
-					model = "claude-3.7-sonnet",
+					name = "anthropic",
+					model = "claude-4-sonnet-20250514",
 				},
 			},
 			agent = {
 				adapter = {
-					name = "copilot",
-					model = "claude-3.7-sonnet",
+					name = "anthropic",
+					model = "claude-4-sonnet-20250514",
 				},
 			},
 		},
