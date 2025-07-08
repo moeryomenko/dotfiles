@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare filter
-if [ "$@" != "" ] && [ -f "$@" ]; then
+if [[ "$@" != "" ]] && [[ -f "$@" ]]; then
 	filter="-- $@"
 fi
 
