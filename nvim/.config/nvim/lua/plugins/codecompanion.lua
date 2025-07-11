@@ -58,19 +58,6 @@ return {
 			-- "vectorcode", -- Uncomment to enable VectorCode extension
 		},
 		adapters = {
-			qwen3 = function()
-				return require("codecompanion.adapters").extend("ollama", {
-					name = "qwen3",
-					schema = {
-						model = {
-							default = "qwen3:14b",
-						},
-						num_ctx = {
-							default = 16384,
-						},
-					},
-				})
-			end,
 			anthropic = function()
 				return require("codecompanion.adapters").extend("anthropic", {
 					name = "anthropic",
