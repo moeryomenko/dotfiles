@@ -1,7 +1,10 @@
+set -U fish_greeting ""
+
 if status is-interactive
     set -lx SHELL fish
     keychain --eval --ssh-allow-forwarded --quiet /home/eryoma/.ssh/id_ed25519 | source
     keychain --eval --quiet --gpg2 5318919FE71A1E81 | source
+	keychain --eval --quiet --gpg2 73EFE8958507112E | source
 end
 
 export XDG_CONFIG_HOME=$HOME/.config

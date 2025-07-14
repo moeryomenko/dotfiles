@@ -2,6 +2,7 @@ return {
 	"hrsh7th/nvim-cmp",
 	dependencies = {
 		"hrsh7th/cmp-buffer",
+		"zbirenbaum/copilot-cmp",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/cmp-nvim-lsp",
@@ -12,6 +13,7 @@ return {
 		"lukas-reineke/cmp-rg",
 		"onsails/lspkind.nvim",
 		"L3MON4D3/LuaSnip",
+		"davidsierradz/cmp-conventionalcommits",
 		{
 			"windwp/nvim-autopairs",
 			event = "InsertEnter",
@@ -108,6 +110,10 @@ return {
 
 					ellipsis_char = "...",
 					show_labelDetails = true,
+					symbol_map = {
+						Codeium = "",
+						Copilot = "",
+					},
 
 					before = function(entry, vim_item)
 						vim_item.menu = ({
@@ -115,12 +121,16 @@ return {
 							luasnip = "[Snippet]",
 							buffer = "[Buffer]",
 							path = "[Path]",
+							git = "[git]",
+							copilot = "",
 						})[entry.source.name]
 						return vim_item
 					end,
 				}),
 			},
 			sources = {
+				{ name = "copilot" },
+				{ name = "codeium" },
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
@@ -128,6 +138,9 @@ return {
 				{ name = "nvim_lua" },
 				{ name = "buffer" },
 				{ name = "path" },
+			},
+			performance = {
+				fetching_timeout = 2000,
 			},
 			sorting = {
 				priority_weight = 2,
