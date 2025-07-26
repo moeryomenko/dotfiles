@@ -23,12 +23,6 @@ return {
 		"nvim-telescope/telescope.nvim", -- Optional: For using slash commands
 		"zbirenbaum/copilot.lua",
 		{ "echasnovski/mini.nvim", version = "*" },
-		{
-			"ravitemer/mcphub.nvim", -- Manage MCP servers
-			cmd = "MCPHub",
-			build = "npm install -g mcp-hub@latest",
-			config = true,
-		},
 	},
 	cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
 	opts = {
@@ -47,15 +41,6 @@ return {
 					dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
 				},
 			},
-			mcphub = {
-				callback = "mcphub.extensions.codecompanion",
-				opts = {
-					make_vars = true,
-					make_slash_commands = true,
-					show_result_in_chat = true,
-				},
-			},
-			-- "vectorcode", -- Uncomment to enable VectorCode extension
 		},
 		adapters = {
 			anthropic = function()
