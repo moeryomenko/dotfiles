@@ -27,3 +27,4 @@ coverage.out
 .vectorcode/
 __pycache__/
 .claude/
+.mcp.json
