@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
 
-git reflog --no-merges --abbrev=7 | \
-    sk --ansi --no-sort --tiebreak=index \
-       --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
-               echo \"{}\" | \
-               grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git checkout %' @- "+abort
+declare filter
+if [[ "$@" != "" ]] && [[ -f "$@" ]]; then
+	filter="-- $@"
+fi
+
+git reflog \
+	--no-merges --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' "$@" |
+	sk \
+		--ansi --no-sort --reverse --tiebreak=index \
+		--preview "echo \"\
+			   {}
+			   \" | \
+			   grep -o '[a-f0-9]\{7\}' | head -1 |
+			   xargs -I % sh -c 'git show --color=always % | bat ' @- " \
+		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+              echo \"\
+		  {}
+		  \" | \
+		  grep -o '[a-f0-9]\{7\}' | head -1 |
+              xargs -I % sh -c 'git checkout %' @- " \
+		--preview-window=right:70%
