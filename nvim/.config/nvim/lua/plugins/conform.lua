@@ -14,6 +14,7 @@ return {
 				cmake = { "gersemi" },
 				yaml = { "yamlfmt" },
 				sql = { "sqruff" },
+				terraform = { "terraform" },
 			},
 			formatters = {},
 			format_on_save = {
