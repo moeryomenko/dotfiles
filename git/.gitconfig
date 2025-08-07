@@ -67,6 +67,7 @@
 	lsd     = list-stash-diff
 	pss     = pop-selected-stash
 	rss     = remove-selected-stash
+	ia      = interactive-add
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
