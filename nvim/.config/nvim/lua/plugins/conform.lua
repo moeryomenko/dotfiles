@@ -13,6 +13,7 @@ return {
 				python = { "black" },
 				cmake = { "gersemi" },
 				yaml = { "yamlfmt" },
+				sql = { "sqruff" },
 			},
 			formatters = {},
 			format_on_save = {
