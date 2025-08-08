@@ -59,8 +59,8 @@ return {
 		strategies = {
 			chat = {
 				adapter = {
-					name = "anthropic",
-					model = "claude-4-sonnet-20250514",
+					name = "copilot",
+					model = "claude-3.7-sonnet",
 				},
 				roles = {
 					llm = "  CodeCompanion",
@@ -83,14 +83,14 @@ return {
 			},
 			inline = {
 				adapter = {
-					name = "anthropic",
-					model = "claude-4-sonnet-20250514",
+					name = "copilot",
+					model = "claude-3.7-sonnet",
 				},
 			},
 			agent = {
 				adapter = {
-					name = "anthropic",
-					model = "claude-4-sonnet-20250514",
+					name = "copilot",
+					model = "claude-3.7-sonnet",
 				},
 			},
 		},
