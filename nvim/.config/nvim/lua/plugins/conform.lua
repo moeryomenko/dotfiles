@@ -15,6 +15,7 @@ return {
 				yaml = { "yamlfmt" },
 				sql = { "sqruff" },
 				terraform = { "terraform" },
+				hcl = { "hclfmt" },
 			},
 			formatters = {},
 			format_on_save = {

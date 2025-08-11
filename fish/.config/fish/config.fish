@@ -14,12 +14,12 @@ export XDG_CONFIG_HOME=$HOME/.config
 set -l foreground c0caf5
 set -l selection 2e3c64
 set -l comment 565f89
-set -l red f7768e
-set -l orange ff9e64
-set -l yellow e0af68
-set -l green 9ece6a
-set -l purple 9d7cd8
-set -l cyan 7dcfff
+set -l red 5aafff
+set -l orange 5dcfff
+set -l yellow 7dcfff
+set -l green 5ca673
+set -l purple 6b5cbf
+set -l cyan 4d7aa6
 set -l pink bb9af7
 
 # Syntax Highlighting Colors
