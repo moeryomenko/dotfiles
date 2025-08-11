@@ -50,17 +50,6 @@ export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 fzf_configure_bindings --directory=\cf --git_log=\ct --git_status=\cs --history=\cy --processes=\cp
 
-if test -z $ASDF_DATA_DIR
-    set _asdf_shims "$HOME/.asdf/shims"
-else
-    set _asdf_shims "$ASDF_DATA_DIR/shims"
-end
-
-if not contains $_asdf_shims $PATH
-    set -gx --prepend PATH $_asdf_shims
-end
-set --erase _asdf_shims
-
 set -Ux EDITOR nvim
 set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
@@ -76,7 +65,6 @@ starship init fish | source
 direnv hook fish | source
 zoxide init fish | source
 fx --comp fish | source
-asdf completion fish | source
 
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
