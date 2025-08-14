@@ -9,36 +9,9 @@
 		"wireplumber",
 		"network",
 		"clock",
-		"tray",
 		"hyprland/language",
 		"custom/powermenu"
 	],
-	"mpd": {
-		"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ ",
-		"format-disconnected": "Disconnected ",
-		"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-		"unknown-tag": "N/A",
-		"interval": 2,
-		"consume-icons": {
-			"on": " "
-		},
-		"random-icons": {
-			"off": "<span color=\"#f53c3c\"></span> ",
-			"on": " "
-		},
-		"repeat-icons": {
-			"on": " "
-		},
-		"single-icons": {
-			"on": "1 "
-		},
-		"state-icons": {
-			"paused": "",
-			"playing": ""
-		},
-		"tooltip-format": "MPD (connected)",
-		"tooltip-format-disconnected": "MPD (disconnected)"
-	},
 	"hyprland/workspaces": {
 		"format": "{windows}",
 		"on-click": "activate",
@@ -62,9 +35,6 @@
 			"discord": "",
 			"steam": ""
 		}
-	},
-	"tray": {
-		"spacing": 10
 	},
 	"clock": {
 		"format": "{:%I:%M }",

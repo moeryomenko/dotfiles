@@ -1,6 +1,6 @@
 * {
     border: none;
-    border-radius: 4px;
+    border-radius: 0px;
     font-family: Mononoki Nerd Font;
 
     /* adjust font-size value to your liking: */
@@ -139,6 +139,7 @@ label:focus {
     padding: 0 5px;
     margin: 6px 3px;
     min-width: 16px;
+    border-radius: 4px;
 }
 
 #custom-powermenu {
