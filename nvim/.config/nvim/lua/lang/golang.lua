@@ -110,7 +110,21 @@ return {
 			{
 				"leoluz/nvim-dap-go",
 				config = function()
-					require("dap-go").setup()
+					require("dap-go").setup({
+						dap_configurations = {
+							{
+								type = "go",
+								name = "Debug",
+								request = "launch",
+								program = "${file}",
+							},
+						},
+						delve = {
+							path = vim.fn.exepath("dlv"), -- Make sure this points to your updated delve
+							initialize_timeout_sec = 20,
+							args = {},
+						},
+					})
 				end,
 			},
 		},
