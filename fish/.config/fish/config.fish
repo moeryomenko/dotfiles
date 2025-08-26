@@ -2,10 +2,11 @@ set -U fish_greeting ""
 
 if status is-interactive
     set -lx SHELL fish
-    keychain --eval --ssh-allow-forwarded --quiet /home/eryoma/.ssh/id_ed25519 | source
-    keychain --eval --ssh-allow-forwarded --quiet /home/eryoma/.ssh/2gis | source
-    keychain --eval --quiet --gpg2 5318919FE71A1E81 | source
-    keychain --eval --quiet --gpg2 73EFE8958507112E | source
+    keychain --eval --ssh-allow-forwarded --quiet /Users/eryoma/.ssh/id_ed25519 | source
+    keychain --eval --ssh-allow-forwarded --quiet /Users/eryoma/.ssh/2gis | source
+    # Load GPG keys without keychain to avoid warnings
+    gpgconf --launch gpg-agent 2>/dev/null
+    set -gx GPG_AGENT_INFO (gpgconf --list-dirs | grep agent-socket | cut -d: -f2)
 end
 
 export XDG_CONFIG_HOME=$HOME/.config
@@ -46,6 +47,9 @@ set -g fish_pager_color_description $comment
 set -g fish_pager_color_selected_background --background=$selection
 
 export GPG_TTY=$(tty)
+if test -S ~/.gnupg/S.gpg-agent
+    set -gx GPG_AGENT_INFO ~/.gnupg/S.gpg-agent
+end
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 fzf_configure_bindings --directory=\cf --git_log=\ct --git_status=\cs --history=\cy --processes=\cp

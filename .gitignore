@@ -13,3 +13,8 @@ cmus/.config/cmus/command-history
 cmus/.config/cmus/lib.pl
 cmus/.config/cmus/playlists/
 cmus/.config/cmus/search-history
+gpg/.gnupg/private-keys-v1.d/
+gpg/.gnupg/pubring.kbx
+gpg/.gnupg/pubring.kbx~
+gpg/.gnupg/trustdb.gpg
+gpg/.gnupg/random_seed

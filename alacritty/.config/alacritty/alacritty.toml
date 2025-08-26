@@ -81,22 +81,23 @@ white = "#2d4a7a"      # Darker text
 TERM = "tmux-256color"
 
 [font]
-size = 13.0
+size = 14.0
 
 [font.bold]
-family = "Cascadia Code"
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.italic]
-family = "Cascadia Code"
-style = "Medium Italic"
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
 
 [font.normal]
-family = "Cascadia Code"
-style = "Medium"
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
 
 [font.offset]
 x = 0
@@ -126,10 +127,10 @@ multiplier = 3
 
 [terminal.shell]
 args = ["-l", "-c", "tmux attach || tmux"]
-program = "/usr/bin/fish"
+program = "/opt/homebrew/bin/fish"
 
 [window]
-decorations = "None"
+decorations = "Full"
 dynamic_padding = false
 dynamic_title = true
 startup_mode = "Windowed"
@@ -141,5 +142,3 @@ lines = 0
 [window.padding]
 x = 0
 y = 0
-
-[terminal]
