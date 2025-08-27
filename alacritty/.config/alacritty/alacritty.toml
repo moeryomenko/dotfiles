@@ -81,7 +81,7 @@ white = "#2d4a7a"      # Darker text
 TERM = "tmux-256color"
 
 [font]
-size = 14.0
+size = 16.0
 
 [font.bold]
 family = "JetBrainsMono Nerd Font"
