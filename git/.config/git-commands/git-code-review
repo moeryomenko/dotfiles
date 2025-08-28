@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo "Usage: git code-review <branch> [target-branch] [--command <cmd>]"
+    echo "Usage: git code-review [branch] [target-branch] [--command <cmd>]"
     echo ""
-    echo "Show commits in <branch> that are not in target-branch for code review"
+    echo "Show commits in branch that are not in target-branch for code review"
     echo ""
     echo "Arguments:"
-    echo "  <branch>         Branch to review"
+    echo "  [branch]         Branch to review (default: current branch)"
     echo "  [target-branch]  Target branch to compare against (default: main)"
     echo "  --command <cmd>  Command to run when checking out a commit (optional)"
     echo ""
@@ -17,21 +17,32 @@ usage() {
     echo "  q:               Quit without checkout"
     echo ""
     echo "Examples:"
-    echo "  git code-review feature/new-ui"
-    echo "  git code-review feature/api-changes develop"
+    echo "  git code-review                                    # Review current branch vs main"
+    echo "  git code-review feature/new-ui                     # Review specific branch"
+    echo "  git code-review feature/api-changes develop        # Review against develop"
+    echo "  git code-review --command 'npm test'               # Review current branch with command"
     echo "  git code-review feature/tests main --command 'npm test'"
     exit 1
 }
 
-if [[ $# -lt 1 ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     usage
 fi
 
-review_branch="$1"
+# Use current branch if no branch argument provided
+if [[ $# -eq 0 ]] || [[ "$1" == "--command" ]]; then
+    review_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
+    if [[ $? -ne 0 ]]; then
+        echo "Error: Cannot determine current branch"
+        exit 1
+    fi
+else
+    review_branch="$1"
+    shift
+fi
 user_command=""
 
-# Parse arguments
-shift
+# Parse remaining arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --command)
