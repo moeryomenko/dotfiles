@@ -54,6 +54,9 @@ export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 fzf_configure_bindings --directory=\cf --git_log=\ct --git_status=\cs --history=\cy --processes=\cp
 
+# Key binding for editing command line with Option+E (Alt+E)
+bind \ce edit_command_buffer
+
 set -Ux EDITOR nvim
 set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
