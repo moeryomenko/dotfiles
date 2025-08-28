@@ -43,17 +43,19 @@ return {
 			},
 		},
 		adapters = {
-			anthropic = function()
-				return require("codecompanion.adapters").extend("anthropic", {
-					name = "anthropic",
-					env = {
-						api_key = load_secret("anthropic/dev-key"),
-					},
-				})
-			end,
-			opts = {
-				-- proxy = string.gsub(tostring(os.getenv("COPILOT_PROXY_URL")), "https", "http"),
-				allow_insecure = false, -- Allow insecure connections
+			http = {
+				anthropic = function()
+					return require("codecompanion.adapters").extend("anthropic", {
+						name = "anthropic",
+						env = {
+							api_key = load_secret("anthropic/dev-key"),
+						},
+					})
+				end,
+				opts = {
+					proxy = string.gsub(tostring(os.getenv("COPILOT_PROXY_URL")), "https", "http"),
+					allow_insecure = false, -- Allow insecure connections
+				},
 			},
 		},
 		strategies = {
