@@ -118,7 +118,5 @@
 	sort = -version:refname
 [pack]
 	useBitmapBoundaryTraversal = true
-[includeIf "gitdir:~/work/"]
-	path = ~/work/.gitconfig
-[url "https://github.com/"]
-	insteadOf = git@github.com:
+[includeIf "gitdir:~/workspace/"]
+	path = ~/workspace/.gitconfig
