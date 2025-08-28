@@ -38,7 +38,7 @@
 	h       = log --decorate --all --oneline --graph
 	a       = add -p
 	c       = clone
-	cr      = clone --recursive
+	crs     = clone --recursive
 	d       = diff
 	rb      = rebase -i
 	ab      = all-branches
@@ -57,6 +57,7 @@
 	rmb     = remove-merged-branches
 	cp      = cherry-pick
 	cpc     = cherry-pick --continue
+	cr      = code-review
 	po      = push-origin
 	pfo     = push-force-origin
 	rt      = regression-testing
