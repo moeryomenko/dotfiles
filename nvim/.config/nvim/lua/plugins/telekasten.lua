@@ -34,7 +34,7 @@ return {
 	},
 	config = function()
 		require("telekasten").setup({
-			home = vim.fn.expand("~/notes"),
+			home = vim.fn.expand("~/projects/notes"),
 
 			-- if true, telekasten will be enabled when opening a note within the configured home
 			take_over_my_home = true,
@@ -43,9 +43,9 @@ return {
 			auto_set_filetype = true,
 
 			-- dir names for special notes (absolute path or subdir name)
-			dailies = vim.fn.expand("~/notes/daily"),
-			weeklies = vim.fn.expand("~/notes/weekly"),
-			templates = vim.fn.expand("~/notes/templates"),
+			dailies = vim.fn.expand("~/projects/notes/daily"),
+			weeklies = vim.fn.expand("~/projects/notes/weekly"),
+			templates = vim.fn.expand("~/projects/notes/templates"),
 
 			-- image (sub)dir for pasting
 			image_subdir = "img",
@@ -71,15 +71,15 @@ return {
 
 			-- template for new notes (new_note, follow_link)
 			-- set to `nil` or do not specify if you do not want a template
-			template_new_note = vim.fn.expand("~/notes/templates/new_note.md"),
+			template_new_note = vim.fn.expand("~/projects/notes/templates/new_note.md"),
 
 			-- template for newly created daily notes (goto_today)
 			-- set to `nil` or do not specify if you do not want a template
-			template_new_daily = vim.fn.expand("~/notes/templates/daily.md"),
+			template_new_daily = vim.fn.expand("~/projects/notes/templates/daily.md"),
 
 			-- template for newly created weekly notes (goto_thisweek)
 			-- set to `nil` or do not specify if you do not want a template
-			template_new_weekly = vim.fn.expand("~/notes/templates/weekly.md"),
+			template_new_weekly = vim.fn.expand("~/projects/notes/templates/weekly.md"),
 
 			-- image link style
 			-- wiki:     ![[image name]]
