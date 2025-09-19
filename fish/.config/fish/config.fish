@@ -67,6 +67,7 @@ fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
+fish_add_path $HOME/projects/flutter/bin
 
 starship init fish | source
 direnv hook fish | source
