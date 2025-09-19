@@ -122,6 +122,26 @@ function replace_all
 	rg -l $argv[1] . | xargs sed -i "s/$argv[1]/$argv[2]/g"
 end
 
+function job-select
+    set -l job_list (jobs)
+
+    if test -z "$job_list"
+        echo "No background jobs"
+        return
+    end
+
+    printf '%s\n' $job_list | fzf \
+        --header="Select job to bring to foreground" \
+        | read -l selected
+
+    if test -n "$selected"
+        set -l job_id (string match -r '^\[(\d+)\]' -- "$selected")[2]
+        fg $job_id
+    end
+end
+
+alias jf='job-select'
+
 if test (tty) = /dev/tty1
 	export RADV_VIDEO_DECODE=1
 	export SDL_VIDEODRIVER=wayland
