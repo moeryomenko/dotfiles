@@ -1,0 +1,74 @@
+#!/usr/bin/env sh
+
+#
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+#
+# see this wiki page for information:
+#  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+#
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+#
+
+# global settings
+yabai -m config \
+	mouse_follows_focus off \
+	focus_follows_mouse off \
+	window_origin_display default \
+	window_placement second_child \
+	window_shadow off \
+	window_animation_duration 0.1 \
+	window_opacity_duration 0.0 \
+	active_window_opacity 1.0 \
+	normal_window_opacity 1.0 \
+	window_opacity on \
+	split_ratio 0.50 \
+	split_type auto \
+	auto_balance off \
+	top_padding 0 \
+	bottom_padding 0 \
+	left_padding 0 \
+	right_padding 0 \
+	window_gap 0 \
+	layout bsp \
+	mouse_modifier fn \
+	mouse_action1 move \
+	mouse_action2 resize \
+	mouse_drop_action swap \
+	external_bar all:35:0
+
+
+
+
+yabai -m config external_bar          all:32:0
+yabai -m config window_border off
+yabai -m config window_border_width 0
+yabai -m config active_window_border_color 0xff775759
+yabai -m config normal_window_border_color 0xff555555
+
+# yabai -m rule --add label=alacritty app=Alacritty display=2 space=^7
+
+
+yabai -m rule --add app="^System Settings$" sticky=on manage=off
+yabai -m rule --add app="Stats" sticky=on manage=off
+yabai -m rule --add app="Calculator" sticky=on manage=off
+yabai -m rule --add app="^Finder$" sticky=on manage=off
+yabai -m rule --add app="^Disk Utility$" sticky=on manage=off
+yabai -m rule --add app="^System Information$" sticky=on manage=off
+yabai -m rule --add app="^Activity Monitor$" sticky=on manage=off
+yabai -m rule --add app="^console$" manage=off
+yabai -m rule --add app="^Digital Colou?r Meter$" sticky=on manage=off
+yabai -m rule --add app="Pomotroid" manage=off
+yabai -m rule --add app="Anki" opacity=0.90
+yabai -m rule --add app="Raycast" sticky=on manage=off
+yabai -m rule --add app="OpenVPN Connect" manage=off
+yabai -m rule --add label=allacritty app="Alacritty" border=off
+yabai -m rule --add label=settings app="System Settings" border=off manage=off
+
+yabai -m config --space 9 layout float
+
+borders active_color="gradient(top_left=0xffff9e64,bottom_right=0xffbb9af7)" inactive_color="gradient(top_left=0x40ff9e64,bottom_right=0x40bb9af7)" width=0 2>/dev/null 1>&2 &
+# borders active_color="gradient(top_left=0xffff9e64,bottom_right=0xffbb9af7)" inactive_color=0x80565f89 width=5 2>/dev/null 1>&2 &
+
+echo "yabai configuration loaded.."
