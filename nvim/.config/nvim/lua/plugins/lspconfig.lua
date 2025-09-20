@@ -37,7 +37,6 @@ return {
 		},
 		config = function(_, opts)
 			require("core.utils").setup_diagnostics()
-			local lspconfig = require("lspconfig")
 
 			local client_capabilities = vim.lsp.protocol.make_client_capabilities()
 			local completion_capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -48,7 +47,7 @@ return {
 					capabilities = vim.deepcopy(capabilities),
 				}, opts.servers[server] or {})
 
-				lspconfig[server].setup(server_opts)
+				vim.lsp.config[server] = server_opts
 			end
 
 			-- get all the servers that are available through mason-lspconfig
@@ -63,7 +62,7 @@ return {
 
 			for server, server_opts in pairs(opts.external) do
 				if server_opts then
-					lspconfig[server].setup(server_opts)
+					vim.lsp.config[server] = server_opts
 				end
 			end
 
