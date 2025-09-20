@@ -130,10 +130,10 @@ args = ["-l", "-c", "tmux attach || tmux"]
 program = "/opt/homebrew/bin/fish"
 
 [window]
-decorations = "Full"
+decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-startup_mode = "Windowed"
+startup_mode = "Fullscreen"
 
 [window.dimensions]
 columns = 0
