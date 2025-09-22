@@ -132,7 +132,7 @@ program = "/usr/bin/fish"
 decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-startup_mode = "Windowed"
+startup_mode = "Fullscreen"
 
 [window.dimensions]
 columns = 0
