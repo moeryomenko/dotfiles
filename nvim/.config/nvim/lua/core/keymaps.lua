@@ -8,6 +8,9 @@ map("n", "<leader>co", ':%bdelete|edit #|normal `"<CR>')
 -- search modified files
 map("n", "<Leader>m", ":Telescope git_status<CR>")
 
+-- clear search highlights
+map("n", "<Leader>nh", ":nohl<CR>")
+
 --#region split resize
 map("n", "<A-l>", ":vert res +10<CR>", { silent = true })
 map("n", "<A-h>", ":vert res -10<CR>", { silent = true })
