@@ -162,19 +162,28 @@ function Statusline.short()
 	return "%#StatusLineNC#   NvimTree"
 end
 
-vim.api.nvim_exec(
-	[[
-  augroup Statusline
-  au!
-  au WinEnter,BufEnter * setlocal statusline=%!v:lua.Statusline.active()
-  au WinLeave,BufLeave * setlocal statusline=%!v:lua.Statusline.inactive()
-  au WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.Statusline.short()
-  augroup END
-]],
-	false
-)
+-- Define the Statusline group
+vim.api.nvim_create_augroup("Statusline", { clear = true })
 
--- Define custom highlight groups for VCS with foreground colors only
-vim.api.nvim_set_hl(0, "StatuslineGitAdd", { fg = "#98c379", bg = "black" })
-vim.api.nvim_set_hl(0, "StatuslineGitChange", { fg = "#e5c07b", bg = "black" })
-vim.api.nvim_set_hl(0, "StatuslineGitDelete", { fg = "#e06c75", bg = "black" })
+-- Set up autocommands for the Statusline group
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+	group = "Statusline",
+	callback = function()
+		vim.opt_local.statusline = "%!v:lua.Statusline.active()"
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+	group = "Statusline",
+	callback = function()
+		vim.opt_local.statusline = "%!v:lua.Statusline.inactive()"
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "FileType" }, {
+	group = "Statusline",
+	pattern = "NvimTree",
+	callback = function()
+		vim.opt_local.statusline = "%!v:lua.Statusline.short()"
+	end,
+})
