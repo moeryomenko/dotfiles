@@ -143,13 +143,13 @@ function job-select
         return
     end
 
-    printf '%s\n' $job_list | fzf \
-        --header="Select job to bring to foreground" \
-        | read -l selected
+    set -l selected (printf '%s\n' $job_list | sk --reverse --header="Select job to bring to foreground")
 
     if test -n "$selected"
-        set -l job_id (string match -r '^\[(\d+)\]' -- "$selected")[2]
-        fg $job_id
+        set -l group_id (echo $selected | awk '{print $2}')
+        if test -n "$group_id"
+            fg $group_id
+        end
     end
 end
 
