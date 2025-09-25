@@ -95,7 +95,7 @@ abbr --add sw   "cd (worktree)"
 # editing related abbreviations
 abbr --add nv "nvim"
 abbr --add vf "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add nf "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add nf "nvim (sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 # kubectl related abbreviations
 abbr --add k   "kubectl"
