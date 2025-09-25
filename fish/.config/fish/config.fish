@@ -70,16 +70,35 @@ fx --comp fish | source
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 
-abbr --add ll         "eza -l -h --git --classify --icons"
-abbr --add la         "eza -l -h --git --classify --icons -a"
-abbr --add tree       "eza -l -h --git --classify --icons --long --tree"
-abbr --add g          "git"
-abbr --add lg         "lazygit"
-abbr --add glog       "git dlog"
-abbr --add ur         "ls | xargs -P10 -I{} git -C {} pull"
-abbr --add nv         "nvim"
-abbr --add fz         "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
-abbr --add cdfz       "z (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+# directory navigation related abbreviations
+abbr --add ll   "eza -l -h --git --classify --icons"
+abbr --add la   "eza -l -h --git --classify --icons -a"
+abbr --add tree "eza -l -h --git --classify --icons --long --tree"
+abbr --add fz   "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
+abbr --add cdfz "z (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+
+# git related abbreviations
+abbr --add g    "git"
+abbr --add lg   "lazygit"
+abbr --add glog "git dlog"
+abbr --add ur   "ls | xargs -P10 -I{} git -C {} pull"
+abbr --add sw   "cd (worktree)"
+
+# editing related abbreviations
+abbr --add nv "nvim"
+abbr --add vf "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add nf "nvim (sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+
+# kubectl related abbreviations
+abbr --add k   "kubectl"
+abbr --add ksc "kubectl config use-context (kubectl config get-contexts -o name | sk --reverse --bind \"j:down,k:up,q:abort\")"
+abbr --add kdn "kubectl config set-context --current --namespace=(kubectl get namespaces -o name | cut -d/ -f2 | sk --reverse --bind \"j:down,k:up,q:abort\")"
+
+# golang related abbreviations
+abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
+abbr --add gotest "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
+
+# other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
@@ -87,9 +106,6 @@ abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
 abbr --add pkgcache   "sudo pacman -Scc"
 abbr --add sw         "cd (worktree)"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
-
-abbr --add fmtgou     "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
-abbr --add gotest     "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
 
 alias hx='helix'
 
@@ -113,11 +129,6 @@ end
 function replace_all
 	rg -l $argv[1] . | xargs sed -i "s/$argv[1]/$argv[2]/g"
 end
-
-if not test -d $HOME/.asdf
-	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
-end
-source ~/.asdf/asdf.fish
 
 if test (tty) = /dev/tty1
 	export RADV_VIDEO_DECODE=1
