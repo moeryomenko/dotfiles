@@ -136,26 +136,6 @@ local function lineinfo()
 	return " %P %l:%c "
 end
 
-local function vcs()
-	local git_info = vim.b.gitsigns_status_dict
-	if not git_info or git_info.head == "" then
-		return ""
-	end
-	local added = git_info.added and ("%#GitSignsAdd#+" .. git_info.added .. " ") or ""
-	local changed = git_info.changed and ("%#GitSignsChange#~" .. git_info.changed .. " ") or ""
-	local removed = git_info.removed and ("%#GitSignsDelete#-" .. git_info.removed .. " ") or ""
-	return table.concat({
-		" ",
-		added,
-		changed,
-		removed,
-		" ",
-		"%#GitSignsAdd# ",
-		git_info.head,
-		" %#Normal#",
-	})
-end
-
 Statusline = {}
 
 Statusline.active = function()
@@ -166,7 +146,6 @@ Statusline.active = function()
 		"%#Normal# ",
 		filepath(),
 		filename(),
-		vcs(),
 		"%#Normal#",
 		"%=%#StatusLineExtra#",
 		lsp(),
