@@ -104,7 +104,9 @@ abbr --add kdn "kubectl config set-context --current --namespace=(kubectl get na
 
 # golang related abbreviations
 abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
-abbr --add gotest "gotestsum --format-hide-empty-pkg -f dots-v2 -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
+abbr --add gotest "gotestsum --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
+abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -run (go list ./... | xargs -n1 go test -list . | grep ^Test | sk) ./...
+"
 
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
