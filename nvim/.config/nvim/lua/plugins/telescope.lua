@@ -14,11 +14,9 @@ return {
 	},
 	cmd = "Telescope",
 	keys = {
-		{ "gf", ":Telescope git_files<CR>" },
-		{ "gb", ":Telescope buffers<CR>" },
-		{ "<space>g", ":Telescope live_grep<CR>" },
-		{ "[e", ":lua vim.diagnostic.goto_prev()<CR>" },
-		{ "]e", ":lua vim.diagnostic.goto_next()<CR>" },
+		{ "gf",        ":Telescope git_files<CR>" },
+		{ "gb",        ":Telescope buffers<CR>" },
+		{ "rg",        ":Telescope live_grep<CR>" },
 		{ "<space>cd", ":Lspsaga show_line_diagnostics<CR>" },
 	},
 	config = function()
