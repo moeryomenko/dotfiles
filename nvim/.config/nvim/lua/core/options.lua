@@ -1,4 +1,5 @@
 vim.opt.shell = "bash"
+vim.cmd.colorscheme("default")
 
 -- indent
 vim.opt.tabstop = 4
