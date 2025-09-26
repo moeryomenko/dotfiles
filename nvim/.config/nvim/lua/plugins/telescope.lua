@@ -17,6 +17,7 @@ return {
 		{ "gf",        ":Telescope git_files<CR>" },
 		{ "gb",        ":Telescope buffers<CR>" },
 		{ "rg",        ":Telescope live_grep<CR>" },
+		{ "gs",        ":Telescope lsp_document_symbols<CR>" },
 		{ "<space>cd", ":Lspsaga show_line_diagnostics<CR>" },
 	},
 	config = function()
