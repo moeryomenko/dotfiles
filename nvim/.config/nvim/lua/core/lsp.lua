@@ -18,7 +18,7 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.INFO] = '»',
 		},
 	},
-	virtual_text = { current_line = true },
+	virtual_lines = true,
 	float = {
 		border = 'rounded',
 		source = 'if_many',
