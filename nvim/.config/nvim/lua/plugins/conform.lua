@@ -5,7 +5,7 @@ return {
 	init = function()
 		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
-	config = function(_, opts)
+	config = function(_, _)
 		local conf = {
 			formatters_by_ft = {
 				go = { "gofumpt", "goimports", "gci", "golines" },
