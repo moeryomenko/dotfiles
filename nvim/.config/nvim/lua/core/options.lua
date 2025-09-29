@@ -42,12 +42,29 @@ vim.opt.undofile = true
 vim.opt.undolevels = 10000
 vim.opt.updatetime = 200 -- Save swap file and trigger CursorHold
 
-vim.cmd([[
-          set backspace=indent,eol,start
-          set tw=120 cc=+1
-          au FileType gitcommit setlocal tw=72 cc=+1 cc+=51 spell spelllang=en_us
-          au FileType c,cpp setlocal tw=80 cc=+1
-]])
+-- Set basic options
+vim.opt.backspace = { "indent", "eol", "start" }
+vim.opt.textwidth = 120
+vim.opt.colorcolumn = "+1"
+
+-- Filetype-specific autocommands
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "gitcommit",
+	callback = function()
+		vim.opt_local.textwidth = 72
+		vim.opt_local.colorcolumn = { "+1", "51" }
+		vim.opt_local.spell = true
+		vim.opt_local.spelllang = "en_us"
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "c", "cpp" },
+	callback = function()
+		vim.opt_local.textwidth = 80
+		vim.opt_local.colorcolumn = "+1"
+	end,
+})
 
 --#region line number settings.
 vim.opt.number = true
