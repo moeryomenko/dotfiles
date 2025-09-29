@@ -101,6 +101,7 @@ abbr --add nf "nvim (sk --reverse --preview 'bat --color=always --style=numbers 
 abbr --add k   "kubectl"
 abbr --add ksc "kubectl config use-context (kubectl config get-contexts -o name | sk --reverse --bind \"j:down,k:up,q:abort\")"
 abbr --add kdn "kubectl config set-context --current --namespace=(kubectl get namespaces -o name | cut -d/ -f2 | sk --reverse --bind \"j:down,k:up,q:abort\")"
+abbr --add kdp "kubectl get po -o name | cut -d/ -f2 | sk --reverse --preview-window=right:75% --preview 'kubectl describe po {} | bat'"
 
 # golang related abbreviations
 abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
