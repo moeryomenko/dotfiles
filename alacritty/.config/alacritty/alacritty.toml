@@ -81,22 +81,26 @@ white = "#2d4a7a"      # Darker text
 TERM = "tmux-256color"
 
 [font]
-size = 14.0
-
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Bold"
+size = 16.0
 
 [font.glyph_offset]
 x = 0
 y = 0
 
+[font.bold]
+family = "GoMono Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "GoMono Nerd Font"
+style = "Bold Italic"
+
 [font.italic]
-family = "JetBrainsMono Nerd Font"
+family = "GoMono Nerd Font"
 style = "Italic"
 
 [font.normal]
-family = "JetBrainsMono Nerd Font"
+family = "GoMono Nerd Font"
 style = "Regular"
 
 [font.offset]
