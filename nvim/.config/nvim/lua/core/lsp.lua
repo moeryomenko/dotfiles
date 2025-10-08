@@ -44,38 +44,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		-- Set completion options for automatic popup
 		vim.opt_local.completeopt = { 'menu', 'menuone', 'noselect' }
 
-		-- Enable completion on typing (trigger characters)
-		vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, {
-			buffer = bufnr,
-			callback = function()
-				if vim.fn.pumvisible() == 0 then
-					vim.lsp.completion.get()
-				end
-			end,
-		})
-
-		-- Tab navigation for completion suggestions
-		vim.keymap.set('i', '<Tab>', function()
-			if vim.fn.pumvisible() == 1 then
-				return '<C-n>'
-			else
-				return '<Tab>'
-			end
-		end, { expr = true, buffer = bufnr })
-
-		vim.keymap.set('i', '<S-Tab>', function()
-			if vim.fn.pumvisible() == 1 then
-				return '<C-p>'
-			else
-				return '<S-Tab>'
-			end
-		end, { expr = true, buffer = bufnr })
-
-		-- Manual LSP completion trigger
-		vim.keymap.set('i', '<leader><Tab>', function()
-			vim.lsp.completion.get()
-		end, { buffer = bufnr, desc = 'Trigger LSP completion' })
-
 		local function bufmap(mode, lhs, rhs, desc)
 			vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
 		end
