@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git submodule foreach --recursive git reset --hard HEAD; and git submodule update --init --recursive
