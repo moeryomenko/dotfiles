@@ -65,10 +65,10 @@ end
 local function lsp()
 	local count = {}
 	local levels = {
-		errors = "Error",
-		warnings = "Warn",
-		info = "Info",
-		hints = "Hint",
+		errors = vim.diagnostic.severity.ERROR,
+		warnings = vim.diagnostic.severity.WARN,
+		info = vim.diagnostic.severity.INFO,
+		hints = vim.diagnostic.severity.HINT,
 	}
 
 	for k, level in pairs(levels) do
@@ -162,14 +162,20 @@ function Statusline.short()
 	return "%#StatusLineNC#   NvimTree"
 end
 
-vim.api.nvim_exec(
-	[[
-  augroup Statusline
-  au!
-  au WinEnter,BufEnter * setlocal statusline=%!v:lua.Statusline.active()
-  au WinLeave,BufLeave * setlocal statusline=%!v:lua.Statusline.inactive()
-  au WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.Statusline.short()
-  augroup END
-]],
-	false
-)
+local augroup = vim.api.nvim_create_augroup("Statusline", { clear = true })
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+	group = augroup,
+	callback = function() vim.opt_local.statusline = "%!v:lua.Statusline.active()" end
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
+	group = augroup,
+	callback = function() vim.opt_local.statusline = "%!v:lua.Statusline.inactive()" end
+})
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "FileType" }, {
+	group = augroup,
+	pattern = "NvimTree",
+	callback = function() vim.opt_local.statusline = "%!v:lua.Statusline.short()" end
+})
