@@ -2,9 +2,9 @@
 vim.lsp.enable('luals-nvim')
 vim.lsp.enable('gopls')
 vim.lsp.enable('clangd')
+vim.lsp.enable('neocmakelsp')
 -- vim.lsp.enable('pylyzer')
 -- vim.lsp.enable('ansiblels')
--- vim.lsp.enable('neocmakelsp')
 -- vim.lsp.enable('pgtoolsls')
 -- vim.lsp.enable('helm_ls')
 
