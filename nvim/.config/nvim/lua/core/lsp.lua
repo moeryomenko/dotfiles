@@ -29,6 +29,9 @@ vim.diagnostic.config({
 -- Set sign column to always show
 vim.o.signcolumn = 'yes'
 
+-- Format on save autocmd
+local fmt_group = vim.api.nvim_create_augroup('autoformat_cmds', { clear = true })
+
 -- Set up completion and keymaps on LSP attach
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(event)
@@ -97,37 +100,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		bufmap('n', ']e', '<cmd>lua vim.diagnostic.goto_next()<cr>', 'Next diagnostic')
 		bufmap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<cr>', 'Show diagnostics')
 		bufmap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Diagnostics loclist')
+
+		-- Formatting
+		if not client.supports_method('textDocument/formatting') then
+			return
+		end
+
+		vim.api.nvim_clear_autocmds({ group = fmt_group, buffer = event.buf })
+
+		vim.api.nvim_create_autocmd('BufWritePre', {
+			buffer = event.buf,
+			group = fmt_group,
+			callback = function(e)
+				vim.lsp.buf.format({
+					bufnr = e.buf,
+					async = false,
+					timeout_ms = 10000,
+				})
+			end,
+		})
 	end
-})
-
--- Format on save autocmd
-local fmt_group = vim.api.nvim_create_augroup('autoformat_cmds', { clear = true })
-
-local function setup_autoformat(event)
-	local id = vim.tbl_get(event, 'data', 'client_id')
-	local client = id and vim.lsp.get_client_by_id(id)
-	if client == nil then return end
-
-	-- Only set up autoformat for clients that support formatting
-	if not client.supports_method('textDocument/formatting') then
-		return
-	end
-
-	vim.api.nvim_clear_autocmds({ group = fmt_group, buffer = event.buf })
-
-	vim.api.nvim_create_autocmd('BufWritePre', {
-		buffer = event.buf,
-		group = fmt_group,
-		callback = function(e)
-			vim.lsp.buf.format({
-				bufnr = e.buf,
-				async = false,
-				timeout_ms = 10000,
-			})
-		end,
-	})
-end
-
-vim.api.nvim_create_autocmd('LspAttach', {
-	callback = setup_autoformat,
 })
