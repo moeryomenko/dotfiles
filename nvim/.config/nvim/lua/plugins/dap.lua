@@ -10,7 +10,7 @@ return {
 				"nvim-neotest/nvim-nio",
 			},
 			opts = {},
-			config = function(_, opts)
+			config = function(_, _)
 				-- setup dap config by VsCode launch.json file
 				-- require("dap.ext.vscode").load_launchjs()
 				local dap = require("dap")
@@ -54,7 +54,6 @@ return {
 			end,
 		},
 		"theHamsta/nvim-dap-virtual-text",
-		"rcarriga/cmp-dap",
 		"LiadOz/nvim-dap-repl-highlights",
 		"ldelossa/nvim-dap-projects",
 	},
