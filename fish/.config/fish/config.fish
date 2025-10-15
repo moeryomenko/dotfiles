@@ -114,6 +114,7 @@ abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
 
 alias hx='helix'
+alias v='nvim'
 
 function worktree
     git worktree list | awk '{ print $1}' | \
