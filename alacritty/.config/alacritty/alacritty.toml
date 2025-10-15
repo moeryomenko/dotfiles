@@ -1,81 +1,8 @@
 [general]
-# import = ["~/.config/alacritty/themes/themes/tokyo_night_storm.toml"]
+import = ["./vhs_purple.toml"]
 
-# Forest Blue colorscheme for Alacritty
-# Inspired by mystical blue forest with snow-covered ground
-# Based on the Forest Blue Neovim theme
 [colors]
 draw_bold_text_with_bright_colors = true
-
-[colors.primary]
-background = "#0d1429"  # Deepest forest shadows
-foreground = "#4a6ba3"  # Main text (bright blue-white from sky)
-
-[colors.cursor]
-text = "#0d1429"
-cursor = "#5c85d9"  # Light blue cursor
-
-[colors.vi_mode_cursor]
-text = "#0d1429"
-cursor = "#5c85d9"
-
-[colors.search.matches]
-foreground = "#0d1429"
-background = "#7dcfff"
-
-[colors.search.focused_match]
-foreground = "#0d1429"
-background = "#5dcfff"
-
-[colors.footer_bar]
-foreground = "#4a6ba3"
-background = "#16213d"
-
-[colors.hints.start]
-foreground = "#0d1429"
-background = "#5aafff"
-
-[colors.hints.end]
-foreground = "#0d1429"
-background = "#16213d"
-
-[colors.line_indicator]
-foreground = "None"
-background = "None"
-
-[colors.selection]
-text = "#4a6ba3"
-background = "#2d4a80"  # Dark blue selection
-
-[colors.normal]
-black = "#0d1429"      # Deep background
-red = "#bf5c6b"        # Errors, deletions
-green = "#5ca673"      # Strings, success states
-yellow = "#7dcfff"     # Numbers, warnings
-blue = "#4a73bf"       # Keywords, types
-magenta = "#6b5cbf"    # Statements, control flow
-cyan = "#4d7aa6"       # Constants, built-ins
-white = "#4a6ba3"      # Main foreground
-
-[colors.bright]
-black = "#3d4d73"      # Borders, separators
-red = "#bf5c6b"        # Bright red
-green = "#5ca673"      # Bright green
-yellow = "#7dcfff"     # Bright yellow
-blue = "#5c85d9"       # Light blue
-magenta = "#6b5cbf"    # Bright purple
-cyan = "#4d7aa6"       # Bright cyan
-white = "#8da8e8"      # Light text
-
-[colors.dim]
-black = "#2d3d5c"      # Dark borders
-red = "#bf5c6b"        # Dim red
-green = "#5ca673"      # Dim green
-yellow = "#7dcfff"     # Dim yellow
-blue = "#2d4a80"       # Darker blue
-magenta = "#6b5cbf"    # Dim purple
-cyan = "#4d7aa6"       # Dim cyan
-white = "#2d4a7a"      # Darker text
 
 [env]
 TERM = "tmux-256color"
