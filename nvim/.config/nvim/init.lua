@@ -1,4 +1,4 @@
-require("colors.forest_blue").setup()
+require("colors.vhs_purple").setup()
 require("core.options")
 require("core.functions")
 require("core.keymaps")
