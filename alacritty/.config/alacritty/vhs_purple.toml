@@ -1,0 +1,69 @@
+[colors.primary]
+background = "#0a0a0f"  # Deep black background
+foreground = "#b8b4d4"  # Main purple-tinted text
+
+[colors.cursor]
+text = "#0a0a0f"
+cursor = "#c8c4e8"  # Purple cursor
+
+[colors.vi_mode_cursor]
+text = "#0a0a0f"
+cursor = "#c8c4e8"
+
+[colors.search.matches]
+foreground = "#0a0a0f"
+background = "#d8c888"  # Warning yellow
+
+[colors.search.focused_match]
+foreground = "#0a0a0f"
+background = "#c888b8"  # Pink
+
+[colors.footer_bar]
+foreground = "#b8b4d4"
+background = "#12121a"
+
+[colors.hints.start]
+foreground = "#0a0a0f"
+background = "#a888d8"  # Lavender
+
+[colors.hints.end]
+foreground = "#0a0a0f"
+background = "#12121a"
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+[colors.selection]
+text = "#b8b4d4"
+background = "#38384f"  # Visual mode
+
+[colors.normal]
+black = "#0a0a0f"      # Deep background
+red = "#d88888"        # Errors
+green = "#88d8b8"      # Strings, success states
+yellow = "#d8c888"     # Warnings
+blue = "#6878c8"       # Blue accent
+magenta = "#8884d8"    # Main purple
+cyan = "#78a8d8"       # Cyan accent
+white = "#b8b4d4"      # Main foreground
+
+[colors.bright]
+black = "#484858"      # Medium gray
+red = "#d88888"        # Bright red
+green = "#88d8b8"      # Bright green
+yellow = "#d8c888"     # Bright yellow
+blue = "#a8a4f8"       # Bright purple
+magenta = "#c888b8"    # Pink
+cyan = "#88c8d8"       # Info
+white = "#d4d0f0"      # Bright text
+
+[colors.dim]
+black = "#282838"      # Dark gray
+red = "#d88888"        # Dim red
+green = "#88d8b8"      # Dim green
+yellow = "#d8c888"     # Dim yellow
+blue = "#485890"       # Dim blue
+magenta = "#6864a8"    # Dim purple
+cyan = "#78a8d8"       # Dim cyan
+white = "#8884a8"      # Dimmed text
