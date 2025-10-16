@@ -70,6 +70,9 @@ fx --comp fish | source
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 
+alias hx='helix'
+alias v='nvim'
+
 # directory navigation related abbreviations
 abbr --add ll   "eza -l -h --git --classify --icons"
 abbr --add la   "eza -l -h --git --classify --icons -a"
