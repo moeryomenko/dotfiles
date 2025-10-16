@@ -78,6 +78,9 @@ fx --comp fish | source
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
 
+alias hx='helix'
+alias v='nvim'
+
 # directory navigation related abbreviations
 abbr --add ll   "eza -l -h --git --classify --icons"
 abbr --add la   "eza -l -h --git --classify --icons -a"
@@ -93,9 +96,7 @@ abbr --add ur   "ls | xargs -P10 -I{} git -C {} pull"
 abbr --add sw   "cd (worktree)"
 
 # editing related abbreviations
-abbr --add nv "nvim"
-abbr --add vf "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add nf "nvim (sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add vf "v (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 # kubectl related abbreviations
 abbr --add k   "kubectl"
@@ -112,9 +113,6 @@ abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
-
-alias hx='helix'
-alias v='nvim'
 
 function worktree
     git worktree list | awk '{ print $1}' | \
