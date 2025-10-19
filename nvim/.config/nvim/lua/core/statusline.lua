@@ -106,7 +106,7 @@ local function filetype()
 		["json"] = "",
 		["yaml"] = "",
 		["dockerfile"] = "",
-		["helm"] = "⎈ ",
+		["helm"] = "⎈",
 		["lua"] = "",
 		["css"] = "",
 		["asm"] = "",

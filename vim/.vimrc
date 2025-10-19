@@ -120,16 +120,7 @@ endif
 set termguicolors
 set background=dark
 
-" tokyonight configuration {{{
-let g:tokyonight_style = 'storm' " available: night, storm
-let g:tokyonight_enable_italic = 1
-" }}}
-
-colorscheme tokyonight
-
-let g:airline_theme = "tokyonight"
-let g:airline_section_z = ""
-let g:airline#extensions#whitespace#enabled = 0
+colorscheme forest_blue
 " }}}
 
 " c/c++ highlight {{{
