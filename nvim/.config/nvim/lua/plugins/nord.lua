@@ -1,7 +1,7 @@
 return {
 	"shaunsingh/nord.nvim",
-	lazy = false,
-	priority = 1000,
+	lazy = true,
+	-- priority = 1000,
 	config = function()
 		vim.g.nord_contrast = true
 		vim.g.nord_borders = true
@@ -10,6 +10,6 @@ return {
 		vim.g.nord_uniform_diff_background = true
 		vim.g.nord_bold = false
 
-		require('nord').set()
+		-- require('nord').set()
 	end,
 }
