@@ -85,9 +85,8 @@ abbr --add ur   "ls | xargs -P10 -I{} git -C {} pull"
 abbr --add sw   "cd (worktree)"
 
 # editing related abbreviations
-abbr --add nv "nvim"
-abbr --add vf "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add nf "nvim (sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+alias v='nvim'
+abbr --add vf "v (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 # kubectl related abbreviations
 abbr --add k   "kubectl"
@@ -101,14 +100,10 @@ abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1
 
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
-abbr --add vf         "vim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
-abbr --add nf         "nvim (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 abbr --add pkgclean   "sudo pacman -Rncs (pacman -Qdtq)"
 abbr --add pkgcache   "sudo pacman -Scc"
 abbr --add sw         "cd (worktree)"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
-
-alias hx='helix'
 
 function worktree
     git worktree list | awk '{ print $1}' | \

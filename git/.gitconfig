@@ -2,7 +2,6 @@
 	editor = nvim
 	excludesfile = ~/.config/gitignore-global
 	attributesfile = ~/.gitattributes
-	#hooksPath = ~/.config/githooks
 [add.interactive]
 	useBuiltin = false
 [interactive]
@@ -11,9 +10,6 @@
 	navigate = true
 	light = false
 	side-by-side = true
-[merge "mergiraf"]
-	name = mergiraf
-	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P
 [diff]
 	external = difft
 	colorMoved = default
@@ -119,5 +115,3 @@
 	sort = -version:refname
 [pack]
 	useBitmapBoundaryTraversal = true
-[includeIf "gitdir:~/workspace/"]
-	path = ~/workspace/.gitconfig
