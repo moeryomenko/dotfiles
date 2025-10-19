@@ -11,17 +11,16 @@ end
 
 export XDG_CONFIG_HOME=$HOME/.config
 
-# TokyoNight Color Palette
-set -l foreground c0caf5
-set -l selection 2e3c64
-set -l comment 565f89
-set -l red 5aafff
-set -l orange 5dcfff
-set -l yellow 7dcfff
-set -l green 5ca673
-set -l purple 6b5cbf
-set -l cyan 4d7aa6
-set -l pink bb9af7
+set -l foreground d8dee9
+set -l selection 434c5e
+set -l comment 4c566a
+set -l red bf616a
+set -l orange d08770
+set -l yellow ebcb8b
+set -l green a3be8c
+set -l purple b48ead
+set -l cyan 88c0d0
+set -l pink b48ead
 
 # Syntax Highlighting Colors
 set -g fish_color_normal $foreground
