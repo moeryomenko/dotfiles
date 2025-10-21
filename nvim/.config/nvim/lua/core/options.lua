@@ -78,3 +78,13 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave"
 	end,
 })
 --#endregion
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "yaml", "helm" },
+	callback = function()
+		vim.bo.tabstop = 2
+		vim.bo.shiftwidth = 2
+		vim.bo.expandtab = true
+		vim.bo.softtabstop = 2
+	end,
+})
