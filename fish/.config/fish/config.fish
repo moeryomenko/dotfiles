@@ -84,8 +84,8 @@ alias v='nvim'
 abbr --add ll   "eza -l -h --git --classify --icons"
 abbr --add la   "eza -l -h --git --classify --icons -a"
 abbr --add tree "eza -l -h --git --classify --icons --long --tree"
-abbr --add fz   "sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
-abbr --add cdfz "z (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
+abbr --add fz   "sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%"
+abbr --add cdfz "z (sk --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 # git related abbreviations
 abbr --add g    "git"
