@@ -6,7 +6,7 @@ vim.lsp.enable('neocmakelsp')
 -- vim.lsp.enable('pylyzer')
 -- vim.lsp.enable('ansiblels')
 -- vim.lsp.enable('pgtoolsls')
--- vim.lsp.enable('helm_ls')
+vim.lsp.enable('helm_ls')
 
 -- Configure diagnostics
 vim.diagnostic.config({
