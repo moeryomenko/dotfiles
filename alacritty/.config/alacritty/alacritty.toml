@@ -64,8 +64,7 @@ program = "/opt/homebrew/bin/fish"
 decorations = "None"
 dynamic_padding = false
 dynamic_title = true
-opacity = 0.8
-blur = true
+startup_mode = "Fullscreen"
 
 [window.dimensions]
 columns = 0
