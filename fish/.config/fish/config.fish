@@ -79,6 +79,7 @@ set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/fl
 
 alias hx='helix'
 alias v='nvim'
+alias y='yazi'
 
 # directory navigation related abbreviations
 abbr --add ll   "eza -l -h --git --classify --icons"
