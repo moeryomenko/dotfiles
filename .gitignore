@@ -22,3 +22,4 @@ gpg/.gnupg/pubring.kbx
 gpg/.gnupg/pubring.kbx~
 gpg/.gnupg/trustdb.gpg
 gpg/.gnupg/random_seed
+fish/.config/fish/config.local.fish

@@ -1,15 +1,9 @@
 set -U fish_greeting ""
 
-if status is-interactive
-    set -lx SHELL fish
-    keychain --eval --ssh-allow-forwarded --quiet /Users/eryoma/.ssh/id_ed25519 | source
-    keychain --eval --ssh-allow-forwarded --quiet /Users/eryoma/.ssh/2gis | source
-    # Load GPG keys without keychain to avoid warnings
-    gpgconf --launch gpg-agent 2>/dev/null
-    set -gx GPG_AGENT_INFO (gpgconf --list-dirs | grep agent-socket | cut -d: -f2)
+# Source local overrides if they exist (not tracked in git)
+if test -f ~/.config/fish/config.local.fish
+    source ~/.config/fish/config.local.fish
 end
-
-export XDG_CONFIG_HOME=$HOME/.config
 
 fzf_configure_bindings --directory=\cf --git_log=\ct --git_status=\cs --history=\cy --processes=\cp
 

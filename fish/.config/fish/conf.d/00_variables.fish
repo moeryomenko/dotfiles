@@ -1,4 +1,6 @@
+export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
+
 if test -S ~/.gnupg/S.gpg-agent
     set -gx GPG_AGENT_INFO ~/.gnupg/S.gpg-agent
 end
