@@ -1,6 +1,10 @@
 nvim/.config/nvim/plugin/
-fish/.config/fish/*
-!fish/.config/fish/config.fish
+fish/.config/fish/fish_variables
+fish/.config/fish/fish_plugins
+fish/.config/fish/functions/_fzf_*
+fish/.config/fish/functions/fisher.fish
+fish/.config/fish/functions/fzf_configure_bindings.fish
+fish/.config/fish/completions
 nvim/.config/nvim/db_ui/
 vim/.vim/autoload/
 vim/.vim/plugged/
