@@ -17,3 +17,4 @@ cmus/.config/cmus/command-history
 cmus/.config/cmus/lib.pl
 cmus/.config/cmus/playlists/
 cmus/.config/cmus/search-history
+fish/.config/fish/config.local.fish
