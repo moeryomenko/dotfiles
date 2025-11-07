@@ -6,14 +6,14 @@ local M = {}
 -- Color palette from the mystical blue forest image
 local colors = {
 	-- Core backgrounds
-	bg = "none",      -- Deepest forest shadows (main background)
-	bg_alt = "none",  -- Slightly lighter (floating windows, sidebars)
-	bg_light = "none", -- Lighter background (current line, selections)
-	bg_lighter = "none", -- Lightest background (visual mode, folds)
+	bg = "#0d1429",      -- Deepest forest shadows (main background)
+	bg_alt = "#111a33",  -- Slightly lighter (floating windows, sidebars)
+	bg_light = "#16213d", -- Lighter background (current line, selections)
+	bg_lighter = "#1c2847", -- Lightest background (visual mode, folds)
 
 	-- Special backgrounds
-	bg_statusline = "none", -- Status line background
-	bg_float = "none",   -- Floating window background
+	bg_statusline = "#0a1020", -- Status line background
+	bg_float = "#0f1830",   -- Floating window background
 
 	-- Foreground colors
 	fg = "#6ecfff",    -- Main text (bright blue-white from sky)
