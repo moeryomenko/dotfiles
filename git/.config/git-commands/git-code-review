@@ -119,10 +119,6 @@ checkout_and_run() {
         echo "Command exit code: $cmd_exit_code"
     fi
 
-    echo ""
-    echo "Press Enter to return to original branch/commit..."
-    read -r
-
     echo "Returning to: $original_ref"
     if git symbolic-ref --short HEAD >/dev/null 2>&1; then
         git checkout "$original_ref" 2>/dev/null
@@ -135,20 +131,28 @@ export -f checkout_and_run
 export original_ref
 export user_command
 
-selected_commit=$(git log \
-    --no-merges --graph --color=always --abbrev=7 \
-    --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' \
-    "$target_branch..$review_branch" | \
-sk \
-    --ansi --no-sort --reverse --tiebreak=index \
-    --header="Code Review: $review_branch vs $target_branch (Enter=checkout+run, q=quit)" \
-    --preview "echo \"{}\" | \
-               sed 's/.*\\([a-f0-9]\\{7\\}\\).*/\\1/' | \
-               xargs -I % sh -c 'git show --color=always % | bat' @-" \
-    --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
-    --preview-window=right:70%)
+# Main loop for continuous selection
+while true; do
+    selected_commit=$(git log \
+        --no-merges --graph --color=always --abbrev=7 \
+        --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' \
+        "$target_branch..$review_branch" | \
+    sk \
+        --ansi --no-sort --reverse --tiebreak=index \
+        --header="Code Review: $review_branch vs $target_branch (Enter=checkout+run, q=quit)" \
+        --preview "echo \"{}\" | \
+                   sed 's/.*\\([a-f0-9]\\{7\\}\\).*/\\1/' | \
+                   xargs -I % sh -c 'git show --color=always % | bat' @-" \
+        --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
+        --preview-window=right:70%)
 
-if [[ -n "$selected_commit" ]]; then
-    commit_hash=$(echo "$selected_commit" | sed 's/.*\([a-f0-9]\{7\}\).*/\1/')
-    checkout_and_run "$commit_hash"
-fi
+    if [[ -n "$selected_commit" ]]; then
+        commit_hash=$(echo "$selected_commit" | sed 's/.*\([a-f0-9]\{7\}\).*/\1/')
+        checkout_and_run "$commit_hash"
+    else
+        # If no commit was selected (e.g., user pressed 'q' to quit)
+        break
+    fi
+done
+
+echo "Exiting code review."

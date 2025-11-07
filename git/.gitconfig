@@ -59,7 +59,7 @@
 	rmb     = remove-merged-branches
 	cp      = cherry-pick
 	cpc     = cherry-pick --continue
-	cr      = code-review
+	cr      = code-review --command 'git show-commit --view nvim HEAD'
 	po      = push-origin
 	pfo     = push-force-origin
 	rt      = regression-testing

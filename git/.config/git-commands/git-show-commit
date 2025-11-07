@@ -1,14 +1,74 @@
 #!/usr/bin/env bash
 
-git diff-tree --no-commit-id --name-only -r "$1" | \
-	sk --ansi --no-sort --reverse --tiebreak=index \
-		--preview "echo \"\
-		  {}
-		  \" | \
-          xargs -I % sh -c 'git show --color=always $1 % | bat ' @- " \
-		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
-          echo \"\
-		  {}
-		  \" | \
-          xargs -I % sh -c 'git show --color=always $1 % | delta --pager \"less -R\"' @- " \
-		--preview-window=right:70%
+# Parse command line options
+VIEW_CMD="less -R"  # default viewer
+COMMIT_HASH=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --view)
+            if [[ -n "$2" ]]; then
+                VIEW_CMD="$2"
+                shift 2
+            else
+                echo "Error: --view requires an argument" >&2
+                exit 1
+            fi
+            ;;
+        --view=*)
+            VIEW_CMD="${1#--view=}"
+            shift
+            ;;
+        -*)
+            echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
+            echo "Examples:" >&2
+            echo "  $0 --view nvim HEAD~1" >&2
+            echo "  $0 --view delta HEAD~1" >&2
+            echo "  $0 --view less HEAD~1" >&2
+            exit 1
+            ;;
+        *)
+            if [[ -z "$COMMIT_HASH" ]]; then
+                COMMIT_HASH="$1"
+            fi
+            shift
+            ;;
+    esac
+done
+
+if [[ -z "$COMMIT_HASH" ]]; then
+    echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
+    echo "Examples:" >&2
+    echo "  $0 --view nvim HEAD~1" >&2
+    echo "  $0 --view delta HEAD~1" >&2
+    echo "  $0 --view less HEAD~1" >&2
+    exit 1
+fi
+
+# Save current HEAD reflog entry before any operations
+ORIGINAL_HEAD=$(git rev-parse HEAD)
+REFLOG_ENTRY=$(git reflog show -n1 --format="%H %gd")
+
+# Check if the view command is an editor that should open file content
+case "$VIEW_CMD" in
+    nvim|vim|nano|emacs|code|subl|atom|vi)
+        # For editors, create a temporary file with the content and open it
+        # Also handle soft reset and restore
+        EXECUTE_CMD="echo '{}' | xargs -I % sh -c '
+            ORIGINAL_HEAD=\"$(git rev-parse HEAD)\";
+            git reset --soft $COMMIT_HASH~;
+            $VIEW_CMD %;
+            git reset \"$ORIGINAL_HEAD\";
+        ' @-"
+        ;;
+    *)
+        # For non-editors (pagers, diff tools), show the diff
+        EXECUTE_CMD="echo '{}' | xargs -I % sh -c 'git show --color=always $COMMIT_HASH % | $VIEW_CMD' @-"
+        ;;
+esac
+
+git diff-tree --no-commit-id --name-only -r "$COMMIT_HASH" | \
+    sk --ansi --no-sort --reverse --tiebreak=index \
+        --preview "echo \"{}\" | xargs -I % sh -c 'git show --color=always $COMMIT_HASH % | bat ' @- " \
+        --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:$EXECUTE_CMD" \
+        --preview-window=right:70%
