@@ -6,6 +6,28 @@ return {
 	cmd = "Task",
 	config = function()
 		local Path = require("plenary.path")
+
+		local configure_args = {
+			"-G",
+			"Ninja",
+			"-D",
+			"CMAKE_EXPORT_COMPILE_COMMANDS=1",
+			"-D",
+			"CMAKE_C_COMPILER_LAUNCHER='/usr/bin/ccache'",
+			"-D",
+			"CMAKE_CXX_COMPILER_LAUNCHER='/usr/bin/ccache'",
+		}
+
+		-- Add linker flags only on Linux
+		if vim.fn.has("linux") == 1 then
+			vim.list_extend(configure_args, {
+				"-D",
+				"CMAKE_EXE_LINKER_FLAGS_INIT='-fuse-ld=mold'",
+				"-D",
+				"CMAKE_SHARED_LINKER_FLAGS_INIT='-fuse-ld=mold'",
+			})
+		end
+
 		require("tasks").setup({
 			default_params = {
 				cmake = {
@@ -14,20 +36,7 @@ return {
 					build_type = "Debug",
 					dap_name = "lldb",
 					args = {
-						configure = {
-							"-G",
-							"Ninja",
-							"-D",
-							"CMAKE_EXPORT_COMPILE_COMMANDS=1",
-							"-D",
-							"CMAKE_C_COMPILER_LAUNCHER='/usr/bin/ccache'",
-							"-D",
-							"CMAKE_CXX_COMPILER_LAUNCHER='/usr/bin/ccache'",
-							"-D",
-							"CMAKE_EXE_LINKER_FLAGS_INIT='-fuse-ld=mold'",
-							"-D",
-							"CMAKE_SHARED_LINKER_FLAGS_INIT='-fuse-ld=mold'",
-						},
+						configure = configure_args,
 					},
 				},
 			},
