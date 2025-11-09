@@ -6,8 +6,8 @@ local M = {}
 -- Color palette from the mystical blue forest image
 local colors = {
 	-- Core backgrounds
-	bg = "#0d1429",      -- Deepest forest shadows (main background)
-	bg_alt = "#111a33",  -- Slightly lighter (floating windows, sidebars)
+	bg = "none",         -- Deepest forest shadows (main background)
+	bg_alt = "none",     -- Slightly lighter (floating windows, sidebars)
 	bg_light = "#16213d", -- Lighter background (current line, selections)
 	bg_lighter = "#1c2847", -- Lightest background (visual mode, folds)
 
