@@ -7,15 +7,24 @@ return {
 	config = function()
 		local Path = require("plenary.path")
 
+		-- Find ccache executable
+		local ccache_path = vim.fn.executable("ccache") == 1 and "ccache" or nil
+		if not ccache_path then
+			-- Fallback to hardcoded path if ccache is not found in PATH
+			ccache_path = "'/usr/bin/ccache'"
+		else
+			ccache_path = string.format("'%s'", ccache_path)
+		end
+
 		local configure_args = {
 			"-G",
 			"Ninja",
 			"-D",
 			"CMAKE_EXPORT_COMPILE_COMMANDS=1",
 			"-D",
-			"CMAKE_C_COMPILER_LAUNCHER='/usr/bin/ccache'",
+			"CMAKE_C_COMPILER_LAUNCHER=" .. ccache_path,
 			"-D",
-			"CMAKE_CXX_COMPILER_LAUNCHER='/usr/bin/ccache'",
+			"CMAKE_CXX_COMPILER_LAUNCHER=" .. ccache_path,
 		}
 
 		-- Add linker flags only on Linux
