@@ -6,26 +6,26 @@ local M = {}
 -- Color palette from the mystical blue forest image
 local colors = {
 	-- Core backgrounds
-	bg = "#0d1429", -- Deepest forest shadows (main background)
-	bg_alt = "#111a33", -- Slightly lighter (floating windows, sidebars)
+	bg = "none",         -- Deepest forest shadows (main background)
+	bg_alt = "none",     -- Slightly lighter (floating windows, sidebars)
 	bg_light = "#16213d", -- Lighter background (current line, selections)
 	bg_lighter = "#1c2847", -- Lightest background (visual mode, folds)
 
 	-- Special backgrounds
 	bg_statusline = "#0a1020", -- Status line background
-	bg_float = "#0f1830", -- Floating window background
+	bg_float = "#0f1830",   -- Floating window background
 
 	-- Foreground colors
-	fg = "#6ecfff", -- Main text (bright blue-white from sky)
+	fg = "#6ecfff",    -- Main text (bright blue-white from sky)
 	fg_alt = "#5c7db8", -- Secondary text (muted foreground)
 	fg_dark = "#2d4a7a", -- Darker text (comments, line numbers)
 	fg_light = "#8da8e8", -- Light text (keywords, important elements)
 
 	-- Primary syntax colors
-	blue = "#4a73bf", -- Keywords, types (mid-tone forest blue)
+	blue = "#4a73bf",    -- Keywords, types (mid-tone forest blue)
 	light_blue = "#5c85d9", -- Functions, identifiers (brighter blue)
 	dark_blue = "#2d4a80", -- Special elements (deeper blue)
-	cyan = "#4d7aa6", -- Constants, built-ins (blue-cyan)
+	cyan = "#4d7aa6",    -- Constants, built-ins (blue-cyan)
 
 	-- Complementary syntax colors
 	purple = "#6b5cbf", -- Statements, control flow
@@ -35,7 +35,7 @@ local colors = {
 	red = "#5aafff", -- Errors, deletions
 
 	-- UI element colors
-	gray = "#3d4d73", -- Borders, separators
+	gray = "#3d4d73",    -- Borders, separators
 	gray_light = "#4d5d8a", -- Light borders, inactive elements
 	gray_dark = "#2d3d5c", -- Dark borders, disabled elements
 
