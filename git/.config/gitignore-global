@@ -28,3 +28,4 @@ coverage.out
 __pycache__/
 .claude/
 .mcp.json
+.DS_Store
