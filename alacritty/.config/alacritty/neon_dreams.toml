@@ -1,0 +1,72 @@
+# Neon Dreams theme for Alacritty
+# Inspired by vibrant neon blue and pink/purple aesthetic
+
+[colors.primary]
+background = "#1a2642"  # Deep blue background
+foreground = "#a8b9e6"  # Main text (soft blue-white)
+
+[colors.cursor]
+text = "#1a2642"
+cursor = "#ff6eb5"  # Hot pink cursor
+
+[colors.vi_mode_cursor]
+text = "#1a2642"
+cursor = "#c576ff"  # Neon purple cursor
+
+[colors.search.matches]
+foreground = "#1a2642"
+background = "#ffeb99"  # Soft yellow for search matches
+
+[colors.search.focused_match]
+foreground = "#1a2642"
+background = "#ff6eb5"  # Hot pink for focused match
+
+[colors.footer_bar]
+foreground = "#a8b9e6"
+background = "#243556"
+
+[colors.hints.start]
+foreground = "#1a2642"
+background = "#5fc9e8"  # Cyan hints
+
+[colors.hints.end]
+foreground = "#1a2642"
+background = "#243556"
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+[colors.selection]
+text = "#c5d4ff"
+background = "#3d7acc"  # Deep blue selection
+
+[colors.normal]
+black = "#1a2642"      # Deep background
+red = "#ff668c"        # Pink-red for errors
+green = "#66e8b5"      # Mint green for strings
+yellow = "#ffeb99"     # Soft yellow for warnings
+blue = "#5f9eff"       # Bright electric blue
+magenta = "#c576ff"    # Neon purple
+cyan = "#5fc9e8"       # Cyan-blue
+white = "#a8b9e6"      # Main foreground
+
+[colors.bright]
+black = "#3d4d73"      # Borders, separators
+red = "#ff6eb5"        # Hot pink (bright red)
+green = "#66e8b5"      # Bright mint green
+yellow = "#ffeb99"     # Bright yellow
+blue = "#7eb5ff"       # Lighter electric blue
+magenta = "#e066ff"    # Bright magenta
+cyan = "#5fc9e8"       # Bright cyan
+white = "#c5d4ff"      # Light blue-white text
+
+[colors.dim]
+black = "#2a3550"      # Dark borders
+red = "#ff668c"        # Dim pink-red
+green = "#66e8b5"      # Dim green
+yellow = "#ffb366"     # Dim orange-yellow
+blue = "#3d7acc"       # Darker blue
+magenta = "#b366ff"    # Dim purple
+cyan = "#5fc9e8"       # Dim cyan
+white = "#7a8fc4"      # Muted foreground
