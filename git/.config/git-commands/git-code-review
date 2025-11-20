@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+
+usage() {
+    echo "Usage: git code-review [branch] [target-branch] [--command <cmd>] [--stash]"
+    echo ""
+    echo "Show commits in branch that are not in target-branch for code review"
+    echo ""
+    echo "Arguments:"
+    echo "  [branch]         Branch to review (default: current branch)"
+    echo "  [target-branch]  Target branch to compare against (default: main)"
+    echo "  --command <cmd>  Command to run when checking out a commit (optional)"
+    echo "  --stash          Stash changes made by command before returning to original ref (optional)"
+    echo ""
+    echo "Keybindings:"
+    echo "  Enter/Return:    Checkout selected commit and run command (if specified)"
+    echo "  Alt+j/k:         Navigate preview"
+    echo "  Ctrl+f/b:        Page preview up/down"
+    echo "  q:               Quit without checkout"
+    echo ""
+    echo "Examples:"
+    echo "  git code-review                                    # Review current branch vs main"
+    echo "  git code-review feature/new-ui                     # Review specific branch"
+    echo "  git code-review feature/api-changes develop        # Review against develop"
+    echo "  git code-review --command 'npm test'               # Review current branch with command"
+    echo "  git code-review feature/tests main --command 'npm test'"
+    echo "  git code-review feature/tests main --command 'npm test' --stash"
+    exit 1
+}
+
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+    usage
+fi
+
+# Use current branch if no branch argument provided
+if [[ $# -eq 0 ]] || [[ "$1" == "--command" ]] || [[ "$1" == "--stash" ]]; then
+    review_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
+    if [[ $? -ne 0 ]]; then
+        echo "Error: Cannot determine current branch"
+        exit 1
+    fi
+else
+    review_branch="$1"
+    shift
+fi
+
+user_command=""
+should_stash=false
+
+# Parse remaining arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --command)
+            if [[ -n "$2" ]]; then
+                user_command="$2"
+                shift 2
+            else
+                echo "Error: --command requires an argument"
+                usage
+            fi
+            ;;
+        --stash)
+            should_stash=true
+            shift
+            ;;
+        *)
+            if [[ -z "$target_branch" ]]; then
+                target_branch="$1"
+            else
+                echo "Error: Unexpected argument '$1'"
+                usage
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Auto-detect default branch if no target branch specified
+if [[ -z "$target_branch" ]]; then
+    if git rev-parse --verify develop >/dev/null 2>&1; then
+        target_branch="develop"
+    elif git rev-parse --verify main >/dev/null 2>&1; then
+        target_branch="main"
+    elif git rev-parse --verify master >/dev/null 2>&1; then
+        target_branch="master"
+    else
+        echo "Error: None of 'develop', 'main', or 'master' branches exist"
+        exit 1
+    fi
+fi
+
+if ! git rev-parse --verify "$review_branch" >/dev/null 2>&1; then
+    echo "Error: Branch '$review_branch' does not exist"
+    exit 1
+fi
+
+if ! git rev-parse --verify "$target_branch" >/dev/null 2>&1; then
+    echo "Error: Target branch '$target_branch' does not exist"
+    exit 1
+fi
+
+commits_to_review=$(git rev-list --count "$target_branch..$review_branch" 2>/dev/null)
+if [[ $? -ne 0 ]] || [[ "$commits_to_review" -eq 0 ]]; then
+    echo "No commits to review in '$review_branch' that are not in '$target_branch'"
+    exit 0
+fi
+
+# Store current branch/commit for restoration
+original_ref=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse HEAD)
+
+echo "Code Review: $review_branch vs $target_branch ($commits_to_review commits)"
+if [[ -n "$user_command" ]]; then
+    echo "Command to run: $user_command"
+fi
+if [[ "$should_stash" == true ]]; then
+    echo "Stashing changes after command execution"
+fi
+echo ""
+
+# Create checkout and command execution function
+checkout_and_run() {
+    local commit_hash="$1"
+    echo "Checking out commit: $commit_hash"
+
+    if ! git checkout "$commit_hash" 2>/dev/null; then
+        echo "Error: Failed to checkout commit $commit_hash"
+        return 1
+    fi
+
+    if [[ -n "$user_command" ]]; then
+        echo "Running command: $user_command"
+        echo "----------------------------------------"
+        eval "$user_command"
+        local cmd_exit_code=$?
+        echo "----------------------------------------"
+        echo "Command exit code: $cmd_exit_code"
+    fi
+
+    # If stash option is enabled and there are changes, stash them
+    if [[ "$should_stash" == true ]]; then
+        if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Stashing changes made by command..."
+            if git stash push -m "Code review stash for $original_ref" 2>/dev/null; then
+                echo "Changes stashed successfully"
+            else
+                echo "Warning: Failed to stash changes"
+            fi
+        else
+            echo "No changes to stash"
+        fi
+    fi
+
+    echo "Returning to: $original_ref"
+    if git symbolic-ref --short HEAD >/dev/null 2>&1; then
+        git checkout "$original_ref" 2>/dev/null
+    else
+        git checkout "$original_ref" 2>/dev/null
+    fi
+}
+
+export -f checkout_and_run
+export original_ref
+export user_command
+export should_stash
+
+# Main loop for continuous selection
+while true; do
+    selected_commit=$(git log \
+        --no-merges --graph --color=always --abbrev=7 \
+        --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' \
+        "$target_branch..$review_branch" | \
+    sk \
+        --ansi --no-sort --reverse --tiebreak=index \
+        --header="Code Review: $review_branch vs $target_branch (Enter=checkout+run, q=quit)" \
+        --preview "echo \"{}\" | \
+                   sed 's/.*\\([a-f0-9]\\{7\\}\\).*/\\1/' | \
+                   xargs -I % sh -c 'git show --color=always % | bat' @-" \
+        --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
+        --preview-window=right:70%)
+
+    if [[ -n "$selected_commit" ]]; then
+        commit_hash=$(echo "$selected_commit" | sed 's/.*\([a-f0-9]\{7\}\).*/\1/')
+        checkout_and_run "$commit_hash"
+    else
+        # If no commit was selected (e.g., user pressed 'q' to quit)
+        break
+    fi
+done
+
+echo "Exiting code review."
