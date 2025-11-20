@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo "Usage: git code-review [branch] [target-branch] [--command <cmd>]"
+    echo "Usage: git code-review [branch] [target-branch] [--command <cmd>] [--stash]"
     echo ""
     echo "Show commits in branch that are not in target-branch for code review"
     echo ""
@@ -9,6 +9,7 @@ usage() {
     echo "  [branch]         Branch to review (default: current branch)"
     echo "  [target-branch]  Target branch to compare against (default: main)"
     echo "  --command <cmd>  Command to run when checking out a commit (optional)"
+    echo "  --stash          Stash changes made by command before returning to original ref (optional)"
     echo ""
     echo "Keybindings:"
     echo "  Enter/Return:    Checkout selected commit and run command (if specified)"
@@ -22,6 +23,7 @@ usage() {
     echo "  git code-review feature/api-changes develop        # Review against develop"
     echo "  git code-review --command 'npm test'               # Review current branch with command"
     echo "  git code-review feature/tests main --command 'npm test'"
+    echo "  git code-review feature/tests main --command 'npm test' --stash"
     exit 1
 }
 
@@ -30,7 +32,7 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
 fi
 
 # Use current branch if no branch argument provided
-if [[ $# -eq 0 ]] || [[ "$1" == "--command" ]]; then
+if [[ $# -eq 0 ]] || [[ "$1" == "--command" ]] || [[ "$1" == "--stash" ]]; then
     review_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
     if [[ $? -ne 0 ]]; then
         echo "Error: Cannot determine current branch"
@@ -40,14 +42,25 @@ else
     review_branch="$1"
     shift
 fi
+
 user_command=""
+should_stash=false
 
 # Parse remaining arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --command)
-            user_command="$2"
-            shift 2
+            if [[ -n "$2" ]]; then
+                user_command="$2"
+                shift 2
+            else
+                echo "Error: --command requires an argument"
+                usage
+            fi
+            ;;
+        --stash)
+            should_stash=true
+            shift
             ;;
         *)
             if [[ -z "$target_branch" ]]; then
@@ -98,6 +111,9 @@ echo "Code Review: $review_branch vs $target_branch ($commits_to_review commits)
 if [[ -n "$user_command" ]]; then
     echo "Command to run: $user_command"
 fi
+if [[ "$should_stash" == true ]]; then
+    echo "Stashing changes after command execution"
+fi
 echo ""
 
 # Create checkout and command execution function
@@ -119,6 +135,20 @@ checkout_and_run() {
         echo "Command exit code: $cmd_exit_code"
     fi
 
+    # If stash option is enabled and there are changes, stash them
+    if [[ "$should_stash" == true ]]; then
+        if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Stashing changes made by command..."
+            if git stash push -m "Code review stash for $original_ref" 2>/dev/null; then
+                echo "Changes stashed successfully"
+            else
+                echo "Warning: Failed to stash changes"
+            fi
+        else
+            echo "No changes to stash"
+        fi
+    fi
+
     echo "Returning to: $original_ref"
     if git symbolic-ref --short HEAD >/dev/null 2>&1; then
         git checkout "$original_ref" 2>/dev/null
@@ -130,6 +160,7 @@ checkout_and_run() {
 export -f checkout_and_run
 export original_ref
 export user_command
+export should_stash
 
 # Main loop for continuous selection
 while true; do
