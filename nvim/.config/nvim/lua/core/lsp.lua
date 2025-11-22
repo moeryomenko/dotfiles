@@ -7,6 +7,7 @@ vim.lsp.enable('neocmakelsp')
 -- vim.lsp.enable('ansiblels')
 -- vim.lsp.enable('pgtoolsls')
 vim.lsp.enable('helm_ls')
+vim.lsp.enable('rust-analyzer')
 
 -- Configure diagnostics
 vim.diagnostic.config({
