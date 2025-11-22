@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+stash_ref=${1:-"stash@{0}"}
+
+# Extract commit hash from stash message
+target_commit=$(git stash list | grep -E "^$stash_ref" | grep -oE '[a-f0-9]{7,40}' | head -n1)
+
+if [ -z "$target_commit" ]; then
+    echo "Error: Could not extract commit hash from $stash_ref"
+    return 1
+fi
+
+echo "Extracted target commit: $target_commit"
+
+# Apply stash and create fixup
+git stash apply "$stash_ref"
+git add .
+git commit --fixup "$target_commit"
+
+echo "Fixup commit created. Run: git rebase -i --autosquash $target_commit^"
