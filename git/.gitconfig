@@ -60,6 +60,7 @@
 	cp      = cherry-pick
 	cpc     = cherry-pick --continue
 	cr      = code-review --command 'git show-commit --view nvim HEAD'
+	fcr     = code-review --command 'git show-commit --view nvim HEAD' --stash
 	po      = push-origin
 	pfo     = push-force-origin
 	rt      = regression-testing
