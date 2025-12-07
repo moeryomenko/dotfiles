@@ -8,7 +8,7 @@ draw_bold_text_with_bright_colors = true
 TERM = "tmux-256color"
 
 [font]
-size = 15.0
+size = 14.0
 
 [font.glyph_offset]
 x = 0
@@ -58,13 +58,13 @@ multiplier = 3
 
 [terminal.shell]
 args = ["-l", "-c", "tmux attach || tmux"]
-program = "/opt/homebrew/bin/fish"
+program = "/usr/bin/fish"
 
 [window]
 decorations = "Buttonless"
 dynamic_padding = false
 dynamic_title = true
-startup_mode = "Fullscreen"
+startup_mode = "Maximized"
 
 [window.dimensions]
 columns = 0
