@@ -9,6 +9,7 @@
 		"network",
 		"clock",
 		"hyprland/language",
+		"tray",
 		"custom/powermenu"
 	],
 	"hyprland/workspaces": {
