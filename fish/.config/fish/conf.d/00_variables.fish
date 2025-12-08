@@ -18,6 +18,8 @@ fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
 
+set -q KREW_ROOT; and set -gx PATH $PATH $KREW_ROOT/.krew/bin; or set -gx PATH $PATH $HOME/.krew/bin
+
 # Flatpak settings
 set -l xdg_data_home $XDG_DATA_HOME ~/.local/share
 set -gx --path XDG_DATA_DIRS $xdg_data_home[1]/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
