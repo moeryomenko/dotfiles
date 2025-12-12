@@ -1,5 +1,5 @@
 return {
-  cmd = {'neocmakelsp', '--stdio'},
+  cmd = {'neocmakelsp', 'stdio'},
   filetypes = {'cmake'},
   root_markers = {'CMakeLists.txt', '.git'},
 }
