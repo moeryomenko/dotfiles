@@ -30,3 +30,4 @@ abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
 abbr --add jqcs       "jq 'map_keys(from_camel|to_snake)'"
+abbr --add cargoall   "cargo install (cargo install --list | grep -E '^[a-z0-9_-]+ v[0-9.]+:?\$' | cut -f1 -d' ')"
