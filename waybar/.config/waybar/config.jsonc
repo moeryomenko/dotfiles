@@ -60,7 +60,7 @@
 		"format": "\udb81\udd7e  {volume}%",
 		"max-volume": 100,
 		"scroll-step": 5,
-		"on-click": "pavucontrol"
+		"on-click": "hyprpwcenter"
 	},
 	"hyprland/language": {
 		"format": "{short}"
