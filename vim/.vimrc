@@ -16,7 +16,7 @@ Plug 'joe-skb7/cscope-maps'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
-Plug 'ghifarit53/tokyonight-vim'
+Plug 'nordtheme/vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'christoomey/vim-tmux-navigator'
@@ -120,7 +120,7 @@ endif
 set termguicolors
 set background=dark
 
-colorscheme forest_blue
+colorscheme nord
 " }}}
 
 " c/c++ highlight {{{
