@@ -6,6 +6,7 @@ vim.lsp.enable('neocmakelsp')
 vim.lsp.enable('ty')
 vim.lsp.enable('helm_ls')
 vim.lsp.enable('rust-analyzer')
+vim.lsp.enable('hyprls')
 
 -- Configure diagnostics
 vim.diagnostic.config({

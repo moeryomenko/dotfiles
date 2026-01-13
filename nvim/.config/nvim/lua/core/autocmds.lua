@@ -2,6 +2,24 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
+-- Hyprlang LSP
+vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter'}, {
+		pattern = {"*.hl", "hypr*.conf"},
+		callback = function(event)
+				vim.lsp.start {
+						name = "hyprlang",
+						cmd = {"hyprls"},
+						root_dir = vim.fn.getcwd(),
+						settings = {
+							hyprls = {
+								preferIgnoreFile = true, -- set to false to prefer `hyprls.ignore`
+								ignore = {"hyprlock.conf", "hypridle.conf"}
+							}
+						}
+					}
+		end
+})
+
 -- Jump to last known position
 vim.api.nvim_create_autocmd("BufRead", {
 	callback = function(opts)
