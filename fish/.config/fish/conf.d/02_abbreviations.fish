@@ -17,15 +17,12 @@ abbr --add vf "v (sk --preview 'bat --color=always --style=numbers --line-range=
 
 # kubectl related abbreviations
 abbr --add k   "kubectl"
-abbr --add ksc "kubectl config use-context (kubectl config get-contexts -o name | sk --reverse --bind \"j:down,k:up,q:abort\")"
-abbr --add kdn "kubectl config set-context --current --namespace=(kubectl get namespaces -o name | cut -d/ -f2 | sk --reverse --bind \"j:down,k:up,q:abort\")"
 abbr --add kdp "kubectl get po -o name | cut -d/ -f2 | sk --reverse --preview-window=right:75% --preview 'kubectl describe po {} | bat'"
 
 # golang related abbreviations
 abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
 abbr --add gotest "gotestsum --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
-abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -run (go list ./... | xargs -n1 go test -list . | grep ^Test | sk) ./...
-"
+abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -run (go list ./... | xargs -n1 go test -list . | grep ^Test | sk) ./..."
 
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
