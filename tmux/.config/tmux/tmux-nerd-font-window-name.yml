@@ -1,2 +1,5 @@
+config:
+  show-name: false
+
 icons:
   nvim: ""
