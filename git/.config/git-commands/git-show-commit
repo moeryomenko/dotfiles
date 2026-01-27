@@ -68,7 +68,7 @@ case "$VIEW_CMD" in
 esac
 
 git diff-tree --no-commit-id --name-only -r "$COMMIT_HASH" | \
-    sk --ansi --no-sort --reverse --tiebreak=index \
+    fzf --ansi --no-sort --reverse --tiebreak=index \
         --preview "echo \"{}\" | xargs -I % sh -c 'git show --color=always $COMMIT_HASH % | bat ' @- " \
         --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:$EXECUTE_CMD" \
         --preview-window=right:70%

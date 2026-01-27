@@ -7,7 +7,7 @@ fi
 
 git log \
 	--no-merges --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' "$@" |
-	sk \
+	fzf \
 		--ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo \"\
 				   {}
@@ -15,9 +15,7 @@ git log \
 				   grep -o '[a-f0-9]\{7\}' | head -1 |
 				   xargs -I % sh -c 'git show --color=always % | bat ' @- " \
 		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
-              echo \"\
-			  {}
-			  \" | \
+              echo \"{}\" | \
 			  grep -o '[a-f0-9]\{7\}' | head -1 |
-              xargs -I % sh -c 'git show-commit %' @- " \
+              xargs -I % git show-commit % @- " \
 		--preview-window=right:70%

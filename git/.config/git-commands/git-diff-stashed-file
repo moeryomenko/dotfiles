@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 git stash show "stash@{$1}" | grep -v 'files changed' | cut -d '|' -f1 | sed 's/ *$//' | \
-	sk --ansi --no-sort --reverse --tiebreak=index \
+	fzf --ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo \"\
 		  {}
 		  \" | \

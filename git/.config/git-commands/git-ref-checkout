@@ -7,7 +7,7 @@ fi
 
 git reflog \
 	--no-merges --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' "$@" |
-	sk \
+	fzf \
 		--ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo \"\
 			   {}
