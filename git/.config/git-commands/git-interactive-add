@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 git status --porcelain | cut -c4- | \
-	sk \
+	fzf \
 		--ansi --no-sort --reverse --tiebreak=index -m \
 		--preview "echo \"\
 				   {}

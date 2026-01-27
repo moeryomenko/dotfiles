@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 selected_stash=$(git stash list | \
-	sk \
+	fzf \
 		--ansi --no-sort --reverse --tiebreak=index \
 		--preview "echo {} | sed -n 's/.*@{\([0-9]*\)}.*/\1/p' | xargs -I % sh -c 'git stash show --color=always \'stash@{%}\''" \
 		--preview-window=right:70% \
