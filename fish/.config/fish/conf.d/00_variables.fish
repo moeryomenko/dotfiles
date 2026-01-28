@@ -18,6 +18,7 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
+fish_add_path $HOME/.opencode/bin
 
 set -gx PATH $PATH /Users/eryoma/.lmstudio/bin
 set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
