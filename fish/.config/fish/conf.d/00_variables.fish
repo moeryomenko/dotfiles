@@ -17,6 +17,7 @@ fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
+fish_add_path $HOME/.opencode/bin
 
 set -q KREW_ROOT; and set -gx PATH $PATH $KREW_ROOT/.krew/bin; or set -gx PATH $PATH $HOME/.krew/bin
 
