@@ -1,5 +1,5 @@
 [general]
-import = ["./themes/themes/nord.toml"]
+import = ["./themes/themes/tokyo_night_storm.toml"]
 
 [colors]
 draw_bold_text_with_bright_colors = true
