@@ -84,6 +84,8 @@
 	defaultBranch = main
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[url "git@hf.co:"]
+	insteadOf = https://huggingface.co/
 [grep]
 	lineNumber = true
 [rerere]
