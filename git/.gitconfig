@@ -91,6 +91,8 @@
 	insteadOf = https://gitlab.gnome.org/
 [url "git@gitlab.kitware.com:"]
 	insteadOf= https://gitlab.kitware.com/
+[url "git@hf.co:"]
+	insteadOf = https://huggingface.co/
 [grep]
 	lineNumber = true
 [rerere]
