@@ -1,0 +1,105 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Llama.cpp (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1",
+        "timeout": false
+      },
+      "models": {
+        "qwen3-code-32b-Q4_K_M.gguf": {
+          "name": "qwen3-code-32b-Q4_K_M.gguf",
+          "limit": {
+            "context": 65536,
+            "output": 16384
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "gobuild": {
+      "mode": "primary",
+      "description": "Full Go development with coding standard enforcement",
+      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "temperature": 0.3,
+      "prompt": "{file:./prompts/gobuild.txt}",
+      "color": "#00ADD8",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "*": "ask",
+          "go build": "allow",
+          "go build -race": "allow",
+          "go test *": "allow",
+          "go test -race *": "allow",
+          "go test -cover *": "allow",
+          "go mod tidy": "allow",
+          "go mod download": "allow",
+          "go mod verify": "allow",
+          "go list *": "allow",
+          "go install *": "allow",
+          "go vet *": "allow",
+          "which *": "allow",
+          "gofmt -l *": "allow",
+          "gofmt -w *": "allow",
+          "gofumpt -l *": "allow",
+          "gofumpt -w *": "allow",
+          "golines *": "allow",
+          "goimports -l *": "allow",
+          "goimports -w *": "allow",
+          "staticcheck *": "allow",
+          "errcheck *": "allow",
+          "golangci-lint run *": "allow",
+          "git diff *": "allow",
+          "git status *": "allow",
+          "find * -name '*.go'": "allow",
+          "grep *": "allow",
+          "xargs *": "allow"
+        },
+        "task": {
+          "*": "deny",
+          "goformat": "allow",
+          "golint": "allow",
+          "gotest": "allow",
+          "go-error-audit": "allow",
+          "go-concurrency-audit": "allow"
+        }
+      }
+    },
+    "goreview": {
+      "mode": "primary",
+      "description": "Go code review without modifications",
+      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "temperature": 0.1,
+      "prompt": "{file:./prompts/goreview.txt}",
+      "color": "#00758F",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "deny",
+          "go vet *": "allow",
+          "staticcheck *": "allow",
+          "errcheck *": "allow",
+          "golangci-lint run *": "allow",
+          "git diff *": "allow",
+          "git log *": "allow",
+          "grep -r * *.go": "allow",
+          "find * -name '*.go'": "allow"
+        }
+      }
+    }
+  }
+}
