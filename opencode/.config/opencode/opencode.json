@@ -20,6 +20,46 @@
     }
   },
   "agent": {
+    "goplan": {
+      "mode": "primary",
+      "description": "Planning agent for Go development - creates execution plans, validates requirements, and coordinates work",
+      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "temperature": 0.2,
+      "prompt": "{file:./prompts/goplan.txt}",
+      "color": "#5DC9E2",
+      "tools": {
+        "write": true,
+        "edit": false,
+        "bash": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "go list *": "allow",
+          "go mod graph": "allow",
+          "go doc *": "allow",
+          "git status": "allow",
+          "git log *": "allow",
+          "git diff *": "allow",
+          "find * -name '*.go'": "allow",
+          "find * -name '*_test.go'": "allow",
+          "grep -r *": "allow",
+          "tree -L *": "allow",
+          "wc -l *": "allow",
+          "cat *": "allow",
+          "head *": "allow",
+          "tail *": "allow"
+        },
+        "task": {
+          "*": "deny",
+          "analyze-repo": "allow",
+          "find-patterns": "allow",
+          "dependency-check": "allow",
+          "test-coverage-report": "allow"
+        }
+      }
+    },
     "gobuild": {
       "mode": "primary",
       "description": "Full Go development with coding standard enforcement",
