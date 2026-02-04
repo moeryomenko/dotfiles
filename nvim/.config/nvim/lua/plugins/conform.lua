@@ -5,36 +5,19 @@ return {
 	init = function()
 		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
-	config = function(_, _)
+	config = function(_, opts)
 		local conf = {
 			formatters_by_ft = {
-				go = { "gofumpt", "goimports", "gci", "golines" },
+				lua = { "stylua" },
+				proto = { "buf" },
+				python = { "black" },
+				cmake = { "gersemi" },
+				yaml = { "yamlfmt" },
+				sql = { "sqruff" },
+				terraform = { "terraform" },
+				hcl = { "hclfmt" },
 			},
-			formatters = {
-				gofumpt = {
-					prepend_args = { "-extra" },
-				},
-				gci = {
-					args = {
-						"write",
-						"--skip-generated",
-						"-s",
-						"standard",
-						"-s",
-						"default",
-						"--skip-vendor",
-						"$FILENAME",
-					},
-				},
-				goimports = {
-					args = { "-srcdir", "$FILENAME" },
-				},
-				golines = {
-					-- golines will use goimports as base formatter by default which is slow.
-					-- see https://github.com/segmentio/golines/issues/33
-					prepend_args = { "--base-formatter=gofumpt", "--ignore-generated", "--tab-len=1", "--max-len=120" },
-				},
-			},
+			formatters = {},
 			format_on_save = {
 				timeout_ms = 500,
 				lsp_fallback = true,
@@ -42,6 +25,16 @@ return {
 			log_level = vim.log.levels.INFO,
 			notify_on_error = true,
 		}
+
+		if opts.formatters_by_ft ~= nil then
+			local merged = require("core.utils").deep_tbl_extend(conf.formatters_by_ft, opts.formatters_by_ft)
+			conf.formatters_by_ft = merged
+		end
+
+		if opts.formatters ~= nil then
+			local merged = require("core.utils").deep_tbl_extend(conf.formatters, opts.formatters)
+			conf.formatters = merged
+		end
 
 		require("conform").setup(conf)
 	end,
