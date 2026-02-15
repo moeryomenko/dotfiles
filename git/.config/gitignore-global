@@ -29,3 +29,6 @@ __pycache__/
 .claude/
 .mcp.json
 .DS_Store
+.ai-factory*
+.opencode*
+opencode.json*
