@@ -11,6 +11,7 @@ set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
+set -Ux HF_TOKEN (pass show hf/access_token)
 
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
