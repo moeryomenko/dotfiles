@@ -34,7 +34,7 @@ lazy.setup({
 	},
 	dev = {
 		-- directory where you store your local plugin projects
-		path = "~/workspace",
+		path = "~/projects",
 	},
 	ui = {
 		size = { width = 0.9, height = 0.8 },
