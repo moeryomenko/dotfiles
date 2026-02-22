@@ -12,8 +12,8 @@
         "qwen3-code-32b-Q4_K_M.gguf": {
           "name": "qwen3-code-32b-Q4_K_M.gguf",
           "limit": {
-            "context": 65536,
-            "output": 16384
+            "context": 131072,
+            "output": 65536
           }
         }
       }
