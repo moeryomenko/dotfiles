@@ -20,6 +20,8 @@ fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
 fish_add_path $HOME/.opencode/bin
 
+set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
+
 set -q KREW_ROOT; and set -gx PATH $PATH $KREW_ROOT/.krew/bin; or set -gx PATH $PATH $HOME/.krew/bin
 
 # Flatpak settings
