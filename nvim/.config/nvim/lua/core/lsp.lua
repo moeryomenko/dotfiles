@@ -55,8 +55,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', 'Go to definition')
 		-- K mapping for hover is now built-in by default in 0.11, with improved markdown rendering
 		bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', 'Show hover')
-		bufmap('n', 'grr', '<cmd>lua vim.lsp.buf.references()<cr>', 'Show references')
-		bufmap('n', 'gri', '<cmd>lua vim.lsp.buf.implementation()<cr>', 'Show implementations')
 
 		-- Actions (using modern 0.11 keybind conventions)
 		bufmap('n', 'grn', '<cmd>lua vim.lsp.buf.rename()<cr>', 'Rename symbol')
