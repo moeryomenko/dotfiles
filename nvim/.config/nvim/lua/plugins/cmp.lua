@@ -2,7 +2,6 @@ return {
 	"hrsh7th/nvim-cmp",
 	dependencies = {
 		"hrsh7th/cmp-buffer",
-		"zbirenbaum/copilot-cmp",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/cmp-nvim-lsp",
@@ -122,15 +121,12 @@ return {
 							buffer = "[Buffer]",
 							path = "[Path]",
 							git = "[git]",
-							copilot = "",
 						})[entry.source.name]
 						return vim_item
 					end,
 				}),
 			},
 			sources = {
-				{ name = "copilot" },
-				{ name = "codeium" },
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
