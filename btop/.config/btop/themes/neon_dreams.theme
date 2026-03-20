@@ -1,0 +1,82 @@
+# Neon Dreams theme for btop
+# Ported from the Alacritty neon_dreams.toml theme
+# Inspired by vibrant neon blue and pink/purple aesthetic
+
+# Main bg — deep blue background
+theme[main_bg]="#1a2642"
+
+# Main text color — soft blue-white foreground
+theme[main_fg]="#a8b9e6"
+
+# Title color for boxes — light blue-white
+theme[title]="#c5d4ff"
+
+# Highlight color for keyboard shortcuts — hot pink
+theme[hi_fg]="#ff6eb5"
+
+# Background color of selected item in processes box — deep blue selection
+theme[selected_bg]="#3d7acc"
+
+# Foreground color of selected item in processes box — light blue-white
+theme[selected_fg]="#c5d4ff"
+
+# Color of inactive/disabled text — dark borders/separators
+theme[inactive_fg]="#3d4d73"
+
+# Misc colors for processes box — cyan
+theme[proc_misc]="#5fc9e8"
+
+# Cpu box outline color — bright black (borders)
+theme[cpu_box]="#3d4d73"
+
+# Memory/disks box outline color
+theme[mem_box]="#3d4d73"
+
+# Net up/down box outline color
+theme[net_box]="#3d4d73"
+
+# Processes box outline color
+theme[proc_box]="#3d4d73"
+
+# Box divider line and small boxes line color — footer bar bg / dark mid tone
+theme[div_line]="#243556"
+
+# Temperature graph colors — cyan → electric blue → neon purple
+theme[temp_start]="#5fc9e8"
+theme[temp_mid]="#5f9eff"
+theme[temp_end]="#c576ff"
+
+# CPU graph colors — electric blue → neon purple → hot pink
+theme[cpu_start]="#5f9eff"
+theme[cpu_mid]="#c576ff"
+theme[cpu_end]="#ff6eb5"
+
+# Mem/Disk free meter — mint green → cyan → electric blue
+theme[free_start]="#66e8b5"
+theme[free_mid]="#5fc9e8"
+theme[free_end]="#5f9eff"
+
+# Mem/Disk cached meter — electric blue → neon purple → bright magenta
+theme[cached_start]="#5f9eff"
+theme[cached_mid]="#c576ff"
+theme[cached_end]="#e066ff"
+
+# Mem/Disk available meter — mint green → electric blue → neon purple
+theme[available_start]="#66e8b5"
+theme[available_mid]="#5f9eff"
+theme[available_end]="#c576ff"
+
+# Mem/Disk used meter — deep blue selection → electric blue → lighter electric blue
+theme[used_start]="#3d7acc"
+theme[used_mid]="#5f9eff"
+theme[used_end]="#7eb5ff"
+
+# Download graph colors — mint green → electric blue → deep blue selection
+theme[download_start]="#66e8b5"
+theme[download_mid]="#5f9eff"
+theme[download_end]="#3d7acc"
+
+# Upload graph colors — neon purple → hot pink → bright magenta
+theme[upload_start]="#c576ff"
+theme[upload_mid]="#ff6eb5"
+theme[upload_end]="#e066ff"
