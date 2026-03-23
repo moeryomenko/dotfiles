@@ -106,7 +106,9 @@ return {
 						delve = {
 							path = vim.fn.exepath("dlv"), -- Make sure this points to your updated delve
 							initialize_timeout_sec = 20,
-							args = {},
+							args = {
+								"--check-go-version=false",
+							},
 						},
 					})
 				end,
