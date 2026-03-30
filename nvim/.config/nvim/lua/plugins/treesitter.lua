@@ -2,7 +2,6 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	dependencies = {
-		"nvim-treesitter/nvim-treesitter-refactor",
 		"RRethy/nvim-treesitter-endwise",
 	},
 	event = { "BufReadPre", "BufNewFile" },
@@ -18,7 +17,7 @@ return {
 				"json",
 				"markdown",
 				"yaml",
-			}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+			},              -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 			sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
 			ignore_install = { "" }, -- List of parsers to ignore installing
 			auto_install = true,
@@ -44,20 +43,6 @@ return {
 					node_incremental = "<c-space>",
 					scope_incremental = false,
 					node_decremental = "<bs>",
-				},
-			},
-			refactor = {
-				highlight_definitions = {
-					enable = true,
-					-- Set to false if you have an `updatetime` of ~100.
-					clear_on_cursor_move = true,
-				},
-				highlight_current_scope = { enable = false },
-				smart_rename = {
-					enable = true,
-					keymaps = {
-						smart_rename = "<leader>rr",
-					},
 				},
 			},
 		})
