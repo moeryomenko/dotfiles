@@ -24,8 +24,3 @@ if test (tty) = /dev/tty1
 	export MOZ_ENABLE_WAYLAND=1
 	exec Hyprland
 end
-
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/eryoma/.lmstudio/bin
-# End of LM Studio CLI section
-
