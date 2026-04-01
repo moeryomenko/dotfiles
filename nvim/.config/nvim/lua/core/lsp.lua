@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		bufmap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Diagnostics loclist')
 
 		-- Formatting
-		if not client.supports_method('textDocument/formatting') then
+		if not client or not client:supports_method('textDocument/formatting') then
 			return
 		end
 
