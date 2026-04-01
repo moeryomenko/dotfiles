@@ -14,8 +14,8 @@
         "timeout": false
       },
       "models": {
-        "qwen3-code-32b-Q4_K_M.gguf": {
-          "name": "qwen3-code-32b-Q4_K_M.gguf",
+        "qwen3.5": {
+          "name": "qwen3.5",
           "limit": {
             "context": 131072,
             "output": 65536
@@ -28,7 +28,7 @@
     "goplan": {
       "mode": "primary",
       "description": "Planning agent for Go development - creates execution plans, validates requirements, and coordinates work",
-      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "model": "llama.cpp/qwen3.5",
       "temperature": 0.2,
       "prompt": "{file:./prompts/goplan.txt}",
       "color": "#5DC9E2",
@@ -68,7 +68,7 @@
     "gobuild": {
       "mode": "primary",
       "description": "Full Go development with coding standard enforcement",
-      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "model": "llama.cpp/qwen3.5",
       "temperature": 0.3,
       "prompt": "{file:./prompts/gobuild.txt}",
       "color": "#00ADD8",
@@ -122,7 +122,7 @@
     "goreview": {
       "mode": "primary",
       "description": "Go code review without modifications",
-      "model": "llama.cpp/qwen3-code-32b-Q4_K_M.gguf",
+      "model": "llama.cpp/qwen3.5",
       "temperature": 0.1,
       "prompt": "{file:./prompts/goreview.txt}",
       "color": "#00758F",
