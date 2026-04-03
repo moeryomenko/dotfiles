@@ -16,6 +16,7 @@ return {
 				sql = { "sqruff" },
 				terraform = { "terraform" },
 				hcl = { "hclfmt" },
+				html = { "prettierd", "prettier" },
 			},
 			formatters = {},
 			format_on_save = {
