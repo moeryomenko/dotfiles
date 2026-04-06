@@ -9,6 +9,7 @@
     "./plugins/revdiff-plan-review.ts",
     "@prevalentware/opencode-goal-plugin"
   ],
+<<<<<<< HEAD
   "mcp": {
     "filesystem": {
       "type": "local",
@@ -36,6 +37,139 @@
         "mcp-dap-server"
       ],
       "enabled": true
+=======
+  "provider": {
+    "llama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama(local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1",
+        "timeout": false
+      },
+      "models": {
+        "gemma4": {
+          "name": "gemma4",
+          "limit": {
+            "context": 131072,
+            "output": 65536
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "plan": {
+      "description": "Task planner and orchestrator",
+      "mode": "primary",
+      "model": "llama/gemma4",
+      "temperature": 0.1,
+      "steps": 20,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "todowrite": true,
+        "question": true,
+        "websearch": true,
+        "skill": true,
+        "read": true
+      },
+      "prompt": "{file:./prompts/planner.md}"
+    },
+    "build": {
+      "description": "Execution agent for development tasks",
+      "mode": "primary",
+      "temperature": 0.3,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "skill": true,
+        "question": true,
+        "lsp": true,
+        "webfetch": true,
+        "websearch": true,
+        "glob": true,
+        "grep": true,
+        "list": true
+      }
+    },
+    "explorer": {
+      "description": "Read-only codebase exploration and research",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "webfetch": true,
+        "websearch": true,
+        "skill": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "list": true
+      },
+      "prompt": "{file:./prompts/explorer.md}"
+    },
+    "engineer": {
+      "description": "Production-grade software engineer",
+      "mode": "subagent",
+      "temperature": 0.25,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "skill": true,
+        "question": true,
+        "read": true
+      },
+      "prompt": "{file:./prompts/engineer.md}"
+    },
+    "reviewer": {
+      "description": "Strict code reviewer",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "lsp": true,
+        "skill": true
+      },
+      "prompt": "{file:./prompts/reviewer.md}"
+    },
+    "qa": {
+      "description": "QA Engineer: Analyze code and implement testing suites",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "bash": true,
+        "write": true,
+        "edit": true,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "lsp": true,
+        "websearch": true,
+        "skill": true,
+        "question": true
+      },
+      "prompt": "{file:./prompts/qa.md}"
+    },
+    "reflector": {
+      "description": "Post-analysis and feedback loop",
+      "mode": "subagent",
+      "temperature": 0.15,
+      "tools": {
+        "write": false,
+        "read": true,
+        "grep": true,
+        "skill": true
+      },
+      "prompt": "{file:./prompts/reflector.md}"
+>>>>>>> 07e7771 (refactor(opencode): migrate from Go-specific tooling to SDD pipeline agents)
     }
   }
 }
