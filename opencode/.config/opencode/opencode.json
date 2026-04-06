@@ -2,20 +2,21 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "@franlol/opencode-md-table-formatter@latest",
+    "opencode-mem",
     "@plannotator/opencode@latest",
     "@spoons-and-mirrors/subtask2@latest"
   ],
   "provider": {
-    "llama.cpp": {
+    "llama": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "Llama.cpp (local)",
+      "name": "llama(local)",
       "options": {
         "baseURL": "http://127.0.0.1:8080/v1",
         "timeout": false
       },
       "models": {
-        "qwen3.5": {
-          "name": "qwen3.5",
+        "gemma4": {
+          "name": "gemma4",
           "limit": {
             "context": 131072,
             "output": 65536
@@ -25,126 +26,117 @@
     }
   },
   "agent": {
-    "goplan": {
+    "plan": {
+      "description": "Task planner and orchestrator",
       "mode": "primary",
-      "description": "Planning agent for Go development - creates execution plans, validates requirements, and coordinates work",
-      "model": "llama.cpp/qwen3.5",
-      "temperature": 0.2,
-      "prompt": "{file:./prompts/goplan.txt}",
-      "color": "#5DC9E2",
-      "tools": {
-        "write": true,
-        "edit": false,
-        "bash": true
-      },
-      "permission": {
-        "edit": "deny",
-        "bash": {
-          "*": "ask",
-          "go list *": "allow",
-          "go mod graph": "allow",
-          "go doc *": "allow",
-          "git status": "allow",
-          "git log *": "allow",
-          "git diff *": "allow",
-          "find * -name '*.go'": "allow",
-          "find * -name '*_test.go'": "allow",
-          "grep -r *": "allow",
-          "tree -L *": "allow",
-          "wc -l *": "allow",
-          "cat *": "allow",
-          "head *": "allow",
-          "tail *": "allow"
-        },
-        "task": {
-          "*": "deny",
-          "analyze-repo": "allow",
-          "find-patterns": "allow",
-          "dependency-check": "allow",
-          "test-coverage-report": "allow"
-        }
-      }
-    },
-    "gobuild": {
-      "mode": "primary",
-      "description": "Full Go development with coding standard enforcement",
-      "model": "llama.cpp/qwen3.5",
-      "temperature": 0.3,
-      "prompt": "{file:./prompts/gobuild.txt}",
-      "color": "#00ADD8",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
-      "permission": {
-        "edit": "ask",
-        "bash": {
-          "*": "ask",
-          "go build": "allow",
-          "go build -race": "allow",
-          "go test *": "allow",
-          "go test -race *": "allow",
-          "go test -cover *": "allow",
-          "go mod tidy": "allow",
-          "go mod download": "allow",
-          "go mod verify": "allow",
-          "go list *": "allow",
-          "go install *": "allow",
-          "go vet *": "allow",
-          "which *": "allow",
-          "gofmt -l *": "allow",
-          "gofmt -w *": "allow",
-          "gofumpt -l *": "allow",
-          "gofumpt -w *": "allow",
-          "golines *": "allow",
-          "goimports -l *": "allow",
-          "goimports -w *": "allow",
-          "staticcheck *": "allow",
-          "errcheck *": "allow",
-          "golangci-lint run *": "allow",
-          "git diff *": "allow",
-          "git status *": "allow",
-          "find * -name '*.go'": "allow",
-          "grep *": "allow",
-          "xargs *": "allow"
-        },
-        "task": {
-          "*": "deny",
-          "goformat": "allow",
-          "golint": "allow",
-          "gotest": "allow",
-          "go-error-audit": "allow",
-          "go-concurrency-audit": "allow"
-        }
-      }
-    },
-    "goreview": {
-      "mode": "primary",
-      "description": "Go code review without modifications",
-      "model": "llama.cpp/qwen3.5",
+      "model": "llama/gemma4",
       "temperature": 0.1,
-      "prompt": "{file:./prompts/goreview.txt}",
-      "color": "#00758F",
+      "steps": 20,
       "tools": {
         "write": false,
         "edit": false,
-        "bash": true
+        "bash": false,
+        "todowrite": true,
+        "question": true,
+        "websearch": true,
+        "skill": true,
+        "read": true
       },
-      "permission": {
-        "edit": "deny",
-        "bash": {
-          "*": "deny",
-          "go vet *": "allow",
-          "staticcheck *": "allow",
-          "errcheck *": "allow",
-          "golangci-lint run *": "allow",
-          "git diff *": "allow",
-          "git log *": "allow",
-          "grep -r * *.go": "allow",
-          "find * -name '*.go'": "allow"
-        }
+      "prompt": "{file:./prompts/planner.md}"
+    },
+    "build": {
+      "description": "Execution agent for development tasks",
+      "mode": "primary",
+      "temperature": 0.3,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "skill": true,
+        "question": true,
+        "lsp": true,
+        "webfetch": true,
+        "websearch": true,
+        "glob": true,
+        "grep": true,
+        "list": true
       }
+    },
+    "explorer": {
+      "description": "Read-only codebase exploration and research",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "webfetch": true,
+        "websearch": true,
+        "skill": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "list": true
+      },
+      "prompt": "{file:./prompts/explorer.md}"
+    },
+    "engineer": {
+      "description": "Production-grade software engineer",
+      "mode": "subagent",
+      "temperature": 0.25,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "skill": true,
+        "question": true,
+        "read": true
+      },
+      "prompt": "{file:./prompts/engineer.md}"
+    },
+    "reviewer": {
+      "description": "Strict code reviewer",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "lsp": true,
+        "skill": true
+      },
+      "prompt": "{file:./prompts/reviewer.md}"
+    },
+    "qa": {
+      "description": "QA Engineer: Analyze code and implement testing suites",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "bash": true,
+        "write": true,
+        "edit": true,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "lsp": true,
+        "websearch": true,
+        "skill": true,
+        "question": true
+      },
+      "prompt": "{file:./prompts/qa.md}"
+    },
+    "reflector": {
+      "description": "Post-analysis and feedback loop",
+      "mode": "subagent",
+      "temperature": 0.15,
+      "tools": {
+        "write": false,
+        "read": true,
+        "grep": true,
+        "skill": true
+      },
+      "prompt": "{file:./prompts/reflector.md}"
     }
   }
 }
