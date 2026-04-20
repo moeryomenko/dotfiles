@@ -26,24 +26,45 @@
     }
   },
   "agent": {
-    "plan": {
-      "description": "Spec Architect — Writes .spec.md contracts, never implements",
+    "architector": {
+      "description": "Spec Architect & Iterative Refiner — Works with user to produce final .spec.md",
       "mode": "primary",
       "model": "llama/qwen",
       "temperature": 0.1,
-      "steps": 20,
+      "steps": 25,
       "tools": {
-        "write": false,
-        "edit": false,
+        "write": true,
+        "edit": true,
         "bash": false,
         "todowrite": true,
         "question": true,
         "webfetch": true,
         "websearch": true,
         "skill": true,
-        "read": true
+        "read": true,
+        "glob": true,
+        "grep": true
       },
       "prompt": "{file:./prompts/planner.md}"
+    },
+    "plan": {
+      "description": "Implementation Planner — Decomposes approved .spec.md into task-ordered implementation_plan.md",
+      "mode": "primary",
+      "model": "llama/qwen",
+      "temperature": 0.2,
+      "steps": 15,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false,
+        "todowrite": true,
+        "question": true,
+        "skill": true,
+        "read": true,
+        "glob": true,
+        "grep": true
+      },
+      "prompt": "{file:./prompts/plan_impl.md}"
     },
     "build": {
       "description": "Staff+ Engineer & Execution Orchestrator — Delegates to subagents, owns delivery",
@@ -60,8 +81,7 @@
         "lsp": true,
         "glob": true,
         "grep": true
-      },
-      "prompt": "{file:./prompts/build.md}"
+      }
     },
     "explorer": {
       "description": "Senior Systems Researcher — Eliminates unknowns before implementation",
