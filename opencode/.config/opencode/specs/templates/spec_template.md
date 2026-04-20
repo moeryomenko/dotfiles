@@ -1,58 +1,121 @@
-# Specification: [Feature Name]
+# Specification: [Feature/Task Name]
 
-## 1. Context & Rationale
-<!-- Describe the problem being solved and why this change is necessary. Reference existing code/files if applicable. -->
+> **Status**: `DRAFT` → `APPROVED` → `IMPLEMENTED` → `VERIFIED`
+> **Author**: @plan (Spec Architect)
+> **Date**: [YYYY-MM-DD]
+> **Spec ID**: [e.g., SPEC-001]
 
-## 2. Objectives
-<!-- High-level goals of this specification. What does success look like? -->
-- [ ] Goal 1
-- [ ] Goal 2
+---
+
+## 1. Overview
+
+### 1.1 Problem Statement
+[What problem are we solving? Be specific and concise.]
+
+### 1.2 Objectives
+- [Objective 1: measurable outcome]
+- [Objective 2: measurable outcome]
+- [Objective 3: measurable outcome]
+
+### 1.3 Non-Objectives
+- [What is explicitly OUT of scope — critical for preventing scope creep]
+- [What will NOT be changed]
+
+---
+
+## 2. User/Technical Context
+
+### 2.1 Affected Components
+| Component | File(s) | Current Behavior | Required Change |
+|-----------|---------|-----------------|-----------------|
+| [Component name] | `path/to/file.go` | [Current behavior] | [What needs to change] |
+
+### 2.2 Dependencies
+- [External libraries or modules this depends on]
+- [Internal packages that must not be broken]
+
+### 2.3 Constraints
+- [Performance requirements, e.g., "must handle 10K req/s"]
+- [Compatibility requirements, e.g., "must support Go 1.21+"]
+- [Security requirements, e.g., "no plaintext secrets in memory"]
+- [API compatibility, e.g., "existing API must remain backward compatible"]
+
+---
 
 ## 3. Technical Requirements
-<!-- Detailed technical constraints. This is the CONTRACT for the @engineer. -->
-### 3.1 API & Interface
-- [ ] Requirement A (e.g., Function signature: `func Calculate(x int) int`)
-- [ ] Requirement B
 
-### 3.2 Data Structures & Models
-- [ ] Requirement C
+### 3.1 Interface/Type Contracts
+```go
+// Required new types/functions with exact signatures
+type NewInterface interface {
+    Method(input string) (Result, error)
+}
 
-### 3.3 Constraints & Dependencies
-- [ ] Constraint D (e.g., Must not use external libraries)
-- [ ] Dependency E
+func NewFunction(ctx context.Context, config Config) (*NewType, error)
+```
 
-## 4. Research Intelligence (Explorer Insights)
-<!-- This section is populated by @explorer findings to provide high-fidelity context for the implementation plan. -->
-### 4.1 Discovered Patterns & Idioms
-- [ ] Pattern/Idiom 1
+### 3.2 Data Flow
+[Describe how data moves through the system. Include diagrams if complex.]
 
-### 4.2 Identified Constraints & Dependencies
-- [ ] Constraint/Dependency 1
+### 3.3 Error Handling Strategy
+- [Specific error types that must be defined]
+- [Error wrapping requirements: use `%w` for all wrapped errors]
+- [Recovery behavior for recoverable errors]
 
-### 4.3 Recommended Interface Signatures
-- [ ] Signature 1
+### 3.4 Configuration
+- [New config options required]
+- [Environment variables or file paths]
 
-## 5. Implementation Plan
-<!-- The step-by-step breakdown of tasks for the @plan agent to orchestrate. -->
-1. [ ] Task 1
-2. [ ] Task 2
+---
 
-## 6. Verification Contract (QA)
-<!-- Detailed acceptance criteria for the @qa agent. This defines how the Spec will be proven correct. -->
-### 6.1 Testability Audit (Pre-Implementation)
-<!-- @qa must verify these requirements are testable before implementation begins. -->
-- [ ] Requirement X is verifiable via [Unit/Integration] tests.
-- [ ] Requirement Y has clear success/failure criteria.
+## 4. Verification Contract (Acceptance Criteria)
 
-### 6.2 Unit Test Scenarios
-- [ ] Scenario 1: [Input] -> [Expected Output]
-- [ ] Scenario 2: [Edge Case] -> [Expected Error/Behavior]
+Each criterion below MUST be met for the spec to be considered complete.
 
-### 6.3 Integration/System Test Scenarios
-- [ ] Scenario 3: [End-to-end flow]
+| ID | Criterion | Testable? | Priority |
+|----|-----------|-----------|----------|
+| VC-01 | [Specific, measurable condition] | Yes/No | P0/P1/P2 |
+| VC-02 | [Specific, measurable condition] | Yes/No | P0/P1/P2 |
+| VC-03 | [Specific, measurable condition] | Yes/No | P0/P1/P2 |
 
-## 7. Edge Cases & Risk Assessment
-<!-- Known unknowns, potential failure modes, and boundary conditions to watch for. -->
-- [ ] Risk X
-- [ ] Boundary Condition Y
+### 4.1 Edge Cases to Verify
+- [Edge case 1: e.g., "Empty input slice must return nil, not error"]
+- [Edge case 2: e.g., "Concurrent calls to same instance must not share state"]
+- [Edge case 3: e.g., "Context cancellation during long operation must clean up resources"]
 
+### 4.2 Performance Benchmarks (if applicable)
+- [Metric]: [Target value] — [Measurement method]
+
+---
+
+## 5. Implementation Tasks (To be assigned by @build)
+
+> @build will decompose the requirements above into atomic tasks and assign them to @engineer.
+
+| Task ID | Description | Assigned Agent | Dependencies |
+|---------|-------------|---------------|--------------|
+| TASK-01 | [Atomic task description] | @engineer / self | — |
+| TASK-02 | [Atomic task description] | @engineer | TASK-01 |
+
+---
+
+## 6. Risks & Mitigations
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| [Risk description] | High/Med/Low | High/Med/Low | [How to mitigate] |
+
+---
+
+## 7. Appendices
+
+### 7.1 Research Findings
+[From @explorer — include key findings, file paths, and code references]
+
+### 7.2 Related Specs
+- [Link to related or blocking specs]
+
+### 7.3 Changelog
+| Date | Version | Change |
+|------|---------|--------|
+| [YYYY-MM-DD] | v0.1 (DRAFT) | Initial draft |
