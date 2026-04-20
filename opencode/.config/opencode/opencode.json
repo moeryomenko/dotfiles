@@ -41,16 +41,16 @@
   "provider": {
     "llama": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "llama(local)",
+      "name": "llama",
       "options": {
         "baseURL": "http://127.0.0.1:8080/v1",
         "timeout": false
       },
       "models": {
-        "gemma4": {
-          "name": "gemma4",
+        "qwen": {
+          "name": "qwen",
           "limit": {
-            "context": 131072,
+            "context": 262144,
             "output": 65536
           }
         }
@@ -59,9 +59,9 @@
   },
   "agent": {
     "plan": {
-      "description": "Task planner and orchestrator",
+      "description": "Spec Architect — Writes .spec.md contracts, never implements",
       "mode": "primary",
-      "model": "llama/gemma4",
+      "model": "llama/qwen",
       "temperature": 0.1,
       "steps": 20,
       "tools": {
@@ -70,6 +70,7 @@
         "bash": false,
         "todowrite": true,
         "question": true,
+        "webfetch": true,
         "websearch": true,
         "skill": true,
         "read": true
@@ -77,9 +78,11 @@
       "prompt": "{file:./prompts/planner.md}"
     },
     "build": {
-      "description": "Execution agent for development tasks",
+      "description": "Staff+ Engineer & Execution Orchestrator — Delegates to subagents, owns delivery",
       "mode": "primary",
+      "model": "llama/qwen",
       "temperature": 0.3,
+      "steps": 30,
       "tools": {
         "write": true,
         "edit": true,
@@ -87,16 +90,15 @@
         "skill": true,
         "question": true,
         "lsp": true,
-        "webfetch": true,
-        "websearch": true,
         "glob": true,
-        "grep": true,
-        "list": true
-      }
+        "grep": true
+      },
+      "prompt": "{file:./prompts/build.md}"
     },
     "explorer": {
-      "description": "Read-only codebase exploration and research",
+      "description": "Senior Systems Researcher — Eliminates unknowns before implementation",
       "mode": "subagent",
+      "model": "llama/qwen",
       "temperature": 0.2,
       "tools": {
         "write": false,
@@ -107,27 +109,31 @@
         "skill": true,
         "read": true,
         "glob": true,
-        "grep": true,
-        "list": true
+        "grep": true
       },
       "prompt": "{file:./prompts/explorer.md}"
     },
     "engineer": {
-      "description": "Production-grade software engineer",
+      "description": "Production-grade Software Engineer — Implementation specialist",
       "mode": "subagent",
+      "model": "llama/qwen",
       "temperature": 0.25,
       "tools": {
         "write": true,
         "edit": true,
         "skill": true,
         "question": true,
-        "read": true
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "lsp": true
       },
       "prompt": "{file:./prompts/engineer.md}"
     },
     "reviewer": {
-      "description": "Strict code reviewer",
+      "description": "Spec Compliance Auditor — Verifies implementation against .spec.md contract",
       "mode": "subagent",
+      "model": "llama/qwen",
       "temperature": 0.1,
       "tools": {
         "write": false,
@@ -141,8 +147,9 @@
       "prompt": "{file:./prompts/reviewer.md}"
     },
     "qa": {
-      "description": "QA Engineer: Analyze code and implement testing suites",
+      "description": "Spec Verifier — Tests implementation against Verification Contract",
       "mode": "subagent",
+      "model": "llama/qwen",
       "temperature": 0.2,
       "tools": {
         "bash": true,
@@ -152,15 +159,15 @@
         "grep": true,
         "glob": true,
         "lsp": true,
-        "websearch": true,
         "skill": true,
         "question": true
       },
       "prompt": "{file:./prompts/qa.md}"
     },
     "reflector": {
-      "description": "Post-analysis and feedback loop",
+      "description": "Systems Architect & Meta-Analysis — Post-implementation feedback loop",
       "mode": "subagent",
+      "model": "llama/qwen",
       "temperature": 0.15,
       "tools": {
         "write": false,
@@ -169,7 +176,37 @@
         "skill": true
       },
       "prompt": "{file:./prompts/reflector.md}"
+<<<<<<< HEAD
 >>>>>>> 07e7771 (refactor(opencode): migrate from Go-specific tooling to SDD pipeline agents)
+=======
+    },
+    "goreview": {
+      "mode": "primary",
+      "description": "Go code review without modifications",
+      "model": "llama/qwen",
+      "temperature": 0.1,
+      "prompt": "{file:./prompts/goreview.txt}",
+      "color": "#00758F",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "*": "deny",
+          "go vet *": "allow",
+          "staticcheck *": "allow",
+          "errcheck *": "allow",
+          "golangci-lint run *": "allow",
+          "git diff *": "allow",
+          "git log *": "allow",
+          "grep -r * *.go": "allow",
+          "find * -name '*.go'": "allow"
+        }
+      }
+>>>>>>> a13d2dc (feat(opencode): add development agents and refine multi-agent workflow)
     }
   }
 }

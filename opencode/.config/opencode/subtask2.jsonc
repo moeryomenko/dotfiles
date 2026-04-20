@@ -2,6 +2,15 @@
   // Replace OpenCode's generic "Summarize..." prompt when no return is specified
   "replace_generic": true,
 
-  // Custom prompt to use when replace_generic: true | optional
-  //"generic_return": "Review, challenge and verify the task tool output above against the codebase. Then validate or revise it, before continuing with the next logical step."
+  // Custom prompt for when a subtask completes — validates output quality before continuing
+  "generic_return": "Review the subtask output above. Validate that it meets the acceptance criteria specified in the task. If the output is incomplete or incorrect, note the specific deficiencies. If it meets criteria, summarize key results and continue to the next logical step.",
+
+  // Maximum number of parallel subtasks (prevents fan-out storms)
+  "max_parallel": 2,
+
+  // Require explicit return instruction for each subtask
+  "require_return_instruction": true,
+
+  // Timeout for individual subtasks in seconds (0 = no timeout)
+  "subtask_timeout": 300
 }
