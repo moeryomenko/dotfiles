@@ -32,3 +32,5 @@ __pycache__/
 .ai-factory*
 .opencode*
 opencode.json*
+.logs/
+.code-review-graph/
