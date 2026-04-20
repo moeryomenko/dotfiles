@@ -38,15 +38,16 @@
 
 ## Tool Matrix
 
-| Agent | write | edit | bash | lsp | glob | grep | webfetch | websearch | skill |
-|-------|-------|------|------|-----|------|------|----------|-----------|-------|
-| plan | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| build | ✅ | ✅ | ✅ (scoped) | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-| explorer | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| engineer | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-| reviewer | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-| qa | ✅* | ✅* | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-| reflector | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| Agent | Mode | write | edit | bash | lsp | glob | grep | question | webfetch | skill |
+|-------|------|-------|------|------|-----|------|------|----------|----------|-------|
+| **architector** | primary | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **plan** | primary | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **build** | primary | ✅ | ✅ | ✅ (scoped) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| explorer | subagent | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| engineer | subagent | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| reviewer | subagent | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
+| qa | subagent* | ✅* | ✅* | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| reflector | subagent | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
 
 \* qa can only modify test files (`*_test.go`, `*.spec.ts`, `*_test.py`, `tests/`, etc.)
 
@@ -115,14 +116,15 @@
 
 | Agent | Model | Notes |
 |-------|-------|-------|
-| plan | `llama/gemma4` | Primary orchestrator |
-| build | `llama/gemma4` | Staff+ engineer |
-| explorer | `llama/gemma4` | Subagent |
-| engineer | `llama/gemma4` | Subagent |
-| reviewer | `llama/gemma4` | Subagent |
-| qa | `llama/gemma4` | Subagent |
-| reflector | `llama/gemma4` | Subagent |
-| goreview | `llama.cpp/qwen3.5` | Specialized Go linting model |
+| **architector** | `llama/qwen` | Spec Architect & Iterative Refiner |
+| **plan** | `llama/qwen` | Implementation Planner (task decomposition) |
+| **build** | `llama/qwen` | Staff+ Engineer / Execution Orchestrator |
+| explorer | `llama/qwen` | Subagent — research & discovery |
+| engineer | `llama/qwen` | Subagent — implementation specialist |
+| reviewer | `llama/qwen` | Subagent — spec compliance auditor |
+| qa | `llama/qwen` | Subagent — verification testing |
+| reflector | `llama/qwen` | Subagent — post-implementation feedback |
+| goreview | `llama/qwen` | Primary — Go code review without modifications |
 
 ## File Structure
 
@@ -130,21 +132,22 @@
 .config/opencode/
 ├── opencode.json              ← Main configuration
 ├── subtask2.jsonc             ← Delegation plugin config
-├── workflow.md                ← Workflow description (~160 lines)
+├── workflow.md                ← Workflow description (~170 lines)
 ├── config_reference.md        ← This file (configuration reference)
 ├── prompts/
-│   ├── planner.md             ← Spec Architect prompt
-│   ├── build.md               ← Staff+ Engineer prompt (NEW)
-│   ├── explorer.md            ← Researcher prompt
-│   ├── engineer.md            ← Implementation prompt
-│   ├── reviewer.md            ← Compliance Auditor prompt
-│   ├── qa.md                  ← Spec Verifier prompt
-│   ├── reflector.md           ← Meta-Analysis prompt
+│   ├── planner.md             ← @architector prompt (iterative spec refinement)
+│   ├── plan_impl.md           ← @plan prompt (task decomposition)
+│   ├── build.md               ← @build prompt (implementation & orchestration)
+│   ├── explorer.md            ← @explorer prompt (research)
+│   ├── engineer.md            ← @engineer prompt (implementation)
+│   ├── reviewer.md            ← @reviewer prompt (compliance audit)
+│   ├── qa.md                  ← @qa prompt (verification testing)
+│   ├── reflector.md           ← @reflector prompt (post-mortem analysis)
 │   └── plugin_awareness.md    ← Plugin guidance
 ├── specs/
 │   └── templates/
-│       ├── spec_template.md          ← Spec contract template (NEW)
-│       └── research_report_template.md  ← Research report template (NEW)
+│       ├── spec_template.md          ← Spec contract template
+│       └── research_report_template.md  ← Research report template
 ├── agents/                    ← Agent skills definitions
 │   ├── go-concurrency-audit.md
 │   ├── go-error-audit.md
@@ -158,6 +161,13 @@
 
 | Date | Change | Rationale |
 |------|--------|-----------|
+| 2026-04-21 | Added `@architector` primary agent | Iterative spec refinement separate from planning |
+| 2026-04-21 | Repositioned `@plan` as task decomposer | Created explicit `implementation_plan.md` artifact |
+| 2026-04-21 | Updated `@build` prompt — removed decomposition logic | Clear boundary: build implements/orchestrates, never plans |
+| 2026-04-21 | Added `prompts/plan_impl.md` | New prompt for repositioned @plan agent |
+| 2026-04-21 | Replaced `prompts/planner.md` content | Now contains @architector (iterative spec refinement) |
+| 2026-04-21 | Updated tool matrix — added architector, updated plan/build | Reflects new 3-primary-agent architecture |
+| 2026-04-21 | Fixed stale model references | `llama/gemma4` → `llama/qwen` throughout |
 | 2026-04-20 | Added `prompts/build.md` | Build agent identity with delegation behavior |
 | 2026-04-20 | Added `permission` block to build agent | Prevent accidental destructive commands |
 | 2026-04-20 | Removed `webfetch`/`websearch` from build | Build executes specs, not research |

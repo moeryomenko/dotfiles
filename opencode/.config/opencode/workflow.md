@@ -6,101 +6,193 @@
 User Request
     ↓
 ┌───────────────────────────────┐
-│  🧭 plan (primary)             │  Spec Architect
-│  - Writes .spec.md contract    │  Temperature: 0.1
+│  🔍 architector (primary)      │  Spec Architect & Iterative Refiner
+│  - Iterates with user on spec  │  Temperature: 0.1
 │  - Uses @explorer for unknowns │
-│  - NEVER writes code           │
+│  - Produces finalized .spec.md │
 └───────────────────────────────┘
-              ↓ approved spec
+               ↓ approved spec
 ┌───────────────────────────────┐
-│  👷 build (primary)            │  Staff+ Engineer & Orchestrator
-│  - Decomposes spec into tasks  │  Temperature: 0.3
-│  - Delegates to subagents      │
-│  - Owns quality gates          │
-│  - Reviews subagent output     │
+│  📋 plan (primary)             │  Implementation Planner
+│  - Decomposes spec into tasks  │  Temperature: 0.2
+│  - Produces implementation_    │
+│    plan.md with task IDs       │
+└───────────────────────────────┘
+               ↓ implementation_plan.md
+┌───────────────────────────────┐
+│  👷 build (primary)            │  Staff+ Engineer & Execution Orch.
+│  - Implements OR delegates     │  Temperature: 0.3
+│  - Never plans/decomposes      │
+│  - Enforces quality gates      │
 └───────────────────────────────┘
        ↓         ↓           ↓
 ┌──────────┐ ┌───────┐ ┌──────────┐
-│ @explorer│ │@engineer│ │@reviewer │
-│ research │ │implement│ │compliance│
+│ @engineer│ │@reviewer│ │ @qa     │
+│ implement│ │audit  │ │verify   │
 └──────────┘ └───────┘ └──────────┘
        ↓
 ┌─────────────┐
-│    @qa      │
-│  verification│
-└─────────────┘
-       ↓
-┌─────────────┐
-│  @reflector │
-│  feedback   │
+│ @reflector  │
+│ feedback    │
 └─────────────┘
 ```
 
 ## Agent Roles
 
-| Agent | Mode | Role | Temperature |
-|-------|------|------|-------------|
-| plan | primary | Spec Architect — writes .spec.md contracts | 0.1 |
-| build | primary | Staff+ Engineer & Execution Orchestrator | 0.3 |
-| explorer | subagent | Senior Systems Researcher — eliminates unknowns | 0.2 |
-| engineer | subagent | Production-grade Software Engineer — implementation | 0.25 |
-| reviewer | subagent | Spec Compliance Auditor — verifies against .spec.md | 0.1 |
-| qa | subagent | Spec Verifier — tests against Verification Contract | 0.2 |
-| reflector | subagent | Systems Architect & Meta-Analysis — feedback loop | 0.15 |
+| Agent | Mode | Role | Temperature | Key Artifact |
+|-------|------|------|-------------|--------------|
+| **@architector** | primary | Spec Architect & Iterative Refiner — produces finalized .spec.md with user | 0.1 | `.spec.md` (APPROVED) |
+| **@plan** | primary | Implementation Planner — decomposes spec into task-ordered plan | 0.2 | `implementation_plan.md` |
+| **@build** | primary | Staff+ Engineer — implements or delegates tasks, never plans | 0.3 | Working code + tests |
+| @explorer | subagent | Senior Systems Researcher — eliminates unknowns | 0.2 | `research_report.md` |
+| @engineer | subagent | Production-grade Software Engineer — implementation specialist | 0.25 | Code changes |
+| @reviewer | subagent | Spec Compliance Auditor — verifies against .spec.md contract | 0.1 | Review verdict |
+| @qa | subagent | Spec Verifier — tests against Verification Contract | 0.2 | Test results |
+| @reflector | subagent | Systems Architect & Meta-Analysis — feedback loop | 0.15 | Optimization proposals |
+
+## Planning vs. Implementing Boundary
+
+| Activity | Responsible Agent | NOT This Agent |
+|----------|-------------------|----------------|
+| "What should we build and why?" | @architector | @plan, @build |
+| "In what order and as which tasks?" | @plan | @architector, @build |
+| "Do the work or delegate it" | @build | @plan, @architector |
 
 ## Execution Pipeline
 
-### Phase 1: Spec Ingestion (plan)
-1. Analyze user request
+### Phase A: Spec Refinement (architector)
+
+1. Analyze user request for completeness
 2. Use `@explorer` to resolve unknowns in the codebase
-3. Write `.spec.md` following `specs/templates/spec_template.md`
-4. Define Verification Contract (acceptance criteria)
-5. Submit spec for approval
+3. Produce a draft `.spec.md` using `specs/templates/spec_template.md`
+4. Present draft to user — iterate via `question` tool on ambiguous points
+5. Incorporate feedback → revise → re-present (typically 1-2 iterations)
+6. Set status to `APPROVED` and signal ready for `@plan`
 
-### Phase 2: Task Decomposition (build)
-1. Read approved `.spec.md`
+### Phase B: Task Planning (plan)
+
+1. Read the approved `.spec.md` from `architector`
 2. Perform scope analysis (affected files, dependencies, unknowns)
-3. Break spec into atomic tasks with acceptance criteria
-4. Assign each task to `@engineer` or keep for self-execution
+3. Break spec into atomic tasks with:
+   - Unique IDs (TASK-001, TASK-002, etc.)
+   - Clear acceptance criteria
+   - Assigned agent (@engineer or @build self)
+   - Explicit dependency declarations
+4. Order tasks by dependency chain
+5. Produce `implementation_plan.md`
 
-### Phase 3: Execution & Delegation (build → subagents)
-1. For each task assigned to `@engineer`:
-   - Provide exact spec section reference
-   - Specify file paths, function signatures, constraints
-   - Wait for completion before proceeding
-2. For tasks build handles itself:
-   - Read existing code in affected area
-   - Implement with minimal, precise changes
-   - Self-review before passing to `@reviewer`
+### Phase C: Execution & Orchestration (build)
 
-### Phase 4: Quality Gates (build → reviewer → qa)
-1. Send implementation to `@reviewer` for spec compliance audit
-2. If `@reviewer` REJECTS → fix issues and re-submit (max 2 re-submissions)
-3. If `@reviewer` APPROVES → send to `@qa`
+1. Read `implementation_plan.md` from `plan`
+2. Validate plan is well-formed (tasks have IDs, dependencies, criteria)
+3. Execute tasks in dependency order — do NOT reorder without justification
+4. For each task:
+   - If assigned to @engineer → delegate with exact spec references
+   - If assigned to self → implement directly with minimal changes
+5. After ALL implementation: route to `@reviewer` for compliance audit
+6. If REJECTED → fix and re-submit (max 2 cycles)
+7. If APPROVED → route to `@qa` for verification
+8. After @qa: invoke `@reflector` for post-mortem, then signal completion
 
-### Phase 5: Verification (build → qa → reflector)
-1. Review `@qa` test results
-2. If tests FAIL → analyze root cause, fix in `@engineer`, re-run from Phase 4
-3. If tests PASS → mark implementation complete
-4. `@reflector` analyzes the full execution for systemic improvements
+### Phase C-Fallback: Direct Execution (skip plan)
 
-### Phase 6: Closure (build)
-1. Summarize all changes made
-2. Map each change back to spec requirements
-3. Note any deviations or technical debt introduced
-4. Signal completion to user
+For simple tasks where the user invokes `@build` directly without `@plan`:
+1. Perform minimal task decomposition as last resort
+2. Note this deviation in output
+3. Proceed with execution as normal
 
 ## Handoff Rules
 
 | Agent | Must Do | Must NOT Do |
 |-------|---------|-------------|
-| plan | Write .spec.md, use @explorer for research | Write implementation code |
-| build | Decompose tasks, delegate, review subagent output | Skip @reviewer gate before @qa |
-| explorer | Research unknowns, provide evidence-based findings | Modify any files |
-| engineer | Implement tasks per spec, self-verify | Add features not in the spec |
-| reviewer | Audit spec compliance, verify signatures/types | Implement fixes for found issues |
-| qa | Test against Verification Contract | Modify production code |
-| reflector | Analyze failures, suggest improvements | Directly modify code or specs |
+| **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research | Execute tasks, implement code, plan task decomposition |
+| **@plan** | Decompose spec into atomic tasks, produce implementation_plan.md, assign tasks | Write specs, implement code, modify production files |
+| **@build** | Implement tasks directly OR delegate to @engineer; orchestrate @reviewer/@qa gates | Plan or decompose tasks (this is @plan's job); skip quality gates |
+| @explorer | Research unknowns, provide evidence-based findings | Modify any files (except research_report.md) |
+| @engineer | Implement tasks per spec, self-verify | Add features not in the spec |
+| @reviewer | Audit spec compliance, verify signatures/types via LSP | Implement fixes for found issues |
+| @qa | Test against Verification Contract | Modify production code |
+| @reflector | Analyze failures, suggest improvements | Directly modify code or specs |
+
+## Artifact Lifecycle
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  User Request                                           │
+│       ↓                                                 │
+│  ┌─────────────────┐                                   │
+│  │ DRAFT .spec.md  │ ← architector writes initial draft │
+│  └────────┬────────┘                                   │
+│           ↓ iterative refinement                        │
+│  ┌─────────────────┐                                   │
+│  │ APPROVED        │ ← user approves, status set to     │
+│  │ .spec.md        │   APPROVED                         │
+│  └────────┬────────┘                                   │
+│           ↓                                             │
+│  ┌─────────────────────────────┐                       │
+│  │ implementation_plan.md      │ ← plan decomposes spec │
+│  │ (TASK-001..N, ordered)      │   into tasks           │
+│  └────────┬────────────────────┘                       │
+│           ↓                                             │
+│  ┌─────────────────────────────┐                       │
+│  │ Working code + tests        │ ← build executes       │
+│  │                          ← reviewer approves         │
+│  │                          ← qa verifies               │
+│  └────────┬────────────────────┘                       │
+│           ↓                                             │
+│  ┌─────────────────────────────┐                       │
+│  │ reflector.md                │ ← post-mortem analysis │
+│  └─────────────────────────────┘                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Artifact Ownership
+
+| Artifact | Created By | Consumed By | Format |
+|----------|-----------|-------------|--------|
+| `.spec.md` | @architector | @plan, @build (reference) | Markdown (template) |
+| `implementation_plan.md` | @plan | @build | Markdown (structured task list) |
+| `research_report.md` | @explorer | @architector, @plan | Markdown |
+| Review verdict | @reviewer | @build (quality gate) | Structured report |
+| Verification report | @qa | @build (quality gate) | Structured report |
+| `reflector.md` | @reflector | User, config (prompt evolution) | Markdown |
+
+## User Interaction Patterns
+
+### Pattern 1: Full Pipeline (All Three Primaries) — Recommended for Complex Work
+```bash
+# Step 1: Iterative spec refinement
+@architector Implement user authentication with JWT tokens
+
+# → architector iterates with user, produces .spec.md
+# → User approves spec
+
+# Step 2: Task decomposition planning
+@plan Decompose the approved spec at specs/SPEC-001.md
+
+# → plan produces implementation_plan.md
+
+# Step 3: Implementation & execution
+@build Execute the implementation plan at implementation_plan.md
+
+# → build implements/delegates tasks, orchestrates quality gates
+```
+
+### Pattern 2: Direct Execution (Skip Planning) — For Simple Tasks
+```bash
+@build Execute the spec at specs/SPEC-001.md
+
+# → build does minimal decomposition itself as last resort
+# → Implements or delegates to subagents directly
+```
+
+### Pattern 3: Spec Only — For Design Review
+```bash
+@architector Analyze the current database migration system and produce a spec for adding soft deletes
+
+# → architector produces .spec.md, user reviews
+# → User may stop here or continue with @plan + @build
+```
 
 ## Iteration Control
 
@@ -113,7 +205,7 @@ User Request
 When delegating tasks, use this structured format:
 
 ```
-@engineer implement task: [task-id]
+@engineer implement task: [task-id from plan]
 Context: [spec section reference]
 Files to modify: [list of files]
 Requirements: [specific, actionable instructions]
@@ -123,7 +215,7 @@ Constraints: [what NOT to do, performance requirements, etc.]
 
 When calling `@reviewer`:
 ```
-@reviewer audit implementation for task: [task-id]
+@reviewer audit implementation for task: [task-id from plan]
 Spec reference: [path to .spec.md and section]
 Diff/changes: [description of what was implemented]
 ```
