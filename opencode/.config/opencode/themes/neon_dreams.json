@@ -1,0 +1,195 @@
+{
+  "$schema": "https://opencode.ai/theme.json",
+  "name": "Neon Dreams",
+  "description": "Vibrant neon blue and pink/purple dark theme inspired by anime aesthetics",
+  "defs": {
+    "bg": "#1a2642",
+    "bg_alt": "#1e2d4d",
+    "bg_light": "#243556",
+    "bg_lighter": "#2a3d5f",
+    "bg_statusline": "#151f35",
+    "bg_float": "#1e2d4d",
+
+    "fg": "#7dcfff",
+    "fg_alt": "#7a8fc4",
+    "fg_dark": "#4a5f8f",
+    "fg_light": "#c5d4ff",
+
+    "blue": "#5f9eff",
+    "light_blue": "#7eb5ff",
+    "dark_blue": "#3d7acc",
+    "cyan": "#5fc9e8",
+
+    "pink": "#ff6eb5",
+    "purple": "#c576ff",
+    "magenta": "#e066ff",
+    "orange": "#ffb366",
+
+    "green": "#66e8b5",
+    "yellow": "#ffeb99",
+    "red": "#ff668c",
+
+    "gray": "#3d4d73",
+    "gray_light": "#4d5d8a",
+    "gray_dark": "#2a3550",
+
+    "glow_pink": "#ff5eb8",
+    "glow_blue": "#5fadff",
+    "glow_purple": "#b366ff"
+  },
+  "theme": {
+    "primary": {
+      "dark": "glow_blue"
+    },
+    "secondary": {
+      "dark": "blue"
+    },
+    "accent": {
+      "dark": "purple"
+    },
+    "error": {
+      "dark": "pink"
+    },
+    "warning": {
+      "dark": "orange"
+    },
+    "success": {
+      "dark": "green"
+    },
+    "info": {
+      "dark": "cyan"
+    },
+    "text": {
+      "dark": "fg"
+    },
+    "textMuted": {
+      "dark": "fg_alt"
+    },
+    "background": {
+      "dark": "bg"
+    },
+    "backgroundPanel": {
+      "dark": "bg_alt"
+    },
+    "backgroundElement": {
+      "dark": "bg_light"
+    },
+    "border": {
+      "dark": "gray_dark"
+    },
+    "borderActive": {
+      "dark": "glow_purple"
+    },
+    "borderSubtle": {
+      "dark": "gray"
+    },
+
+    "diffAdded": {
+      "dark": "green"
+    },
+    "diffRemoved": {
+      "dark": "red"
+    },
+    "diffContext": {
+      "dark": "fg_dark"
+    },
+    "diffHunkHeader": {
+      "dark": "fg_dark"
+    },
+    "diffHighlightAdded": {
+      "dark": "green"
+    },
+    "diffHighlightRemoved": {
+      "dark": "red"
+    },
+    "diffAddedBg": {
+      "dark": "bg_alt"
+    },
+    "diffRemovedBg": {
+      "dark": "bg_alt"
+    },
+    "diffContextBg": {
+      "dark": "bg_alt"
+    },
+    "diffLineNumber": {
+      "dark": "gray"
+    },
+    "diffAddedLineNumberBg": {
+      "dark": "bg_alt"
+    },
+    "diffRemovedLineNumberBg": {
+      "dark": "bg_alt"
+    },
+
+    "markdownText": {
+      "dark": "fg"
+    },
+    "markdownHeading": {
+      "dark": "glow_pink"
+    },
+    "markdownLink": {
+      "dark": "cyan"
+    },
+    "markdownLinkText": {
+      "dark": "glow_blue"
+    },
+    "markdownCode": {
+      "dark": "green"
+    },
+    "markdownBlockQuote": {
+      "dark": "gray_light"
+    },
+    "markdownEmph": {
+      "dark": "fg_light"
+    },
+    "markdownStrong": {
+      "dark": "fg_light"
+    },
+    "markdownHorizontalRule": {
+      "dark": "gray_light"
+    },
+    "markdownListItem": {
+      "dark": "magenta"
+    },
+    "markdownListEnumeration": {
+      "dark": "magenta"
+    },
+    "markdownImage": {
+      "dark": "blue"
+    },
+    "markdownImageText": {
+      "dark": "glow_blue"
+    },
+    "markdownCodeBlock": {
+      "dark": "fg_alt"
+    },
+
+    "syntaxComment": {
+      "dark": "gray_light"
+    },
+    "syntaxKeyword": {
+      "dark": "purple"
+    },
+    "syntaxFunction": {
+      "dark": "glow_blue"
+    },
+    "syntaxVariable": {
+      "dark": "fg"
+    },
+    "syntaxString": {
+      "dark": "green"
+    },
+    "syntaxNumber": {
+      "dark": "magenta"
+    },
+    "syntaxType": {
+      "dark": "light_blue"
+    },
+    "syntaxOperator": {
+      "dark": "fg_light"
+    },
+    "syntaxPunctuation": {
+      "dark": "fg_alt"
+    }
+  }
+}
