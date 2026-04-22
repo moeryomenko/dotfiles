@@ -164,33 +164,6 @@
         "skill": true
       },
       "prompt": "{file:./prompts/reflector.md}"
-    },
-    "goreview": {
-      "mode": "primary",
-      "description": "Go code review without modifications",
-      "model": "llama/qwen",
-      "temperature": 0.1,
-      "prompt": "{file:./prompts/goreview.txt}",
-      "color": "#00758F",
-      "tools": {
-        "write": false,
-        "edit": false,
-        "bash": true
-      },
-      "permission": {
-        "edit": "deny",
-        "bash": {
-          "*": "deny",
-          "go vet *": "allow",
-          "staticcheck *": "allow",
-          "errcheck *": "allow",
-          "golangci-lint run *": "allow",
-          "git diff *": "allow",
-          "git log *": "allow",
-          "grep -r * *.go": "allow",
-          "find * -name '*.go'": "allow"
-        }
-      }
     }
   }
 }
