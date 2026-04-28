@@ -6,7 +6,6 @@ return {
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "make",
 		},
-		"ThePrimeagen/refactoring.nvim",
 		"nvim-telescope/telescope-symbols.nvim",
 		"molecule-man/telescope-menufacture",
 		"debugloop/telescope-undo.nvim",
@@ -328,6 +327,5 @@ return {
 		require("telescope").load_extension("undo")
 		require("telescope").load_extension("harpoon")
 		require("telescope").load_extension("notify")
-		require("telescope").load_extension("refactoring")
 	end,
 }
