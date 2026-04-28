@@ -12,6 +12,10 @@ set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
 
+# proto
+set -gx PROTO_HOME "$HOME/.proto"
+set -gx PATH "$PROTO_HOME/shims" "$PROTO_HOME/bin" $PATH
+
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
