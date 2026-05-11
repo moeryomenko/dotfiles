@@ -4,7 +4,8 @@
     "@franlol/opencode-md-table-formatter@latest",
     "opencode-mem",
     "@plannotator/opencode@latest",
-    "@spoons-and-mirrors/subtask2@latest"
+    "@spoons-and-mirrors/subtask2@latest",
+    "./plugins/revdiff-plan-review.ts"
   ],
   "provider": {
     "llama": {
