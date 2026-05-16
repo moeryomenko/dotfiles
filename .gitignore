@@ -24,3 +24,4 @@ gpg/.gnupg/trustdb.gpg
 gpg/.gnupg/random_seed
 fish/.config/fish/config.local.fish
 fish/.config/fish/conf.d/fish_frozen_key_bindings.fish
+hyprland.lua.example
