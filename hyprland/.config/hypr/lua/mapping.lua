@@ -16,8 +16,8 @@ hl.bind(vars.mainMod .. " + F", hl.dsp.window.fullscreen())
 -- Focus
 hl.bind(vars.mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
 hl.bind(vars.mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
-hl.bind(vars.mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
-hl.bind(vars.mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
+hl.bind(vars.mainMod .. " + k", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(vars.mainMod .. " + j", hl.dsp.focus({ workspace = "e+1" }))
 
 -- Move
 hl.bind(vars.mainMod .. " + SHIFT + h", hl.dsp.window.move({ direction = "left" }))

@@ -2,10 +2,16 @@ hl.config({
 	general = {
 		gaps_in = 0,
 		gaps_out = 0,
-		layout = "dwindle",
+		layout = "scrolling",
 		allow_tearing = false,
+		border_size = 0,
+	},
+	decoration = {
+		rounding = 0,
 	},
 	scrolling = {
+		direction = "right",
+		column_width = 1,
 		fullscreen_on_one_column = true,
 	},
 	misc = {
