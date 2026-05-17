@@ -1,12 +1,13 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
+	branch = "main",
 	dependencies = {
 		"RRethy/nvim-treesitter-endwise",
 	},
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
-		require("nvim-treesitter.configs").setup({
+		require("nvim-treesitter.config").setup({
 			ensure_installed = {
 				"bash",
 				"c",
@@ -16,35 +17,17 @@ return {
 				"lua",
 				"json",
 				"markdown",
+				"markdown_inline",
 				"yaml",
-			},              -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-			sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-			ignore_install = { "" }, -- List of parsers to ignore installing
+			},
+			sync_install = false,
+			ignore_install = {},
 			auto_install = true,
-			autopairs = {
-				enable = true,
-			},
-			endwise = {
-				enable = true,
-			},
 			highlight = {
-				enable = true, -- false will disable the whole extension
+				enable = true,
 				additional_vim_regex_highlighting = false,
 			},
 			indent = { enable = true },
-			context_commentstring = {
-				enable = true,
-				enable_autocmd = false,
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
-			},
 		})
 	end,
 }
