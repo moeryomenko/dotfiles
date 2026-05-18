@@ -5,12 +5,12 @@
 	#hooksPath = ~/.config/githooks
 [add.interactive]
 	useBuiltin = false
-[interactive]
-	diffFilter = delta --color-only
-[delta]
-	navigate = true
-	light = false
-	side-by-side = true
+# [interactive]
+# 	diffFilter = delta --color-only
+# [delta]
+# 	navigate = true
+# 	light = false
+# 	side-by-side = true
 [merge]
     conflictStyle = "diff3"
 [merge "mergiraf"]
