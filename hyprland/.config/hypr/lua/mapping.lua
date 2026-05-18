@@ -45,6 +45,12 @@ hl.bind(vars.mainMod .. " + ALT + j", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(vars.mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- Screenshots / Screen Recording
+hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | swappy -f -'))
+hl.bind(vars.mainMod .. "+ Print",
+	hl.dsp.exec_cmd('wf-recorder -g "$(slurp)" -f ~/videos/screencast/recording_$(date +"%Y-%m-%d_%H:%M:%S.mp4")'))
+hl.bind(vars.mainMod .. "+ SHIFT + Print", hl.dsp.exec_cmd('killall -s SIGINT wf-recorder'))
+
 -- Audio
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),
 	{ locked = true, repeating = true })
