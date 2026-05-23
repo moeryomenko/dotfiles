@@ -38,6 +38,7 @@
         "edit": true,
         "bash": false,
         "todowrite": true,
+        "submit_plan": true,
         "question": true,
         "webfetch": true,
         "websearch": true,
@@ -59,6 +60,7 @@
         "edit": true,
         "bash": false,
         "todowrite": true,
+        "submit_plan": true,
         "question": true,
         "skill": true,
         "read": true,
@@ -132,6 +134,7 @@
         "grep": true,
         "glob": true,
         "lsp": true,
+        "revdiff": true,
         "skill": true
       },
       "prompt": "{file:./prompts/reviewer.md}"
