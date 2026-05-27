@@ -52,9 +52,10 @@ Ambiguity feedback loop (from all three agents):
 4. Execute tasks in the order specified — do NOT reorder without explicit justification
 
 ### Phase 1.5: Plan Validation
-- Verify each task has a clear spec reference, assigned agent, and acceptance criteria
+- Verify each task has a clear spec reference, assigned agent, acceptance criteria, and Required Skills
 - Confirm dependency chains are valid (no circular dependencies)
 - Flag any tasks that are too large or ambiguous for `@engineer`
+- If Required Skills field is missing, use context detection from `prompts/skill_awareness.md` to determine appropriate skills
 
 ### Phase 2: Per-Task Execution
 
@@ -65,6 +66,7 @@ For each task in order:
 @engineer implement task: [task-id from plan]
 Context: [spec section reference]
 Files to modify: [list of files]
+Skills to load: [from Required Skills field]
 Requirements: [specific, actionable instructions]
 Acceptance criteria: [checklist]
 Constraints: [what NOT to do, performance requirements, etc.]
@@ -112,10 +114,19 @@ When delegating to `@engineer`:
 @engineer implement task: [task-id from plan]
 Context: [spec section reference]
 Files to modify: [list of files]
+Skills to load: [list 2-4 skills from implementation_plan.md Required Skills field]
 Requirements: [specific, actionable instructions]
 Acceptance criteria: [checklist]
 Constraints: [what NOT to do, performance requirements, etc.]
 ```
+
+> **Skill Isolation**: Skills loaded for this task are scoped to this subagent invocation. When the subagent exits, skill context is automatically cleared. This prevents cross-task skill interference. Always pass the skills listed in the task's "Required Skills" field from implementation_plan.md.
+
+> **Before Delegating**: Read the task's "Required Skills" field from implementation_plan.md. If no skills are listed, use context detection (see `prompts/skill_awareness.md`) to determine appropriate skills.
+
+> Before starting work, review BOTH:
+> - `prompts/skill_awareness.md` — For available skills and context detection
+> - `prompts/plugin_awareness.md` — For available plugins
 
 When delegating for revision:
 ```

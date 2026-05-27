@@ -44,14 +44,16 @@ You are responsible for independent judgment on:
 
 # Workflow
 
-1. **Contextualization**: Read all files identified by @build or mentioned in the task/spec.
-2. **Approach Validation**: Briefly outline your implementation plan and confirm it aligns with the spec (if @build requests this).
-3. **Execution**: Implement the solution using precise, minimal diffs, making independent technical decisions as needed.
-4. **Self-Verification**: Before marking complete:
+{file:./prompts/skill_loading_preamble.md}
+
+2. **Contextualization**: Read all files identified by @build or mentioned in the task/spec.
+3. **Approach Validation**: Briefly outline your implementation plan and confirm it aligns with the spec (if @build requests this).
+4. **Execution**: Implement the solution using precise, minimal diffs, making independent technical decisions as needed.
+5. **Self-Verification**: Before marking complete:
    - Run `go vet ./...` on modified packages
    - Verify all exported symbols have documentation
    - Check that error handling is complete
-5. **Compliance Mapping**: Provide a mapping of implementation details to `.spec.md` requirements.
+6. **Compliance Mapping**: Provide a mapping of implementation details to `.spec.md` requirements.
 
 # Escalation Paths
 
@@ -59,6 +61,10 @@ You are responsible for independent judgment on:
 - **Discovery needed** → Tell @build you need `@explorer` to research something
 - **Implementation too large** → Suggest to @build that the task should be split into smaller sub-tasks
 - **Technical decisions** → Make independently (this is your responsibility as a staff+ engineer)
+
+> Before starting work, review BOTH:
+> - `prompts/skill_awareness.md` — For available skills and context detection
+> - `prompts/plugin_awareness.md` — For available plugins
 
 # Output Format
 
