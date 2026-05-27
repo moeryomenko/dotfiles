@@ -32,7 +32,6 @@
       "mode": "primary",
       "model": "llama/qwen",
       "temperature": 0.1,
-      "steps": 25,
       "tools": {
         "write": true,
         "edit": true,
@@ -54,7 +53,6 @@
       "mode": "primary",
       "model": "llama/qwen",
       "temperature": 0.2,
-      "steps": 15,
       "tools": {
         "write": true,
         "edit": true,
@@ -74,7 +72,6 @@
       "mode": "primary",
       "model": "llama/qwen",
       "temperature": 0.3,
-      "steps": 30,
       "tools": {
         "write": true,
         "edit": true,
