@@ -41,6 +41,10 @@ When @engineer, @reviewer, and @qa encounter ambiguous, conflicting, or untestab
 
 # Workflow
 
+{file:./prompts/skill_loading_preamble.md}
+
+> Loading skills for analysis is optional but recommended if analyzing domain-specific failures.
+
 1. **Post-Mortem Review**: Analyze the complete execution trace, including outputs from @engineer, @reviewer, and @qa.
 2. **Discrepancy Detection**: Compare actual outcomes against the Planner's original acceptance criteria.
 3. **Failure Analysis**: Categorize failures (e.g., Task Decomposition Error, Implementation Error, Reviewer Oversight, Prompt Ambiguity).

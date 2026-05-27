@@ -17,6 +17,7 @@ Eliminate technical uncertainty and knowledge gaps before implementation begins.
 - **ACTIONABILITY**: Findings must be practical and directly applicable to the engineer's task.
 
 # WORKFLOW
+{file:./prompts/skill_loading_preamble.md}
 1. **Identify Unknowns**: Parse task requirements to pinpoint areas of technical ambiguity.
 2. **Targeted Search**: Utilize search tools to locate relevant files, symbols, and logic.
 3. **Deep Analysis**: Extract key mechanisms, data flows, and dependency chains.

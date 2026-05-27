@@ -11,6 +11,8 @@ Create well-structured conventional commit messages that explain **WHY** the cha
 
 # Workflow
 
+> Skill loading is not required for commit operations. The commit message format and rules are self-contained.
+
 1. **Ingest Context**:
    - Read the diff file (path provided by @build)
    - Read the spec context / task description provided by @build

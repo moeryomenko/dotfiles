@@ -9,32 +9,54 @@ User Request
 │  🔍 architector (primary)      │  Spec Architect & Iterative Refiner
 │  - Iterates with user on spec  │  Temperature: 0.1
 │  - Uses @explorer for unknowns │
+│  - Loads create-specification  │
 │  - Produces finalized .spec.md │
 └───────────────────────────────┘
                ↓ approved spec
 ┌───────────────────────────────┐
 │  📋 plan (primary)             │  Implementation Planner
 │  - Decomposes spec into tasks  │  Temperature: 0.2
+│  - Assigns skills per task     │
 │  - Produces implementation_    │
 │    plan.md with task IDs       │
 └───────────────────────────────┘
                ↓ implementation_plan.md
 ┌───────────────────────────────┐
 │  👷 build (primary)            │  Staff+ Engineer & Execution Orch.
-│  - Implements OR delegates     │  Temperature: 0.3
-│  - Never plans/decomposes      │
+│  - Delegates with skill list   │  Temperature: 0.3
 │  - Enforces quality gates      │
 └───────────────────────────────┘
        ↓         ↓           ↓
 ┌──────────┐ ┌───────┐ ┌──────────┐
 │ @engineer│ │@reviewer│ │ @qa     │
 │ implement│ │audit  │ │verify   │
+│ + skills │ │+ skills│ │+ skills │
 └──────────┘ └───────┘ └──────────┘
        ↓
 ┌─────────────┐
 │ @reflector  │
 │ feedback    │
 └─────────────┘
+```
+
+### Skill Loading (Cross-Cutting Phase)
+
+Every agent loads domain-relevant skills BEFORE performing any task. This is a mandatory cross-cutting phase:
+
+- **Detection**: Agent identifies language, framework, and task type from context
+- **Loading**: Uses `skill` tool to load 2-4 skills matching detected context
+- **Isolation**: Skills are scoped to subagent invocation and auto-clear on exit
+- **Reference**: See `prompts/skill_loading_preamble.md` and `prompts/skill_awareness.md`
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Skill Loading Flow (Every Agent)                        │
+│                                                          │
+│  1. Detect context (language, task type, file patterns)  │
+│  2. Load 2-4 relevant skills via `skill` tool            │
+│  3. Execute task with loaded skill guidance               │
+│  4. On exit: skill context auto-clears (subagent isolation)│
+└─────────────────────────────────────────────────────────┘
 ```
 
 ## Agent Roles
@@ -77,6 +99,7 @@ User Request
    - Unique IDs (TASK-001, TASK-002, etc.)
    - Clear acceptance criteria
    - Assigned agent (@engineer or @build self)
+   - Required Skills (2-4 skills from skill_awareness.md)
    - Explicit dependency declarations
 4. Order tasks by dependency chain
 5. Produce `implementation_plan.md`
@@ -105,13 +128,13 @@ For simple tasks where the user invokes `@build` directly without `@plan`:
 
 | Agent | Must Do | Must NOT Do |
 |-------|---------|-------------|
-| **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research | Execute tasks, implement code, plan task decomposition |
-| **@plan** | Decompose spec into atomic tasks, produce implementation_plan.md, assign tasks | Write specs, implement code, modify production files |
-| **@build** | Implement tasks directly OR delegate to @engineer; orchestrate @reviewer/@qa gates | Plan or decompose tasks (this is @plan's job); skip quality gates |
-| @explorer | Research unknowns, provide evidence-based findings | Modify any files (except research_report.md) |
-| @engineer | Implement tasks per spec, self-verify | Add features not in the spec |
-| @reviewer | Audit spec compliance, verify signatures/types via LSP | Implement fixes for found issues |
-| @qa | Test against Verification Contract | Modify production code |
+| **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research, load create-specification skill | Execute tasks, implement code, plan task decomposition |
+| **@plan** | Decompose spec into atomic tasks, assign Required Skills, produce implementation_plan.md | Write specs, implement code, modify production files |
+| **@build** | Implement tasks directly OR delegate to @engineer with skill list; orchestrate @reviewer/@qa gates | Plan or decompose tasks (this is @plan's job); skip quality gates |
+| @explorer | Research unknowns, provide evidence-based findings, load domain skills | Modify any files (except research_report.md) |
+| @engineer | Load skills before work, implement tasks per spec, self-verify | Add features not in the spec |
+| @reviewer | Load skills before audit, audit spec compliance, verify signatures/types via LSP | Implement fixes for found issues |
+| @qa | Load skills before testing, test against Verification Contract | Modify production code |
 | @reflector | Analyze failures, suggest improvements | Directly modify code or specs |
 
 ## Artifact Lifecycle
@@ -208,10 +231,13 @@ When delegating tasks, use this structured format:
 @engineer implement task: [task-id from plan]
 Context: [spec section reference]
 Files to modify: [list of files]
+Skills to load: [from Required Skills field in plan]
 Requirements: [specific, actionable instructions]
 Acceptance criteria: [checklist]
 Constraints: [what NOT to do, performance requirements, etc.]
 ```
+
+> **Skill Isolation**: Skills loaded for a task are scoped to the subagent invocation and auto-clear on exit. This prevents cross-task skill interference.
 
 When calling `@reviewer`:
 ```
@@ -235,3 +261,9 @@ Diff/changes: [description of what was implemented]
 - Observability — metrics for hot paths and error rates
 - Security — input validation, auth checks, no secret leakage
 - Documentation — exported symbols must have godoc comments
+
+### Skill Ecology (Mandatory)
+- All agents MUST load skills before working (see `prompts/skill_loading_preamble.md`)
+- Skills must be ecological: no trigger words ("MUST", "CRITICAL"), specific descriptions, exit conditions
+- Skill ecology compliance is a review criterion (see `prompts/skill_ecology_checklist.md`)
+- Subagent isolation prevents cross-task skill interference
