@@ -1,5 +1,5 @@
 return {
-    terminal = "alacritty",
-    menu = "wofi --show run",
-    mainMod = "SUPER"
+	terminal = "alacritty",
+	menu = "hyprlauncher",
+	mainMod = "SUPER"
 }
