@@ -1,9 +1,85 @@
-theme = "tokyonight_storm"
+theme = "neon_dreams"
 
 [editor]
 line-number = "relative"
+true-color = true
+bufferline = "multiple"
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "block"
+
+# =============================================================================
+# Neovim-style keybindings
+# =============================================================================
+# These mappings make Helix feel more familiar to a Neovim/Vim user while
+# preserving Helix's selection-first editing model.
+#
+# Overridden Helix defaults:
+#   $  → goto_line_end            (was: shell_keep_pipe — use :pipe or <space>?)
+#   ;  → repeat_last_motion       (was: collapse_selection → moved to ,)
+#   ,  → collapse_selection       (was: keep_primary_selection → moved to A-,)
+#   q  → record_macro             (was: unbound; Q was record_macro)
+#   Q  → replay_macro             (was: record_macro)
+# =============================================================================
+
+[keys.normal]
+# ---- Line navigation (Vim style) ----
+"0" = "goto_line_start"              # Vim: first column
+"^" = "goto_first_nonwhitespace"     # Vim: first non-blank
+"$" = "goto_line_end"                # Vim: end of line  (overrides shell_keep_pipe)
+
+# ---- Find char repeat (Vim style) ----
+";" = "repeat_last_motion"           # Repeat f/F/t/T forward  (overrides collapse_selection)
+"," = "collapse_selection"           # Collapse multi-cursor  (moved from ;)
+"A-," = "keep_primary_selection"     # Keep only primary selection  (moved from ,)
+
+# ---- Search word under cursor (Vim style) ----
+"*" = "search_selection_detect_word_boundaries"  # Search forward for word
+"#" = ["search_selection_detect_word_boundaries", "search_prev"]  # Search backward for word
+
+# ---- Scroll (Vim style) ----
+"C-e" = "scroll_down"                # Scroll view down one line
+"C-y" = "scroll_up"                  # Scroll view up one line
+
+# ---- Documentation / Hover ----
+"K" = "hover"                        # Show LSP documentation (Vim K)
+
+# ---- Tag / Jump navigation (Vim style) ----
+"C-]" = "goto_definition"            # Jump to definition (Vim C-])
+"C-t" = "jump_backward"              # Jump back from definition (Vim C-t)
+
+# ---- Alternate file (Vim style) ----
+"C-^" = "goto_last_accessed_file"    # Switch to alternate file
+
+# ---- Macro recording (Vim style) ----
+"q" = "record_macro"                 # Start recording (q<register>, Vim style)
+"Q" = "replay_macro"                 # Play back macro (Vim style)
+
+[keys.select]
+# ---- Line navigation (Vim style, extend) ----
+"0" = "extend_to_line_start"
+"^" = "extend_to_first_nonwhitespace"
+"$" = "extend_to_line_end"
+
+# ---- Find char repeat (Vim style) ----
+";" = "repeat_last_motion"
+"," = "collapse_selection"
+"A-," = "keep_primary_selection"
+
+# ---- Search word under cursor (Vim style) ----
+"*" = "search_selection_detect_word_boundaries"
+"#" = ["search_selection_detect_word_boundaries", "search_prev"]
+
+# ---- Scroll (Vim style) ----
+"C-e" = "scroll_down"
+"C-y" = "scroll_up"
+
+# ---- Documentation / Hover ----
+"K" = "hover"
+
+[keys.insert]
+# ---- Exit insert mode (Vim style) ----
+"C-[" = "normal_mode"                # Escape alternative (Vim C-[)
+"j" = { k = "normal_mode" }         # jk to exit insert mode
