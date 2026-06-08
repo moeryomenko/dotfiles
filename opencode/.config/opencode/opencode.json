@@ -7,6 +7,15 @@
     "@spoons-and-mirrors/subtask2@latest",
     "./plugins/revdiff-plan-review.ts"
   ],
+  "mcp": {
+    "mcp-dap-server": {
+      "type": "local",
+      "command": [
+        "mcp-dap-server"
+      ],
+      "enabled": false
+    }
+  },
   "provider": {
     "llama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -25,5 +34,5 @@
         }
       }
     }
-  },
+  }
 }
