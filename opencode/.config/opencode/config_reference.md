@@ -44,10 +44,10 @@
 | **plan** | primary | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
 | **build** | primary | ✅ | ✅ | ✅ (scoped) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
 | explorer | subagent | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ |
-| engineer | subagent | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| reviewer | subagent | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
+| engineer | subagent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| reviewer | subagent | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
 | qa | subagent* | ✅* | ✅* | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| reflector | subagent | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| reflector | subagent | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 \* qa can only modify test files (`*_test.go`, `*.spec.ts`, `*_test.py`, `tests/`, etc.)
 
@@ -163,6 +163,7 @@
 |------|--------|-----------|
 | 2026-04-21 | Added `@architector` primary agent | Iterative spec refinement separate from planning |
 | 2026-04-21 | Repositioned `@plan` as task decomposer | Created explicit `implementation_plan.md` artifact |
+| 2026-06-08 | Moved specs to `.specs/` and plans to `.plans/<feature>/plan.md` | Standardized artifact locations at project root |
 | 2026-04-21 | Updated `@build` prompt — removed decomposition logic | Clear boundary: build implements/orchestrates, never plans |
 | 2026-04-21 | Added `prompts/plan_impl.md` | New prompt for repositioned @plan agent |
 | 2026-04-21 | Replaced `prompts/planner.md` content | Now contains @architector (iterative spec refinement) |
