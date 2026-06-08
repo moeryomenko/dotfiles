@@ -20,7 +20,7 @@
 
 | File | Purpose | Key Types/Functions |
 |------|---------|-------------------|
-| `path/to/file.go` | [What this file does] | `TypeA`, `FunctionB()` |
+| `path/to/file.ext` | [What this file does] | `TypeA`, `FunctionB()` |
 
 ### 2.2 Key Mechanisms
 [Describe how the relevant code works. Include data flows, call chains, and state management.]
@@ -38,7 +38,7 @@
 
 | Pattern | Where Used | How It Works |
 |---------|-----------|--------------|
-| [e.g., Functional options] | `config/*.go` | [Brief description] |
+| [e.g., Builder pattern] | `src/config/*.ts` | [Brief description] |
 
 ### 2.4 Dependencies & External APIs
 - [External libraries used and versions]
@@ -73,8 +73,8 @@
 - [File paths and line numbers that are most relevant]
 
 ### 4.2 Files to Read (Priority Order)
-1. `path/to/critical/file.go:45` — [Why this file is critical]
-2. `path/to/related/file.go:120` — [What to learn from this file]
+1. `path/to/critical/module.ext:45` — [Why this file is critical]
+2. `path/to/related/module.ext:120` — [What to learn from this file]
 
 ### 4.3 What to Avoid
 - [Specific patterns or approaches that should not be used]
@@ -85,10 +85,10 @@
 ## 5. Evidence Appendix
 
 ### 5.1 Code Snippets
-```go
-// Most relevant code snippet with explanation
-func CriticalFunction() {
-    // ... (from pkg/module/file.go:42-89)
+```typescript
+// Most relevant code snippet with explanation (language varies by project)
+function criticalFunction(): void {
+    // ... (from src/module/file.ts:42-89)
 }
 ```
 

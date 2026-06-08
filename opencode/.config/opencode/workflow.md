@@ -4,81 +4,91 @@
 
 ```
 User Request
-    ↓
-┌───────────────────────────────┐
-│  🔍 architector (primary)      │  Spec Architect & Iterative Refiner
-│  - Iterates with user on spec  │  Temperature: 0.1
-│  - Uses @explorer for unknowns │
-│  - Loads create-specification  │
-│  - Produces finalized .spec.md │
-└───────────────────────────────┘
-               ↓ approved spec
-┌───────────────────────────────┐
-│  📋 plan (primary)             │  Implementation Planner
-│  - Decomposes spec into tasks  │  Temperature: 0.2
-│  - Assigns skills per task     │
-│  - Produces implementation_    │
-│    plan.md with task IDs       │
-└───────────────────────────────┘
-               ↓ implementation_plan.md
-┌───────────────────────────────┐
-│  👷 build (primary)            │  Staff+ Engineer & Execution Orch.
-│  - Delegates with skill list   │  Temperature: 0.3
-│  - Enforces quality gates      │
-└───────────────────────────────┘
-       ↓         ↓           ↓
-┌──────────┐ ┌───────┐ ┌──────────┐
-│ @engineer│ │@reviewer│ │ @qa     │
-│ implement│ │audit  │ │verify   │
-│ + skills │ │+ skills│ │+ skills │
-└──────────┘ └───────┘ └──────────┘
-       ↓
-┌─────────────┐
-│ @reflector  │
-│ feedback    │
-└─────────────┘
-```
-
-### Skill Loading (Cross-Cutting Phase)
-
-Every agent loads domain-relevant skills BEFORE performing any task. This is a mandatory cross-cutting phase:
-
-- **Detection**: Agent identifies language, framework, and task type from context
-- **Loading**: Uses `skill` tool to load 2-4 skills matching detected context
-- **Isolation**: Skills are scoped to subagent invocation and auto-clear on exit
-- **Reference**: See `prompts/skill_loading_preamble.md` and `prompts/skill_awareness.md`
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  Skill Loading Flow (Every Agent)                        │
-│                                                          │
-│  1. Detect context (language, task type, file patterns)  │
-│  2. Load 2-4 relevant skills via `skill` tool            │
-│  3. Execute task with loaded skill guidance               │
-│  4. On exit: skill context auto-clears (subagent isolation)│
-└─────────────────────────────────────────────────────────┘
+    |
++-------------------------------+
+|  architector (primary)         |  Spec Architect & Iterative Refiner
+|  - Iterates with user on spec  |  Temperature: 0.1
+|  - Uses @explorer for unknowns |  Skills: dynamically discovered
+|  - Produces .specs/<name>.spec.md  |
++-------------------------------+
+               | approved spec (.specs/)
++-------------------------------+
+|  plan (primary)                |  Implementation Planner
+|  - Decomposes spec into tasks  |  Temperature: 0.2
+|  - Assigns skills per task     |  Skills: dynamically discovered
+|  - Produces .plans/<feature>/plan.md  |
++-------------------------------+
+               | .plans/<feature>/plan.md
++-------------------------------+
+|  build (primary)               |  Execution Orchestrator
+|  - Delegates with skill list   |  Temperature: 0.3
+|  - Enforces quality gates      |  Skills: dynamically discovered
+|  - Coordinator lifecycle       |
++-------------------------------+
+   |         |          |          |          |
+   v         v          v          v          v
++---------+ +--------+ +------+ +---------+ +----------+
+| explorer| |engineer| |review| |   qa    | |  fixer   |
+|research | |implement| |audit | | verify  | | repair   |
+|read-only| |+skills | |+skills| |+skills  | |+skills   |
+|dyn disc | |dyn disc| |dyn disc| |dyn disc| |dyn disc  |
++---------+ +--------+ +------+ +---------+ +----------+
+                                    | (fail)
+                                    v
+                              +----------+
+                              |  fixer   |
+                              | repair   |
+                              +----------+
+                                    | (fix complete)
+                                    v
+                                 (re-verify)
+   |
+   v
++----------+     +------------+
+| commiter |     | reflector  |
+| commit   |     | feedback   |
+|+skills   |     |+skills     |
+|dyn disc  |     |dyn disc    |
++----------+     +------------+
 ```
 
 ## Agent Roles
 
-| Agent | Mode | Role | Temperature | Key Artifact |
-|-------|------|------|-------------|--------------|
-| **@architector** | primary | Spec Architect & Iterative Refiner — produces finalized .spec.md with user | 0.1 | `.spec.md` (APPROVED) |
-| **@plan** | primary | Implementation Planner — decomposes spec into task-ordered plan | 0.2 | `implementation_plan.md` |
-| **@build** | primary | Staff+ Engineer — implements or delegates tasks, never plans | 0.3 | Working code + tests |
-| @explorer | subagent | Senior Systems Researcher — eliminates unknowns | 0.2 | `research_report.md` |
-| @engineer | subagent | Production-grade Software Engineer — implementation specialist | 0.25 | Code changes |
-| @reviewer | subagent | Spec Compliance Auditor — verifies against .spec.md contract | 0.1 | Review verdict |
-| @qa | subagent | Spec Verifier — tests against Verification Contract | 0.2 | Test results |
-| @reflector | subagent | Systems Architect & Meta-Analysis — feedback loop | 0.15 | Optimization proposals |
+| Agent | Mode | Role | Temp |
+|-------|------|------|------|
+| **@architector** | primary | Spec Architect & Iterative Refiner | 0.1 |
+| **@plan** | primary | Implementation Planner | 0.2 |
+| **@build** | primary | Execution Orchestrator | 0.3 |
+| @explorer | subagent | Senior Systems Researcher | 0.2 |
+| @engineer | subagent | Implementation specialist | 0.25 |
+| @reviewer | subagent | Spec Compliance Auditor | 0.1 |
+| @qa | subagent | Spec Verifier | 0.2 |
+| @fixer | subagent | Targeted Repair Agent | 0.2 |
+| @reflector | subagent | Systems Architect & Meta-Analysis | 0.15 |
+| @commiter | subagent | Conventional Commits Specialist | 0.1 |
 
-## Planning vs. Implementing Boundary
+## Skill Loading (Cross-Cutting Phase)
 
-| Activity | Responsible Agent | NOT This Agent |
-|----------|-------------------|----------------|
-| "What should we build and why?" | @architector | @plan, @build |
-| "In what order and as which tasks?" | @plan | @architector, @build |
-| "Do the work or delegate it" | @build | @plan, @architector |
+Every agent loads domain-relevant skills BEFORE performing any task. Skills are **dynamically discovered** — no static mapping exists:
+
+- **Detection**: Agent scans its system prompt's `<available_skills>` list and selects 2-4 skills matching the task's language, domain, and type
+- **Loading**: Uses `skill` tool to load selected skills by exact name
+- **Isolation**: Skills are scoped to subagent invocation and auto-clear on exit
+- **Resolution Chain**: Custom rules loaded via `resolve-rules.sh` (project -> user -> default)
+- **Reference**: See `prompts/skill_loading_preamble.md`
+
+```
++-----------------------------------------------------------+
+|  Skill Loading Flow (Every Agent)                          |
+|                                                            |
+|  1. Scan <available_skills> from system prompt             |
+|  2. Select 2-4 skills matching task context                |
+|  3. Load selected skills via `skill` tool                  |
+|  4. Check custom rules via resolve-rules.sh (if applicable)|
+|  5. Execute task with loaded skill guidance                |
+|  6. On exit: skill context auto-clears (subagent isolation)|
++-----------------------------------------------------------+
+```
 
 ## Execution Pipeline
 
@@ -86,142 +96,180 @@ Every agent loads domain-relevant skills BEFORE performing any task. This is a m
 
 1. Analyze user request for completeness
 2. Use `@explorer` to resolve unknowns in the codebase
-3. Produce a draft `.spec.md` using `specs/templates/spec_template.md`
-4. Present draft to user — iterate via `question` tool on ambiguous points
-5. Incorporate feedback → revise → re-present (typically 1-2 iterations)
-6. Set status to `APPROVED` and signal ready for `@plan`
+3. Load relevant skills from `<available_skills>` (e.g., spec-writing skills)
+4. Write spec draft to `.specs/<feature-name>.spec.md` using template from `specs/templates/spec_template.md`
+5. Present draft to user -- iterate via `question` tool on ambiguous points
+6. Incorporate feedback -> revise -> re-present (typically 1-2 iterations)
+7. Set status to `APPROVED` and signal ready for `@plan`
 
 ### Phase B: Task Planning (plan)
 
 1. Read the approved `.spec.md` from `architector`
-2. Perform scope analysis (affected files, dependencies, unknowns)
-3. Break spec into atomic tasks with:
+2. Load relevant skills from `<available_skills>` matching the planning domain
+3. Load custom planning rules via `resolve-rules.sh planning-rules.md`
+4. Perform scope analysis (affected files, dependencies, unknowns)
+5. Break spec into atomic tasks with:
    - Unique IDs (TASK-001, TASK-002, etc.)
    - Clear acceptance criteria
    - Assigned agent (@engineer or @build self)
-   - Required Skills (2-4 skills from skill_awareness.md)
+   - Required Skills (2-4 skills from `<available_skills>` matching task context)
    - Explicit dependency declarations
-4. Order tasks by dependency chain
-5. Produce `implementation_plan.md`
+6. Order tasks by dependency chain
+7. Produce `.plans/<feature-name>/plan.md` with task decomposition
 
 ### Phase C: Execution & Orchestration (build)
 
-1. Read `implementation_plan.md` from `plan`
-2. Validate plan is well-formed (tasks have IDs, dependencies, criteria)
-3. Execute tasks in dependency order — do NOT reorder without justification
-4. For each task:
-   - If assigned to @engineer → delegate with exact spec references
-   - If assigned to self → implement directly with minimal changes
-5. After ALL implementation: route to `@reviewer` for compliance audit
-6. If REJECTED → fix and re-submit (max 2 cycles)
-7. If APPROVED → route to `@qa` for verification
-8. After @qa: invoke `@reflector` for post-mortem, then signal completion
+Uses coordinator lifecycle:
 
-### Phase C-Fallback: Direct Execution (skip plan)
+```
+1. DECOMPOSE -- Break implementation plan into individual task delegations
+2. CLASSIFY -- Each task: Research | Implementation | Verification
+3. DISPATCH -- Launch subagents (parallel for reads, sequential for writes)
+4. MONITOR -- Track subagent completion
+5. SYNTHESIZE -- Combine results, check against spec
+6. VERIFY -- Ensure quality gates passed before commit
+```
 
-For simple tasks where the user invokes `@build` directly without `@plan`:
-1. Perform minimal task decomposition as last resort
-2. Note this deviation in output
-3. Proceed with execution as normal
+#### Per-Task Execution
+
+For each task in order:
+
+1. **Engineer**: Delegate to @engineer with skill list, spec references, acceptance criteria
+2. **Reviewer Gate**: @reviewer audits spec compliance
+   - REJECTED -> @engineer revises (max 2 cycles)
+3. **QA Gate**: @qa verifies in fresh session
+   - FAILED -> @fixer repairs -> re-verify (max 2 cycles)
+4. **Commit**: @commiter commits with conventional message and git safety
+
+#### Ambiguity Handling (Parallel)
+
+During any phase, if @engineer, @reviewer, or @qa encounter spec ambiguity:
+1. Report to **@build** (not directly to @reflector)
+2. @build forwards to @reflector for collection and categorization
+3. @reflector forwards to @architector for resolution
+4. @build evaluates if affected tasks need re-planning via @plan
+
+### Phase D: Post-Mortem (reflector)
+
+After all tasks complete:
+1. Invoke @reflector for post-implementation analysis
+2. Analyze failure patterns, agent interactions, prompt effectiveness
+3. Produce optimization proposals for the workflow
+
+## Evidence-Based Completion Protocol
+
+Every implemented task MUST produce evidence artifacts:
+
+```
+.agent/tasks/<TASK_ID>/
+  evidence.md       -- Human-readable proof (per-AC status)
+  evidence.json     -- Machine-readable proof (schema-validated)
+  verdict.json      -- QA verification result (PASS/FAIL per VC)
+  problems.md       -- (on FAIL only) Reproduction steps
+  raw/              -- Raw command outputs
+```
+
+### Rules
+- No task is complete unless every acceptance criterion is PASS
+- Verifiers judge current code and current command results, not prior chat claims
+- Every QA verification uses a FRESH subagent session (ID differs from engineer's)
+- If QA fails, @fixer makes the smallest safe diff, refreshes evidence, re-verifies
+
+## Multi-Agent Git Safety
+
+All agents follow these git rules (see `AGENTS.md` Section 4):
+
+### Committing
+- Only commit files YOU changed in THIS session
+- Stage explicit paths (`git add <path1> <path2>`); never `git add -A` or `git add .`
+- Before committing, run `git status` and verify only your files are staged
+
+### Never Run
+- `git reset --hard`, `git checkout .`, `git clean -fd`, `git stash`
+- `git add -A`, `git add .`
+- `git commit --no-verify`
+
+### Rebase Conflicts
+- Resolve only in files you modified
+- If conflict in a file you did not modify, abort and ask the user
+- Never force push
+
+## Resolution Chain
+
+Configuration resolution uses a three-layer override chain:
+
+```
+1. <cwd>/.opencode/<file>              # Project-level override
+2. ~/.config/opencode/<file>           # User-level override
+3. <skill-root>/references/<file>      # Bundled default
+```
+
+First-found-wins, never merge. Empty files treated as absent.
+
+## Artifact Lifecycle
+
+```
++-----------------------------------------------------------+
+|  User Request                                              |
+|       |                                                    |
+|  +----------------------------------+                     |
+|  | .specs/<name>.spec.md (DRAFT)    | <- architector       |
+|  |                                  |    writes initial    |
+|  +---------------+------------------+    draft             |
+|                  | iterative refinement                    |
+|  +----------------------------------+                     |
+|  | .specs/<name>.spec.md (APPROVED) | <- user approves     |
+|  +---------------+------------------+                     |
+|                  |                                         |
+|  +----------------------------------+                     |
+|  | .plans/<feature>/plan.md         | <- plan decomposes   |
+|  | (TASK-001..N, ordered)           |    spec into tasks   |
+|  +---------------+------------------+                     |
+|                  |                                         |
+|  +----------------------------------+                     |
+|  | .agent/tasks/<TASK_ID>/          | <- engineer          |
+|  |   evidence.md + evidence.json    |    implements +      |
+|  +---------------+------------------+    packs evidence    |
+|                  |                                         |
+|  +----------------------------------+                     |
+|  | reviewer: APPROVED/REJECTED      | <- reviewer audits   |
+|  +---------------+------------------+                     |
+|                  |                                         |
+|  +----------------------------------+                     |
+|  | .agent/tasks/<TASK_ID>/          | <- qa verifies in    |
+|  |   verdict.json                   |    fresh session     |
+|  +---------------+------------------+                     |
+|                  | (if FAIL)                               |
+|                  v                                         |
+|  +----------------------------------+                     |
+|  | @fixer repairs                   | <- minimal fix       |
+|  +---------------+------------------+                     |
+|                  | (re-verify)                             |
+|                  v                                         |
+|  +----------------------------------+                     |
+|  | @commiter commits                | <- conventional      |
+|  +---------------+------------------+    commit            |
+|                  |                                         |
+|  +----------------------------------+                     |
+|  | reflector — post-mortem analysis | <- feedback loop     |
+|  +----------------------------------+                     |
++-----------------------------------------------------------+
+```
 
 ## Handoff Rules
 
 | Agent | Must Do | Must NOT Do |
 |-------|---------|-------------|
-| **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research, load create-specification skill | Execute tasks, implement code, plan task decomposition |
-| **@plan** | Decompose spec into atomic tasks, assign Required Skills, produce implementation_plan.md | Write specs, implement code, modify production files |
-| **@build** | Implement tasks directly OR delegate to @engineer with skill list; orchestrate @reviewer/@qa gates | Plan or decompose tasks (this is @plan's job); skip quality gates |
-| @explorer | Research unknowns, provide evidence-based findings, load domain skills | Modify any files (except research_report.md) |
-| @engineer | Load skills before work, implement tasks per spec, self-verify | Add features not in the spec |
-| @reviewer | Load skills before audit, audit spec compliance, verify signatures/types via LSP | Implement fixes for found issues |
-| @qa | Load skills before testing, test against Verification Contract | Modify production code |
-| @reflector | Analyze failures, suggest improvements | Directly modify code or specs |
-
-## Artifact Lifecycle
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  User Request                                           │
-│       ↓                                                 │
-│  ┌─────────────────┐                                   │
-│  │ DRAFT .spec.md  │ ← architector writes initial draft │
-│  └────────┬────────┘                                   │
-│           ↓ iterative refinement                        │
-│  ┌─────────────────┐                                   │
-│  │ APPROVED        │ ← user approves, status set to     │
-│  │ .spec.md        │   APPROVED                         │
-│  └────────┬────────┘                                   │
-│           ↓                                             │
-│  ┌─────────────────────────────┐                       │
-│  │ implementation_plan.md      │ ← plan decomposes spec │
-│  │ (TASK-001..N, ordered)      │   into tasks           │
-│  └────────┬────────────────────┘                       │
-│           ↓                                             │
-│  ┌─────────────────────────────┐                       │
-│  │ Working code + tests        │ ← build executes       │
-│  │                          ← reviewer approves         │
-│  │                          ← qa verifies               │
-│  └────────┬────────────────────┘                       │
-│           ↓                                             │
-│  ┌─────────────────────────────┐                       │
-│  │ reflector.md                │ ← post-mortem analysis │
-│  └─────────────────────────────┘                       │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Artifact Ownership
-
-| Artifact | Created By | Consumed By | Format |
-|----------|-----------|-------------|--------|
-| `.spec.md` | @architector | @plan, @build (reference) | Markdown (template) |
-| `implementation_plan.md` | @plan | @build | Markdown (structured task list) |
-| `research_report.md` | @explorer | @architector, @plan | Markdown |
-| Review verdict | @reviewer | @build (quality gate) | Structured report |
-| Verification report | @qa | @build (quality gate) | Structured report |
-| `reflector.md` | @reflector | User, config (prompt evolution) | Markdown |
-
-## User Interaction Patterns
-
-### Pattern 1: Full Pipeline (All Three Primaries) — Recommended for Complex Work
-```bash
-# Step 1: Iterative spec refinement
-@architector Implement user authentication with JWT tokens
-
-# → architector iterates with user, produces .spec.md
-# → User approves spec
-
-# Step 2: Task decomposition planning
-@plan Decompose the approved spec at specs/SPEC-001.md
-
-# → plan produces implementation_plan.md
-
-# Step 3: Implementation & execution
-@build Execute the implementation plan at implementation_plan.md
-
-# → build implements/delegates tasks, orchestrates quality gates
-```
-
-### Pattern 2: Direct Execution (Skip Planning) — For Simple Tasks
-```bash
-@build Execute the spec at specs/SPEC-001.md
-
-# → build does minimal decomposition itself as last resort
-# → Implements or delegates to subagents directly
-```
-
-### Pattern 3: Spec Only — For Design Review
-```bash
-@architector Analyze the current database migration system and produce a spec for adding soft deletes
-
-# → architector produces .spec.md, user reviews
-# → User may stop here or continue with @plan + @build
-```
-
-## Iteration Control
-
-- **Max refinement cycles**: 3 (build → reviewer → build loop)
-- **Stop when**: `@reviewer` = APPROVED AND `@qa` = PASSED
-- **Anti-loop guard**: `subtask_timeout: 300s` per subtask (see `subtask2.jsonc`)
+| **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research; load relevant skills from `<available_skills>` | Execute tasks, implement code, plan task decomposition |
+| **@plan** | Decompose spec into atomic tasks, assign Required Skills, produce `.plans/<feature-name>/plan.md`; load relevant skills from `<available_skills>` | Write specs, implement code, modify production files |
+| **@build** | Implement tasks directly OR delegate to @engineer with skill list; orchestrate @reviewer/@qa/@fixer gates; load relevant skills from `<available_skills>` | Plan or decompose tasks; skip quality gates |
+| @explorer | Research unknowns, provide evidence-based findings; load relevant skills from `<available_skills>` | Modify any files (except research_report.md) |
+| @engineer | Load relevant skills from `<available_skills>` before work; implement tasks per spec, self-verify, produce evidence artifacts | Add features not in the spec; skip evidence packing |
+| @reviewer | Load relevant skills from `<available_skills>` before audit; audit spec compliance, verify signatures/types via LSP, follow output contract format | Implement fixes for found issues |
+| @qa | Load relevant skills from `<available_skills>` before verification; test against Verification Contract, use FRESH session, produce verdict.json | Modify production code; reuse engineer's session |
+| @fixer | Load relevant skills from `<available_skills>` before fixing; make smallest safe fix, refresh evidence artifacts | Refactor or improve unrelated code; change scope |
+| @reflector | Load relevant skills from `<available_skills>` for analysis; analyze failures, categorize spec ambiguities (received from @build), suggest improvements | Directly modify code or specs |
+| @commiter | Load relevant skills from `<available_skills>` before committing; stage explicit paths, produce conventional commit messages | Stage with `git add -A`; commit --no-verify; modify production code |
 
 ## Delegation Protocol
 
@@ -237,33 +285,54 @@ Acceptance criteria: [checklist]
 Constraints: [what NOT to do, performance requirements, etc.]
 ```
 
-> **Skill Isolation**: Skills loaded for a task are scoped to the subagent invocation and auto-clear on exit. This prevents cross-task skill interference.
-
-When calling `@reviewer`:
-```
-@reviewer audit implementation for task: [task-id from plan]
-Spec reference: [path to .spec.md and section]
-Diff/changes: [description of what was implemented]
-```
+> **Skill Isolation**: Skills loaded for a task are scoped to the subagent invocation and auto-clear on exit.
 
 ## Quality Standards (Enforced by Build Agent)
 
 ### Code Quality
-- Interfaces first — define contracts before implementations
-- Error handling — no swallowed errors; use `%w` wrapping for error chains
-- Context propagation — all blocking operations accept `context.Context`
-- Minimal diffs — small, reviewable changes > large refactors
-- Read before write — always understand existing patterns before modifying
+- Interfaces first -- define contracts before implementations
+- Error handling -- no swallowed errors; use `%w` wrapping for error chains
+- Context propagation -- all blocking operations accept `context.Context`
+- Minimal diffs -- small, reviewable changes > large refactors
+- Read before write -- always understand existing patterns before modifying
 
 ### Cross-Cutting Concerns
-- Testability — every new function must have a clear path to testing
-- Logging — structured logs at key decision points
-- Observability — metrics for hot paths and error rates
-- Security — input validation, auth checks, no secret leakage
-- Documentation — exported symbols must have godoc comments
+- Testability -- every new function must have a clear path to testing
+- Logging -- structured logs at key decision points
+- Observability -- metrics for hot paths and error rates
+- Security -- input validation, auth checks, no secret leakage
+- Documentation -- exported symbols must have godoc comments
 
-### Skill Ecology (Mandatory)
-- All agents MUST load skills before working (see `prompts/skill_loading_preamble.md`)
-- Skills must be ecological: no trigger words ("MUST", "CRITICAL"), specific descriptions, exit conditions
-- Skill ecology compliance is a review criterion (see `prompts/skill_ecology_checklist.md`)
-- Subagent isolation prevents cross-task skill interference
+### Evidence Requirements
+- Every AC must have PASS/FAIL with supporting evidence
+- QA must judge current code and current command results, not prior chat claims
+- Every verify uses a fresh subagent session
+
+## Commands
+
+| Command | Purpose | File |
+|---------|---------|------|
+| `/plan` | Generate implementation plan from spec | `commands/plan.md` |
+| `/review` | Quick or full code review | `commands/review.md` |
+| `/verify` | Run verification gate (lint -> typecheck -> test -> evidence) | `commands/verify.md` |
+| `/skillify` | Create skill from repetitive workflow | `commands/skillify.md` |
+| `/revdiff` | Interactive diff review for plan annotation | `commands/revdiff.md` |
+
+## Scripts
+
+| Script | Purpose | File |
+|--------|---------|------|
+| `resolve-file.sh` | Three-layer config resolution | `scripts/resolve-file.sh` |
+| `resolve-rules.sh` | Two-layer custom rules loading | `scripts/resolve-rules.sh` |
+| `verify.sh` | CI pre-push gate | `scripts/verify.sh` |
+| `committer` | Conventional commit helper | `scripts/committer` |
+| `validate-skills` | SKILL.md frontmatter validator | `scripts/validate-skills` |
+
+## Shared Hard Rules
+
+See `AGENTS.md` for the complete shared rules that all agents must follow:
+1. Communication style (concise, no emojis, technical prose)
+2. Code quality (read before write, no `any`, no inline imports)
+3. Skill protocol (load before work, 2-4 skills, auto-clear on exit)
+4. Multi-agent git safety (explicit paths, no destructive commands)
+5. Evidence-based completion (per-AC PASS, fresh verifier, spec discipline)

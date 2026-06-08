@@ -34,3 +34,5 @@ __pycache__/
 opencode.json*
 .logs/
 .code-review-graph/
+.agent/
+spec/

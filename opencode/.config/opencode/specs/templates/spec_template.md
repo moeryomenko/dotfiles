@@ -46,7 +46,7 @@
 
 ### 3.1 Interface/Type Contracts
 ```go
-// Required new types/functions with exact signatures
+// Required new types/functions with exact signatures (language-agnostic — adapt to project language)
 type NewInterface interface {
     Method(input string) (Result, error)
 }

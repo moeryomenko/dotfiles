@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""Validate SKILL.md frontmatter for all skills in skills/
+Checks: valid YAML, required fields present, no duplicate names
+"""
+
+import os
+import sys
+import yaml
+
+def load_front_matter(path, text):
+    """Extract and parse YAML frontmatter from SKILL.md"""
+    lines = text.split('\n')
+    if not lines[0].strip() == '---':
+        return None, "front matter must start on the first line"
+    
+    end_idx = None
+    for i, line in enumerate(lines[1:], 1):
+        if line.strip() == '---':
+            end_idx = i
+            break
+    
+    if end_idx is None:
+        return None, "front matter must close with ---"
+    
+    yaml_text = '\n'.join(lines[1:end_idx])
+    try:
+        data = yaml.safe_load(yaml_text)
+        if not isinstance(data, dict):
+            return None, "front matter must be a YAML mapping"
+        return data, None
+    except yaml.YAMLError as e:
+        return None, f"YAML: {e}"
+
+def main():
+    repo_root = os.getcwd()
+    skill_dir = os.path.join(repo_root, 'skills')
+    
+    if not os.path.isdir(skill_dir):
+        print("No skills/ directory found.", file=sys.stderr)
+        sys.exit(0)
+    
+    skill_files = []
+    for name in sorted(os.listdir(skill_dir)):
+        skill_file = os.path.join(skill_dir, name, 'SKILL.md')
+        if os.path.isfile(skill_file):
+            skill_files.append(skill_file)
+    
+    if not skill_files:
+        print("No skills/*/SKILL.md files found.", file=sys.stderr)
+        sys.exit(0)
+    
+    errors = []
+    names = {}
+    
+    for path in skill_files:
+        with open(path, 'r') as f:
+            text = f.read()
+        
+        data, error = load_front_matter(path, text)
+        
+        if error:
+            errors.append((path, error))
+            continue
+        
+        # Check required fields
+        for field in ['name', 'description']:
+            value = data.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append((path, f"missing non-empty string field: {field}"))
+        
+        # Check for duplicate names
+        name = data.get('name')
+        if isinstance(name, str) and name.strip():
+            normalized_name = name.strip()
+            if normalized_name in names:
+                errors.append((path, f"duplicate skill name {normalized_name!r} also used by {names[normalized_name]}"))
+            else:
+                names[normalized_name] = path
+    
+    if errors:
+        print("Skill validation failed:", file=sys.stderr)
+        for path, error in errors:
+            print(f"  - {path}: {error}", file=sys.stderr)
+        sys.exit(1)
+    
+    print(f"Validated {len(skill_files)} skill(s).")
+
+if __name__ == '__main__':
+    main()

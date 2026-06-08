@@ -1,0 +1,19 @@
+#!/bin/sh
+# Pre-commit hook — runs CI gate before each commit
+# This ensures all skills, prompts, and config are valid
+
+# Get the repo root (opencode config directory)
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "=== Pre-Commit CI Gate ==="
+cd "$REPO_ROOT"
+
+# Run the verify.sh script
+if bash scripts/verify.sh; then
+    echo "=== Pre-Commit Gate: PASS ==="
+    exit 0
+else
+    echo "=== Pre-Commit Gate: FAIL ==="
+    echo "Commit blocked — fix the validation errors above."
+    exit 1
+fi

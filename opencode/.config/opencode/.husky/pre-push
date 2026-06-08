@@ -1,0 +1,19 @@
+#!/bin/sh
+# Pre-push hook — final validation before push
+# Ensures all skills, prompts, and config are valid
+
+# Get the repo root (opencode config directory)
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "=== Pre-Push CI Gate ==="
+cd "$REPO_ROOT"
+
+# Run the verify.sh script
+if bash scripts/verify.sh; then
+    echo "=== Pre-Push Gate: PASS ==="
+    exit 0
+else
+    echo "=== Pre-Push Gate: FAIL ==="
+    echo "Push blocked — fix the validation errors above."
+    exit 1
+fi

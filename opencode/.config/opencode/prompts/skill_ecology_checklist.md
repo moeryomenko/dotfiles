@@ -14,7 +14,7 @@ Non-ecological skills over-activate, interfere with other skills, and waste cont
   - ❌ BAD: "Helps with testing"
 
 - [ ] **No trigger words**: Description does NOT contain aggressive activation words:
-  - BANNED: "MUST", "CRITICAL", "MANDATORY", "ALWAYS", "EVERY", "REQUIRED", "NEVER SKIP"
+  - BANNED: "MUST", "ALWAYS", "EVERY", "REQUIRED", "NEVER SKIP"
   - These words force the model to activate the skill regardless of context relevance
 
 - [ ] **Counter-example**: Description includes a "Do NOT use for..." clause when appropriate
@@ -36,7 +36,7 @@ Non-ecological skills over-activate, interfere with other skills, and waste cont
 ## Name
 
 - [ ] **Descriptive name**: Skill name clearly describes its purpose
-  - ✅ GOOD: `golang-testing`
+  - ✅ GOOD: `go-testing` or `rust-review`
   - ❌ BAD: `test-helper`
 
 ## Cross-Skill Compatibility
@@ -60,12 +60,11 @@ description: MUST USE with any prompt
 
 ```yaml
 ---
-name: golang-testing
+name: my-testing-skill
 description: >
-  Go testing patterns including table-driven tests, subtests, benchmarks, fuzzing,
-  and test coverage. Follows TDD methodology with idiomatic Go practices.
-  Use when writing, reviewing, or debugging Go tests.
-  Do NOT use for HTTP functional testing (use functional-testing instead).
+  Testing patterns for [language] including table-driven tests, property-based
+  testing, and coverage analysis. Use when writing, reviewing, or debugging
+  tests in [language]. Do NOT use for HTTP functional testing.
 ---
 ```
 
