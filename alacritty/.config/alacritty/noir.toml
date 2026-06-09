@@ -1,0 +1,85 @@
+# Default colorscheme for Alacritty
+# Based on Neovim's default dark colorscheme (src/nvim/highlight_group.c)
+#
+# Core palette:
+#   bg / bg_alt          #14161b / #07080d  — NvimDarkGrey1/2
+#   bg_light / bg_lighter #2c2e33 / #4f5258 — NvimDarkGrey3/4
+#   fg                   #e0e2ea            — NvimLightGrey2 (Normal text)
+#   fg_alt               #9b9ea4            — NvimLightGrey4 (comments)
+#   fg_light             #eef1f8            — NvimLightGrey1 (search, diff)
+#   cyan                 #8cf8f7            — NvimLightCyan
+#   blue                 #a6dbff            — NvimLightBlue
+#   green                #b3f6c0            — NvimLightGreen
+#   yellow               #fce094            — NvimLightYellow
+#   red                  #ffc0b9            — NvimLightRed
+#   magenta              #ffcaff            — NvimLightMagenta
+
+[colors.primary]
+background = "#14161b"
+foreground = "#e0e2ea"
+
+[colors.cursor]
+text = "#14161b"
+cursor = "#e0e2ea"
+
+[colors.vi_mode_cursor]
+text = "#14161b"
+cursor = "#e0e2ea"
+
+[colors.search.matches]
+foreground = "#eef1f8"
+background = "#6b5300"
+
+[colors.search.focused_match]
+foreground = "#07080d"
+background = "#fce094"
+
+[colors.footer_bar]
+foreground = "#9b9ea4"
+background = "#2c2e33"
+
+[colors.hints.start]
+foreground = "#14161b"
+background = "#8cf8f7"
+
+[colors.hints.end]
+foreground = "#9b9ea4"
+background = "#2c2e33"
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+[colors.selection]
+text = "#e0e2ea"
+background = "#4f5258"
+
+[colors.normal]
+black = "#07080d"
+red = "#ffc0b9"
+green = "#b3f6c0"
+yellow = "#fce094"
+blue = "#a6dbff"
+magenta = "#ffcaff"
+cyan = "#8cf8f7"
+white = "#e0e2ea"
+
+[colors.bright]
+black = "#2c2e33"
+red = "#ffc0b9"
+green = "#b3f6c0"
+yellow = "#fce094"
+blue = "#a6dbff"
+magenta = "#ffcaff"
+cyan = "#8cf8f7"
+white = "#eef1f8"
+
+[colors.dim]
+black = "#14161b"
+red = "#ffc0b9"
+green = "#b3f6c0"
+yellow = "#fce094"
+blue = "#5a7b9b"
+magenta = "#ffcaff"
+cyan = "#8cf8f7"
+white = "#9b9ea4"

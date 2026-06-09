@@ -1,0 +1,73 @@
+# Neovim Default theme for btop
+# Based on Neovim's default dark colorscheme (src/nvim/highlight_group.c)
+
+# Main bg
+theme[main_bg]="#14161b"
+
+# Main text
+theme[main_fg]="#e0e2ea"
+
+# Title
+theme[title]="#eef1f8"
+
+# Highlight
+theme[hi_fg]="#8cf8f7"
+
+# Selected
+theme[selected_bg]="#2c2e33"
+theme[selected_fg]="#eef1f8"
+
+# Inactive
+theme[inactive_fg]="#4f5258"
+
+# Process misc
+theme[proc_misc]="#8cf8f7"
+
+# Box outlines
+theme[cpu_box]="#4f5258"
+theme[mem_box]="#4f5258"
+theme[net_box]="#4f5258"
+theme[proc_box]="#4f5258"
+
+# Divider
+theme[div_line]="#2c2e33"
+
+# Temperature — cyan → blue → magenta
+theme[temp_start]="#8cf8f7"
+theme[temp_mid]="#a6dbff"
+theme[temp_end]="#9a0a9a"
+
+# CPU — blue → magenta → red
+theme[cpu_start]="#a6dbff"
+theme[cpu_mid]="#9a0a9a"
+theme[cpu_end]="#aa0008"
+
+# Free — green → cyan → blue
+theme[free_start]="#b3f6c0"
+theme[free_mid]="#8cf8f7"
+theme[free_end]="#a6dbff"
+
+# Cached — blue → cyan → green
+theme[cached_start]="#a6dbff"
+theme[cached_mid]="#8cf8f7"
+theme[cached_end]="#b3f6c0"
+
+# Available — green → cyan → blue
+theme[available_start]="#b3f6c0"
+theme[available_mid]="#8cf8f7"
+theme[available_end]="#a6dbff"
+
+# Used — bg_light → blue → fg
+theme[used_start]="#2c2e33"
+theme[used_mid]="#a6dbff"
+theme[used_end]="#e0e2ea"
+
+# Download — green → blue → bg_light
+theme[download_start]="#b3f6c0"
+theme[download_mid]="#a6dbff"
+theme[download_end]="#2c2e33"
+
+# Upload — magenta → cyan → magenta
+theme[upload_start]="#9a0a9a"
+theme[upload_mid]="#8cf8f7"
+theme[upload_end]="#9a0a9a"

@@ -1,0 +1,184 @@
+{
+  "$schema": "https://opencode.ai/theme.json",
+  "name": "Neovim Default",
+  "description": "Based on Neovim's default dark colorscheme (src/nvim/highlight_group.c)",
+  "defs": {
+    "bg": "#14161b",
+    "bg_alt": "#07080d",
+    "bg_light": "#2c2e33",
+    "bg_lighter": "#4f5258",
+    "bg_statusline": "#4f5258",
+    "bg_float": "#07080d",
+
+    "fg": "#e0e2ea",
+    "fg_alt": "#9b9ea4",
+    "fg_dark": "#4f5258",
+    "fg_light": "#eef1f8",
+
+    "blue": "#a6dbff",
+    "cyan": "#8cf8f7",
+    "green": "#b3f6c0",
+    "yellow": "#fce094",
+    "red": "#aa0008",
+    "magenta": "#9a0a9a",
+
+    "gray": "#4f5258",
+    "gray_light": "#9b9ea4",
+    "gray_dark": "#2c2e33"
+  },
+  "theme": {
+    "primary": {
+      "dark": "cyan"
+    },
+    "secondary": {
+      "dark": "blue"
+    },
+    "accent": {
+      "dark": "magenta"
+    },
+    "error": {
+      "dark": "red"
+    },
+    "warning": {
+      "dark": "yellow"
+    },
+    "success": {
+      "dark": "green"
+    },
+    "info": {
+      "dark": "cyan"
+    },
+    "text": {
+      "dark": "fg"
+    },
+    "textMuted": {
+      "dark": "fg_alt"
+    },
+    "background": {
+      "dark": "bg"
+    },
+    "backgroundPanel": {
+      "dark": "bg_alt"
+    },
+    "backgroundElement": {
+      "dark": "bg_light"
+    },
+    "border": {
+      "dark": "gray_dark"
+    },
+    "borderActive": {
+      "dark": "cyan"
+    },
+    "borderSubtle": {
+      "dark": "gray"
+    },
+
+    "diffAdded": {
+      "dark": "green"
+    },
+    "diffRemoved": {
+      "dark": "red"
+    },
+    "diffContext": {
+      "dark": "fg_dark"
+    },
+    "diffHunkHeader": {
+      "dark": "fg_dark"
+    },
+    "diffHighlightAdded": {
+      "dark": "green"
+    },
+    "diffHighlightRemoved": {
+      "dark": "red"
+    },
+    "diffAddedBg": {
+      "dark": "bg_alt"
+    },
+    "diffRemovedBg": {
+      "dark": "bg_alt"
+    },
+    "diffContextBg": {
+      "dark": "bg_alt"
+    },
+    "diffLineNumber": {
+      "dark": "gray"
+    },
+    "diffAddedLineNumberBg": {
+      "dark": "bg_alt"
+    },
+    "diffRemovedLineNumberBg": {
+      "dark": "bg_alt"
+    },
+
+    "markdownText": {
+      "dark": "fg"
+    },
+    "markdownHeading": {
+      "dark": "cyan"
+    },
+    "markdownLink": {
+      "dark": "cyan"
+    },
+    "markdownLinkText": {
+      "dark": "blue"
+    },
+    "markdownCode": {
+      "dark": "green"
+    },
+    "markdownBlockQuote": {
+      "dark": "gray_light"
+    },
+    "markdownEmph": {
+      "dark": "fg_light"
+    },
+    "markdownStrong": {
+      "dark": "fg_light"
+    },
+    "markdownHorizontalRule": {
+      "dark": "gray_light"
+    },
+    "markdownListItem": {
+      "dark": "cyan"
+    },
+    "markdownListEnumeration": {
+      "dark": "cyan"
+    },
+    "markdownImage": {
+      "dark": "blue"
+    },
+    "markdownImageText": {
+      "dark": "blue"
+    },
+    "markdownCodeBlock": {
+      "dark": "fg_alt"
+    },
+
+    "syntaxComment": {
+      "dark": "fg_alt"
+    },
+    "syntaxKeyword": {
+      "dark": "blue"
+    },
+    "syntaxFunction": {
+      "dark": "cyan"
+    },
+    "syntaxVariable": {
+      "dark": "fg"
+    },
+    "syntaxString": {
+      "dark": "green"
+    },
+    "syntaxNumber": {
+      "dark": "fg"
+    },
+    "syntaxType": {
+      "dark": "fg"
+    },
+    "syntaxOperator": {
+      "dark": "fg"
+    },
+    "syntaxPunctuation": {
+      "dark": "fg"
+    }
+  }
+}
