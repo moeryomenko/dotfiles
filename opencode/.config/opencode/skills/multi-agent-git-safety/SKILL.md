@@ -170,25 +170,25 @@ git status
 # Step 3: Stage explicit paths (NEVER use -A or .)
 git add src/my-file.go src/my-test.go
 
-# Step 4: Commit with conventional commit message
-git commit -m "feat: add my feature"
+# Step 4: Commit with scoped commit message
+git commit -m "auth: add login endpoint"
 ```
 
 ---
 
 ## Commit Message Convention
 
-Use conventional commits:
+Use scoped commits (no type prefixes — the scope IS the classifier):
 ```
-<type>: <description>
+<scope>: <description>
 
-Types:
-- feat: New feature
-- fix: Bug fix
-- refactor: Code change without feature/fix
-- docs: Documentation changes
-- test: Test changes
-- chore: Maintenance, deps, config
+Rules:
+- No type prefixes (no feat:, fix:, chore:, etc.)
+- Scope is the subsystem or module the change touches
+- Imperative mood: "add pagination" not "added pagination"
+- No leading capital after scope colon
+- No trailing period
+- ~50 chars preferred, max 72
 ```
 
 ---
@@ -213,5 +213,11 @@ scripts/committer --force "msg" file1 file2
 > [Check] git status run before commit
 > [Check] Only my files staged (no git add -A)
 > [Check] No destructive commands in session history
+<<<<<<< HEAD
 > [Check] Conventional commit message used
 >>>>>>> 568d7fd (refactor(opencode): restructure config into agents/skills/commands/scripts)
+||||||| parent of 2f36dce (opencode: миграция конвенции коммитов из Conventional Commits в Scoped Commits)
+> [Check] Conventional commit message used
+=======
+> [Check] Scoped commit message used
+>>>>>>> 2f36dce (opencode: миграция конвенции коммитов из Conventional Commits в Scoped Commits)
