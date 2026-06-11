@@ -60,3 +60,17 @@ Detailed command rules are in the `multi-agent-git-safety` skill.
 - Specs MUST be frozen before implementation begins.
 - No spec changes mid-task without re-planning.
 - Implementation must trace directly to spec requirements.
+
+## 8. Scoped Commits
+
+All commits MUST follow Scoped Commits format (https://scopedcommits.com/):
+
+```
+<scope>: <description>
+```
+
+- **No types**: Never use Conventional Commits type prefixes (`feat:`, `fix:`, `chore:`, `refactor:`, `style:`, etc.). The scope IS the classifier.
+- **No conversation commits**: Every commit message must describe WHAT changed and WHY. Never write messages like "update", "fix", "wip", "as discussed", "address feedback", "review comments", "try again", or any message that reads like a conversation fragment.
+- **Imperative mood**: "add pagination" not "added pagination" or "adding pagination".
+- **Scope must be a real subsystem**: Use the repo directory name. Use `treewide` for cross-cutting changes.
+- **Body explains WHY**: See commiter agent for full body writing rules.

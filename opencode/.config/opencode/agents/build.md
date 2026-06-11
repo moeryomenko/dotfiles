@@ -106,7 +106,7 @@ For each task in order, following the delegation syntax in the next section:
 **Step A — Engineer:** Delegate implementation to @engineer.
 **Step B — Reviewer Gate:** @reviewer audits. REJECTS → back to @engineer (max 2 cycles).
 **Step C — QA Gate:** @qa verifies. FAILS → @fixer repairs → re-verify (max 2 cycles).
-**Step D — Commit:** @reviewer APPROVED + @qa PASSED → @commiter commits.
+**Step D — Commit:** @reviewer APPROVED + @qa PASSED → determine the scope(s) affected by the task (the subsystem/directory the changes touch), then delegate to @commiter with scope context.
 
 ### Phase 3: Post-Mortem (After All Tasks)
 1. Invoke `@reflector` for post-implementation analysis
@@ -174,6 +174,7 @@ When calling `@commiter`:
 ```
 @commiter commit changes for task: [task-id]
 Diff file path: [/tmp/task-XXXX.diff]
+Scope hint: [subsystem/module the changes affect — use the top-level directory name. Use treewide if cross-cutting.]
 Spec context: [brief spec section reference]
 Task summary: [what was accomplished]
 Working directory: [path to repo root]
