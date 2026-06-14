@@ -1,7 +1,6 @@
 ---
 description: Spec Compliance Auditor — Verifies implementation against .spec.md contract
 mode: subagent
-model: llama/qwen
 temperature: 0.1
 permission:
   read: allow

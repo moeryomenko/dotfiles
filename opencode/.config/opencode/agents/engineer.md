@@ -1,7 +1,6 @@
 ---
 description: Production-grade Software Engineer — Implementation specialist
 mode: subagent
-model: llama/qwen
 temperature: 0.25
 permission:
   edit: allow

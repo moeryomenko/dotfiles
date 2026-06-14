@@ -1,7 +1,6 @@
 ---
 description: Spec Verifier — Tests implementation against Verification Contract
 mode: subagent
-model: llama/qwen
 temperature: 0.2
 permission:
   edit: allow
