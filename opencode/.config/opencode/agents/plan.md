@@ -125,7 +125,6 @@ Tasks: N
 ---
 description: Implementation Planner — Decomposes approved .spec.md into task-ordered .plans/<feature>/plan.md
 mode: primary
-model: llama/qwen
 temperature: 0.2
 permission:
   edit: allow

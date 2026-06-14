@@ -134,7 +134,6 @@ Example:
 ---
 description: Senior Systems Researcher — Eliminates unknowns before implementation
 mode: subagent
-model: llama/qwen
 temperature: 0.2
 permission:
   read: allow

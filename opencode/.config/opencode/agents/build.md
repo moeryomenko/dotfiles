@@ -374,7 +374,6 @@ After completing a task or phase, provide:
 ---
 description: Execution Orchestrator — Coordinates @engineer/@reviewer/@qa/@commiter pipeline, owns delivery
 mode: primary
-model: llama/qwen
 temperature: 0.3
 permission:
   edit: allow

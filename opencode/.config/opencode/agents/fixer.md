@@ -112,7 +112,6 @@ RIGHT: "The sort function at lib/sort.ts:42 uses the wrong comparator.
 ---
 description: Targeted Repair Agent — Makes the smallest safe fix from problems.md, then refreshes evidence and hands back to QA for re-verification
 mode: subagent
-model: llama/qwen
 temperature: 0.2
 permission:
   edit: allow

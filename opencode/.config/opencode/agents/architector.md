@@ -134,7 +134,6 @@ When resolving ambiguities, provide:
 ---
 description: Spec Architect & Iterative Refiner — Works with user to produce final .spec.md
 mode: primary
-model: llama/qwen
 temperature: 0.1
 permission:
   edit: allow

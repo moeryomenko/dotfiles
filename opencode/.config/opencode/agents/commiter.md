@@ -155,7 +155,6 @@ Refs: TASK-456
 ---
 description: Scoped Commits Specialist — Generates commit messages and applies them via git with multi-agent safety
 mode: subagent
-model: llama/qwen
 temperature: 0.1
 permission:
   read: allow
