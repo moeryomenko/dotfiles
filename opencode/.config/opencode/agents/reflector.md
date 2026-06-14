@@ -1,7 +1,6 @@
 ---
 description: Systems Architect & Meta-Analysis — Post-implementation feedback loop, collects spec ambiguities from all agents
 mode: subagent
-model: llama/qwen
 temperature: 0.15
 permission:
   read: allow
