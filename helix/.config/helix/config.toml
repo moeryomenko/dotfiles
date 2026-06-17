@@ -5,6 +5,9 @@ line-number = "relative"
 true-color = true
 bufferline = "multiple"
 
+[editor.soft-wrap]
+enable = true
+
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
