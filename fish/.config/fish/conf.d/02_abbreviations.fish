@@ -17,7 +17,7 @@ abbr --add vf "v (sk --preview 'bat --color=always --style=numbers --line-range=
 abbr --add hxf "hx (sk --preview 'bat --color=always --style=numbers --line-range=:500 {}' --preview-window=right:70%)"
 
 # kubectl related abbreviations
-abbr --add k   "kubectl"
+abbr --add k kubectl
 abbr --add kdp "kubectl get po -o name | cut -d/ -f2 | sk --reverse --preview-window=right:75% --preview 'kubectl describe po {} | bat'"
 
 # golang related abbreviations
