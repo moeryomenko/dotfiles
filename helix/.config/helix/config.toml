@@ -13,6 +13,9 @@ insert = "bar"
 normal = "block"
 select = "block"
 
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
 # =============================================================================
 # Neovim-style keybindings
 # =============================================================================
