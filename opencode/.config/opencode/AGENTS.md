@@ -25,10 +25,11 @@ It is the single source of truth for cross-cutting constraints.
 
 ## 3. Skill Protocol
 
-- Load domain-relevant skills BEFORE performing any task (see `skill_loading_preamble.md`).
+- **MANDATORY**: Load domain-relevant skills BEFORE performing any task (see `skill_loading_preamble.md`). This is NOT optional — skills encode critical domain knowledge that ensures correctness.
 - Skills are scoped to the subagent invocation and auto-clear on exit.
 - Every skill step MUST include a verification marker after each action.
 - If a skill is not available, fall back to general capability.
+- **Re-check on context shift**: If during execution the task shifts to a new domain (e.g., from implementation to testing), re-scan the `<available_skills>` list and load additional skills as needed.
 
 ## 4. Multi-Agent Git Safety
 
@@ -74,3 +75,45 @@ All commits MUST follow Scoped Commits format (https://scopedcommits.com/):
 - **Imperative mood**: "add pagination" not "added pagination" or "adding pagination".
 - **Scope must be a real subsystem**: Use the repo directory name. Use `treewide` for cross-cutting changes.
 - **Body explains WHY**: See commiter agent for full body writing rules.
+
+## 9. Mandatory Skill Activation Before Work
+
+**Every agent, regardless of role, MUST activate domain-relevant skills before starting work.**
+
+This is the single most important rule in the system. Skills encode specialized domain knowledge, language idioms, and workflow protocols that cannot be replicated by general reasoning alone.
+
+### The Rule
+
+```
+Before performing ANY task:
+  1. Scan the <available_skills> list in your system prompt
+  2. Select 2-4 skills matching the task's language, domain, and type
+  3. Load each selected skill using the `skill` tool
+  4. Do NOT skip skill loading — even for "simple" tasks
+  5. Do NOT load all skills — only those contextually relevant
+  6. Do NOT guess skill names — use exact names from the list
+  7. On context shift (e.g., coding -> testing), re-scan and load new skills
+  8. If no skill matches, proceed without — do not block execution
+```
+
+### Verification Marker
+
+Every skill step MUST include a verification marker to confirm the skill was loaded and applied:
+
+```
+> [Check] loaded <skill-name> for domain <domain>
+> [Check] applied <skill-name> guidance during <action>
+```
+
+### Exceptions
+
+- **Agent whose sole purpose is `@commiter`** — may skip language skills but MUST load `multi-agent-git-safety`
+- **Agent explicitly told "skill loading not required"** by @build — may skip
+
+All other agents (engineer, qa, reviewer, fixer, explorer, plan, architector, reflector) MUST activate skills before work.
+
+### Enforcement
+
+- @build will verify skill activation during gate checks
+- Missing skill activation is grounds for @reviewer to REJECT an implementation
+- @reflector will flag repeated skill-loading failures in post-mortem analysis

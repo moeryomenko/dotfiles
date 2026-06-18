@@ -20,28 +20,36 @@ User Request
 +-------------------------------+
                | .plans/<feature>/plan.md
 +-------------------------------+
-|  build (primary)               |  Execution Orchestrator
+|  build (primary)               |  Execution Orchestrator (TDD)
 |  - Delegates with skill list   |  Temperature: 0.3
-|  - Enforces quality gates      |  Skills: dynamically discovered
+|  - TDD: tests first, then impl |  Skills: dynamically discovered
+|  - Enforces quality gates      |
 |  - Coordinator lifecycle       |
 +-------------------------------+
    |         |          |          |          |
-   v         v          v          v          v
-+---------+ +--------+ +------+ +---------+ +----------+
-| explorer| |engineer| |review| |   qa    | |  fixer   |
-|research | |implement| |audit | | verify  | | repair   |
-|read-only| |+skills | |+skills| |+skills  | |+skills   |
-|dyn disc | |dyn disc| |dyn disc| |dyn disc| |dyn disc  |
-+---------+ +--------+ +------+ +---------+ +----------+
-                                    | (fail)
-                                    v
-                              +----------+
-                              |  fixer   |
-                              | repair   |
-                              +----------+
-                                    | (fix complete)
-                                    v
-                                 (re-verify)
+   v         v          v          |          v
++---------+ +--------+ +------+   |     +----------+
+| explorer| |engineer| |review|   |     |   qa     |
+|research | |implement| |audit |   |     | test     |
+|read-only| |+skills | |+skills|   |     | design   |
+|dyn disc | |dyn disc| |dyn disc|   |     | (grill-me)|
++---------+ +--------+ +------+   |     +----------+
+   |         |          |          |         | (test-first, then)
+   |         |          |          |         v
+   |         |          |          |     +---------+
+   |         |          |          |     |   qa    |
+   |         |          |          |     | verify  |
+   |         |          |          |     |+skills  |
+   |         |          |          |     +---------+
+   |         |          |          |         | (fail)
+   |         |          |          |         v
+   |         |          |          |     +----------+
+   |         |          |          |     |  fixer   |
+   |         |          |          |     |  repair  |
+   |         |          |          |     +----------+
+   |         |          |          |         | (fix complete)
+   |         |          |          |         v
+   |         |          |          |     (re-verify)
    |
    v
 +----------+     +------------+
@@ -62,7 +70,7 @@ User Request
 | @explorer | subagent | Senior Systems Researcher | 0.2 |
 | @engineer | subagent | Implementation specialist | 0.25 |
 | @reviewer | subagent | Spec Compliance Auditor | 0.1 |
-| @qa | subagent | Spec Verifier | 0.2 |
+| @qa | subagent | Test Designer (grill-me) & Spec Verifier (TDD) | 0.2 |
 | @fixer | subagent | Targeted Repair Agent | 0.2 |
 | @reflector | subagent | Systems Architect & Meta-Analysis | 0.15 |
 | @commiter | subagent | Conventional Commits Specialist | 0.1 |
@@ -117,29 +125,35 @@ Every agent loads domain-relevant skills BEFORE performing any task. Skills are 
 6. Order tasks by dependency chain
 7. Produce `.plans/<feature-name>/plan.md` with task decomposition
 
-### Phase C: Execution & Orchestration (build)
+### Phase C: Execution & Orchestration (build, TDD)
 
 Uses coordinator lifecycle:
 
 ```
 1. DECOMPOSE -- Break implementation plan into individual task delegations
-2. CLASSIFY -- Each task: Research | Implementation | Verification
-3. DISPATCH -- Launch subagents (parallel for reads, sequential for writes)
+2. CLASSIFY -- Each task: Research | Test Design | Implementation | Verification
+3. DISPATCH -- Launch subagents (test design first, then implementation sequentially)
 4. MONITOR -- Track subagent completion
 5. SYNTHESIZE -- Combine results, check against spec
 6. VERIFY -- Ensure quality gates passed before commit
 ```
 
-#### Per-Task Execution
+#### Per-Task Execution (TDD)
 
-For each task in order:
+Every task follows Test-Driven Development: test-first, then implement, then verify.
 
-1. **Engineer**: Delegate to @engineer with skill list, spec references, acceptance criteria
-2. **Reviewer Gate**: @reviewer audits spec compliance
+**Step 0 — QA Test Design:** Delegate to @qa with `design-tests` mode. @qa uses the `grill-me` skill to stress-test the spec and write comprehensive tests before any implementation exists. Tests MUST fail initially (red phase).
+
+**Step 1 — Engineer:** Delegate to @engineer with the pre-written tests as primary acceptance criteria. Engineer makes ALL tests pass (green phase).
+
+**Step 2 — Reviewer Gate:** @reviewer audits spec compliance
    - REJECTED -> @engineer revises (max 2 cycles)
-3. **QA Gate**: @qa verifies in fresh session
+   - After engineer revision, re-run tests (Step 1 tests must still pass)
+
+**Step 3 — QA Gate:** @qa re-verifies using pre-written tests in fresh session
    - FAILED -> @fixer repairs -> re-verify (max 2 cycles)
-4. **Commit**: @commiter commits with conventional message and git safety
+
+**Step 4 — Commit:** @commiter commits with scoped message and git safety
 
 #### Ambiguity Handling (Parallel)
 
@@ -162,6 +176,8 @@ Every implemented task MUST produce evidence artifacts:
 
 ```
 .agent/tasks/<TASK_ID>/
+  tests-manifest.md -- (TDD) Test coverage documentation from grill-me (test-first phase)
+  test-*.ext        -- (TDD) Pre-written test files (written before implementation)
   evidence.md       -- Human-readable proof (per-AC status)
   evidence.json     -- Machine-readable proof (schema-validated)
   verdict.json      -- QA verification result (PASS/FAIL per VC)
@@ -170,6 +186,7 @@ Every implemented task MUST produce evidence artifacts:
 ```
 
 ### Rules
+- **TDD rule**: Tests MUST be written and confirmed failing BEFORE any implementation code
 - No task is complete unless every acceptance criterion is PASS
 - Verifiers judge current code and current command results, not prior chat claims
 - Every QA verification uses a FRESH subagent session (ID differs from engineer's)
@@ -226,19 +243,26 @@ First-found-wins, never merge. Empty files treated as absent.
 |  | (TASK-001..N, ordered)           |    spec into tasks   |
 |  +---------------+------------------+                     |
 |                  |                                         |
-|  +----------------------------------+                     |
+|  +----------------------------------+  (TDD RED PHASE)     |
+|  | .agent/tasks/<TASK_ID>/          | <- qa writes tests   |
+|  |   tests-manifest.md              |    using grill-me    |
+|  |   test-*.ext (test files)        |    BEFORE any code   |
+|  +---------------+------------------+                     |
+|                  |                                         |
+|  +----------------------------------+  (TDD GREEN PHASE)   |
 |  | .agent/tasks/<TASK_ID>/          | <- engineer          |
-|  |   evidence.md + evidence.json    |    implements +      |
-|  +---------------+------------------+    packs evidence    |
+|  |   evidence.md + evidence.json    |    implements to     |
+|  +---------------+------------------+    make tests pass   |
 |                  |                                         |
 |  +----------------------------------+                     |
 |  | reviewer: APPROVED/REJECTED      | <- reviewer audits   |
 |  +---------------+------------------+                     |
 |                  |                                         |
-|  +----------------------------------+                     |
+|  +----------------------------------+  (TDD VERIFY PHASE)  |
 |  | .agent/tasks/<TASK_ID>/          | <- qa verifies in    |
 |  |   verdict.json                   |    fresh session     |
-|  +---------------+------------------+                     |
+|  +---------------+------------------+    using test-first   |
+|                  |                     tests               |
 |                  | (if FAIL)                               |
 |                  v                                         |
 |  +----------------------------------+                     |
@@ -247,8 +271,8 @@ First-found-wins, never merge. Empty files treated as absent.
 |                  | (re-verify)                             |
 |                  v                                         |
 |  +----------------------------------+                     |
-|  | @commiter commits                | <- conventional      |
-|  +---------------+------------------+    commit            |
+|  | @commiter commits                | <- scoped commit    |
+|  +---------------+------------------+                     |
 |                  |                                         |
 |  +----------------------------------+                     |
 |  | reflector — post-mortem analysis | <- feedback loop     |
@@ -262,32 +286,61 @@ First-found-wins, never merge. Empty files treated as absent.
 |-------|---------|-------------|
 | **@architector** | Write .spec.md, iterate with user via `question`, use @explorer for research; load relevant skills from `<available_skills>` | Execute tasks, implement code, plan task decomposition |
 | **@plan** | Decompose spec into atomic tasks, assign Required Skills, produce `.plans/<feature-name>/plan.md`; load relevant skills from `<available_skills>` | Write specs, implement code, modify production files |
-| **@build** | Implement tasks directly OR delegate to @engineer with skill list; orchestrate @reviewer/@qa/@fixer gates; load relevant skills from `<available_skills>` | Plan or decompose tasks; skip quality gates |
+| **@build** | Delegate test-first to @qa (grill-me), then delegate to @engineer with tests as criteria; orchestrate @reviewer/@qa/@fixer gates; load relevant skills from `<available_skills>` | Plan or decompose tasks; skip test-first phase; skip quality gates |
 | @explorer | Research unknowns, provide evidence-based findings; load relevant skills from `<available_skills>` | Modify any files (except research_report.md) |
 | @engineer | Load relevant skills from `<available_skills>` before work; implement tasks per spec, self-verify, produce evidence artifacts | Add features not in the spec; skip evidence packing |
 | @reviewer | Load relevant skills from `<available_skills>` before audit; audit spec compliance, verify signatures/types via LSP, follow output contract format | Implement fixes for found issues |
-| @qa | Load relevant skills from `<available_skills>` before verification; test against Verification Contract, use FRESH session, produce verdict.json | Modify production code; reuse engineer's session |
+| @qa | Load `grill-me` skill + testing skills for test-first design; write tests before implementation; verify against Verification Contract; use FRESH session; produce tests-manifest.md + verdict.json | Modify production code; reuse engineer's session; skip grill-me during test-first phase |
 | @fixer | Load relevant skills from `<available_skills>` before fixing; make smallest safe fix, refresh evidence artifacts | Refactor or improve unrelated code; change scope |
 | @reflector | Load relevant skills from `<available_skills>` for analysis; analyze failures, categorize spec ambiguities (received from @build), suggest improvements | Directly modify code or specs |
 | @commiter | Load relevant skills from `<available_skills>` before committing; stage explicit paths, produce conventional commit messages | Stage with `git add -A`; commit --no-verify; modify production code |
 
-## Delegation Protocol
+## Delegation Protocol (TDD)
 
-When delegating tasks, use this structured format:
+When delegating tasks, always follow TDD order: test-first → implement → verify.
+
+### Phase 1: Test Design (to @qa)
+
+```
+@qa design-tests for task: [task-id from plan]
+Spec reference: [path to .spec.md, Verification Contract section]
+Skill to load: grill-me (mandatory — for spec stress-testing)
+Mode: test-first (no implementation exists yet)
+VCs to cover: [list of Verification Contract IDs]
+Test output path: [where to write tests]
+```
+
+### Phase 2: Implementation (to @engineer)
 
 ```
 @engineer implement task: [task-id from plan]
 Context: [spec section reference]
 Files to modify: [list of files]
 Skills to load: [from Required Skills field in plan]
+Tests to satisfy: [path to test files from Phase 1]
 Requirements: [specific, actionable instructions]
-Acceptance criteria: [checklist]
+Acceptance criteria: [checklist — MUST include "all pre-written tests pass"]
 Constraints: [what NOT to do, performance requirements, etc.]
+```
+
+### Phase 3: Verification (to @qa)
+
+```
+@qa verify task: [task-id from plan]
+Spec reference: [path to .spec.md, Verification Contract section]
+Test files: [paths to tests from Phase 1]
+Implementation summary: [what the engineer implemented]
 ```
 
 > **Skill Isolation**: Skills loaded for a task are scoped to the subagent invocation and auto-clear on exit.
 
 ## Quality Standards (Enforced by Build Agent)
+
+### TDD Discipline
+- **Tests first**: No implementation code is written before tests exist and are confirmed failing (red phase)
+- **grill-me required**: Test design MUST use the `grill-me` skill to stress-test the spec and uncover edge cases
+- **Test failure proof**: The test-first phase MUST produce evidence that tests fail against no implementation
+- **Tests as spec**: Pre-written tests are the primary acceptance criteria for implementation
 
 ### Code Quality
 - Interfaces first -- define contracts before implementations
