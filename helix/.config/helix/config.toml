@@ -1,9 +1,15 @@
-theme = "noir"
+theme = "nord"
 
 [editor]
 line-number = "relative"
 true-color = true
 bufferline = "multiple"
+
+[editor.file-picker]
+git-ignore = false
+git-global = true
+git-exclude = true
+hidden = false
 
 [editor.soft-wrap]
 enable = true

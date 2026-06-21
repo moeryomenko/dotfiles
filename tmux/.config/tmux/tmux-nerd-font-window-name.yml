@@ -3,5 +3,6 @@ config:
 
 icons:
   nvim: ""
+  helix: ""
   resterm: ""
   opencode: "󰟍"

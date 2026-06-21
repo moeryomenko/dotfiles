@@ -6,7 +6,8 @@ if test -S ~/.gnupg/S.gpg-agent
 end
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
-set -Ux EDITOR nvim
+set -Ux EDITOR helix
+set -Ux VISUAL helix
 set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
