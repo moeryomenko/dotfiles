@@ -1,4 +1,4 @@
-require("colors.noir").setup()
+require("colors.nord").setup()
 require("core.options")
 require("core.functions")
 require("core.keymaps")
