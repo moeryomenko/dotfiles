@@ -3,4 +3,5 @@ config:
 
 icons:
   nvim: ""
+  helix: ""
   resterm: ""

@@ -1,3 +1,3 @@
 alias v='nvim'
-alias y='EDITOR=helix yazi'
+alias y='EDITOR=hx yazi'
 alias jf='job-select'

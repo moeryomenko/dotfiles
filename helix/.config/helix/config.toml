@@ -1,7 +1,13 @@
-theme = "tokyonight_storm"
+theme = "nord"
 
 [editor]
 line-number = "relative"
+
+[editor.file-picker]
+git-ignore = false
+git-global = true
+git-exclude = true
+hidden = false
 
 [editor.soft-wrap]
 enable = true
