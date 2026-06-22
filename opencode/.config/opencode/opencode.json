@@ -8,6 +8,16 @@
     "./plugins/revdiff-plan-review.ts"
   ],
   "mcp": {
+    "semble": {
+      "command": [
+        "uvx",
+        "--from",
+        "semble[mcp]",
+        "semble"
+      ],
+      "type": "local",
+      "enabled": true
+    },
     "mcp-dap-server": {
       "type": "local",
       "command": [
