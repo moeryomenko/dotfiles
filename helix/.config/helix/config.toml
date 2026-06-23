@@ -69,6 +69,8 @@ cursor-line = "warning"
 "q" = "record_macro"                 # Start recording (q<register>, Vim style)
 "Q" = "replay_macro"                 # Play back macro (Vim style)
 
+"C-a" = ":! echo $(realpath %{buffer_name}) | wl-copy"
+
 [keys.select]
 # ---- Line navigation (Vim style, extend) ----
 "0" = "extend_to_line_start"
