@@ -1,0 +1,44 @@
+[general]
+font-sans = "Cascadia Code"
+tearing-mode = true
+
+[bar]
+scale = 0.6000000238418579
+bg = "bg-base"
+
+[[bar.layout]]
+monitor = "*"
+show = true
+left = ["dashboard"]
+center = ["clock"]
+right = [
+    "media",
+    "bluetooth",
+    "network",
+    "microphone",
+    "volume",
+    "systray",
+]
+
+[styling.palette]
+bg = "#2e3440"
+surface = "#3b4252"
+elevated = "#434c5e"
+fg = "#eceff4"
+fg-muted = "#d8dee9"
+primary = "#88c0d0"
+red = "#bf616a"
+yellow = "#ebcb8b"
+green = "#a3be8c"
+blue = "#81a1c1"
+
+[modules.dashboard]
+border-show = true
+dropdown-lock-command = "hyprlock"
+
+[wallpaper]
+engine-enabled = false
+cycling-directory = "/home/eryoma/pictures/wallpapers"
+cycling-mode = "shuffle"
+cycling-interval-mins = 1
+cycling-same-image = true
