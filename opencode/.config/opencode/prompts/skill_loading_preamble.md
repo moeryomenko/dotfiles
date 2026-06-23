@@ -51,8 +51,3 @@ Before loading any skill, check for project-specific and user-specific overrides
 3. Use bundled default from skill directory
 
 Resolution is first-found-wins, never merged. Empty files are treated as absent.
-
-## Before Starting Work
-
-- Review `prompts/plugin_awareness.md` — For available plugins
-- Scan `<available_skills>` in your system prompt — For available skills

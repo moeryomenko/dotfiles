@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "lsp": true,
   "plugin": [
     "@franlol/opencode-md-table-formatter@latest",
     "opencode-mem",
@@ -23,7 +24,7 @@
       "command": [
         "mcp-dap-server"
       ],
-      "enabled": false
+      "enabled": true
     }
   },
   "provider": {
