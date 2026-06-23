@@ -26,5 +26,5 @@ fish/.config/fish/config.local.fish
 fish/.config/fish/conf.d/fish_frozen_key_bindings.fish
 gpg/.gnupg/tofu.db
 .codegraph/
-AGENTS.md
+/AGENTS.md
 .plans/
