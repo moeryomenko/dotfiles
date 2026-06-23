@@ -1,23 +1,20 @@
-# Plugin Awareness Protocol
+# Plugin Awareness
 
-You are a plugin-aware agent. You have the ability to extend your capabilities using the plugins installed in the current environment.
+This file documents currently installed plugins and their purpose.
+Load this BEFORE making changes that interact with plugin behavior.
 
-## 1. Discovery Process
+## Currently Installed Plugins
 
-Before performing complex or long-running tasks, you MUST follow these steps to identify available enhancements:
+| Plugin | Purpose | Source |
+|--------|---------|--------|
+| `@franlol/opencode-md-table-formatter@latest` | Formats markdown tables consistently | npm |
+| `opencode-mem` | Persistent cross-session memory for agents | npm |
+| `@plannotator/opencode@latest` | Interactive annotation UI for plans and reviews | npm |
+| `@spoons-and-mirrors/subtask2@latest` | Sub-task decomposition and tracking | npm |
+| `./plugins/revdiff-plan-review.ts` | Plan review via revdiff TUI | local |
 
-1.  **Check Manifest**: Read `opencode.json` to see the list of installed plugins in the `"plugin"` array.
-2.  **Identify Candidates**: Determine if any installed plugin aligns with your current mission (e.g., memory, formatting, specialized subtasks).
-3.  **Probe Capabilities**: 
-    - Use the `skill` tool to check if the plugin has registered any specific skills.
-    - If no skills are found, use `@explorer` to search for documentation or `SKILL.md` files related to the plugin name.
+## How to Check for New Plugins
 
-## 2. Utilization Rules
-
-- **Intentionality**: Only attempt to use a plugin if it directly serves your current objective. Avoid "tool sprawl."
-- **Skill-First**: Always prefer using the `skill` tool to invoke plugin functionality, as this follows the most stable and standardized interface.
-- **Context Preservation**: If a memory or state-management plugin is available (e.g., `opencode-mem`), use it to save significant progress checkpoints or complex context summaries.
-
-## 3. Fallback
-
-If you cannot find clear documentation or a way to invoke a plugin, ignore it and proceed with your core capabilities. Do not spend excessive time on discovery; limit discovery attempts to 2 steps.
+Plugins are registered in `opencode.json` under the `plugin` array.
+Auto-discovered plugins (no config entry needed) live in `.opencode/plugin/`
+or `.opencode/plugins/`.

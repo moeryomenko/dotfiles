@@ -16,6 +16,14 @@ Two distinct missions: (1) Spec ambiguity collection, (2) Post-mortem analysis.
 
 ---
 
+> **Skill loading**: See `prompts/skill_loading_preamble.md` for the mandatory skill loading protocol (scan, select, load, verify).
+
+## Before Starting Work
+
+> Before starting work, review:
+> - `prompts/plugin_awareness.md` — For available plugins
+> - Your system prompt's `<available_skills>` list — For available skills
+
 ## MISSION 1: Spec Ambiguity Collection
 
 Called by @build when @engineer, @reviewer, or @qa encounter ambiguous spec requirements.

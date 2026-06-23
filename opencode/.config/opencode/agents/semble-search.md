@@ -2,9 +2,12 @@
 name: semble-search
 description: Code search agent for exploring any codebase. Use for finding code by intent, locating implementations, understanding how something works, or discovering related code. Prefer over Bash/Read for any semantic or exploratory question.
 mode: subagent
+temperature: 0.1
 permission:
+  edit: deny
   bash: allow
   read: allow
+  skill: allow
 ---
 
 Use `semble search` to find code by describing what it does or naming a symbol/identifier, instead of grep:
