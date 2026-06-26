@@ -138,20 +138,20 @@ issues:
 | `fatcontext` | `t.Fatal` in goroutines |
 | `tenv` | `os.Setenv` → `t.Setenv` |
 
-## Core Guidelines vs Tools
+## Linter Coverage by Concern
 
-| Core Guideline Rule | Detection Tool |
-|---|---|
-| F.1: meaningful packages | `revive` (package-comments) |
-| SF.2: `gofmt` | `gofmt` |
-| ES.5: no scope shadow | `govet` (-shadow) |
-| I.3: unique interface names | Manual review |
+| Concern | Tool |
+|---------|------|
+| Package naming & documentation | `revive` (package-comments) |
+| Formatting (`gofmt`) | `gofmt` / `goimports` |
+| Variable shadowing | `govet` (-shadow) |
+| Unique interface names | Manual review |
 | Enum size optimization | Manual review |
-| P.8: deterministic init | `gochecknoinits` |
-| ES.7: minimal scope | `gocritic` (paramTypeCombine) |
-| Perf.5: move invariants | Manual review |
-| DRY: no repetition | `dupl` |
-| Any: zero-value readiness | Manual review |
+| Deterministic initialization | `gochecknoinits` |
+| Minimal variable scope | `gocritic` (paramTypeCombine) |
+| Performance invariants | Manual review |
+| Duplicate code | `dupl` |
+| Zero-value readiness | Manual review |
 
 ## CI Integration
 

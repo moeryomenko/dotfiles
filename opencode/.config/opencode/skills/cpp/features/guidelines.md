@@ -4,72 +4,69 @@ Entry point for C++ Core Guidelines (Stroustrup/Sutter). Routes to domain-specif
 
 ## Section Overview
 
-| Section | Topic | Rules | Feature |
-|---------|-------|-------|---------|
-| **P** | Philosophy | 13 | -- (inlined here) |
-| **I** | Interfaces | 16 | `interfaces` |
-| **F** | Functions | 43 | `functions` |
-| **C** | Classes | 100+ | `classes` |
-| **Enum** | Enumerations | 8 | `enumerations` |
-| **R** | Resource management | 21 | `resource-management` |
-| **ES** | Expressions/statements | 58 | `expressions` |
-| **Per** | Performance | 20 | `performance` |
-| **CP** | Concurrency | 38 | `concurrency` |
-| **E** | Error handling | 21 | `error-handling` |
-| **Con** | Constants | 5 | `constants` |
-| **T** | Templates | 53 | `templates` |
-| **CPL** | C-style | 3 | `modernize` |
-| **SF** | Source files | 14 | `source-files` |
-| **SL** | Standard Library | -- | (std lib usage) |
+| Section | Topic | Feature |
+|---------|-------|---------|
+| **P** | Philosophy | -- (inlined here) |
+| **I** | Interfaces | `interfaces` |
+| **F** | Functions | `functions` |
+| **C** | Classes | `classes` |
+| **Enum** | Enumerations | `enumerations` |
+| **R** | Resource management | `resource-management` |
+| **ES** | Expressions/statements | `expressions` |
+| **Per** | Performance | `performance` |
+| **CP** | Concurrency | `concurrency` |
+| **E** | Error handling | `error-handling` |
+| **Con** | Constants | `constants` |
+| **T** | Templates | `templates` |
+| **CPL** | C-style | `modernize` |
+| **SF** | Source files | `source-files` |
+| **SL** | Standard Library | -- (std lib usage) |
 
 ## Philosophy (P section)
 
 Core principles guiding all rules:
 
-1. **P.1** Express ideas directly in code — code should communicate intent
-2. **P.2** Write in ISO Standard C++ — avoid compiler-specific extensions
-3. **P.3** Express intent — comments explain why, not what
-4. **P.4** Ideally, a program should be statically type safe
-5. **P.5** Prefer compile-time checking to run-time checking
-6. **P.6** What cannot be checked at compile time should be checkable at runtime
-7. **P.7** Catch early: compile time, then link time, then runtime
-8. **P.8** Don't leak any resources — use RAII for everything
-9. **P.9** Don't waste time or space — pay only for what you use
-10. **P.10** Prefer immutable data to mutable data — const by default
-11. **P.11** Encapsulate messy constructs rather than spreading them
-12. **P.12** Use supporting tools as appropriate — clang-tidy, sanitizers, etc.
-13. **P.13** Use libraries whenever possible — don't reinvent the wheel
+1. **Express ideas directly in code** — code should communicate intent
+2. **Write in ISO Standard C++** — avoid compiler-specific extensions
+3. **Express intent** — comments explain why, not what
+4. **Prefer statically type safe programs**
+5. **Prefer compile-time checking to run-time checking**
+6. **What cannot be checked at compile time should be checkable at runtime**
+7. **Catch early**: compile time, then link time, then runtime
+8. **Don't leak resources** — use RAII for everything
+9. **Don't waste time or space** — pay only for what you use
+10. **Prefer immutable data to mutable data** — const by default
+11. **Encapsulate messy constructs** rather than spreading them
+12. **Use supporting tools** — clang-tidy, sanitizers, etc.
+13. **Use libraries whenever possible** — don't reinvent the wheel
 
 ### Applying Philosophy
 
 The philosophy sections guide high-level design decisions:
 
 ```cpp
-// P.1 violation: intent obscured
+// Intent obscured
 auto r = some_obj - another_obj;
-// What does subtraction mean? Is it a difference? Removal? Distance?
 
-// P.1 compliant: intent explicit
+// Intent explicit
 auto distance = compute_distance(some_obj, another_obj);
 ```
 
 ```cpp
-// P.4 violation: type-unsafe interface
-void process(void* data, int type_tag);  // Caller must get type_tag right
+// Type-unsafe interface
+void process(void* data, int type_tag);
 
-// P.4 compliant: strongly typed
+// Strongly typed
 template<typename T>
-void process(T&& data);  // Compiler ensures type correctness
+void process(T&& data);
 ```
 
 ```cpp
-// P.10 violation: mutable by default
+// Mutable by default — risky
 std::string name = "hello";
-// 50 lines later: name modified by mistake
 
-// P.10 compliant: const by default
+// Const by default — safe
 const std::string name = "hello";
-// Compiler error if someone tries to modify
 ```
 
 ## Quick Consultation Decision Tree
@@ -90,9 +87,6 @@ What are you doing?
   |     +-- Live debugging (GDB, STL inspection): load debug
   |
   +-- Setting up tooling: load clang-tidy
-  |
-  +-- Need specific guideline section:
-  |     Match section letter above, load the corresponding feature
   |
   +-- Cross-cutting concern: load guidelines (this file) + relevant features
 ```

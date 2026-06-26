@@ -200,8 +200,8 @@ captains = map[string]string{"Kirk": "James Tiberius"}
 
 ## Style Rules Summary
 
-| Rule | Guideline |
-|------|-----------|
+| Aspect | Guideline |
+|--------|-----------|
 | Line length | No fixed limit (Google). Soft 99 chars (Uber). |
 | Case | `MixedCaps` / `mixedCaps`, never snake_case |
 | Package names | Lowercase, no underscores, not plural |

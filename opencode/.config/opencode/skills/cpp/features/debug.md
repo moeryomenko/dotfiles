@@ -90,8 +90,6 @@ evaluate(expression="vec._M_impl._M_end_of_storage - vec._M_impl._M_start")  // 
 
 ### VTable and Polymorphism Debugging
 
-When objects behave incorrectly through base class pointers:
-
 ```json
 // Check vtable pointer
 evaluate(expression="*(void**)obj")
@@ -134,41 +132,31 @@ evaluate(expression="e.what()")  // When caught
 ### 1. Dangling Reference/Pointer
 
 ```cpp
-// Bug: reference to local
 const string& get_name() { return local_name; }
-
-// Debug: check if pointer is valid
-// evaluate(expression="(void*)ptr")  // Should not be 0x0 or garbage
-// evaluate(expression="ptr->type_info")  // Crash if dangling
+// Debug: evaluate(expression="(void*)ptr")  // Should not be 0x0 or garbage
+// Debug: evaluate(expression="ptr->type_info")  // Crash if dangling
 ```
 
 ### 2. STL Iterator Invalidated
 
 ```cpp
-// Bug: iterator used after erase
 auto it = vec.erase(it);  // Old it invalid
-
-// Debug: check iterator state
-// evaluate(expression="it._M_current")
-// evaluate(expression="vec.end()._M_current")
+// Debug: evaluate(expression="it._M_current")
+// Debug: evaluate(expression="vec.end()._M_current")
 ```
 
 ### 3. Smart Pointer Cycle
 
 ```cpp
-// Bug: shared_ptr cycle
-// evaluate(expression="ptr.use_count()")  // > 1 when should be 0
-// evaluate(expression="weak_ptr.lock()")  // nullptr if expired
+// Debug: evaluate(expression="ptr.use_count()")  // > 1 when should be 0
+// Debug: evaluate(expression="weak_ptr.lock()")  // nullptr if expired
 ```
 
 ### 4. Exception Swallowed
 
 ```cpp
-// Bug: empty catch block
 catch(...) {}  // Swallows everything
-
-// Debug: set breakpoint on throw
-breakpoint(function="__cxa_throw")
+// Debug: set breakpoint on __cxa_throw
 ```
 
 ## Thread Debugging
@@ -190,11 +178,9 @@ evaluate(expression="lock.owns_lock()")
 ### Use-After-Free Detection
 
 ```json
-// Check if memory is freed
 evaluate(expression="(void*)ptr")
 // If address looks valid but access crashes, likely use-after-free
 
-// Enable GDB catchpoints
 breakpoint(function="operator delete(void*)")
 breakpoint(function="free")
 ```
@@ -202,7 +188,6 @@ breakpoint(function="free")
 ### Double-Free Detection
 
 ```json
-// Track deletions
 breakpoint(function="operator delete(void*)")
 // When hit, check if ptr was already freed
 evaluate(expression="ptr")
@@ -232,23 +217,19 @@ Look for:
 ### Watchpoints
 
 ```json
-// Watch variable changes
 breakpoint(function="*(&my_var)")  // Hardware watchpoint
 ```
 
 ### Conditional Breakpoints
 
 ```json
-// Break when condition met
 breakpoint(function="process", condition="index == 42")
 ```
 
 ### Reverse Debugging (if enabled)
 
 ```json
-// Record execution
 evaluate(expression="record")
-// Go backwards
 step(mode="reverse")
 ```
 

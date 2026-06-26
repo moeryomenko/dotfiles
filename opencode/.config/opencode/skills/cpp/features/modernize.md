@@ -18,11 +18,11 @@ Patterns for upgrading legacy C++98/03 code to C++11/14/17/20, replacing C-style
 ### Make_Shared Exception Safety
 
 ```cpp
-// BAD: leak if other allocation throws
+// Leak if other allocation throws
 shared_ptr<Widget> sp(new Widget(compute_a(), compute_b()));
 // If compute_b() throws after new Widget, the Widget leaks
 
-// GOOD: make_shared is atomic
+// make_shared is atomic
 auto sp = make_shared<Widget>(compute_a(), compute_b());
 ```
 
@@ -37,22 +37,19 @@ auto sp = make_shared<Widget>(compute_a(), compute_b());
 | `lock_guard` on one mutex | `scoped_lock` for multiple | `modernize-use-scoped-lock` | Safe |
 | `typedef` | `using` | `modernize-use-using` | Safe |
 | `std::result_of` | `std::invoke_result` | `modernize-type-traits` | Safe |
-| manual string::find | `string::starts_with` / `ends_with` (C++20) | Manual | Safe |
 
 ### Scoped Lock Example
 
 ```cpp
-// BAD: separate lock_guard calls (deadlock risk)
+// Separate lock_guard calls (deadlock risk)
 void transfer(Account& a, Account& b, int amount) {
     lock_guard<mutex> lk1(a.mtx);
     lock_guard<mutex> lk2(b.mtx);
-    // If another thread calls transfer(b, a, ...), deadlock
 }
 
-// GOOD: scoped_lock uses deadlock-avoidance algorithm
+// scoped_lock uses deadlock-avoidance algorithm
 void transfer(Account& a, Account& b, int amount) {
     scoped_lock lk(a.mtx, b.mtx);
-    // Safe: lock both with deadlock avoidance
 }
 ```
 
@@ -64,17 +61,16 @@ void transfer(Account& a, Account& b, int amount) {
 | `auto` without type | constrained concepts | `modernize-use-constraints` | Manual |
 | C arrays | `std::array` | `modernize-avoid-c-arrays` | Safe |
 | `setjmp`/`longjmp` | exceptions | `modernize-avoid-setjmp-longjmp` | Manual |
-| `struct A { A(const A&) = delete; }` | no special members | Manual | Safe |
 
 ### Concepts vs SFINAE
 
 ```cpp
-// BAD: SFINAE-based constraint (hard to read, slow to compile)
+// SFINAE-based constraint (hard to read, slow to compile)
 template<typename T,
     enable_if_t<is_integral_v<T> && is_signed_v<T>, int> = 0>
 T abs(T v) { return v < 0 ? -v : v; }
 
-// GOOD: concept-based constraint (clear, fast compilation)
+// Concept-based constraint (clear, fast compilation)
 template<std::signed_integral T>
 T abs(T v) { return v < 0 ? -v : v; }
 ```
@@ -82,27 +78,27 @@ T abs(T v) { return v < 0 ? -v : v; }
 ## Loop Modernization
 
 ```cpp
-// BAD: index loop (error-prone, verbose)
+// Index loop (error-prone, verbose)
 for (int i = 0; i < static_cast<int>(v.size()); ++i) {
     use(v[i]);
 }
 
-// GOOD: range-for (clear, no index bugs)
+// Range-for (clear, no index bugs)
 for (const auto& x : v) {
     use(x);
 }
 
-// GOOD: algorithm (functional style)
+// Algorithm (functional style)
 for_each(begin(v), end(v), [](const auto& x) { use(x); });
 
-// BAD: manual find
+// Manual find
 auto it = v.begin();
 for (; it != v.end(); ++it) {
     if (*it == target) break;
 }
 if (it != v.end()) process(it);
 
-// GOOD: standard algorithm
+// Standard algorithm
 auto it = find(begin(v), end(v), target);
 if (it != end(v)) process(it);
 ```
@@ -110,57 +106,32 @@ if (it != end(v)) process(it);
 ## Function Modernization
 
 ```cpp
-// BAD: C-style cast, no type safety
+// C-style cast, no type safety
 int x = (int)f;
 const char* msg = (const char*)buffer;
 
-// GOOD: named cast, compiler-verified
-int x = static_cast<int>(f);       // compile-time checked
+// Named cast, compiler-verified
+int x = static_cast<int>(f);
 const char* msg = static_cast<const char*>(buffer);
-
-// BAD: varargs (no type safety)
-void log(const char* fmt, ...);
-
-// GOOD: variadic templates (type-safe)
-template<typename... Args>
-void log(format_string<Args...> fmt, Args&&... args);
-
-// BAD: manual NULL check
-if (ptr == NULL) return;
-
-// GOOD: nullptr
-if (ptr == nullptr) return;
 ```
 
 ## Override and Final
 
 ```cpp
-// BAD: no override specifier (silent bug if base changes)
+// No override specifier (silent bug if base changes)
 class Derived : Base {
     void foo() { }  // Might not override — no compiler error
 };
 
-// GOOD: explicit override (compiler verifies)
+// Explicit override (compiler verifies)
 class Derived : Base {
     void foo() override { }  // Compiler error if base doesn't have virtual foo()
-};
-
-// BAD: overloading in derived class hides base overloads
-class Derived : Base {
-    void foo(int) { }
-    // Base::foo() is now hidden
-};
-
-// GOOD: using declaration exposes base overloads
-class Derived : Base {
-    using Base::foo;
-    void foo(int) { }
 };
 ```
 
 ## Workflow
 
-1. **Run clang-tidy --fix** with `modernize-*` checks to automated 80% of migrations
+1. **Run clang-tidy --fix** with `modernize-*` checks to automate 80% of migrations
 2. **Review auto-fixes** — most are safe, but some need manual validation:
    - `modernize-use-auto`: can make code less readable
    - `modernize-use-trailing-return-type`: style preference
@@ -168,13 +139,13 @@ class Derived : Base {
 3. **Compile and run tests** after each batch of fixes
 4. **Iterate** on remaining issues — some need deeper refactoring
 
-## CPL: Prefer C++ to C
+## Prefer C++ to C (CPL Section)
 
-| Rule | Guideline | Action |
-|------|-----------|--------|
-| CPL.1 | Prefer C++ to C | Use C++ standard library, not C stdlib |
-| CPL.2 | If C needed, use common subset compiled as C++ | extern "C" for linkage, C++ semantics internally |
-| CPL.3 | If C interfaces needed, use C++ in calling code | Wrap C APIs in C++ RAII classes |
+| Guideline | Action |
+|-----------|--------|
+| Prefer C++ to C | Use C++ standard library, not C stdlib |
+| If C needed, use common subset compiled as C++ | extern "C" for linkage, C++ semantics internally |
+| If C interfaces needed, use C++ in calling code | Wrap C APIs in C++ RAII classes |
 
 ### C to C++ Migration Patterns
 
