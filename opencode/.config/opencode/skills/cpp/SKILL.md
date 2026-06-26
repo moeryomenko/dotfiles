@@ -1,6 +1,6 @@
 ---
 name: cpp
-description: Complete C++ development skill — Core Guidelines, clang-tidy, modernization, debugging, and crash diagnosis. Load automatically when working on C++ projects.
+description: C++ development skill — Core Guidelines, clang-tidy, modernization, debugging, and crash diagnosis. Load automatically when working on C++ projects.
 invocation_policy: automatic
 ---
 

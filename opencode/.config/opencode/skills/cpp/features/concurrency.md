@@ -4,19 +4,19 @@ Guidelines for multi-threaded programming, locks, atomics, and coroutines.
 
 ## Fundamental Principles
 
-1. **Assume multi-threaded** (CP.1): all code may run in a concurrent context
-2. **Avoid data races** (CP.2): two threads accessing same non-atomic variable, at least one writes
-3. **Minimize shared writable data** (CP.3): less sharing = fewer bugs
-4. **Think in tasks, not threads** (CP.4): work with higher-level abstractions
-5. **Don't use `volatile` for synchronization** (CP.8): volatile does not provide atomicity or ordering
+1. **Assume multi-threaded**: all code may run in a concurrent context
+2. **Avoid data races**: two threads accessing same non-atomic variable, at least one writes
+3. **Minimize shared writable data**: less sharing = fewer bugs
+4. **Think in tasks, not threads**: work with higher-level abstractions
+5. **Don't use `volatile` for synchronization**: volatile does not provide atomicity or ordering
 
 ```cpp
-// BAD: volatile for synchronization
+// volatile for synchronization (broken)
 volatile bool ready = false;
 // Thread 1: ready = true;  // Not atomic, not ordered
 // Thread 2: while (!ready); // May never see the write
 
-// GOOD: atomic for synchronization
+// atomic for synchronization
 std::atomic<bool> ready{false};
 // Thread 1: ready.store(true, std::memory_order_release);
 // Thread 2: while (!ready.load(std::memory_order_acquire));
@@ -24,50 +24,49 @@ std::atomic<bool> ready{false};
 
 ## Locking (RAII Only)
 
-| Rule | Guideline | Anti-Pattern |
-|------|-----------|-------------|
-| CP.20 | Use RAII for locks | `m.lock()` / `m.unlock()` — exception-unsafe |
-| CP.21 | Multiple mutexes: `std::lock` or `scoped_lock` | Sequential `lock_guard` — deadlock risk |
-| CP.22 | Don't call unknown code under lock | Callback under lock — deadlock, inversion |
-| CP.44 | Name your lock guards | Unnamed `lock_guard` — confusing scope |
-| CP.50 | Define mutex with guarded data | Separate mutex and data — easy to forget |
+| Guideline | Anti-Pattern |
+|-----------|-------------|
+| Use RAII for locks | `m.lock()` / `m.unlock()` — exception-unsafe |
+| Multiple mutexes: `std::lock` or `scoped_lock` | Sequential `lock_guard` — deadlock risk |
+| Don't call unknown code under lock | Callback under lock — deadlock, inversion |
+| Name your lock guards | Unnamed `lock_guard` — confusing scope |
+| Define mutex with guarded data | Separate mutex and data — easy to forget |
 
 ```cpp
-// BAD: manual lock/unlock (exception-unsafe)
+// Manual lock/unlock (exception-unsafe)
 std::mutex m;
 m.lock();
 do_work();      // If this throws, m stays locked
 m.unlock();
 
-// GOOD: RAII lock
+// RAII lock
 std::mutex m;
 {
     std::lock_guard<std::mutex> lk{m};
     do_work();  // Unlocked on scope exit, even on exception
 }
 
-// BAD: unnamed lock (unclear what it guards)
+// Unnamed lock (unclear what it guards)
 std::mutex m;
 {
     std::lock_guard<std::mutex>{"???"};  // Temporary, destroyed immediately
     modify_shared_data();
 }
 
-// GOOD: named lock
+// Named lock
 std::mutex m;
 {
     std::lock_guard<std::mutex> data_lock{m};
     modify_shared_data();
 }
 
-// BAD: sequential locks (deadlock risk)
+// Sequential locks (deadlock risk)
 void transfer(Account& a, Account& b, int amount) {
     std::lock_guard lk1(a.mtx);
     std::lock_guard lk2(b.mtx);
-    // If another thread calls transfer(b, a, ...), deadlock
 }
 
-// GOOD: deadlock-avoiding lock
+// Deadlock-avoiding lock
 void transfer(Account& a, Account& b, int amount) {
     std::scoped_lock lk(a.mtx, b.mtx);
     // Uses std::lock algorithm to avoid deadlock
@@ -77,7 +76,7 @@ void transfer(Account& a, Account& b, int amount) {
 ### Mutex and Data Together
 
 ```cpp
-// BAD: mutex and data are separate — easy to access data without lock
+// Mutex and data are separate — easy to access data without lock
 std::mutex mtx;
 std::vector<int> shared_data;
 
@@ -85,7 +84,7 @@ void unsafe_access() {
     shared_data.push_back(42);  // Forgot to lock mtx — data race
 }
 
-// GOOD: mutex and data are coupled
+// Mutex and data are coupled
 class SharedData {
     mutable std::mutex mtx_;
     std::vector<int> data_;
@@ -104,23 +103,23 @@ public:
 
 ## Thread Management
 
-| Rule | Guideline | Why |
-|------|-----------|-----|
-| CP.23 | Joining thread as scoped container | Ensures cleanup |
-| CP.25 | Prefer `gsl::joining_thread` | Auto-joins on destruction |
-| CP.26 | Don't `detach()` | Fire-and-forget, hard to manage |
-| CP.41 | Minimize thread creation | Expensive, prefer thread pool |
+| Guideline | Why |
+|-----------|-----|
+| Joining thread as scoped container | Ensures cleanup |
+| Prefer `gsl::joining_thread` | Auto-joins on destruction |
+| Don't `detach()` | Fire-and-forget, hard to manage |
+| Minimize thread creation | Expensive, prefer thread pool |
 
 ### JoiningThread Pattern
 
 ```cpp
-// BAD: detached thread
+// Detached thread
 void background_work() {
     std::thread t{do_work};
     t.detach();  // Process exits before thread finishes — lost work
 }
 
-// GOOD: joining thread
+// Joining thread
 class joining_thread {
     std::thread t_;
 public:
@@ -136,40 +135,35 @@ public:
 ### Condition Variables
 
 ```cpp
-// BAD: wait without predicate (spurious wakeup)
+// Wait without predicate (spurious wakeup)
 std::unique_lock lk{m};
 cv.wait(lk);  // May wake up spuriously
 
-// GOOD: wait with predicate
+// Wait with predicate
 std::unique_lock lk{m};
 cv.wait(lk, []{ return data_ready; });
-
-// Or equivalently:
-while (!data_ready) {
-    cv.wait(lk);
-}
 ```
 
 ### Atomic Usage
 
 ```cpp
-// BAD: non-atomic counter
+// Non-atomic counter (race)
 int counter = 0;
 // Thread 1: ++counter;  // Read-modify-write race
 // Thread 2: ++counter;  // Both may read 0, both write 1
 
-// GOOD: atomic counter
+// Atomic counter
 std::atomic<int> counter{0};
 // Thread 1: ++counter;  // Atomic increment
 // Thread 2: ++counter;  // Result: 2
 
-// BAD: separate atomic operations
+// Separate atomic operations (race possible)
 std::atomic<bool> flag{false};
 if (!flag.load()) {
-    flag.store(true);  // Race: two threads may both enter
+    flag.store(true);  // Race: two threads may enter
 }
 
-// GOOD: atomic exchange
+// Atomic exchange (safe)
 if (flag.exchange(true)) {  // Only one thread gets false
     // Critical section
 }
@@ -177,22 +171,22 @@ if (flag.exchange(true)) {  // Only one thread gets false
 
 ## Coroutines
 
-| Rule | Guideline | Why |
-|------|-----------|-----|
-| CP.51 | No capturing lambdas as coroutines | Lambda captures are local, coroutine outlives scope |
-| CP.52 | No locks across suspension points | Lock held during suspension blocks other threads |
-| CP.53 | No reference parameters to coroutines | References may dangle after suspension |
+| Guideline | Why |
+|-----------|-----|
+| No capturing lambdas as coroutines | Lambda captures are local, coroutine outlives scope |
+| No locks across suspension points | Lock held during suspension blocks other threads |
+| No reference parameters to coroutines | References may dangle after suspension |
 
 ```cpp
-// BAD: lock across suspension point
+// Lock across suspension point (blocks other threads)
 std::mutex m;
 std::generator<int> bad_generator() {
     std::lock_guard lk{m};
-    co_yield 1;  // m locked while suspended — BAD
+    co_yield 1;  // m locked while suspended — blocks
     co_yield 2;
 }
 
-// GOOD: lock within non-suspending section
+// Lock within non-suspending section
 std::generator<int> good_generator() {
     int val;
     {
@@ -205,17 +199,15 @@ std::generator<int> good_generator() {
 
 ## Key Clang-Tidy Checks
 
-| Check | Rule |
-|-------|------|
-| `concurrency-mt-unsafe` | CP.1-2 |
-| `modernize-use-scoped-lock` | CP.20 |
-| `bugprone-spuriously-wake-up-functions` | CP.42 |
-| `bugprone-bad-signal-to-kill-thread` | CP.26 |
-| `bugprone-signal-to-kill-thread` | CP.26 |
-| `cppcoreguidelines-no-suspend-with-lock` | CP.52 |
-| `cppcoreguidelines-avoid-capturing-lambda-coroutines` | CP.51 |
-| `cppcoreguidelines-avoid-reference-coroutine-parameters` | CP.53 |
-| `concurrency-thread-canceltype-asynchronous` | CP.26 |
+| Check | Purpose |
+|-------|---------|
+| `concurrency-mt-unsafe` | Detect thread-unsafe functions |
+| `modernize-use-scoped-lock` | Replace nested lock_guard with scoped_lock |
+| `bugprone-spuriously-wake-up-functions` | Detect missing predicate in wait |
+| `bugprone-bad-signal-to-kill-thread` | Detect dangerous thread signals |
+| `cppcoreguidelines-no-suspend-with-lock` | Detect lock held across suspension |
+| `cppcoreguidelines-avoid-capturing-lambda-coroutines` | Detect lambda captures in coroutines |
+| `cppcoreguidelines-avoid-reference-coroutine-parameters` | Detect ref params in coroutines |
 
 ## Cross-References
 

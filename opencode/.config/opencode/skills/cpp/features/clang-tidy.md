@@ -37,37 +37,37 @@ Run: `clang-tidy --fix src/**/*.cpp`
 
 ### Core Guidelines
 
-| Check | Rule | Auto-fix |
-|-------|------|----------|
-| `cppcoreguidelines-*` | All Core Guidelines | Partial |
-| `cppcoreguidelines-avoid-goto` | ES.76 | No |
-| `cppcoreguidelines-avoid-capturing-lambda-coroutines` | CP.51 | No |
-| `cppcoreguidelines-avoid-const-or-ref-data-members` | C.12 | No |
-| `cppcoreguidelines-avoid-do-while` | ES.75 | No |
-| `cppcoreguidelines-avoid-non-const-global-variables` | I.2 | No |
-| `cppcoreguidelines-avoid-reference-coroutine-parameters` | CP.53 | No |
-| `cppcoreguidelines-init-variables` | ES.20 | Yes |
-| `cppcoreguidelines-interfaces-global-init` | I.22 | No |
-| `cppcoreguidelines-macro-usage` | ES.30-33 | No |
-| `cppcoreguidelines-misleading-capture-default-by-value` | F.54 | No |
-| `cppcoreguidelines-missing-std-forward` | F.19 | No |
-| `cppcoreguidelines-no-malloc` | R.10 | Yes |
-| `cppcoreguidelines-no-suspend-with-lock` | CP.52 | No |
-| `cppcoreguidelines-owning-memory` | R.20 | No |
-| `cppcoreguidelines-prefer-member-initializer` | C.49 | Yes |
-| `cppcoreguidelines-pro-bounds-array-to-pointer-decay` | I.13 | No |
-| `cppcoreguidelines-pro-bounds-constant-array-index` | ES.55 | No |
-| `cppcoreguidelines-pro-bounds-pointer-arithmetic` | ES.42 | No |
-| `cppcoreguidelines-pro-type-const-cast` | ES.50 | No |
-| `cppcoreguidelines-pro-type-cstyle-cast` | ES.48-49 | Yes |
-| `cppcoreguidelines-pro-type-reinterpret-cast` | ES.48 | No |
-| `cppcoreguidelines-pro-type-union-access` | C.181 | No |
-| `cppcoreguidelines-pro-type-vararg` | ES.34 / F.55 | No |
-| `cppcoreguidelines-rvalue-reference-param-not-moved` | F.18 | No |
-| `cppcoreguidelines-slicing` | ES.63 | No |
-| `cppcoreguidelines-special-member-functions` | C.21 | No |
-| `cppcoreguidelines-use-enum-class` | Enum.3 | No |
-| `cppcoreguidelines-virtual-class-destructor` | C.35 / C.127 | No |
+| Check | Auto-fix |
+|-------|----------|
+| `cppcoreguidelines-*` | Partial |
+| `cppcoreguidelines-avoid-goto` | No |
+| `cppcoreguidelines-avoid-capturing-lambda-coroutines` | No |
+| `cppcoreguidelines-avoid-const-or-ref-data-members` | No |
+| `cppcoreguidelines-avoid-do-while` | No |
+| `cppcoreguidelines-avoid-non-const-global-variables` | No |
+| `cppcoreguidelines-avoid-reference-coroutine-parameters` | No |
+| `cppcoreguidelines-init-variables` | Yes |
+| `cppcoreguidelines-interfaces-global-init` | No |
+| `cppcoreguidelines-macro-usage` | No |
+| `cppcoreguidelines-misleading-capture-default-by-value` | No |
+| `cppcoreguidelines-missing-std-forward` | No |
+| `cppcoreguidelines-no-malloc` | Yes |
+| `cppcoreguidelines-no-suspend-with-lock` | No |
+| `cppcoreguidelines-owning-memory` | No |
+| `cppcoreguidelines-prefer-member-initializer` | Yes |
+| `cppcoreguidelines-pro-bounds-array-to-pointer-decay` | No |
+| `cppcoreguidelines-pro-bounds-constant-array-index` | No |
+| `cppcoreguidelines-pro-bounds-pointer-arithmetic` | No |
+| `cppcoreguidelines-pro-type-const-cast` | No |
+| `cppcoreguidelines-pro-type-cstyle-cast` | Yes |
+| `cppcoreguidelines-pro-type-reinterpret-cast` | No |
+| `cppcoreguidelines-pro-type-union-access` | No |
+| `cppcoreguidelines-pro-type-vararg` | No |
+| `cppcoreguidelines-rvalue-reference-param-not-moved` | No |
+| `cppcoreguidelines-slicing` | No |
+| `cppcoreguidelines-special-member-functions` | No |
+| `cppcoreguidelines-use-enum-class` | No |
+| `cppcoreguidelines-virtual-class-destructor` | No |
 
 ### Bug Prone
 

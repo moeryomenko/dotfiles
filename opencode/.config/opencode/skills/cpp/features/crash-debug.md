@@ -43,11 +43,8 @@ Extract immediately:
 #### Null Pointer Dereference
 
 ```json
-// Check pointer value
 evaluate(expression="ptr")
 // Output: 0x0
-
-// Find where ptr came from
 context(frameId=2)  // Check caller
 evaluate(expression="return_value_from_caller")
 ```
@@ -57,15 +54,10 @@ evaluate(expression="return_value_from_caller")
 #### Dangling Pointer
 
 ```json
-// Pointer looks valid but points to freed memory
 evaluate(expression="ptr")
 // Output: 0x555555555555 (looks valid)
-
-// Try to access - may crash or show garbage
 evaluate(expression="*ptr")
 // Garbage values or crash
-
-// Check if object was destroyed
 evaluate(expression="ptr->type_info")
 // Crash = vtable corrupted/destroyed
 ```
@@ -75,11 +67,8 @@ evaluate(expression="ptr->type_info")
 #### VTable Corruption
 
 ```json
-// Check vtable pointer
 evaluate(expression="*(void**)obj")
 // Output: 0x4242424242424242 (garbage) or 0x0
-
-// Object memory overwritten
 evaluate(expression="sizeof(*obj)")
 // Check nearby memory for buffer overflow
 ```
@@ -89,15 +78,12 @@ evaluate(expression="sizeof(*obj)")
 #### Buffer Overflow
 
 ```json
-// Crash in memset/memcpy/memmove
 context()
+// Crash in memset/memcpy/memmove
 // Stack shows: __GI_memset -> your_function
-
-// Check buffer and size
 evaluate(expression="buffer")
 evaluate(expression="size")
-evaluate(expression="buffer_size")
-// size > buffer_size = overflow
+// If size > buffer_size = overflow
 ```
 
 **Fix**: Use std::array, std::vector, bounds checking, address sanitizer.
@@ -105,14 +91,9 @@ evaluate(expression="buffer_size")
 #### Double Free
 
 ```json
-// Crash in free/delete
 context()
 // Stack shows: __GI___libc_free -> _int_free -> abort
-
-// Check what's being freed
 evaluate(expression="ptr")
-
-// Look for multiple owners
 info(kind="threads")
 // Check if another thread also frees ptr
 ```
@@ -122,13 +103,9 @@ info(kind="threads")
 #### Stack Overflow
 
 ```json
-// Very deep stack trace
 context()
 // Look for repeated frames = infinite recursion
-
-// Check stack usage
 evaluate(expression="(void*)$rsp")
-evaluate(expression="(void*)$rbp")
 evaluate(expression="(long)$rbp - (long)$rsp")  // Frame size
 ```
 
@@ -137,13 +114,9 @@ evaluate(expression="(long)$rbp - (long)$rsp")  // Frame size
 #### Bad Alloc
 
 ```json
-// std::bad_alloc caught or terminated
 context()
 // Stack shows: operator new -> __gnu_cxx::new_handler -> std::terminate
-
-// Check memory usage
 evaluate(expression="malloc_stats()")
-// Or check container sizes
 evaluate(expression="large_vector.size()")
 ```
 
@@ -152,12 +125,9 @@ evaluate(expression="large_vector.size()")
 ### 4. Walk Call Stack
 
 ```json
-// Examine each frame
 context(frameId=1)  // Crash frame
 context(frameId=2)  // Caller
 context(frameId=3)  // Grandcaller
-
-// Trace bad value back to origin
 evaluate(expression="argument_that_became_null")
 ```
 
@@ -173,14 +143,11 @@ info(kind="threads")
 
 ## Live Crash Debugging
 
-When program crashes repeatedly:
-
 ### 1. Catch Signals
 
 ```json
 debug(mode="binary", path="/abs/path/to/binary", debugger="gdb", stopOnEntry=true)
 
-// Break on signal handlers
 breakpoint(function="__GI_raise")
 breakpoint(function="abort")
 breakpoint(function="std::terminate")
@@ -196,24 +163,18 @@ continue()
 
 // When hit:
 evaluate(expression="$rdx")  // Exception type
-evaluate(expression="*(void**) $rax")  // Exception object
 context()  // Full state
 ```
 
 ### 3. Catch Memory Operations
 
 ```json
-// Track allocations
 breakpoint(function="operator new(unsigned long)")
 breakpoint(function="operator delete(void*)")
-
-// Track specific object
 breakpoint(function="*(&my_object)")  // Hardware watchpoint
 ```
 
 ## Memory Corruption Detection
-
-### Enable GDB Features
 
 ```json
 // Catch memory errors
@@ -227,10 +188,7 @@ evaluate(expression="watch suspicious_var")
 ### Check Heap Integrity
 
 ```json
-// When crash occurs
-evaluate(expression="malloc_trim(0)")  // Check for corruption
-
-// Inspect heap
+evaluate(expression="malloc_trim(0)")
 evaluate(expression="malloc_stats()")
 ```
 
