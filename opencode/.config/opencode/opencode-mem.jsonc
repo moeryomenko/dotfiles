@@ -1,0 +1,156 @@
+{
+  // ============================================
+  // OpenCode Memory Plugin Configuration
+  // ============================================
+  
+  // Storage location for vector database
+  "storagePath": "~/.opencode-mem/data",
+
+  "userEmailOverride": "",
+  "userNameOverride": "",
+  
+  // ============================================
+  // Embedding Model (for similarity search)
+  // ============================================
+  
+  // Auto-detected dimensions (no need to set manually)
+  // "embeddingDimensions": 768,
+  
+  // Optional: Use OpenAI-compatible API for embeddings
+  "embeddingApiUrl": "http://localhost:8081/v1",
+  "embeddingApiKey": "sk-123",
+  "embeddingModel": "qwen3-embedding",  // 1536 dims, auto-detected
+  
+  // ============================================
+  // Web Server Settings
+  // ============================================
+  
+  // Enable web UI for managing memories (accessible at http://localhost:4747)
+  "webServerEnabled": false,
+  
+  // Port for web UI server
+  "webServerPort": 4747,
+  
+  // Host address for web UI (use 127.0.0.1 for local only, 0.0.0.0 for network access)
+  "webServerHost": "127.0.0.1",
+  
+  // ============================================
+  // Database Settings
+  // ============================================
+  
+  // Maximum vectors per database shard (auto-creates new shard when limit reached)
+  "maxVectorsPerShard": 50000,
+  
+  // Automatically delete old memories based on retention period
+  "autoCleanupEnabled": true,
+  
+  // Days to keep memories before auto-cleanup (only if autoCleanupEnabled is true)
+  "autoCleanupRetentionDays": 30,
+  
+  // Automatically detect and remove duplicate memories
+  "deduplicationEnabled": true,
+  
+   // Similarity threshold (0-1) for detecting duplicates (higher = stricter)
+   "deduplicationSimilarityThreshold": 0.90,
+   
+  // ============================================
+  // Memory Scope Settings
+  // ============================================
+
+  // Default scope for memory list/search queries
+  // "project" keeps queries within the current project, "all-projects" searches across all project shards
+  "memory": {
+    "defaultScope": "project"
+  },
+
+  "autoCaptureEnabled": true,
+  
+  // Maximum iterations for multi-turn AI analysis (for openai-responses and anthropic)
+  "autoCaptureMaxIterations": 5,
+   
+  // Timeout per iteration in milliseconds (30 seconds default)
+  "autoCaptureIterationTimeout": 30000,
+
+  // Maximum number of times to retry capturing a prompt if it fails (due to network, API errors, etc.)
+  "autoCaptureMaxRetries": 3,
+   
+  // Days to keep AI session history before cleanup
+  "aiSessionRetentionDays": 7,
+
+  // Temperature for AI API requests (set to false to omit parameter for models that don't support it)
+  // Some reasoning models (like o1, o3, gpt-5) don't support temperature parameter
+  // Set to false and add "memoryTemperature": false in config when using such models
+  "memoryTemperature": 0.3,
+
+  // Extra parameters to include in API request body
+  // Useful for local inference servers (e.g. llama-server with --jinja) that support
+  // additional parameters like disabling thinking/reasoning mode
+  // Example for Qwen3 models: { "enable_thinking": false }
+  // "memoryExtraParams": {},
+
+  // Language for auto-capture summaries (default: "auto" for auto-detection)
+  // Options: "auto", "en", "id", "zh", "ja", "es", "fr", "de", "ru", "pt", "ar", "ko"
+  // "autoCaptureLanguage": "auto",
+
+  // ============================================
+  // Toast Notifications
+  // ============================================
+
+  // Show toast when memory is auto-captured
+  "showAutoCaptureToasts": true,
+
+  // Show toast when user profile is updated
+  "showUserProfileToasts": true,
+
+  // Show toast for error messages
+  "showErrorToasts": true,
+
+  // ============================================
+  // User Profile System
+  // ============================================
+
+  // Analyze user prompts every N prompts to build/update your user profile
+  // When N uncaptured prompts accumulate, AI will analyze them to identify:
+  // - User preferences (code style, communication style, tool preferences)
+  // - User patterns (recurring topics, problem domains, technical interests)
+  // - User workflows (development habits, sequences, learning style)
+  // - Skill level (overall and per-domain assessment)
+  "userProfileAnalysisInterval": 10,
+  
+  // Maximum number of preferences to keep in user profile (sorted by confidence)
+  // Preferences are things like "prefers code without comments", "likes concise responses"
+  "userProfileMaxPreferences": 20,
+  
+  // Maximum number of patterns to keep in user profile (sorted by frequency)
+  // Patterns are recurring topics like "often asks about database optimization"
+  "userProfileMaxPatterns": 15,
+  
+  // Maximum number of workflows to keep in user profile (sorted by frequency)
+  // Workflows are sequences like "usually asks for tests after implementation"
+  "userProfileMaxWorkflows": 10,
+  
+  // Days before preference confidence starts to decay (if not reinforced)
+  // Preferences that aren't seen again will gradually lose confidence and be removed
+  "userProfileConfidenceDecayDays": 30,
+  
+  // Number of profile versions to keep in changelog (for rollback/debugging)
+  // Older versions are automatically cleaned up
+  "userProfileChangelogRetentionCount": 5,
+  
+  // ============================================
+  // Search Settings
+  // ============================================
+  
+  // Minimum similarity score (0-1) for memory search results
+  "similarityThreshold": 0.6,
+
+  // Maximum number of memories to return in search results
+  "maxMemories": 10,
+
+  // ============================================
+  // Advanced Settings
+  // ============================================
+  
+  // Inject user profile into AI context (preferences, patterns, workflows)
+  "injectProfile": true
+}
