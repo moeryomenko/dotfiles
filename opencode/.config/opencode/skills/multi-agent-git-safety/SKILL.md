@@ -23,6 +23,20 @@ When multiple agents work in the same repository simultaneously, standard git op
 - Stage explicit paths (`git add <path1> <path2>`); never `git add -A` or `git add .`.
 - Before committing, run `git status` and verify you are only staging your files.
 
+### External Diff Safety
+- Always pass `--no-ext-diff` with every `git diff`, `git log -p`, and `git show` command.
+- External diff tools (meld, beyond compare, etc.) are designed for interactive use. In non-interactive agent environments they can hang, fail silently, or produce unparseable output.
+- `git diff --quiet` is especially vulnerable: even though no output is displayed, git may still attempt to invoke an external diff tool, causing hangs or failures in CI/agent environments.
+- Correct patterns:
+  ```bash
+  git diff --no-ext-diff
+  git diff --no-ext-diff --cached
+  git diff --no-ext-diff --staged --quiet
+  git log -p --no-ext-diff
+  git show --no-ext-diff
+  ```
+- Use `--no-ext-diff` even when you think no external diff is configured. It's a cheap safety flag that eliminates an entire class of environment-specific failures.
+
 ### Never Run (destroys other agents' work or bypasses checks)
 - `git reset --hard`
 - `git checkout .`
@@ -97,3 +111,4 @@ scripts/committer --force "msg" file1 file2
 > [Check] Only my files staged (no git add -A)
 > [Check] No destructive commands in session history
 > [Check] Scoped commit message used
+> [Check] git diff/log/show commands use --no-ext-diff

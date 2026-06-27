@@ -81,7 +81,7 @@ done
 git restore --staged :/
 git add -A -- "${files[@]}"
 
-if git diff --staged --quiet; then
+if git diff --no-ext-diff --staged --quiet; then
   printf 'Warning: no staged changes detected for: %s\n' "${files[*]}" >&2
   exit 1
 fi

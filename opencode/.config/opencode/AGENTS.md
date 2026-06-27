@@ -25,7 +25,7 @@ It is the single source of truth for cross-cutting constraints.
 
 ## 3. Skill Protocol
 
-- **MANDATORY**: Load domain-relevant skills BEFORE performing any task (see `skill_loading_preamble.md`). This is NOT optional — skills encode critical domain knowledge that ensures correctness.
+- **MANDATORY**: Load domain-relevant skills BEFORE performing any task. This is NOT optional — skills encode critical domain knowledge that ensures correctness.
 - Skills are scoped to the subagent invocation and auto-clear on exit.
 - Every skill step MUST include a verification marker after each action.
 - If a skill is not available, fall back to general capability.
