@@ -10,6 +10,16 @@
     "@prevalentware/opencode-goal-plugin"
   ],
   "mcp": {
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ],
+      "enabled": true
+    },
     "semble": {
       "command": [
         "uvx",
