@@ -1,0 +1,7 @@
+{
+  // Replace OpenCode's generic "Summarize..." prompt when no return is specified
+  "replace_generic": true,
+
+  // Custom prompt to use when replace_generic: true | optional
+  //"generic_return": "Review, challenge and verify the task tool output above against the codebase. Then validate or revise it, before continuing with the next logical step."
+}
