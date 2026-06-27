@@ -27,6 +27,7 @@ abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | gr
 abbr --add gotest "gotestsum --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -coverprofile coverage.out "
 abbr --add gotstw "gotestsum --watch --format-hide-empty-pkg -f testname -- -p=1 -count=1 -timeout=1200s -run (go list ./... | xargs -n1 go test -list . | grep ^Test | sk) ./...
 "
+abbr --add goall "go install (go version -m (go env GOPATH)/bin/* 2>/dev/null | awk '/^\tpath\t/ {print \$2}' | sort -u)@latest"
 
 # other stuff
 abbr --add check_ping "ping -c 1 -W 3 google.com"
