@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | fzf  \
-    --preview-window=right:70% \
+    --preview-window=right:60% \
     --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
     --preview "echo \"\
            {}
@@ -11,6 +11,4 @@ SHA=`git log -n 50 --pretty=format:'%h %s' --no-merges | fzf  \
 
 [ "$SHA" = "" ] && exit
 
-git commit --fixup="$SHA"
-
-GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash "$SHA^"
+git history fixup "$SHA"
