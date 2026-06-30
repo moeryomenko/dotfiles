@@ -1,0 +1,7 @@
+# Rust/Cargo tools needed by these dotfiles
+# Install: xargs -I{} sh -c 'cargo install {} || true' < pkglist-rust-tools.txt
+#
+# nvim/lsp/neocmakelsp.lua -- CMake LSP
+neocmakelsp
+# nvim/after/ftplugin/cmake.lua -- CMake formatter
+cmakefmt
