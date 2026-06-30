@@ -27,21 +27,35 @@ install_paru() {
 }
 
 # ================================================================
-# Step 2: Install official + AUR packages from pkglist.txt
+# Step 2: Install official packages from pkglist.txt
 # ================================================================
 install_pacman_packages() {
     echo "==> Installing packages from pkglist.txt..."
     local pkglist
     # Strip comments and blank lines, extract bare package names
     pkglist="$(grep -vE '^\s*(#|$)' "$DOTFILES_PKGS/pkglist.txt" | sed 's/\s*#.*//')"
-    # paru handles both official repos and AUR
     # --batch: no prompt per package when --noconfirm is effective
     echo "$pkglist" | paru -S --needed --noconfirm --batch -
     echo "    done."
 }
 
 # ================================================================
-# Step 3: Install Go tools
+# Step 3: Install AUR packages from pkglist-aur.txt
+# ================================================================
+install_aur_packages() {
+    echo "==> Installing AUR packages from pkglist-aur.txt..."
+    local aurlist
+    aurlist="$(grep -vE '^\s*(#|$)' "$DOTFILES_PKGS/pkglist-aur.txt" | sed 's/\s*#.*//')"
+    if [[ -z "$aurlist" ]]; then
+        echo "    (none)"
+        return
+    fi
+    echo "$aurlist" | paru -S --needed --noconfirm --batch -
+    echo "    done."
+}
+
+# ================================================================
+# Step 4: Install Go tools
 # ================================================================
 install_go_tools() {
     echo "==> Installing Go tools from pkglist-go-tools.txt..."
@@ -58,7 +72,7 @@ install_go_tools() {
 }
 
 # ================================================================
-# Step 4: Install Rust/Cargo tools
+# Step 5: Install Rust/Cargo tools
 # ================================================================
 install_rust_tools() {
     echo "==> Installing Rust tools from pkglist-rust-tools.txt..."
@@ -75,7 +89,7 @@ install_rust_tools() {
 }
 
 # ================================================================
-# Step 5: Install npm global packages
+# Step 6: Install npm global packages
 # ================================================================
 install_npm_packages() {
     echo "==> Installing npm global packages from pkglist-npm.txt..."
@@ -104,6 +118,8 @@ main() {
     install_paru
     echo ""
     install_pacman_packages
+    echo ""
+    install_aur_packages
     echo ""
     install_go_tools
     echo ""

@@ -1,0 +1,11 @@
+# pkglist-aur.txt -- AUR packages needed by these dotfiles
+# These packages are only available via the Arch User Repository.
+# Install:
+#   paru -S --needed - < <(grep -vE '^#|^$' pkglist-aur.txt)
+#
+# Hyprland status bar (autostart wayle panel start)
+wayle-bin
+# Diff review tool for opencode agents/tools
+revdiff
+# Unified kernel image generator for dracut
+dracut-ukify

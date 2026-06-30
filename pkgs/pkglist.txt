@@ -6,7 +6,7 @@
 #   pacman -S --needed - < <(grep -vE '^#|^$' pkglist.txt)
 #   paru -S --needed - < <(grep -vE '^#|^$' pkglist-aur.txt)
 #
-# Packages marked (AUR) need paru or another AUR helper.
+# Official packages only. AUR packages go in pkglist-aur.txt.
 
 # ================================================================
 # SHELL & TERMINAL
@@ -18,8 +18,6 @@ foot                   # alternative terminal (foot/foot.ini)
 kitty                  # alternative terminal (kitty/kitty.conf)
 tmux                   # terminal multiplexer (alacritty.toml, .tmux.conf, nvim tmux plugin)
 helix                  # primary editor (fish aliases, bash EDITOR, git editor, yazi opener)
-neovim                 # editor (nvim/ config dir, git-commands, fish aliases)
-vim                    # legacy editor (vim/ config dir)
 starship               # shell prompt (fish/config.fish, starship/ config)
 direnv                 # env loader (fish/config.fish, direnv/ config)
 zoxide                 # smart cd (fish/config.fish, bash/.bashrc alg)
@@ -102,25 +100,21 @@ hyprlock               # screen locker (hyprlock.conf, hypridle.conf lock_cmd)
 hyprlauncher           # app launcher (hyprland/lua/vars.lua menu)
 hyprsunset             # blue light filter (hyprland/lua/autostart.lua)
 # hyprls                -- Hyprland LSP (go install -- see above)
-# wayle                 # status bar (autostart wayle panel start) -- AUR: wayle-bin
 
 # ================================================================
 # WAYLAND UTILITIES
 # ================================================================
 wofi                   # app launcher (hyprland mapping.lua, wofi/ config)
-wlogout                # logout menu (waybar powermenu, hyprland/lua/mapping.lua, wlogout/ config)
 mako                   # notification daemon (hyprland/lua/autostart.lua, mako/ config)
 wl-clipboard           # clipboard (hyprland autostart wl-paste, tmux.conf wl-copy)
 cliphist               # clipboard history (hyprland autostart cliphist)
 swaybg                 # wallpaper setter (hyprland autostart wallpaper.sh, sway/bin)
-wlsunset               # night light (sway/autostart.conf)
 grim                   # screenshot (hyprland mapping.lua)
 slurp                  # region selector (hyprland mapping.lua)
 swappy                 # screenshot editor (hyprland mapping.lua, swappy/ config)
 wf-recorder            # screen recorder (hyprland mapping.lua)
 xdg-desktop-portal-hyprland # xdg portal (hyprland/bin/xdg-portal.sh)
 xdg-desktop-portal-gtk # xdg portal GTK backend (hyprland-portals.conf)
-uwsm                   # Wayland session manager (autostart)
 
 # ================================================================
 # AUDIO
@@ -130,9 +124,6 @@ pipewire-pulse         # PulseAudio compat (needed by pactl)
 wireplumber            # session manager (waybar wireplumber module)
 pavucontrol            # volume control GUI
 playerctl              # MPRIS media control (hyprland mapping.lua, hyprlock scripts)
-noise-suppression-for-voice # mic noise suppression (pipewire/99-input-noise-suppression.conf)
-ladspa                 # LADSPA plugin host (pipewire noise suppression)
-qpwgraph               # PipeWire graph manager
 
 # ================================================================
 # SYSTEM
@@ -146,7 +137,6 @@ keychain               # SSH/GPG key agent (bash/.bashrc, fish/config.local.fish
 gnupg                  # GPG (gpg/ config, git/.gitconfig gpgsign, bash/.bashrc)
 pass                   # password store (fish 00_variables.fish, himalaya)
 pacman                 # package manager (bash/.bashrc pkgclean/pkgcache aliases)
-paru                   # AUR helper (paru/ config)
 systemd                # system/service manager (wlogout layout systemctl, hypridle)
 
 # ================================================================
