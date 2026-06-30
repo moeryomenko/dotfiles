@@ -1,0 +1,267 @@
+#!/usr/bin/env fish
+
+# git hfixup - Interactive fixup workflow
+#
+# Reuses the detailed-log pattern to pick a commit, select files from it,
+# open them in editor for fixes, stash changes with commit hash,
+# and finally apply all stashes using the built-in `git history fixup`.
+#
+# Usage:
+#   git hfixup              # interactive session (pick, edit, stash, repeat)
+#   git hfixup apply        # apply all previously stashed fixups
+#
+# Workflow:
+#   1. Pick a commit from the log (fzf with preview)
+#   2. Select files changed in that commit
+#   3. Checkout files from commit into working tree
+#   4. Open editor to make fixes
+#   5. Stash changes with commit hash in message
+#   6. Repeat for more commits, or finish
+#   7. On finish: apply each stash, stage, run `git history fixup <sha>`
+
+# ──────────────────────────────────────────────
+# helpers
+# ──────────────────────────────────────────────
+
+function __hfixup_pick_commit -d "Detailed-log style commit picker, prints full SHA"
+    set -l selected (git log --no-merges --graph --color=always --abbrev=7 \
+        --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' | \
+        fzf --ansi --no-sort --reverse --tiebreak=index \
+            --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 | xargs -I % sh -c 'git show --color=always % | bat'" \
+            --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort" \
+            --preview-window=right:70%)
+    if test -z "$selected"
+        return 1
+    end
+    set -l abbrev (echo "$selected" | grep -o '[a-f0-9]\{7\}' | head -1)
+    if test -z "$abbrev"
+        return 1
+    end
+    git rev-parse "$abbrev" 2>/dev/null
+end
+
+function __hfixup_pick_files -d "Multi-select file picker from commit" --argument-names commit_hash
+    git diff-tree --no-commit-id --name-only -r $commit_hash | \
+        fzf --ansi --no-sort --reverse --tiebreak=index -m \
+            --preview "git show --color=always $commit_hash:{} 2>/dev/null | bat" \
+            --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,ctrl-a:select-all,q:abort" \
+            --preview-window=right:70% \
+            --header "Select files to edit (Tab=multi, Ctrl-a=all, Enter=confirm)"
+end
+
+function __hfixup_confirm -d "Ask yes/no question" --argument-names prompt default
+    set -l default_yes
+    set -l default_no
+    if test "$default" = "y"
+        set default_yes "Y"
+        set default_no "n"
+        set prompt "$prompt [$default_yes/$default_no] "
+    else
+        set default_yes "y"
+        set default_no "N"
+        set prompt "$prompt [$default_yes/$default_no] "
+    end
+    echo -n $prompt
+    set -l answer (read)
+    if test -z "$answer"
+        set answer $default
+    end
+    if test "$answer" = "y" -o "$answer" = "Y"
+        return 0
+    else
+        return 1
+    end
+end
+
+# ──────────────────────────────────────────────
+# apply: consume all fixup! stashes via git history fixup
+# ──────────────────────────────────────────────
+
+function __hfixup_apply -d "Apply all fixup stashes using git history fixup"
+    # Collect stashes in oldest-first order (git stash list is newest-first)
+    set -l stashes (git stash list --format='%gd %s' | grep 'fixup!' | string collect | string split \n)
+    if test (count $stashes) -eq 0
+        echo "No fixup stashes found."
+        return 0
+    end
+
+    # Reverse to apply oldest first
+    set -l ordered
+    for i in (seq (count $stashes) -1 1)
+        set ordered $ordered $stashes[$i]
+    end
+
+    set -l total (count $ordered)
+    set -l applied 0
+
+    echo "Found $total fixup stash(es) to apply."
+    echo ""
+
+    for line in $ordered
+        set -l stash_ref (echo "$line" | cut -d' ' -f1)
+        # Extract the full SHA (40 chars) from stash message
+        set -l sha (echo "$line" | grep -oE '[a-f0-9]{40}' | head -1)
+        # Fall back to any hex string of 7+ chars
+        if test -z "$sha"
+            set sha (echo "$line" | grep -oE '[a-f0-9]{7,40}' | head -1)
+        end
+        if test -z "$sha"
+            echo "Warning: Could not extract commit hash from $stash_ref, skipping."
+            continue
+        end
+
+        echo "[$applied+1/$total] Applying $stash_ref -> commit $sha"
+        echo "  message: "(echo "$line" | sed 's/^[^ ]* //')
+
+        # Apply stash (keep it in list until successful)
+        if not git stash apply $stash_ref
+            echo "  Error: git stash apply failed for $stash_ref" >&2
+            echo "  Aborting apply phase. Remaining stashes preserved." >&2
+            return 1
+        end
+
+        # Stage all changes
+        git add -A
+
+        # Apply staged changes to the target commit via built-in
+        if not git history fixup $sha
+            echo "  Error: git history fixup $sha failed" >&2
+            echo "  Changes remain in working tree. Stash preserved." >&2
+            return 1
+        end
+
+        # Success — drop the stash
+        git stash drop $stash_ref
+        set applied (math $applied + 1)
+        echo "  Done."
+        echo ""
+    end
+
+    echo "Applied $applied/$total stash(es)."
+end
+
+# ──────────────────────────────────────────────
+# main interactive session
+# ──────────────────────────────────────────────
+
+function __hfixup_main -d "Interactive fixup session"
+    # Warn about dirty working tree
+    if not git diff --no-ext-diff --quiet
+        echo "Warning: You have unstaged changes in the working tree." >&2
+        echo "  'git hfixup' will checkout files from selected commits," >&2
+        echo "  which may overwrite your local changes." >&2
+        if not __hfixup_confirm "Continue?" "n"
+            echo "Aborted."
+            return 1
+        end
+        echo ""
+    end
+
+    set -l stashed_count 0
+
+    while true
+        echo "==="
+        echo "=== Select a commit to fix (Enter=pick, q=quit session)"
+        echo "==="
+
+        set -l commit_hash (__hfixup_pick_commit)
+        if test $status -ne 0 -o -z "$commit_hash"
+            echo "No commit selected — ending fixup session."
+            break
+        end
+
+        set -l commit_subject (git log -1 --format='%s' $commit_hash)
+        set -l abbrev (git rev-parse --short $commit_hash)
+
+        echo ""
+        echo "Commit: $abbrev — $commit_subject"
+        echo ""
+
+        # ── pick files ──
+        set -l files (__hfixup_pick_files $commit_hash)
+        if test -z "$files"
+            echo "No files selected — back to commit picker."
+            echo ""
+            continue
+        end
+
+        echo "Selected files:"
+        for f in $files
+            echo "  $f"
+        end
+
+        # ── checkout from the commit ──
+        echo ""
+        echo "Checking out files from commit..."
+        for file in $files
+            git checkout --no-overlay $commit_hash -- $file
+        end
+
+        # ── open editor ──
+        set -l editor $EDITOR
+        if test -z "$editor"
+            set editor vi
+        end
+        echo "Opening files in $editor. Save and quit when done."
+        $editor $files
+
+        # ── stash if there are changes ──
+        if git diff --no-ext-diff --quiet -- $files
+            echo "No changes detected — nothing stashed."
+        else
+            set -l stash_msg "fixup! $commit_hash $commit_subject"
+            git stash push -m "$stash_msg" -- $files
+            set stashed_count (math $stashed_count + 1)
+            echo "Stashed: fixup! $abbrev ($stashed_count total)"
+        end
+
+        echo ""
+
+        # ── continue? ──
+        if not __hfixup_confirm "Fix another commit" "y"
+            break
+        end
+        echo ""
+    end
+
+    echo ""
+    echo "========================================"
+
+    if test $stashed_count -eq 0
+        echo "No stashes created. Nothing to do."
+        return 0
+    end
+
+    echo "Session complete. $stashed_count stash(es) created."
+    echo ""
+
+    if __hfixup_confirm "Apply all stashes now via git history fixup" "y"
+        echo ""
+        __hfixup_apply
+    else
+        echo "Stashes preserved. Apply later with:"
+        echo "  git hfixup apply"
+    end
+end
+
+# ──────────────────────────────────────────────
+# entry point
+# ──────────────────────────────────────────────
+
+switch (count $argv)
+    case 0
+        __hfixup_main
+    case '*'
+        switch $argv[1]
+            case apply
+                __hfixup_apply
+            case '-h' '--help'
+                echo "Usage:"
+                echo "  git hfixup          Interactive fixup session"
+                echo "  git hfixup apply    Apply all fixup stashes via git history fixup"
+            case '*'
+                echo "Unknown subcommand: $argv[1]" >&2
+                echo "Usage: git hfixup [apply]" >&2
+                exit 1
+        end
+end
