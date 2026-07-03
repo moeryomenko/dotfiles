@@ -11,6 +11,9 @@ hl.config({
     },
     sensitivity = 0,
   },
+  xwayland = {
+    force_zero_scaling = true,
+  },
 })
 
 hl.device({
