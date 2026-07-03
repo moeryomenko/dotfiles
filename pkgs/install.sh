@@ -35,7 +35,7 @@ install_pacman_packages() {
     # Strip comments and blank lines, extract bare package names
     pkglist="$(grep -vE '^\s*(#|$)' "$DOTFILES_PKGS/pkglist.txt" | sed 's/\s*#.*//')"
     # --batch: no prompt per package when --noconfirm is effective
-    echo "$pkglist" | paru -S --needed --noconfirm --batch -
+    echo "$pkglist" | paru -S --needed --noconfirm -
     echo "    done."
 }
 
@@ -50,7 +50,7 @@ install_aur_packages() {
         echo "    (none)"
         return
     fi
-    echo "$aurlist" | paru -S --needed --noconfirm --batch -
+    echo "$aurlist" | paru -S --needed --noconfirm -
     echo "    done."
 }
 
@@ -119,7 +119,7 @@ main() {
     echo ""
     install_pacman_packages
     echo ""
-    install_aur_packages
+    # install_aur_packages
     echo ""
     install_go_tools
     echo ""

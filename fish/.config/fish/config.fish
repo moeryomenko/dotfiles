@@ -16,11 +16,11 @@ zoxide init fish | source
 fx --comp fish | source
 
 if test (tty) = /dev/tty1
-	export RADV_VIDEO_DECODE=1
-	export SDL_VIDEODRIVER=wayland
-	export GDK_BACKEND=wayland
-	export XDG_SESSION_TYPE=wayland
-	export XDG_CURRENT_DESKTOP=sway
-	export MOZ_ENABLE_WAYLAND=1
-	exec start-hyprland
+    export RADV_VIDEO_DECODE=1
+    export SDL_VIDEODRIVER=wayland
+    export GDK_BACKEND=wayland
+    export XDG_SESSION_TYPE=wayland
+    export XDG_CURRENT_DESKTOP=sway
+    export MOZ_ENABLE_WAYLAND=1
+    exec start-hyprland
 end
