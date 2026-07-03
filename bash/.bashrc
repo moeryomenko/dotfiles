@@ -99,17 +99,3 @@ function _fzf_compgen_path {
 function _fzf_compgen_dir {
         fd --type=d --hidden --exclude .git . "$1"
 }
-
-eval $(keychain --eval --agents ssh -Q --quiet ~/.ssh/id_ed25519)
-eval $(keychain --eval --agents gpg --quiet --gpg2 5318919FE71A1E81)
-
-if [ -z $DISPLAY ] && [ $(tty) = /dev/tty1 ]; then
-	#export WLR_RENDERER=vulkan
-	export RADV_VIDEO_DECODE=1
-	export SDL_VIDEODRIVER=wayland
-	export GDK_BACKEND=wayland
-	export XDG_SESSION_TYPE=wayland
-	export XDG_CURRENT_DESKTOP=sway
-	export MOZ_ENABLE_WAYLAND=1
-	exec sway
-fi
