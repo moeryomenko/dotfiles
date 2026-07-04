@@ -1,10 +1,6 @@
-export XDG_CONFIG_HOME=$HOME/.config
-export GPG_TTY=$(tty)
-
 if test -S ~/.gnupg/S.gpg-agent
     set -gx GPG_AGENT_INFO ~/.gnupg/S.gpg-agent
 end
-export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 set -Ux EDITOR hx
 set -Ux VISUAL hx
@@ -24,6 +20,9 @@ fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
 
 set -gx PATH $PATH /Users/eryoma/.lmstudio/bin
+set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
+set -Ux OPENCODE_ENABLE_EXA 1
+set -gx CODEGRAPH_TELEMETRY 0
 
 set -q KREW_ROOT; and set -gx PATH $PATH $KREW_ROOT/.krew/bin; or set -gx PATH $PATH $HOME/.krew/bin
 
