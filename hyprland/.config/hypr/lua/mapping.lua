@@ -48,10 +48,8 @@ hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true }
 
 -- Screenshots / Screen Recording
 hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | swappy -f -'))
-hl.bind(vars.mainMod .. "+ Print",
-	hl.dsp.exec_cmd('wf-recorder -g "$(slurp)" -f ~/videos/screencast/recording_$(date +"%Y-%m-%d_%H:%M:%S.mp4")'))
-hl.bind(vars.mainMod .. "+ SHIFT + Print", hl.dsp.exec_cmd('killall -s SIGINT wf-recorder'))
-
+hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh'))
+hl.bind(vars.mainMod .. "+ SHIFT + R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh stop'))
 -- Audio
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),
 	{ locked = true, repeating = true })
