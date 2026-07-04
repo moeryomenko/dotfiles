@@ -1,10 +1,11 @@
-export XDG_CONFIG_HOME=$HOME/.config
-export GPG_TTY=$(tty)
+set -gx XDG_CONFIG_HOME $HOME/.config
+set -gx GPG_TTY (tty)
 
 if test -S ~/.gnupg/S.gpg-agent
     set -gx GPG_AGENT_INFO ~/.gnupg/S.gpg-agent
 end
-export OLLAMA_API_BASE=http://127.0.0.1:11434
+
+set -gx DOCKER_HOST unix:///run/user/(id -u)/podman/podman.sock
 
 set -Ux EDITOR helix
 set -Ux VISUAL helix
