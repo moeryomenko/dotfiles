@@ -24,6 +24,7 @@ fish_add_path $HOME/.opencode/bin
 
 set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
 set -Ux OPENCODE_ENABLE_EXA 1
+set -gx CODEGRAPH_TELEMETRY 0
 
 set -q KREW_ROOT; and set -gx PATH $PATH $KREW_ROOT/.krew/bin; or set -gx PATH $PATH $HOME/.krew/bin
 
