@@ -38,6 +38,12 @@
       "enabled": true
     }
   },
+  "lsp": {
+    "slint": {
+      "command": ["slint-lsp"],
+      "extensions": [".slint"]
+    }
+  },
   "provider": {
     "llama": {
       "npm": "@ai-sdk/openai-compatible",
