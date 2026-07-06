@@ -28,3 +28,4 @@ hyprland.lua.example
 gpg/.gnupg/tofu.db
 .codegraph/
 AGENTS.md
+.plans/

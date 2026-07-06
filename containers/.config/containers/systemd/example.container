@@ -1,0 +1,105 @@
+# example.container — Quadlet container definition template
+#
+# WHAT ARE QUADLETS?
+# Quadlets are systemd-native container units. You write a .container file
+# (INI-like), place it under ~/.config/containers/systemd/, and systemd
+# translates it into a transient systemd service via podman-systemd-generator.
+# No manual systemd unit generation required.
+#
+# HOW TO USE THIS FILE
+#   1. Copy this file to ~/.config/containers/systemd/ (or /etc/containers/systemd/
+#      for system-wide).
+#   2. Uncomment and edit Image= to point to your container image.
+#   3. Customise options below (PublishPort, Volume, etc.).
+#   4. Run: systemctl --user daemon-reload
+#   5. Run: systemctl --user enable example.service
+#   6. Run: systemctl --user start example.service
+#
+# LIMITATION: systemd-analyze verify
+#   systemd-analyze verify cannot validate .container files directly because
+#   they are generator input, not native unit files. Use podman run --dry-run
+#   to test your container definition before deploying.
+#
+# NOTE ON podman generate systemd
+#   The old workflow — "podman run ... && podman generate systemd" — is
+#   deprecated. Quadlet is the modern replacement: declarative, version-
+#   controllable, and integrated directly with systemd generators.
+
+[Unit]
+# Human-readable name shown in systemd logs and status output.
+Description=Example Quadlet container
+
+# Start this container only after the network is online.
+After=network-online.target
+
+# Declare a weak dependency on the network target (container starts even if
+# the network target never activates, but will wait if it does).
+Wants=network-online.target
+
+[Container]
+# Podman image to use. COMMENTED OUT by default so the container does NOT
+# start until you deliberately choose an image. Remove the leading '#' and
+# replace with your desired image reference, e.g.:
+#   Image=docker.io/library/nginx:latest
+#   Image=registry.access.redhat.com/ubi9/ubi:latest
+#   Image=localhost/my-app:latest
+#
+# Valid references: short-name (docker.io lookup), fully-qualified
+# registry/repo:tag, or image-id digest.
+#Image=
+
+# Publish a container port on the host. Format: host-port:container-port
+# or: host-ip:host-port:container-port
+# Use multiple PublishPort entries for additional ports.
+PublishPort=8080:80
+
+# Mount a host directory or named volume into the container.
+# Format: host-path:container-path[:options]
+# Options include :Z (private relabel), :z (shared relabel), :ro (read-only),
+# :U (chown to matching UID inside container).
+Volume=/host/data:/data:Z
+
+# Set environment variables inside the container.
+# Format: KEY=VALUE
+# Multiple pairs can be space-separated on one line.
+Environment=LOG_LEVEL=info APP_ENV=production
+
+# Attach metadata labels to the container for filtering and inspection.
+# Format: key=value
+# Multiple labels can be space-separated on one line.
+Label=app=example team=platform
+
+# Attach the container to one or more Podman networks (CNI/netavark).
+# Each AddNetwork adds a separate network interface.
+# Format: network-name
+AddNetwork=example-net
+
+# Container hostname (overrides the auto-generated container ID).
+HostName=example-container
+
+# Container entrypoint override. If unset, uses the image's default ENTRYPOINT.
+# Format: Exec=path [args...]
+Exec=/usr/sbin/httpd -D FOREGROUND
+
+# Stop container with a timeout (seconds). If the container has not stopped
+# gracefully within this window, podman sends SIGKILL.
+Timeout=30
+
+[Service]
+# Automatically restart the container if it exits with a non-zero code.
+# on-failure: restart only when exit code != 0 or when a signal caused exit
+# always:     restart regardless of exit code
+# no:         never restart (default)
+Restart=on-failure
+
+# Delay between restart attempts (in seconds). Prevents rapid crash loops.
+RestartSec=5
+
+# How many times to attempt restart within a 10-second window before giving
+# up and marking the service as failed. Default is 5.
+StartLimitBurst=5
+
+[Install]
+# Make the service start automatically at user login.
+# default.target for --user sessions; multi-user.target for system-wide.
+WantedBy=default.target
