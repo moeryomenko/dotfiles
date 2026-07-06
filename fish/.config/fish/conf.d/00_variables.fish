@@ -9,6 +9,7 @@ set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
 set -Ux HF_TOKEN (pass show hf/access_token)
+set -Ux BUN_INSTALL "$HOME/.bun"
 
 # proto
 set -gx PROTO_HOME "$HOME/.proto"
@@ -20,6 +21,7 @@ fish_add_path $HOME/.cargo/bin
 fish_add_path $GOPATH/bin
 fish_add_path $HOME/projects/flutter/bin
 fish_add_path $HOME/.opencode/bin
+fish_add_path $BUN_INSTALL/bin
 
 set -gx PATH $PATH /Users/eryoma/.lmstudio/bin
 set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
