@@ -96,7 +96,7 @@ Produce a mapping from spec requirements to implementation details:
 | Situation | Action |
 |-----------|--------|
 | Spec or task is ambiguous | Report to @build. Do NOT guess. |
-| Need codebase research | Tell @build you need @explorer. |
+| Need codebase research | Tell @build you need @explore. |
 | Task is too large for one subtask | Suggest splitting to @build. |
 | Need to touch files not in the task spec | Report to @build with reasoning. |
 
