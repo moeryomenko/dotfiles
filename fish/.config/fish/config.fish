@@ -14,6 +14,7 @@ starship init fish | source
 direnv hook fish | source
 zoxide init fish | source
 fx --comp fish | source
+mise activate fish | source
 
 if test (tty) = /dev/tty1
     export RADV_VIDEO_DECODE=1
