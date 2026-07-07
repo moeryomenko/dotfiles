@@ -41,7 +41,7 @@
 "ui.statusline.separator" = { fg = "gray" }
 
 "ui.bufferline" = { fg = "fg_dark", bg = "bg_light" }
-"ui.bufferline.active" = { fg = "glow_pink", bg = "purple" }
+"ui.bufferline.active" = { fg = "glow_pink", bg = "fg_dark" }
 "ui.bufferline.background" = { bg = "bg_light" }
 
 "ui.popup" = { fg = "fg", bg = "bg_float" }

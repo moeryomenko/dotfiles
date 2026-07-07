@@ -1,0 +1,110 @@
+# neon_dreams theme for cmus
+#
+# Inspired by the neon_dreams Alacritty color scheme.
+# Deep blue background with neon accents: hot pink, electric blue,
+# mint green, soft yellow, and neon purple.
+#
+# Palette overview (hex -> ANSI 256):
+#   Background:  #1a2642 -> 234  (deep blue)
+#   Foreground:  #a8b9e6 -> 153  (soft blue-white)
+#   Bright FG:   #c5d4ff -> 189  (light blue-white)
+#   Cursor:      #ff6eb5 -> 205  (hot pink)
+#
+#   Normal:
+#     Black:   #1a2642 -> 234
+#     Red:     #ff668c -> 204  (pink-red)
+#     Green:   #66e8b5 -> 121  (mint green)
+#     Yellow:  #ffeb99 -> 229  (soft yellow)
+#     Blue:    #5f9eff -> 75   (electric blue)
+#     Magenta: #c576ff -> 177  (neon purple)
+#     Cyan:    #5fc9e8 -> 81   (cyan-blue)
+#     White:   #a8b9e6 -> 153
+#
+#   Bright:
+#     Black:   #3d4d73 -> 237  (dark blue-gray, borders)
+#     Red:     #ff6eb5 -> 205  (hot pink)
+#     Green:   #66e8b5 -> 121
+#     Yellow:  #ffeb99 -> 229
+#     Blue:    #7eb5ff -> 111  (lighter electric blue)
+#     Magenta: #e066ff -> 183  (bright magenta)
+#     Cyan:    #5fc9e8 -> 81
+#     White:   #c5d4ff -> 189
+#
+#   Orange:    #ffb366 -> 215  (for directories)
+#
+# For a chart of 256 ANSI colors, run:
+#   for COLOR in {1..255}; do echo -en "\e[38;5;${COLOR}m"; echo -n "${COLOR} "; done; echo
+
+### command line ###
+
+# text color in the command bar (where you type commands)
+set color_cmdline_fg=153
+set color_cmdline_bg=default
+
+### separator ###
+
+# vertical line in the main (tree) view
+set color_separator=237
+
+### status line ###
+
+# bottom bar showing elapsed time / total time
+set color_statusline_bg=default
+set color_statusline_fg=153
+
+### title line ###
+
+# top bar showing the current song title
+set color_titleline_bg=234
+set color_titleline_fg=189
+
+### main window ###
+
+# background of the main window
+set color_win_bg=default
+
+# normal text in the main window
+set color_win_fg=153
+
+# currently-playing entry indicator (the little bar/arrow)
+set color_win_cur=205
+
+# directory entries (files view / tree view)
+set color_win_dir=215
+
+# (duplicate of win_fg, kept for compatibility)
+set color_win_fg=153
+
+### inactive window ###
+
+# currently-playing entry when selected in the INACTIVE window
+set color_win_inactive_cur_sel_bg=default
+set color_win_inactive_cur_sel_fg=121
+
+# selected entry (not currently playing) in the INACTIVE window
+set color_win_inactive_sel_bg=default
+set color_win_inactive_sel_fg=153
+
+### active window ###
+
+# currently-playing entry when selected in the ACTIVE window
+set color_win_cur_sel_bg=237
+set color_win_cur_sel_fg=121
+
+# selected entry (not currently playing) in the ACTIVE window
+set color_win_sel_bg=237
+set color_win_sel_fg=189
+
+### title bar ###
+
+# title bar at the top of each pane/window
+set color_win_title_bg=234
+set color_win_title_fg=75
+
+### status messages ###
+
+# error messages in the command bar
+set color_error=204
+
+# informational messages in the command bar
+set color_info=121
