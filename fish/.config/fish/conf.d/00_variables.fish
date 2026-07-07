@@ -24,6 +24,12 @@ fish_add_path $HOME/projects/flutter/bin
 fish_add_path $HOME/.opencode/bin
 fish_add_path $BUN_INSTALL/bin
 
+# Use wild linker for all C/C++ builds (GCC/Clang driver flag)
+set -gx LDFLAGS "-fuse-ld=wild"
+
+# Disable legacy ccache; sccache handles caching instead
+set -gx CCACHE_DISABLE 1
+
 set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
 set -Ux OPENCODE_ENABLE_EXA 1
 set -gx CODEGRAPH_TELEMETRY 0

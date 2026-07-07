@@ -85,11 +85,11 @@ python                 # Python runtime (nvim lsp/ty.lua)
 # ================================================================
 cmake                  # build system (nvim/plugins/tasks.lua cmd=cmake)
 ninja                  # build system (nvim/plugins/tasks.lua -G Ninja)
-ccache                 # compiler cache (nvim/plugins/tasks.lua)
-mold                   # linker (nvim/plugins/tasks.lua -fuse-ld=mold)
+sccache                # compiler cache (replaces ccache: cargo/config.toml rustc-wrapper)
+wild                   # linker (faster than mold: cmake_project.fish -fuse-ld=wild)
 gdb                    # debugger (bash/.bashrc downloads gdb-dashboard)
 lldb                   # debugger (nvim/plugins/tasks.lua dap_name=lldb)
-# sccache              # Rust compiler cache (cargo/config.toml rustc-wrapper) -- optional
+# ccache               # legacy compiler cache (replaced by sccache)
 
 # ================================================================
 # WINDOW MANAGER (Hyprland)

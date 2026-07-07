@@ -3,7 +3,7 @@
 # Extracted from neovim-tasks configuration at:
 #   nvim/.config/nvim/lua/plugins/tasks.lua
 #
-# Defaults: Ninja generator, ccache, mold linker (Linux),
+# Defaults: Ninja generator, sccache, wild linker (Linux),
 #           compile_commands.json, _build directory, Debug type.
 #
 # Usage:
@@ -18,19 +18,19 @@ function cmake_project -d "Configure and build CMake projects with sane defaults
     set -l generator "Ninja"
     set -l src_dir ""
 
-    # Find ccache
+    # Find sccache
     set -l ccache_path ""
-    if command -v ccache >/dev/null 2>&1
-        set ccache_path (command -v ccache)
-    else if test -x /usr/bin/ccache
-        set ccache_path /usr/bin/ccache
+    if command -v sccache >/dev/null 2>&1
+        set ccache_path (command -v sccache)
+    else if test -x /usr/bin/sccache
+        set ccache_path /usr/bin/sccache
     end
 
-    # Detect mold linker availability on Linux
-    set -l use_mold 0
+    # Detect wild linker availability on Linux
+    set -l use_wild 0
     if test (uname -s) = "Linux"
-        if command -v mold >/dev/null 2>&1; or test -x /usr/bin/mold
-            set use_mold 1
+        if command -v wild >/dev/null 2>&1; or test -x /usr/bin/wild
+            set use_wild 1
         end
     end
 
@@ -56,9 +56,9 @@ function cmake_project -d "Configure and build CMake projects with sane defaults
                     set config_args $config_args "-DCMAKE_C_COMPILER_LAUNCHER=$ccache_path"
                     set config_args $config_args "-DCMAKE_CXX_COMPILER_LAUNCHER=$ccache_path"
                 end
-                if test $use_mold -eq 1
-                    set config_args $config_args "-DCMAKE_EXE_LINKER_FLAGS_INIT=-fuse-ld=mold"
-                    set config_args $config_args "-DCMAKE_SHARED_LINKER_FLAGS_INIT=-fuse-ld=mold"
+                if test $use_wild -eq 1
+                    set config_args $config_args "-DCMAKE_EXE_LINKER_FLAGS_INIT=-fuse-ld=wild"
+                    set config_args $config_args "-DCMAKE_SHARED_LINKER_FLAGS_INIT=-fuse-ld=wild"
                 end
 
                 echo "Configuring CMake project..."
@@ -66,10 +66,10 @@ function cmake_project -d "Configure and build CMake projects with sane defaults
                 echo "  Build dir: $build_dir"
                 echo "  Build type: $build_type"
                 if test -n "$ccache_path"
-                    echo "  CCache: $ccache_path"
+                    echo "  SCCache: $ccache_path"
                 end
-                if test $use_mold -eq 1
-                    echo "  Linker: mold"
+                if test $use_wild -eq 1
+                    echo "  Linker: wild"
                 end
                 echo ""
 
@@ -142,9 +142,9 @@ function cmake_project -d "Configure and build CMake projects with sane defaults
                         set config_args $config_args "-DCMAKE_C_COMPILER_LAUNCHER=$ccache_path"
                         set config_args $config_args "-DCMAKE_CXX_COMPILER_LAUNCHER=$ccache_path"
                     end
-                    if test $use_mold -eq 1
-                        set config_args $config_args "-DCMAKE_EXE_LINKER_FLAGS_INIT=-fuse-ld=mold"
-                        set config_args $config_args "-DCMAKE_SHARED_LINKER_FLAGS_INIT=-fuse-ld=mold"
+                    if test $use_wild -eq 1
+                        set config_args $config_args "-DCMAKE_EXE_LINKER_FLAGS_INIT=-fuse-ld=wild"
+                        set config_args $config_args "-DCMAKE_SHARED_LINKER_FLAGS_INIT=-fuse-ld=wild"
                     end
 
                     echo "Reconfiguring with Release type..."
@@ -170,10 +170,10 @@ function cmake_project -d "Configure and build CMake projects with sane defaults
                 echo "  Build dir:  $build_dir"
                 echo "  Build type: $build_type"
                 if test -n "$ccache_path"
-                    echo "  CCache:     enabled"
+                    echo "  SCCache:    enabled"
                 end
-                if test $use_mold -eq 1
-                    echo "  Linker:     mold"
+                if test $use_wild -eq 1
+                    echo "  Linker:     wild"
                 end
                 echo ""
                 echo "Based on neovim-tasks CMake configuration."
