@@ -1,0 +1,11 @@
+[language-server.css-variable-lsp]
+command = "css-variable-lsp"
+args = []
+
+[[language]]
+name = "css"
+language-servers = ["css-lsp", "css-variable-lsp"]
+
+[[language]]
+name = "scss"
+language-servers = ["css-lsp", "css-variable-lsp"]
