@@ -4,7 +4,7 @@ tearing-mode = true
 
 [bar]
 scale = 0.6000000238418579
-bg = "bg-base"
+bg = "#1a2642"
 
 [[bar.layout]]
 monitor = "*"
@@ -21,16 +21,16 @@ right = [
 ]
 
 [styling.palette]
-bg = "#2e3440"
-surface = "#3b4252"
-elevated = "#434c5e"
-fg = "#eceff4"
-fg-muted = "#d8dee9"
-primary = "#88c0d0"
-red = "#bf616a"
-yellow = "#ebcb8b"
-green = "#a3be8c"
-blue = "#81a1c1"
+bg = "#1a2642"
+surface = "#243556"
+elevated = "#2a3d5f"
+fg = "#c5d4ff"
+fg-muted = "#a8b9e6"
+primary = "#5f9eff"
+red = "#ff668c"
+yellow = "#ffeb99"
+green = "#66e8b5"
+blue = "#7eb5ff"
 
 [modules.dashboard]
 border-show = true

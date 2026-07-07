@@ -1,81 +1,85 @@
 /**
- * @name         Nordic
- * @author       orblazer#9152
- * @authorId     179681974879911946
+ * @name         Neon Dreams
+ * @author       eryoma
+ * @authorId     000000000000000000
  * @version      4.13.1
  * @discordBuild stable 488579 (28327b1)
- * @description  Complete theme for Nordic (https://www.nordtheme.com/)
- * @source       https://github.com/orblazer/discord-nordic
+ * @description  A neon dreams theme with vibrant cyan, blue, purple and pink accents on a deep blue background
+ * @source       https://github.com/eryoma/dotfiles
  * @donate       https://www.paypal.me/orblazer
  */
 .theme-dark,
 .theme-light {
-  --text-code-builtin: var(--nord-cyan);
-  --text-code-bullet: var(--nord-cyan);
+  --text-code-builtin: var(--neon-blue2);
+  --text-code-bullet: var(--neon-blue2);
   --text-code-comment: var(--neutral-40);
   --text-code-default: var(--text-normal);
-  --text-code-keyword: var(--nord-cyan);
+  --text-code-keyword: var(--neon-blue2);
   --text-code-section: var(--text-normal);
-  --text-code-string: var(--nord-green);
-  --text-code-tag: var(--nord-cyan);
+  --text-code-string: var(--neon-green);
+  --text-code-tag: var(--neon-blue2);
   --text-code-title: var(--blurple-49);
   --text-code-variable: var(--header-secondary)
 }
 :root {
-  --nord-dark1-hsl: 220deg calc(var(--saturation-factor, 1) * 16.36%) 21.57%;
-  --nord-dark1: hsl(var(--nord-dark1-hsl) / 1);
-  --nord-dark2-hsl: 221.74deg calc(var(--saturation-factor, 1) * 16.31%) 27.65%;
-  --nord-dark2: hsl(var(--nord-dark2-hsl) / 1);
-  --nord-dark3-hsl: 220deg calc(var(--saturation-factor, 1) * 16.77%) 31.57%;
-  --nord-dark3: hsl(var(--nord-dark3-hsl) / 1);
-  --nord-dark4-hsl: 220deg calc(var(--saturation-factor, 1) * 16.48%) 35.69%;
-  --nord-dark4: hsl(var(--nord-dark4-hsl) / 1);
-  --nord-light1-hsl: 218.82deg calc(var(--saturation-factor, 1) * 27.87%) 88.04%;
-  --nord-light1: hsl(var(--nord-light1-hsl) / 1);
-  --nord-light2-hsl: 218.18deg calc(var(--saturation-factor, 1) * 26.83%) 91.96%;
-  --nord-light2: hsl(var(--nord-light2-hsl) / 1);
-  --nord-light3-hsl: 217.5deg calc(var(--saturation-factor, 1) * 26.67%) 94.12%;
-  --nord-light3: hsl(var(--nord-light3-hsl) / 1);
-  --nord-green-blue-hsl: 178.67deg calc(var(--saturation-factor, 1) * 25.14%) 64.9%;
-  --nord-green-blue: hsl(var(--nord-green-blue-hsl) / 1);
-  --nord-turquoise-hsl: 193.33deg calc(var(--saturation-factor, 1) * 43.37%) 67.45%;
-  --nord-turquoise: hsl(var(--nord-turquoise-hsl) / 1);
-  --nord-cyan-hsl: 210deg calc(var(--saturation-factor, 1) * 34.04%) 63.14%;
-  --nord-cyan: hsl(var(--nord-cyan-hsl) / 1);
-  --nord-blue-hsl: 213.08deg calc(var(--saturation-factor, 1) * 31.97%) 52.16%;
-  --nord-blue: hsl(var(--nord-blue-hsl) / 1);
-  --nord-red-hsl: 354.26deg calc(var(--saturation-factor, 1) * 42.34%) 56.47%;
-  --nord-red: hsl(var(--nord-red-hsl) / 1);
-  --nord-orange-hsl: 14.38deg calc(var(--saturation-factor, 1) * 50.53%) 62.75%;
-  --nord-orange: hsl(var(--nord-orange-hsl) / 1);
-  --nord-yellow-hsl: 40deg calc(var(--saturation-factor, 1) * 70.59%) 73.33%;
-  --nord-yellow: hsl(var(--nord-yellow-hsl) / 1);
-  --nord-green-hsl: 92.4deg calc(var(--saturation-factor, 1) * 27.78%) 64.71%;
-  --nord-green: hsl(var(--nord-green-hsl) / 1);
-  --nord-pink-hsl: 311.05deg calc(var(--saturation-factor, 1) * 20.21%) 63.14%;
-  --nord-pink: hsl(var(--nord-pink-hsl) / 1);
-  --user-status-online-hsl: var(--nord-green-hsl);
-  --user-status-online: var(--nord-green);
-  --user-status-idle-hsl: var(--nord-yellow-hsl);
-  --user-status-idle: var(--nord-yellow);
-  --user-status-dnd-hsl: var(--nord-red-hsl);
-  --user-status-dnd: var(--nord-red);
+  --neon-dark1-hsl: 222deg calc(var(--saturation-factor, 1) * 43.5%) 18.04%;
+  --neon-dark1: hsl(var(--neon-dark1-hsl) / 1);
+  --neon-dark2-hsl: 222deg calc(var(--saturation-factor, 1) * 44%) 21%;
+  --neon-dark2: hsl(var(--neon-dark2-hsl) / 1);
+  --neon-dark3-hsl: 222deg calc(var(--saturation-factor, 1) * 41%) 24%;
+  --neon-dark3: hsl(var(--neon-dark3-hsl) / 1);
+  --neon-dark4-hsl: 222deg calc(var(--saturation-factor, 1) * 39%) 27%;
+  --neon-dark4: hsl(var(--neon-dark4-hsl) / 1);
+  --neon-light1-hsl: 224deg calc(var(--saturation-factor, 1) * 55%) 78%;
+  --neon-light1: hsl(var(--neon-light1-hsl) / 1);
+  --neon-light2-hsl: 224deg calc(var(--saturation-factor, 1) * 100%) 89%;
+  --neon-light2: hsl(var(--neon-light2-hsl) / 1);
+  --neon-light3-hsl: 224deg calc(var(--saturation-factor, 1) * 100%) 92%;
+  --neon-light3: hsl(var(--neon-light3-hsl) / 1);
+  --neon-cyan-hsl: 193.58deg calc(var(--saturation-factor, 1) * 74.86%) 64.12%;
+  --neon-cyan: hsl(var(--neon-cyan-hsl) / 1);
+  --neon-blue-hsl: 216.38deg calc(var(--saturation-factor, 1) * 100%) 68.63%;
+  --neon-blue: hsl(var(--neon-blue-hsl) / 1);
+  --neon-pink-hsl: 340.44deg calc(var(--saturation-factor, 1) * 100%) 69.61%;
+  --neon-pink: hsl(var(--neon-pink-hsl) / 1);
+  --neon-magenta-hsl: 280.58deg calc(var(--saturation-factor, 1) * 100%) 69.61%;
+  --neon-magenta: hsl(var(--neon-magenta-hsl) / 1);
+  --neon-blue2-hsl: 214.42deg calc(var(--saturation-factor, 1) * 100%) 74.71%;
+  --neon-blue2: hsl(var(--neon-blue2-hsl) / 1);
+  --neon-blue_dark-hsl: 214.41deg calc(var(--saturation-factor, 1) * 58.37%) 51.96%;
+  --neon-blue_dark: hsl(var(--neon-blue_dark-hsl) / 1);
+  --neon-red-hsl: 345.1deg calc(var(--saturation-factor, 1) * 100%) 70%;
+  --neon-red: hsl(var(--neon-red-hsl) / 1);
+  --neon-orange-hsl: 30.2deg calc(var(--saturation-factor, 1) * 100%) 70%;
+  --neon-orange: hsl(var(--neon-orange-hsl) / 1);
+  --neon-yellow-hsl: 48.24deg calc(var(--saturation-factor, 1) * 100%) 80%;
+  --neon-yellow: hsl(var(--neon-yellow-hsl) / 1);
+  --neon-green-hsl: 96.46deg calc(var(--saturation-factor, 1) * 73.86%) 65.49%;
+  --neon-green: hsl(var(--neon-green-hsl) / 1);
+  --neon-purple-hsl: 274.59deg calc(var(--saturation-factor, 1) * 100%) 73.14%;
+  --neon-purple: hsl(var(--neon-purple-hsl) / 1);
+  --user-status-online-hsl: var(--neon-green-hsl);
+  --user-status-online: var(--neon-green);
+  --user-status-idle-hsl: var(--neon-yellow-hsl);
+  --user-status-idle: var(--neon-yellow);
+  --user-status-dnd-hsl: var(--neon-red-hsl);
+  --user-status-dnd: var(--neon-red);
   --user-status-invisible-hsl: var(--neutral-40-hsl);
   --user-status-invisible: var(--neutral-40);
-  --user-status-twitch-hsl: var(--nord-pink-hsl);
-  --user-status-twitch: var(--nord-pink)
+  --user-status-twitch-hsl: var(--neon-purple-hsl);
+  --user-status-twitch: var(--neon-purple)
 }
 .visual-refresh {
   --neutral-1-hsl: 240deg calc(var(--saturation-factor, 1) * 20%) 99.02%;
   --neutral-1: hsl(var(--neutral-1-hsl) / 1);
-  --neutral-2-hsl: var(--nord-light3-hsl);
-  --neutral-2: var(--nord-light3);
-  --neutral-4-hsl: var(--nord-light2-hsl);
-  --neutral-4: var(--nord-light2);
+  --neutral-2-hsl: var(--neon-light3-hsl);
+  --neutral-2: var(--neon-light3);
+  --neutral-4-hsl: var(--neon-light2-hsl);
+  --neutral-4: var(--neon-light2);
   --neutral-6-hsl: var(--neutral-4-hsl);
   --neutral-6: var(--neutral-4);
-  --neutral-8-hsl: var(--nord-light1-hsl);
-  --neutral-8: var(--nord-light1);
+  --neutral-8-hsl: var(--neon-light1-hsl);
+  --neutral-8: var(--neon-light1);
   --neutral-9-hsl: 217.14deg calc(var(--saturation-factor, 1) * 27.27%) 84.9%;
   --neutral-9: hsl(var(--neutral-9-hsl) / 1);
   --neutral-11-hsl: var(--neutral-8-hsl);
@@ -114,14 +118,14 @@
   --neutral-39: var(--neutral-36);
   --neutral-40-hsl: var(--neutral-36-hsl);
   --neutral-40: var(--neutral-36);
-  --neutral-45-hsl: var(--nord-dark4-hsl);
-  --neutral-45: var(--nord-dark4);
+  --neutral-45-hsl: var(--neon-dark4-hsl);
+  --neutral-45: var(--neon-dark4);
   --neutral-46-hsl: var(--neutral-45-hsl);
   --neutral-46: var(--neutral-45);
   --neutral-47-hsl: var(--neutral-45-hsl);
   --neutral-47: var(--neutral-45);
-  --neutral-49-hsl: var(--nord-dark3-hsl);
-  --neutral-49: var(--nord-dark3);
+  --neutral-49-hsl: var(--neon-dark3-hsl);
+  --neutral-49: var(--neon-dark3);
   --neutral-50-hsl: var(--neutral-49-hsl);
   --neutral-50: var(--neutral-49);
   --neutral-59-hsl: var(--neutral-49-hsl);
@@ -138,14 +142,14 @@
   --neutral-65: var(--neutral-66);
   --neutral-66-hsl: 220.8deg calc(var(--saturation-factor, 1) * 16.34%) 30%;
   --neutral-66: hsl(var(--neutral-66-hsl) / 1);
-  --neutral-69-hsl: var(--nord-dark2-hsl);
-  --neutral-69: var(--nord-dark2);
+  --neutral-69-hsl: var(--neon-dark2-hsl);
+  --neutral-69: var(--neon-dark2);
   --neutral-70-hsl: var(--neutral-69-hsl);
   --neutral-70: var(--neutral-69);
   --neutral-71-hsl: var(--neutral-69-hsl);
   --neutral-71: var(--neutral-69);
-  --neutral-72-hsl: var(--nord-dark1-hsl);
-  --neutral-72: var(--nord-dark1);
+  --neutral-72-hsl: var(--neon-dark1-hsl);
+  --neutral-72: var(--neon-dark1);
   --neutral-73-hsl: var(--neutral-72-hsl);
   --neutral-73: var(--neutral-72);
   --neutral-74-hsl: var(--neutral-72-hsl);
@@ -172,8 +176,8 @@
   --neutral-97: hsl(var(--neutral-97-hsl) / 1);
   --neutral-99-hsl: var(--neutral-97-hsl);
   --neutral-99: var(--neutral-97);
-  --white-500-hsl: var(--nord-light2-hsl);
-  --white-500: var(--nord-light2);
+  --white-500-hsl: var(--neon-light2-hsl);
+  --white-500: var(--neon-light2);
   --black-500-hsl: var(--neutral-79-hsl);
   --black-500: var(--neutral-79);
   --green-new-23-hsl: var(--green-new-61-hsl);
@@ -200,8 +204,8 @@
   --green-new-52: var(--green-new-61);
   --green-new-60-hsl: var(--green-new-87-hsl);
   --green-new-60: var(--green-new-87);
-  --green-new-61-hsl: var(--nord-green-hsl);
-  --green-new-61: var(--nord-green);
+  --green-new-61-hsl: var(--neon-green-hsl);
+  --green-new-61: var(--neon-green);
   --green-new-65-hsl: var(--green-new-91-hsl);
   --green-new-65: var(--green-new-91);
   --green-new-72-hsl: var(--green-new-91-hsl);
@@ -232,8 +236,8 @@
   --red-new-47: var(--red-new-61);
   --red-new-60-hsl: var(--red-new-70-hsl);
   --red-new-60: var(--red-new-70);
-  --red-new-61-hsl: var(--nord-red-hsl);
-  --red-new-61: var(--nord-red);
+  --red-new-61-hsl: var(--neon-red-hsl);
+  --red-new-61: var(--neon-red);
   --red-new-65-hsl: var(--red-new-78-hsl);
   --red-new-65: var(--red-new-78);
   --red-new-70-hsl: 353.57deg calc(var(--saturation-factor, 1) * 33.6%) 50.98%;
@@ -258,20 +262,20 @@
   --yellow-new-46: var(--yellow-new-57);
   --yellow-new-54-hsl: var(--yellow-new-57-hsl);
   --yellow-new-54: var(--yellow-new-57);
-  --yellow-new-57-hsl: var(--nord-yellow-hsl);
-  --yellow-new-57: var(--nord-yellow);
+  --yellow-new-57-hsl: var(--neon-yellow-hsl);
+  --yellow-new-57: var(--neon-yellow);
   --yellow-new-75-hsl: var(--yellow-new-57-hsl);
   --yellow-new-75: var(--yellow-new-57);
   --yellow-new-84-hsl: var(--yellow-new-57-hsl);
   --yellow-new-84: var(--yellow-new-57);
-  --orange-new-63-hsl: var(--nord-orange-hsl);
-  --orange-new-63: var(--nord-orange);
+  --orange-new-63-hsl: var(--neon-orange-hsl);
+  --orange-new-63: var(--neon-orange);
   --blue-new-24-hsl: var(--blue-new-31-hsl);
   --blue-new-24: var(--blue-new-31);
   --blue-new-27-hsl: var(--blue-new-35-hsl);
   --blue-new-27: var(--blue-new-35);
-  --blue-new-31-hsl: var(--nord-blue-hsl);
-  --blue-new-31: var(--nord-blue);
+  --blue-new-31-hsl: var(--neon-blue_dark-hsl);
+  --blue-new-31: var(--neon-blue_dark);
   --blue-new-35-hsl: 213.12deg calc(var(--saturation-factor, 1) * 75.49%) 60%;
   --blue-new-35: hsl(var(--blue-new-35-hsl) / 1);
   --blurple-1-hsl: 180deg calc(var(--saturation-factor, 1) * 15.38%) 94.9%;
@@ -298,8 +302,8 @@
   --blurple-44: var(--blurple-37);
   --blurple-48-hsl: var(--blurple-37-hsl);
   --blurple-48: var(--blurple-37);
-  --blurple-49-hsl: var(--nord-green-blue-hsl);
-  --blurple-49: var(--nord-green-blue);
+  --blurple-49-hsl: var(--neon-cyan-hsl);
+  --blurple-49: var(--neon-cyan);
   --blurple-50-hsl: var(--blurple-49-hsl);
   --blurple-50: var(--blurple-49);
   --blurple-52-hsl: var(--blurple-49-hsl);
@@ -338,59 +342,59 @@
   --opacity-blurple-16-hsl: var(--blurple-49-hsl);
   --opacity-blurple-24-hsl: var(--blurple-49-hsl);
   --opacity-blurple-32: hsl(var(--blurple-49-hsl) / 0.2);
-  --illo-green-50-hsl: var(--nord-green-hsl);
-  --illo-pink-50-hsl: var(--nord-pink-hsl);
-  --illo-pink-60-hsl: var(--nord-pink-hsl);
-  --illo-pink-70-hsl: var(--nord-pink-hsl);
-  --illo-purple-40-hsl: var(--nord-pink-hsl);
-  --illo-purple-60-hsl: var(--nord-pink-hsl);
-  --illo-nitro-blue-hsl: var(--nord-blue-hsl);
-  --twitch-hsl: var(--nord-pink-hsl);
-  --twitch: var(--nord-pink);
+  --illo-green-50-hsl: var(--neon-green-hsl);
+  --illo-pink-50-hsl: var(--neon-purple-hsl);
+  --illo-pink-60-hsl: var(--neon-purple-hsl);
+  --illo-pink-70-hsl: var(--neon-purple-hsl);
+  --illo-purple-40-hsl: var(--neon-purple-hsl);
+  --illo-purple-60-hsl: var(--neon-purple-hsl);
+  --illo-nitro-blue-hsl: var(--neon-blue_dark-hsl);
+  --twitch-hsl: var(--neon-purple-hsl);
+  --twitch: var(--neon-purple);
   --twitch-secondary-hsl: 310.43deg calc(var(--saturation-factor, 1) * 20%) 54.9%;
   --twitch-secondary: hsl(var(--twitch-secondary-hsl) / 1);
-  --partner-hsl: var(--nord-blue-hsl);
-  --partner: var(--nord-blue);
-  --status-positive: var(--nord-green);
-  --status-danger: var(--nord-red);
-  --guild-boosting-blue: var(--nord-blue);
-  --guild-boosting-blue-for-gradients: var(--nord-blue);
-  --guild-boosting-purple: var(--nord-pink);
-  --guild-boosting-purple-for-gradients: var(--nord-pink);
-  --guild-boosting-pink: var(--nord-pink);
-  --premium-tier-0-header-gradient-1: var(--nord-blue);
-  --premium-tier-0-header-gradient-2: var(--nord-blue);
-  --premium-tier-0-header-gradient-3: var(--nord-blue);
-  --premium-tier-0-header-gradient-4: var(--nord-pink);
-  --premium-tier-0-header-gradient-5: var(--nord-pink);
-  --premium-tier-0-purple-for-gradients: var(--nord-blue);
-  --premium-tier-0-blue-for-gradients: var(--nord-blue);
-  --premium-tier-2-purple-for-gradients: var(--nord-pink);
-  --premium-tier-2-pink-for-gradients: var(--nord-pink);
-  --premium-tier-2-purple-for-gradients-2: var(--nord-pink);
-  --custom-premium-colors-premium-gradient-tier-2-diagonal: var(--nord-pink);
-  --premium-tier-2-purple-hsl: var(--nord-pink-hsl);
-  --premium-tier-2-purple: var(--nord-pink);
-  --premium-tier-2-pink-hsl: var(--nord-pink-hsl);
-  --premium-tier-2-pink: var(--nord-pink);
-  --premium-perk-blue-hsl: var(--nord-blue-hsl);
-  --premium-perk-blue: var(--nord-blue);
+  --partner-hsl: var(--neon-blue_dark-hsl);
+  --partner: var(--neon-blue_dark);
+  --status-positive: var(--neon-green);
+  --status-danger: var(--neon-red);
+  --guild-boosting-blue: var(--neon-blue_dark);
+  --guild-boosting-blue-for-gradients: var(--neon-blue_dark);
+  --guild-boosting-purple: var(--neon-purple);
+  --guild-boosting-purple-for-gradients: var(--neon-purple);
+  --guild-boosting-pink: var(--neon-purple);
+  --premium-tier-0-header-gradient-1: var(--neon-blue_dark);
+  --premium-tier-0-header-gradient-2: var(--neon-blue_dark);
+  --premium-tier-0-header-gradient-3: var(--neon-blue_dark);
+  --premium-tier-0-header-gradient-4: var(--neon-purple);
+  --premium-tier-0-header-gradient-5: var(--neon-purple);
+  --premium-tier-0-purple-for-gradients: var(--neon-blue_dark);
+  --premium-tier-0-blue-for-gradients: var(--neon-blue_dark);
+  --premium-tier-2-purple-for-gradients: var(--neon-purple);
+  --premium-tier-2-pink-for-gradients: var(--neon-purple);
+  --premium-tier-2-purple-for-gradients-2: var(--neon-purple);
+  --custom-premium-colors-premium-gradient-tier-2-diagonal: var(--neon-purple);
+  --premium-tier-2-purple-hsl: var(--neon-purple-hsl);
+  --premium-tier-2-purple: var(--neon-purple);
+  --premium-tier-2-pink-hsl: var(--neon-purple-hsl);
+  --premium-tier-2-pink: var(--neon-purple);
+  --premium-perk-blue-hsl: var(--neon-blue_dark-hsl);
+  --premium-perk-blue: var(--neon-blue_dark);
   --premium-perk-dark-blue-hsl: var(--blue-new-35-hsl);
   --premium-perk-dark-blue: var(--blue-new-35);
-  --premium-perk-green-hsl: var(--nord-turquoise-hsl);
-  --premium-perk-green: var(--nord-turquoise);
-  --premium-perk-light-blue-hsl: var(--nord-cyan-hsl);
-  --premium-perk-light-blue: var(--nord-cyan);
-  --premium-perk-orange-hsl: var(--nord-orange-hsl);
-  --premium-perk-orange: var(--nord-orange);
-  --premium-perk-pink-hsl: var(--nord-pink-hsl);
-  --premium-perk-pink: var(--nord-pink);
-  --premium-perk-purple-hsl: var(--nord-pink-hsl);
-  --premium-perk-purple: var(--nord-pink);
-  --premium-perk-yellow-hsl: var(--nord-yellow-hsl);
-  --premium-perk-yellow: var(--nord-yellow);
-  --premium-nitro-pink-light-hsl: var(--nord-pink-hsl);
-  --premium-nitro-pink-light: var(--nord-pink)
+  --premium-perk-green-hsl: var(--neon-cyan-hsl);
+  --premium-perk-green: var(--neon-cyan);
+  --premium-perk-light-blue-hsl: var(--neon-blue2-hsl);
+  --premium-perk-light-blue: var(--neon-blue2);
+  --premium-perk-orange-hsl: var(--neon-orange-hsl);
+  --premium-perk-orange: var(--neon-orange);
+  --premium-perk-pink-hsl: var(--neon-purple-hsl);
+  --premium-perk-pink: var(--neon-purple);
+  --premium-perk-purple-hsl: var(--neon-purple-hsl);
+  --premium-perk-purple: var(--neon-purple);
+  --premium-perk-yellow-hsl: var(--neon-yellow-hsl);
+  --premium-perk-yellow: var(--neon-yellow);
+  --premium-nitro-pink-light-hsl: var(--neon-purple-hsl);
+  --premium-nitro-pink-light: var(--neon-purple)
 }
 .theme-dark,
 .theme-light {
@@ -414,9 +418,9 @@
   --message-highlight-background-default: hsl(var(--blue-new-31-hsl) / 0.16);
   --message-highlight-background-hover: hsl(var(--blue-new-31-hsl) / 0.12);
   --interactive-muted: var(--neutral-40);
-  --background-code: hsl(var(--nord-dark1-hsl) / 0.1);
-  --background-code-addition: hsl(var(--nord-green-hsl) / 0.45);
-  --background-code-deletion: hsl(var(--nord-red-hsl) / 0.45);
+  --background-code: hsl(var(--neon-dark1-hsl) / 0.1);
+  --background-code-addition: hsl(var(--neon-green-hsl) / 0.45);
+  --background-code-deletion: hsl(var(--neon-red-hsl) / 0.45);
   --text-code-addition: var(--white);
   --text-code-deletion: var(--white)
 }
@@ -427,8 +431,8 @@
   --message-highlight-background-hover: hsl(var(--blue-new-31-hsl) / 0.35);
   --control-expressive-text-default: var(--neutral-79);
   --background-code: var(--neutral-1);
-  --background-code-addition: hsl(var(--nord-green-hsl) / 0.3);
-  --background-code-deletion: hsl(var(--nord-red-hsl) / 0.3);
+  --background-code-addition: hsl(var(--neon-green-hsl) / 0.3);
+  --background-code-deletion: hsl(var(--neon-red-hsl) / 0.3);
   --text-code-addition: var(--black-500);
   --text-code-deletion: var(--black-500)
 }
@@ -533,19 +537,19 @@
 .emptyIcon__5d7c9 path[fill="#ADF3FF"],
 .stars__1b24f path[fill="#ADF3FF"],
 .stars_d404a3 path[fill="#ADF3FF"] {
-  fill: var(--nord-cyan)
+  fill: var(--neon-blue2)
 }
 .emptyIcon__5d7c9 path[fill="#FFD01A"],
 .stars__1b24f path[fill="#FFD01A"],
 .stars_d404a3 path[fill="#FFD01A"] {
-  fill: var(--nord-yellow)
+  fill: var(--neon-yellow)
 }
 .emptyIcon__5d7c9 path[fill="#58F287"],
 .icon_c9d15c path[fill="#45a366"],
 .stars__1b24f path[fill="#58F287"],
 .stars_d404a3 path[fill="#58F287"],
 .userJoinSystemMessageIcon_c19a55 path[fill="#3ba55c"] {
-  fill: var(--nord-green)
+  fill: var(--neon-green)
 }
 .theme-dark .folderGroup__48112 .wrapper__6e9f8:not(.selected__6e9f8) .childWrapperNoHoverBg__6e9f8 {
   background-color: var(--background-mod-strong)
@@ -609,7 +613,7 @@
 .ps1 .hljs-type,
 .rb .hljs-variable,
 .ruby .hljs-variable {
-  color: var(--nord-cyan)!important
+  color: var(--neon-blue2)!important
 }
 .hljs-selector-id,
 .hljs-title~.hljs-title {
@@ -630,7 +634,7 @@
 .hljs-title,
 .hljs-type,
 .ldif .hljs-attribute {
-  color: var(--nord-green-blue)!important
+  color: var(--neon-cyan)!important
 }
 .abnf .hljs-attribute,
 .apache .hljs-attribute,
@@ -658,11 +662,11 @@
 .sparkle_bb1234.sparkleStarTopRight_bb1234,
 .swift .hljs-subst,
 .vim .hljs-built_in {
-  color: var(--nord-turquoise)!important
+  color: var(--neon-cyan)!important
 }
 .hljs-number,
 .sparkle_bb1234.sparkleStarRight_bb1234 {
-  color: var(--nord-pink)!important
+  color: var(--neon-purple)!important
 }
 .abnf .hljs-symbol,
 .clojure .hljs-symbol,
@@ -670,16 +674,16 @@
 .hljs-regexp,
 .less .hljs-attribute,
 .scss .hljs-attribute {
-  color: var(--nord-yellow)!important
+  color: var(--neon-yellow)!important
 }
 .hljs-meta-string,
 .hljs-string {
-  color: var(--nord-green)!important
+  color: var(--neon-green)!important
 }
 .hljs-meta-keyword,
 .hljs-template-tag,
 .nginx .hljs-section {
-  color: var(--nord-blue)!important
+  color: var(--neon-blue_dark)!important
 }
 .aspectj .hljs-meta,
 .css .hljs-keyword,
@@ -689,13 +693,13 @@
 .java .hljs-meta,
 .swift .hljs-meta,
 .yaml .hljs-meta {
-  color: var(--nord-orange)!important
+  color: var(--neon-orange)!important
 }
 .vim .hljs-built_in {
   font-style: italic
 }
 .completionAnimation__956c6 {
-  background-image: linear-gradient(180deg,hsla(var(--nord-green-hsl)/.05),hsla(var(--nord-green-hsl)/.1))
+  background-image: linear-gradient(180deg,hsla(var(--neon-green-hsl)/.05),hsla(var(--neon-green-hsl)/.1))
 }
 .custom-user-profile-theme .primary_a22cb0,
 .guildBoostCountWrapper_f9f04c,
@@ -796,7 +800,7 @@
   color: var(--neutral-76)
 }
 .card__6df1a .pillGradient_e7b36e {
-  background: var(--nord-pink)
+  background: var(--neon-purple)
 }
 .annualPlanOptionDiscount_b13085[style*="color: white"],
 .card__6df1a .pillGradient_e7b36e>div[style*="color: var(--text-strong)"],
@@ -814,7 +818,7 @@
   fill: var(--neutral-76)
 }
 .withGradient_fce7ca:after {
-  background-image: linear-gradient(90deg,var(--nord-blue),var(--nord-pink));
+  background-image: linear-gradient(90deg,var(--neon-blue_dark),var(--neon-purple));
   opacity: .3
 }
 .sparkleIcon__05cdc[src="/assets/3a6a08a976f34e04.svg"] {
@@ -858,10 +862,10 @@
   color: currentColor!important
 }
 .progress__0d0f9 {
-  background: linear-gradient(270deg,hsl(var(--nord-pink-hsl)/.7),hsl(var(--neutral-45-hsl)/.1))
+  background: linear-gradient(270deg,hsl(var(--neon-purple-hsl)/.7),hsl(var(--neutral-45-hsl)/.1))
 }
 .container__0d0f9:hover .progress__0d0f9 {
-  background: linear-gradient(270deg,var(--nord-pink),hsl(var(--neutral-45-hsl)/.25))
+  background: linear-gradient(270deg,var(--neon-purple),hsl(var(--neutral-45-hsl)/.25))
 }
 .boostCountText__0d0f9 {
   opacity: .8
@@ -945,7 +949,7 @@
 }
 .ephemeral__5126c:before,
 .replying__5126c:before {
-  background-color: var(--nord-blue)
+  background-color: var(--neon-blue_dark)
 }
 .ephemeral__5126c {
   background-color: var(--message-highlight-background-default)
@@ -1101,7 +1105,7 @@
   background: radial-gradient(130.66% 324.98% at -3.95% 0,var(--blue-new-31) 0,hsl(var(--primary-600-hsl)/0%) 100%),var(--primary-600)!important
 }
 .theme-light .gradient_e9ef78 {
-  background: radial-gradient(130.66% 324.98% at -3.95% 0,var(--blue-new-31) 0,hsl(var(--nord-light1-hsl)/0%) 100%),var(--nord-light1)!important
+  background: radial-gradient(130.66% 324.98% at -3.95% 0,var(--blue-new-31) 0,hsl(var(--neon-light1-hsl)/0%) 100%),var(--neon-light1)!important
 }
 .headerSuccess_b76614 {
   background-image: url("https://raw.githubusercontent.com/orblazer/discord-nordic/v4.13.1/assets/discover/app/success.svg")
