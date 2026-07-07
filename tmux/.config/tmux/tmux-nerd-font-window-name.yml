@@ -2,6 +2,7 @@ config:
   show-name: false
 
 icons:
+  mpv: ""
   nvim: ""
   helix: ""
   resterm: ""
