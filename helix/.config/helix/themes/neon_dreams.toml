@@ -1,0 +1,270 @@
+# Neon Dreams theme for Helix
+# Ported from Neovim colorscheme by eryoma
+# Inspired by vibrant neon blue and pink/purple aesthetic
+
+# ██ Editor UI
+"ui.background" = { bg = "bg" }
+"ui.background.separator" = { fg = "gray_dark", bg = "bg" }
+
+"ui.cursor" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.normal" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.insert" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.select" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.primary" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.primary.normal" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.primary.insert" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.primary.select" = { fg = "bg", bg = "glow_pink" }
+"ui.cursor.match" = { fg = "glow_pink", modifiers = ["bold"] }
+
+"ui.cursorline.primary" = { bg = "bg_light" }
+"ui.cursorline.secondary" = { bg = "bg_light" }
+"ui.cursorcolumn.primary" = { bg = "bg_lighter" }
+"ui.cursorcolumn.secondary" = { bg = "bg_lighter" }
+
+"ui.linenr" = { fg = "gray" }
+"ui.linenr.selected" = { fg = "glow_pink", modifiers = ["bold"] }
+
+"ui.gutter" = { bg = "bg" }
+"ui.gutter.selected" = { bg = "bg_light" }
+
+"ui.selection" = { bg = "dark_blue" }
+"ui.selection.primary" = { bg = "dark_blue" }
+
+"ui.highlight" = { fg = "bg", bg = "yellow", modifiers = ["bold"] }
+"ui.highlight.frameline" = { bg = "bg_light" }
+
+"ui.statusline" = { fg = "fg_light", bg = "bg_light" }
+"ui.statusline.inactive" = { fg = "fg_dark", bg = "bg_statusline" }
+"ui.statusline.normal" = { fg = "glow_blue", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "green", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "glow_pink", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "gray" }
+
+"ui.bufferline" = { fg = "fg_dark", bg = "bg_light" }
+"ui.bufferline.active" = { fg = "glow_pink", bg = "fg_dark" }
+"ui.bufferline.background" = { bg = "bg_light" }
+
+"ui.popup" = { fg = "fg", bg = "bg_float" }
+"ui.popup.info" = { fg = "green", modifiers = ["bold"] }
+
+"ui.picker.header" = { fg = "fg_dark", bg = "bg_light" }
+"ui.picker.header.column" = { fg = "fg_dark", bg = "bg_light" }
+"ui.picker.header.column.active" = { fg = "glow_pink", bg = "bg_light" }
+
+"ui.window" = { fg = "gray_dark", bg = "bg" }
+
+"ui.help" = { fg = "fg", bg = "bg_alt" }
+
+"ui.text" = { fg = "fg" }
+"ui.text.focus" = { fg = "fg_light", bg = "bg_light" }
+"ui.text.inactive" = { fg = "fg_dark" }
+"ui.text.info" = { fg = "cyan" }
+"ui.text.directory" = { fg = "glow_blue" }
+
+"ui.menu" = { fg = "fg", bg = "bg_alt" }
+"ui.menu.selected" = { fg = "fg_light", bg = "purple" }
+"ui.menu.scroll" = { fg = "glow_blue", bg = "gray_dark" }
+
+"ui.virtual.ruler" = { fg = "gray", bg = "bg_lighter" }
+"ui.virtual.whitespace" = { fg = "gray_dark" }
+"ui.virtual.indent-guide" = { fg = "gray_dark" }
+"ui.virtual.wrap" = { fg = "gray" }
+"ui.virtual.inlay-hint" = { fg = "fg_dark" }
+"ui.virtual.inlay-hint.parameter" = { fg = "fg_dark" }
+"ui.virtual.inlay-hint.type" = { fg = "fg_dark" }
+"ui.virtual.jump-label" = { fg = "glow_pink", modifiers = ["bold"] }
+
+"ui.debug.breakpoint" = { fg = "pink" }
+"ui.debug.active" = { fg = "pink" }
+
+# ██ Diagnostics (gutter markers)
+warning = { fg = "orange" }
+error = { fg = "pink" }
+info = { fg = "cyan" }
+hint = { fg = "green" }
+
+# ██ Diagnostics (editing area)
+"diagnostic" = { modifiers = ["underlined"] }
+"diagnostic.error" = { underline = { color = "pink", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "orange", style = "curl" } }
+"diagnostic.info" = { underline = { color = "cyan", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "green", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+# ██ Snippet placeholder
+"tabstop" = { bg = "bg_lighter" }
+
+# ██ Diff
+"diff.plus" = { fg = "green" }
+"diff.minus" = { fg = "red" }
+"diff.delta" = { fg = "yellow" }
+"diff.plus.gutter" = { fg = "green" }
+"diff.minus.gutter" = { fg = "pink" }
+"diff.delta.gutter" = { fg = "orange" }
+"diff.delta.moved" = { fg = "glow_pink" }
+"diff.delta.conflict" = { fg = "pink" }
+
+# =====================================================================
+# SYNTAX HIGHLIGHTING
+# =====================================================================
+
+# ██ Comments
+"comment" = { fg = "gray_light", modifiers = ["italic"] }
+"comment.line" = { fg = "gray_light", modifiers = ["italic"] }
+"comment.block" = { fg = "gray_light", modifiers = ["italic"] }
+"comment.line.documentation" = { fg = "gray_light", modifiers = ["italic"] }
+"comment.block.documentation" = { fg = "gray_light", modifiers = ["italic"] }
+"comment.unused" = { fg = "gray_light", modifiers = ["italic"] }
+
+# ██ Keywords
+"keyword" = { fg = "purple" }
+"keyword.control" = { fg = "purple" }
+"keyword.control.conditional" = { fg = "purple" }
+"keyword.control.repeat" = { fg = "purple" }
+"keyword.control.import" = { fg = "purple" }
+"keyword.control.return" = { fg = "purple" }
+"keyword.control.exception" = { fg = "pink" }
+"keyword.operator" = { fg = "purple" }
+"keyword.directive" = { fg = "magenta" }
+"keyword.function" = { fg = "purple" }
+"keyword.storage" = { fg = "light_blue" }
+"keyword.storage.type" = { fg = "light_blue" }
+"keyword.storage.modifier" = { fg = "light_blue" }
+
+# ██ Operators
+"operator" = { fg = "fg_light" }
+
+# ██ Punctuation
+"punctuation" = { fg = "fg_alt" }
+"punctuation.delimiter" = { fg = "fg_alt" }
+"punctuation.bracket" = { fg = "fg_alt" }
+"punctuation.special" = { fg = "orange" }
+
+# ██ Constants
+"constant" = { fg = "cyan" }
+"constant.builtin" = { fg = "cyan" }
+"constant.builtin.boolean" = { fg = "magenta" }
+"constant.character" = { fg = "orange" }
+"constant.character.escape" = { fg = "orange" }
+"constant.numeric" = { fg = "magenta" }
+"constant.numeric.integer" = { fg = "magenta" }
+"constant.numeric.float" = { fg = "magenta" }
+
+# ██ Strings
+"string" = { fg = "green" }
+"string.regexp" = { fg = "green" }
+"string.special" = { fg = "orange" }
+"string.special.path" = { fg = "cyan" }
+"string.special.url" = { fg = "cyan", underline = { style = "line" } }
+"string.special.symbol" = { fg = "pink" }
+
+# ██ Types
+"type" = { fg = "light_blue" }
+"type.builtin" = { fg = "light_blue" }
+"type.parameter" = { fg = "fg_alt" }
+"type.enum" = { fg = "light_blue" }
+"type.enum.variant" = { fg = "light_blue" }
+
+# ██ Functions / Methods
+"constructor" = { fg = "light_blue" }
+"function" = { fg = "glow_blue" }
+"function.builtin" = { fg = "glow_blue" }
+"function.method" = { fg = "glow_blue" }
+"function.macro" = { fg = "pink" }
+"function.special" = { fg = "magenta" }
+
+# ██ Variables
+"variable" = { fg = "fg" }
+"variable.builtin" = { fg = "light_blue" }
+"variable.parameter" = { fg = "fg_alt" }
+"variable.other" = { fg = "fg" }
+"variable.other.member" = { fg = "fg_alt" }
+
+# ██ Tags / Attributes
+"tag" = { fg = "pink" }
+"tag.builtin" = { fg = "pink" }
+"attribute" = { fg = "light_blue" }
+
+# ██ Other
+"namespace" = { fg = "light_blue" }
+"label" = { fg = "purple" }
+"special" = { fg = "orange" }
+
+# ██ Markup
+"markup.heading.marker" = { fg = "glow_pink", modifiers = ["bold"] }
+"markup.heading.1" = { fg = "glow_pink", modifiers = ["bold"] }
+"markup.heading.2" = { fg = "glow_pink", modifiers = ["bold"] }
+"markup.heading.3" = { fg = "glow_blue", modifiers = ["bold"] }
+"markup.heading.4" = { fg = "glow_blue" }
+"markup.heading.5" = { fg = "purple" }
+"markup.heading.6" = { fg = "purple" }
+"markup.list" = { fg = "magenta" }
+"markup.list.unnumbered" = { fg = "magenta" }
+"markup.list.numbered" = { fg = "magenta" }
+"markup.list.checked" = { fg = "green" }
+"markup.list.unchecked" = { fg = "orange" }
+"markup.bold" = { fg = "fg_light", modifiers = ["bold"] }
+"markup.italic" = { fg = "fg_light", modifiers = ["italic"] }
+"markup.strikethrough" = { fg = "fg_light", modifiers = ["crossed_out"] }
+"markup.link.url" = { fg = "cyan", underline = { style = "line" } }
+"markup.link.label" = { fg = "glow_blue" }
+"markup.link.text" = { fg = "glow_blue" }
+"markup.quote" = { fg = "gray_light", modifiers = ["italic"] }
+"markup.raw" = { fg = "green" }
+"markup.raw.inline" = { fg = "green", bg = "bg_lighter" }
+"markup.raw.block" = { fg = "fg_alt", bg = "bg_lighter" }
+
+# ██ Markup popup docs (completion/hover)
+"markup.normal.completion" = { fg = "fg", bg = "bg_float" }
+"markup.normal.hover" = { fg = "fg", bg = "bg_float" }
+"markup.heading.completion" = { fg = "glow_pink", modifiers = ["bold"] }
+"markup.heading.hover" = { fg = "glow_pink", modifiers = ["bold"] }
+"markup.raw.inline.completion" = { fg = "green", bg = "bg_lighter" }
+"markup.raw.inline.hover" = { fg = "green", bg = "bg_lighter" }
+
+# =====================================================================
+# PALETTE
+# =====================================================================
+
+[palette]
+# Core backgrounds
+bg = "#1a2642"          # Deep blue background
+bg_alt = "#1e2d4d"     # Slightly lighter (floating windows, sidebars)
+bg_light = "#243556"   # Lighter background (current line, selections)
+bg_lighter = "#2a3d5f" # Lightest background (visual mode, folds)
+bg_statusline = "#151f35" # Status line background
+bg_float = "#1e2d4d"   # Floating window background
+
+# Foreground colors
+fg = "#7dcfff"         # Main text (soft blue-white)
+fg_alt = "#7a8fc4"     # Secondary text (muted foreground)
+fg_dark = "#4a5f8f"    # Darker text (comments, line numbers)
+fg_light = "#c5d4ff"   # Light text (keywords, important elements)
+
+# Primary syntax colors - vivid neon palette
+blue = "#5f9eff"       # Keywords, types (bright electric blue)
+light_blue = "#7eb5ff" # Functions, identifiers (lighter blue)
+dark_blue = "#3d7acc"  # Special elements (deeper blue)
+cyan = "#5fc9e8"       # Constants, built-ins (cyan-blue)
+
+# Neon accent colors
+pink = "#ff6eb5"       # Errors, important highlights (hot pink)
+purple = "#c576ff"     # Statements, control flow (neon purple)
+magenta = "#e066ff"    # Special elements (bright magenta)
+orange = "#ffb366"     # Characters, special chars (soft orange)
+
+# Complementary colors
+green = "#66e8b5"      # Strings, success states (mint green)
+yellow = "#ffeb99"     # Numbers, warnings (soft yellow)
+red = "#ff668c"        # Errors, deletions (pink-red)
+
+# UI element colors
+gray = "#3d4d73"       # Borders, separators
+gray_light = "#4d5d8a" # Light borders, inactive elements
+gray_dark = "#2a3550"  # Dark borders, disabled elements
+
+# Neon glow accent
+glow_pink = "#ff5eb8"  # Hot pink for emphasis
+glow_blue = "#5fadff"  # Bright blue for emphasis
+glow_purple = "#b366ff" # Purple for emphasis
