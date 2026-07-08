@@ -65,6 +65,8 @@ decorations = "Buttonless"
 dynamic_padding = false
 dynamic_title = true
 startup_mode = "Maximized"
+blur = true
+opacity = 0.95
 
 [window.dimensions]
 columns = 0

@@ -3,7 +3,7 @@
   "name": "Neon Dreams",
   "description": "Vibrant neon blue and pink/purple dark theme inspired by anime aesthetics",
   "defs": {
-    "bg": "#1a2642",
+    "bg": "none",
     "bg_alt": "#1e2d4d",
     "bg_light": "#243556",
     "bg_lighter": "#2a3d5f",
