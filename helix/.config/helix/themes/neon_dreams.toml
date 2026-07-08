@@ -3,7 +3,7 @@
 # Inspired by vibrant neon blue and pink/purple aesthetic
 
 # ██ Editor UI
-"ui.background" = { bg = "bg" }
+"ui.background" = { bg = "none" }
 "ui.background.separator" = { fg = "gray_dark", bg = "bg" }
 
 "ui.cursor" = { fg = "bg", bg = "glow_pink" }
