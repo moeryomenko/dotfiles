@@ -55,7 +55,28 @@ install_aur_packages() {
 }
 
 # ================================================================
-# Step 4: Install Go tools
+# Step 4: Install hyprpm plugins
+# ================================================================
+install_hyprpm_plugins() {
+    echo "==> Installing Hyprland plugins via hyprpm..."
+    if ! command -v hyprpm &>/dev/null; then
+        echo "    WARNING: hyprpm not found -- skipping."
+        return
+    fi
+
+    # gloview — macOS Mission Control-style overview
+    if ! hyprpm list 2>/dev/null | grep -q gloview; then
+        echo "    Adding gloview repository..."
+        hyprpm add https://github.com/fedsfarm/gloview || echo "    WARNING: gloview add failed"
+    fi
+
+    hyprpm enable gloview 2>/dev/null || echo "    WARNING: gloview enable failed"
+    hyprpm reload -n
+    echo "    done."
+}
+
+# ================================================================
+# Step 5: Install Go tools
 # ================================================================
 install_go_tools() {
     echo "==> Installing Go tools from pkglist-go-tools.txt..."
@@ -72,7 +93,7 @@ install_go_tools() {
 }
 
 # ================================================================
-# Step 5: Install Rust/Cargo tools
+# Step 6: Install Rust/Cargo tools
 # ================================================================
 install_rust_tools() {
     echo "==> Installing Rust tools from pkglist-rust-tools.txt..."
@@ -89,7 +110,7 @@ install_rust_tools() {
 }
 
 # ================================================================
-# Step 6: Install npm global packages
+# Step 7: Install npm global packages
 # ================================================================
 install_npm_packages() {
     echo "==> Installing npm global packages from pkglist-npm.txt..."
@@ -122,6 +143,8 @@ main() {
     # install_aur_packages
     echo ""
     install_go_tools
+    echo ""
+    install_hyprpm_plugins
     echo ""
     install_rust_tools
     echo ""
