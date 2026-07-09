@@ -1,5 +1,5 @@
 hl.on("hyprland.start", function()
-	hl.exec_cmd("~/.config/sway/bin/wallpaper.sh")
+	hl.exec_cmd("~/.config/bin/wallpaper.sh")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("mako")
 	hl.exec_cmd("wayle panel start")
