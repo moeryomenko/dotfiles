@@ -1,0 +1,534 @@
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//  Neon Dreams v1.0 for Telegram Desktop                                     //
+//                                                                            //
+//  Part of the neon_dreams palette used across dotfiles.                     //
+//  Deep navy-blue background with electric blue, hot pink, cyan,             //
+//  and mint green accents.                                                   //
+//                                                                            //
+//  Palette canonical sources:                                                //
+//    tmux  .tmux/themes/neon_dreams.conf    (primary)                        //
+//    btop  .config/btop/themes/neon_dreams.theme                             //
+//    cmus  .config/cmus/neon_dreams.theme                                    //
+//    hypr  .config/hypr/hyprtoolkit.conf                                     //
+//                                                                            //
+//  Part of dotfiles (github.com/eryoma/dotfiles)                             //
+//  Stow package: telegram                                                    //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+// --- neon_dreams canonical palette ---
+// Backgrounds
+BG_DARKEST:       #151f35;  // tmux bg, deepest
+BG_DARK:          #1a2642;  // btop main_bg, cmus bg 234, hyprtoolkit background
+BG_MID:           #243556;  // btop div_line, hyprtoolkit base
+BG_LIGHT:         #2a3d5f;  // hyprtoolkit alternate_base
+BG_HOVER:         #2f4168;  // hover state (between mid and light)
+BG_RIPPLE:        #354a78;  // ripple/press feedback
+BG_BORDER:        #3d4d73;  // btop inactive_fg, cmus separator 237, tmux inactive_pane_border
+
+// Text
+TEXT_PRIMARY:     #a8b9e6;  // btop main_fg, tmux default_fg, hyprtoolkit text
+TEXT_BRIGHT:      #c5d4ff;  // btop title, tmux status_fg, hyprtoolkit bright_text
+TEXT_SECONDARY:   #7a90bd;  // secondary text
+TEXT_SUBTLE:      #5a6f95;  // muted text
+TEXT_DIM:         #3d4d73;  // same as border
+
+// Accents: primary = electric blue (#5f9eff), signature = hot pink (#ff6eb5)
+ACCENT_BLUE:      #5f9eff;  // btop cpu_start, hyprtoolkit accent, cmus title 75
+ACCENT_CYAN:      #5fc9e8;  // btop proc_misc, hyprtoolkit link_text, tmux accent_blue
+ACCENT_PINK:      #ff6eb5;  // tmux active_window_fg, btop hi_fg, cmus cursor 205
+ACCENT_GREEN:     #66e8b5;  // btop free_start, hyprtoolkit accent_secondary, tmux accent_green
+ACCENT_PURPLE:    #c576ff;  // btop temp_end, tmux accent_purple
+ACCENT_ORANGE:    #ffb366;  // cmus dir 215
+ACCENT_YELLOW:    #ffeb99;  // cmus yellow 229
+ACCENT_RED:       #ff668c;  // cmus red 204
+
+ACCENT_PINK_LIGHT: #ff8cc9; // hover variant
+BRIGHT_BLUE:      #7eb5ff;  // btop used_end, tmux session_fg
+BRIGHT_PURPLE:    #e066ff;  // btop cached_end
+SELECTED_BG:      #3d7acc;  // btop selected_bg
+
+SHADOW_BG:        #00000040;
+OVERLAY:          #151f35bf;
+
+// === Basic Window ===
+windowBg:             BG_DARK;
+windowFg:             TEXT_PRIMARY;
+windowBgOver:         BG_HOVER;
+windowBgRipple:       BG_RIPPLE;
+windowFgOver:         TEXT_BRIGHT;
+windowSubTextFg:      TEXT_SECONDARY;
+windowSubTextFgOver:  TEXT_SUBTLE;
+windowBoldFg:         TEXT_BRIGHT;
+windowBoldFgOver:     ACCENT_CYAN;
+windowBgActive:       ACCENT_BLUE;
+windowFgActive:       #ffffff;
+windowActiveTextFg:   ACCENT_CYAN;
+windowShadowFg:       BG_DARKEST;
+windowShadowFgFallback: BG_DARK;
+
+shadowFg:             SHADOW_BG;
+slideFadeOutBg:       #0000003c;
+slideFadeOutShadowFg: windowShadowFg;
+
+imageBg:              BG_DARKEST;
+imageBgTransparent:   BG_MID;
+
+// === Widgets ===
+activeButtonBg:           ACCENT_BLUE;
+activeButtonBgOver:       BRIGHT_BLUE;
+activeButtonBgRipple:     SELECTED_BG;
+activeButtonFg:           #ffffff;
+activeButtonFgOver:       #ffffff;
+activeButtonSecondaryFg:      #ffffffb3;
+activeButtonSecondaryFgOver:  #ffffffb3;
+activeLineFg:             ACCENT_CYAN;
+activeLineFgError:        ACCENT_RED;
+
+lightButtonBg:            BG_MID;
+lightButtonBgOver:        ACCENT_PURPLE;
+lightButtonBgRipple:      BG_RIPPLE;
+lightButtonFg:            TEXT_BRIGHT;
+lightButtonFgOver:        #ffffff;
+
+attentionButtonFg:        ACCENT_PINK;
+attentionButtonFgOver:    #ffffff;
+attentionButtonBgOver:    ACCENT_RED;
+attentionButtonBgRipple:  ACCENT_PURPLE;
+
+outlineButtonBg:          BG_MID;
+outlineButtonBgOver:      ACCENT_PURPLE;
+outlineButtonOutlineFg:   ACCENT_CYAN;
+outlineButtonBgRipple:    BG_RIPPLE;
+
+menuBg:                   BG_MID;
+menuBgOver:               BG_HOVER;
+menuBgRipple:             BG_RIPPLE;
+menuIconFg:               TEXT_SECONDARY;
+menuIconFgOver:           ACCENT_CYAN;
+menuSubmenuArrowFg:       TEXT_SUBTLE;
+menuFgDisabled:           TEXT_DIM;
+menuSeparatorFg:          BG_BORDER;
+
+scrollBarBg:              ACCENT_CYAN;
+scrollBarBgOver:          ACCENT_BLUE;
+scrollBg:                 BG_MID;
+scrollBgOver:             BG_LIGHT;
+
+smallCloseIconFg:         TEXT_SUBTLE;
+smallCloseIconFgOver:     TEXT_BRIGHT;
+
+radialFg:                 TEXT_BRIGHT;
+radialBg:                 #00000056;
+
+placeholderFg:            TEXT_SUBTLE;
+placeholderFgActive:      TEXT_SECONDARY;
+inputBorderFg:            BG_BORDER;
+filterInputBorderFg:      ACCENT_CYAN;
+filterInputInactiveBg:    BG_HOVER;
+checkboxFg:               BG_BORDER;
+
+sliderBgInactive:         BG_BORDER;
+sliderBgActive:           ACCENT_PINK;
+
+tooltipBg:                BG_LIGHT;
+tooltipFg:                TEXT_BRIGHT;
+tooltipBorderFg:          BG_BORDER;
+
+// === Custom Title Bar (Windows / macOS) ===
+titleBg:                  BG_DARK;
+titleBgActive:            BG_MID;
+titleShadow:              #00000008;
+titleButtonFg:            TEXT_SUBTLE;
+titleButtonFgActive:      TEXT_SECONDARY;
+titleButtonBgOver:        BG_HOVER;
+titleButtonFgOver:        TEXT_BRIGHT;
+titleButtonBgActiveOver:  BG_HOVER;
+titleButtonFgActiveOver:  TEXT_BRIGHT;
+titleButtonCloseBg:       #00000000;
+titleButtonCloseBgActive: #00000000;
+titleButtonCloseBgOver:           BG_HOVER;
+titleButtonCloseBgActiveOver:     ACCENT_RED;
+titleButtonCloseFg:               TEXT_SUBTLE;
+titleButtonCloseFgActive:         TEXT_SECONDARY;
+titleButtonCloseFgOver:           TEXT_BRIGHT;
+titleButtonCloseFgActiveOver:     #ffffff;
+titleFgActive:            TEXT_BRIGHT;
+titleFg:                  TEXT_SUBTLE;
+
+// === Tray Icon ===
+trayCounterBg:            ACCENT_PINK;
+trayCounterBgMute:        TEXT_DIM;
+trayCounterFg:            #ffffff;
+trayCounterBgMacInvert:   #ffffff;
+trayCounterFgMacInvert:   ACCENT_PINK;
+
+// === Layers ===
+layerBg:                  OVERLAY;
+
+cancelIconFg:             menuIconFg;
+cancelIconFgOver:         menuIconFgOver;
+
+// === Boxes (Popups / Dialogs) ===
+boxBg:                    BG_DARK;
+boxTextFg:                TEXT_SECONDARY;
+boxTextFgGood:            ACCENT_GREEN;
+boxTextFgError:           ACCENT_RED;
+boxTitleFg:               TEXT_BRIGHT;
+boxSearchBg:              boxBg;
+boxSearchCancelIconFg:    cancelIconFg;
+boxSearchCancelIconFgOver: cancelIconFgOver;
+
+boxTitleAdditionalFg:     TEXT_SUBTLE;
+boxTitleCloseFg:          cancelIconFg;
+boxTitleCloseFgOver:      cancelIconFgOver;
+
+membersAboutLimitFg:      TEXT_SUBTLE;
+
+contactsBg:               BG_DARK;
+contactsBgOver:           BG_HOVER;
+contactsNameFg:           TEXT_PRIMARY;
+contactsStatusFg:         TEXT_SECONDARY;
+contactsStatusFgOver:     TEXT_SUBTLE;
+contactsStatusFgOnline:   ACCENT_GREEN;
+
+photoCropFadeBg:          layerBg;
+photoCropPointFg:         TEXT_BRIGHT;
+
+// === Intro (Login Screens) ===
+introBg:                  BG_DARK;
+introTitleFg:             TEXT_BRIGHT;
+introDescriptionFg:       TEXT_SECONDARY;
+introErrorFg:             TEXT_SECONDARY;
+
+introCoverTopBg:          ACCENT_PURPLE;
+introCoverBottomBg:       ACCENT_PINK;
+introCoverIconsFg:        BG_DARKEST;
+introCoverPlaneTrace:     ACCENT_CYAN;
+introCoverPlaneInner:     BG_DARKEST;
+introCoverPlaneOuter:     BG_DARKEST;
+introCoverPlaneTop:       TEXT_BRIGHT;
+
+// === Dialogs Menu ===
+dialogsMenuIconFg:        menuIconFg;
+dialogsMenuIconFgOver:    menuIconFgOver;
+
+// === Folder Sidebar (chat filters) ===
+sideBarBg:                BG_DARKEST;
+sideBarBgActive:          ACCENT_BLUE;
+sideBarBgRipple:          BG_MID;
+sideBarTextFg:            TEXT_SECONDARY;
+sideBarTextFgActive:      #ffffff;
+sideBarIconFg:            TEXT_SUBTLE;
+sideBarIconFgActive:      #ffffff;
+sideBarBadgeBg:           ACCENT_PINK;
+sideBarBadgeBgMuted:      TEXT_DIM;
+sideBarBadgeFg:           #ffffff;
+
+// === Chat List ===
+dialogsBg:                BG_DARK;
+dialogsNameFg:            TEXT_PRIMARY;
+dialogsChatIconFg:        TEXT_SUBTLE;
+dialogsDateFg:            TEXT_DIM;
+dialogsTextFg:            TEXT_SECONDARY;
+dialogsTextFgService:     ACCENT_CYAN;
+dialogsDraftFg:           ACCENT_PINK;
+dialogsVerifiedIconBg:    ACCENT_CYAN;
+dialogsVerifiedIconFg:    BG_DARKEST;
+dialogsSendingIconFg:     TEXT_DIM;
+dialogsSentIconFg:        ACCENT_CYAN;
+dialogsUnreadBg:          ACCENT_PINK;
+dialogsUnreadBgMuted:     TEXT_DIM;
+dialogsUnreadFg:          #ffffff;
+
+// === Chat List: Hover ===
+dialogsBgOver:            BG_HOVER;
+dialogsNameFgOver:        TEXT_BRIGHT;
+dialogsChatIconFgOver:    TEXT_SUBTLE;
+dialogsDateFgOver:        TEXT_SUBTLE;
+dialogsTextFgOver:        TEXT_SECONDARY;
+dialogsTextFgServiceOver: ACCENT_CYAN;
+dialogsDraftFgOver:       ACCENT_PINK;
+dialogsVerifiedIconBgOver:    ACCENT_CYAN;
+dialogsVerifiedIconFgOver:    BG_DARKEST;
+dialogsSendingIconFgOver:     TEXT_SUBTLE;
+dialogsSentIconFgOver:        ACCENT_CYAN;
+dialogsUnreadBgOver:          ACCENT_PINK;
+dialogsUnreadBgMutedOver:     TEXT_SUBTLE;
+dialogsUnreadFgOver:          #ffffff;
+
+// === Chat List: Active ===
+dialogsBgActive:          ACCENT_BLUE;
+dialogsNameFgActive:      #ffffff;
+dialogsChatIconFgActive:  #ffffffb3;
+dialogsDateFgActive:      #ffffffb3;
+dialogsTextFgActive:      #ffffff;
+dialogsTextFgServiceActive: #ffffff;
+dialogsDraftFgActive:     #ffffff;
+dialogsVerifiedIconBgActive:  #ffffff;
+dialogsVerifiedIconFgActive:  ACCENT_BLUE;
+dialogsSendingIconFgActive:   #ffffffb3;
+dialogsSentIconFgActive:      #ffffff;
+dialogsUnreadBgActive:        #ffffff;
+dialogsUnreadBgMutedActive:   #ffffffb3;
+dialogsUnreadFgActive:        ACCENT_BLUE;
+
+// === Forward Panel ===
+dialogsForwardBg:         dialogsBgActive;
+dialogsForwardFg:         dialogsNameFgActive;
+
+// === Search Results ===
+searchedBarBg:            BG_MID;
+searchedBarFg:            ACCENT_CYAN;
+
+// === History (Chat View) ===
+topBarBg:                 BG_MID;
+
+emojiPanBg:               BG_DARK;
+emojiPanCategories:       BG_MID;
+emojiPanHeaderFg:         ACCENT_CYAN;
+emojiPanHeaderBg:         BG_MID;
+stickerPanDeleteBg:       #000000cc;
+stickerPanDeleteFg:       TEXT_BRIGHT;
+stickerPreviewBg:         BG_DARKESTcc;
+
+historyTextInFg:          TEXT_PRIMARY;
+historyTextOutFg:         TEXT_PRIMARY;
+historyCaptionInFg:       TEXT_SECONDARY;
+historyCaptionOutFg:      TEXT_SECONDARY;
+historyFileNameInFg:      TEXT_PRIMARY;
+historyFileNameOutFg:     TEXT_PRIMARY;
+historyOutIconFg:         ACCENT_CYAN;
+historyOutIconFgSelected: ACCENT_PINK;
+historyIconFgInverted:    TEXT_BRIGHT;
+historySendingOutIconFg:  TEXT_SUBTLE;
+historySendingInIconFg:   TEXT_DIM;
+historySendingInvertedIconFg: TEXT_BRIGHT;
+
+historySystemBg:          BG_MID;
+historySystemBgSelected:  BG_LIGHT;
+historySystemFg:          TEXT_BRIGHT;
+
+historyUnreadBarBg:       BG_MID;
+historyUnreadBarBorder:   BG_DARK;
+historyUnreadBarFg:       ACCENT_CYAN;
+
+historyForwardChooseBg:   OVERLAY;
+historyForwardChooseFg:   TEXT_BRIGHT;
+
+// === Peer Colors (Group Chat Names / Userpic Backgrounds) ===
+historyPeer1NameFg:       #ff6b6b;    // Red
+historyPeer1UserpicBg:    ACCENT_PURPLE;
+historyPeer2NameFg:       #51cf66;    // Green
+historyPeer2UserpicBg:    ACCENT_PINK;
+historyPeer3NameFg:       #4dabf7;    // Blue
+historyPeer3UserpicBg:    ACCENT_ORANGE;
+historyPeer4NameFg:       #da77f2;    // Purple
+historyPeer4UserpicBg:    ACCENT_CYAN;
+historyPeer5NameFg:       #20c997;    // Teal
+historyPeer5UserpicBg:    ACCENT_RED;
+historyPeer6NameFg:       #ff922b;    // Orange
+historyPeer6UserpicBg:    ACCENT_BLUE;
+historyPeer7NameFg:       #f783ac;    // Pink
+historyPeer7UserpicBg:    ACCENT_GREEN;
+historyPeer8NameFg:       #ffd43b;    // Yellow
+historyPeer8UserpicBg:    ACCENT_PURPLE;
+historyPeerUserpicFg:     BG_DARKEST;
+
+historyScrollBarBg:       ACCENT_PURPLE;
+historyScrollBarBgOver:   ACCENT_PINK;
+historyScrollBg:          BG_MID;
+historyScrollBgOver:      BG_LIGHT;
+
+// === Message Bubbles ===
+msgInBg:                  BG_MID;
+msgInBgSelected:          BG_LIGHT;
+msgOutBg:                 BG_LIGHT;
+msgOutBgSelected:         BG_HOVER;
+msgSelectOverlay:         ACCENT_PURPLE40;
+msgStickerOverlay:        #2223237f;
+msgInServiceFg:           ACCENT_CYAN;
+msgInServiceFgSelected:   ACCENT_CYAN;
+msgOutServiceFg:          ACCENT_PINK;
+msgOutServiceFgSelected:  ACCENT_PINK_LIGHT;
+msgInShadow:              #00000020;
+msgInShadowSelected:      #00000020;
+msgOutShadow:             #00000020;
+msgOutShadowSelected:     #00000020;
+msgInDateFg:              TEXT_SUBTLE;
+msgInDateFgSelected:      ACCENT_CYAN;
+msgOutDateFg:             TEXT_SUBTLE;
+msgOutDateFgSelected:     ACCENT_PINK;
+msgServiceFg:             TEXT_BRIGHT;
+msgServiceBg:             BG_MID;
+msgServiceBgSelected:     BG_LIGHT;
+msgInReplyBarColor:       ACCENT_PURPLE;
+msgInReplyBarSelColor:    ACCENT_PURPLE;
+msgOutReplyBarColor:      ACCENT_PINK;
+msgOutReplyBarSelColor:   ACCENT_PINK;
+msgInMonoFg:              ACCENT_CYAN;
+msgOutMonoFg:             ACCENT_PINK;
+msgDateImgFg:             msgServiceFg;
+msgDateImgBg:             #00000054;
+msgDateImgBgOver:         #00000074;
+msgDateImgBgSelected:     ACCENT_PURPLE40;
+
+msgFileThumbLinkInFg:         lightButtonFg;
+msgFileThumbLinkInFgSelected: lightButtonFgOver;
+msgFileThumbLinkOutFg:        ACCENT_CYAN;
+msgFileThumbLinkOutFgSelected: ACCENT_BLUE;
+msgFileInBg:                  ACCENT_BLUE;
+msgFileInBgOver:              BRIGHT_BLUE;
+msgFileInBgSelected:          SELECTED_BG;
+msgFileOutBg:                 ACCENT_PINK;
+msgFileOutBgOver:             ACCENT_PINK_LIGHT;
+msgFileOutBgSelected:         ACCENT_PINK;
+
+// Shared file colors (blue, green, red, yellow)
+msgFile1Bg:               #4a6fa5;
+msgFile1BgDark:           #3a5a8a;
+msgFile1BgOver:           #3a5a8a;
+msgFile1BgSelected:       #3a5a8a;
+msgFile2Bg:               #4a9a5a;
+msgFile2BgDark:           #3a8a4a;
+msgFile2BgOver:           #3a8a4a;
+msgFile2BgSelected:       #3a8a4a;
+msgFile3Bg:               #a54a4a;
+msgFile3BgDark:           #8a3a3a;
+msgFile3BgOver:           #8a3a3a;
+msgFile3BgSelected:       #8a3a3a;
+msgFile4Bg:               #a58a3a;
+msgFile4BgDark:           #8a7a2a;
+msgFile4BgOver:           #8a7a2a;
+msgFile4BgSelected:       #8a7a2a;
+
+// Download / upload icons
+historyFileInIconFg:            TEXT_BRIGHT;
+historyFileInIconFgSelected:    TEXT_BRIGHT;
+historyFileInRadialFg:          TEXT_BRIGHT;
+historyFileInRadialFgSelected:  TEXT_BRIGHT;
+historyFileOutIconFg:           TEXT_BRIGHT;
+historyFileOutIconFgSelected:   TEXT_BRIGHT;
+historyFileOutRadialFg:         TEXT_BRIGHT;
+historyFileOutRadialFgSelected: TEXT_BRIGHT;
+historyFileThumbIconFg:         TEXT_BRIGHT;
+historyFileThumbIconFgSelected: TEXT_BRIGHT;
+historyFileThumbRadialFg:       TEXT_BRIGHT;
+historyFileThumbRadialFgSelected: TEXT_BRIGHT;
+
+// === Voice Message Waveforms ===
+msgWaveformInActive:          ACCENT_PURPLE;
+msgWaveformInActiveSelected:  ACCENT_PURPLE;
+msgWaveformInInactive:        TEXT_DIM;
+msgWaveformInInactiveSelected: TEXT_SUBTLE;
+msgWaveformOutActive:         ACCENT_PINK;
+msgWaveformOutActiveSelected: ACCENT_PINK;
+msgWaveformOutInactive:       TEXT_DIM;
+msgWaveformOutInactiveSelected: TEXT_SUBTLE;
+
+// === Bot Inline Keyboard ===
+msgBotKbOverBgAdd:      BG_MID;
+msgBotKbIconFg:         TEXT_BRIGHT;
+msgBotKbRippleBg:       BG_RIPPLE;
+
+// === Media Status ===
+mediaInFg:              msgInDateFg;
+mediaInFgSelected:      msgInDateFgSelected;
+mediaOutFg:             msgOutDateFg;
+mediaOutFgSelected:     msgOutDateFgSelected;
+
+// === YouTube / Video Play Icons ===
+youtubePlayIconBg:      #e83131c8;
+youtubePlayIconFg:      TEXT_BRIGHT;
+videoPlayIconBg:        #0000007f;
+videoPlayIconFg:        TEXT_BRIGHT;
+
+// === Toast Notifications ===
+toastBg:                BG_MID;
+toastFg:                TEXT_BRIGHT;
+
+// === Report Spam ===
+reportSpamBg:           BG_MID;
+reportSpamFg:           TEXT_SECONDARY;
+
+// === History Compose Area ===
+historyToDownShadow:        SHADOW_BG;
+historyComposeAreaBg:       BG_MID;
+historyComposeAreaFg:       TEXT_PRIMARY;
+historyComposeAreaFgService: TEXT_SUBTLE;
+historyComposeIconFg:       menuIconFg;
+historyComposeIconFgOver:   ACCENT_CYAN;
+historySendIconFg:          ACCENT_PINK;
+historySendIconFgOver:      ACCENT_PINK_LIGHT;
+historyPinnedBg:            historyComposeAreaBg;
+historyReplyBg:             historyComposeAreaBg;
+historyReplyCancelFg:       cancelIconFg;
+historyReplyCancelFgOver:   cancelIconFgOver;
+
+historyComposeButtonBg:       historyComposeAreaBg;
+historyComposeButtonBgOver:   BG_HOVER;
+historyComposeButtonBgRipple: BG_RIPPLE;
+
+// === Overview (Shared Media) ===
+overviewCheckBg:            #00000040;
+overviewCheckFg:            TEXT_BRIGHT;
+overviewCheckFgActive:      TEXT_BRIGHT;
+overviewPhotoSelectOverlay: ACCENT_PURPLE40;
+
+// === Profiles ===
+profileAdminStartFg:        ACCENT_YELLOW;
+profileStatusFgOver:        TEXT_SUBTLE;
+
+// === Notifications ===
+notificationsBoxMonitorFg:  TEXT_SECONDARY;
+notificationsBoxScreenBg:   dialogsBgActive;
+notificationSampleUserpicFg: ACCENT_CYAN;
+notificationSampleCloseFg:  TEXT_SUBTLE;
+notificationSampleTextFg:   TEXT_SECONDARY;
+notificationSampleNameFg:   TEXT_PRIMARY;
+
+notificationBg:             BG_DARK;
+
+// === Main Menu ===
+mainMenuBg:                 BG_DARK;
+mainMenuCoverBg:            ACCENT_PURPLE;
+mainMenuCoverFg:            #ffffff;
+
+// === Media Player ===
+mediaPlayerBg:              BG_MID;
+mediaPlayerActiveFg:        ACCENT_PINK;
+mediaPlayerInactiveFg:      TEXT_DIM;
+mediaPlayerDisabledFg:      TEXT_SUBTLE;
+
+// === Media Viewer ===
+mediaviewFileBg:            BG_MID;
+mediaviewFileNameFg:        TEXT_SECONDARY;
+mediaviewFileSizeFg:        TEXT_SUBTLE;
+mediaviewFileRedCornerFg:   ACCENT_RED;
+mediaviewFileYellowCornerFg: ACCENT_YELLOW;
+mediaviewFileGreenCornerFg: ACCENT_GREEN;
+mediaviewFileBlueCornerFg:  ACCENT_CYAN;
+mediaviewFileExtFg:         activeButtonFg;
+mediaviewMenuBg:            BG_MID;
+mediaviewMenuBgOver:        BG_HOVER;
+mediaviewMenuBgRipple:      BG_RIPPLE;
+mediaviewMenuFg:            TEXT_BRIGHT;
+mediaviewBg:                BG_DARKESTeb;
+mediaviewVideoBg:           imageBg;
+mediaviewControlBg:         #0000003c;
+mediaviewControlFg:         TEXT_BRIGHT;
+mediaviewCaptionBg:         BG_DARKEST80;
+mediaviewCaptionFg:         TEXT_BRIGHT;
+mediaviewTextLinkFg:        ACCENT_CYAN;
+mediaviewSaveMsgBg:         toastBg;
+mediaviewSaveMsgFg:         toastFg;
+mediaviewPlaybackActive:        ACCENT_PINK;
+mediaviewPlaybackInactive:      BG_BORDER;
+mediaviewPlaybackActiveOver:    ACCENT_PINK_LIGHT;
+mediaviewPlaybackInactiveOver:  BG_LIGHT;
+mediaviewPlaybackProgressFg:    TEXT_BRIGHT;
+mediaviewPlaybackIconFg:        mediaviewPlaybackActive;
+mediaviewPlaybackIconFgOver:    mediaviewPlaybackActiveOver;
+mediaviewTransparentBg:         #ffffff;
+mediaviewTransparentFg:         #cccccc;
