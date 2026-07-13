@@ -3,6 +3,7 @@ config:
 
 icons:
   mpv: ""
+  cmus: ""
   nvim: ""
   helix: ""
   resterm: ""
