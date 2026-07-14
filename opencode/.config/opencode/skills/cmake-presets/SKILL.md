@@ -35,16 +35,16 @@ All three can be in a single `CMakePresets.json`, or split into `CMakeUserPreset
     {
       "name": "default",
       "displayName": "Default",
-      "description": "Default build with Ninja, ccache, mold, debug config",
+      "description": "Default build with Ninja, sccache, wild, debug config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/_build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_C_COMPILER_LAUNCHER": "/usr/bin/ccache",
-        "CMAKE_CXX_COMPILER_LAUNCHER": "/usr/bin/ccache",
-        "CMAKE_EXE_LINKER_FLAGS_INIT": "-fuse-ld=mold",
-        "CMAKE_SHARED_LINKER_FLAGS_INIT": "-fuse-ld=mold"
+        "CMAKE_C_COMPILER_LAUNCHER": "/usr/bin/sccache",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "/usr/bin/sccache",
+        "CMAKE_EXE_LINKER_FLAGS_INIT": "-fuse-ld=wild",
+        "CMAKE_SHARED_LINKER_FLAGS_INIT": "-fuse-ld=wild"
       }
     },
     {
@@ -126,7 +126,7 @@ All three can be in a single `CMakePresets.json`, or split into `CMakeUserPreset
 
 ### 2. Use `inherits` to avoid duplication
 - Define common cacheVariables in a hidden `base` preset, inherit in others
-- Example: all presets need ccache + mold, only build type varies
+- Example: all presets need sccache + wild, only build type varies
 
 ### 3. Separate `CMakeUserPresets.json` for personal overrides
 ```json
@@ -209,7 +209,7 @@ cmake --preset default --debug-preset
 - [ ] `cmake --list-presets` shows all expected presets
 - [ ] `cmake --preset default` configures without errors
 - [ ] `cmake --build --preset default` compiles successfully
-- [ ] Tools (ccache, mold) are picked up correctly per preset
+- [ ] Tools (sccache, wild) are picked up correctly per preset
 - [ ] Different presets produce different binary directories
 - [ ] CI preset works in CI environment
 - [ ] Version field is the latest supported by minimum CMake version
