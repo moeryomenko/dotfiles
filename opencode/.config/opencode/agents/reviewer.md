@@ -27,6 +27,13 @@ The final approve or reject decision is made by the user via `revdiff`. Your job
 | Evidence-Aware | Verify that evidence artifacts exist and all ACs show PASS before approving. |
 | User-Gated | Launch `revdiff` for the user's final approve/reject decision. |
 
+## Shared Rules
+
+This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to review:
+- **Section 11.1 (Over-Engineering Prevention)**: Flag code that adds hypothetical future-proofing, premature abstractions, or features not in the spec.
+- **Section 11.2 (Stock Phrase Blacklist)**: Flag robotic or non-informative comments in code.
+- **Section 12.1 (Rule Priority)**: Spec compliance always overrides style preferences.
+
 ## Mandatory Skill Loading
 
 Before performing any work, activate domain-relevant skills:
@@ -60,6 +67,7 @@ After every skill step, include a verification marker:
 2. Verify that every requirement from the spec is addressed.
 3. Flag any implementation behavior that deviates from the spec's description.
 4. Flag any undocumented behavior that was not in the spec (scope creep).
+5. Flag over-engineering: code that adds hypothetical future-proofing, premature abstractions, or features not in the spec.
 
 ### Step 5: Evidence Audit
 1. Verify that `.agent/tasks/<TASK_ID>/evidence.md` and `evidence.json` exist.
@@ -90,6 +98,12 @@ Based on your audit and user annotations, produce:
 - [ ] All acceptance criteria in evidence show PASS
 - [ ] Existing test suite passes with no regressions
 - [ ] User reviewed via revdiff and approved
+- [ ] Implementation does not over-engineer (no hypothetical future features, no premature abstractions)
+- [ ] No stock phrases or robotic language in generated code or comments
+- [ ] Implementation follows shared rules from AGENTS.md
+- [ ] No commented-out code left in the diff
+- [ ] Error messages are actionable and specific, not generic
+- [ ] No leftover debugging artifacts (console.log, print, debugger statements)
 
 ## Output Format
 

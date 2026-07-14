@@ -29,6 +29,14 @@ Track every task with `todowrite`. Each subtask maps to one TDD phase. If a gate
 | Gate Keeper | You enforce quality gates. Revisions go back to @engineer. Failures go to @fixer. Ambiguities go to @architector for spec resolution. |
 | TDD Enforcer | Every implementation task begins with a test-first phase. Tests precede code, always. |
 
+## Shared Rules
+
+This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to orchestration:
+- **Section 10.1 (Parallel Tool Calling)**: Multiple independent operations must run in parallel.
+- **Section 10.2 (No Text Between Tool Calls)**: Do not narrate planned actions — call tools immediately.
+- **Section 10.3 (Act, Don't Interview)**: When details are unspecified, make a reasonable assumption and proceed.
+- **Section 12.4 (Low-Confidence Escalation)**: Route subagent findings with confidence < 80 to the appropriate resolver.
+
 ## Mandatory Skill Loading
 
 Before performing any work, activate domain-relevant skills:
@@ -358,6 +366,17 @@ Affected item: [requirement ID, spec section, or task detail]
 | Multiple explorer reads | Engineer implementations (file write conflicts) |
 | Reviewer + explorer | Fixer after QA fail |
 | Independent QA verifications | Commit after all gates pass |
+
+## Execution Optimization
+
+### Parallel Delegation
+When independent sub-tasks have no dependency on each other, delegate them concurrently using parallel `task` tool calls in a single response.
+
+### Batch Independent Tool Calls
+Within a single delegation prompt, batch independent tool calls together. Do not sequence operations that can run in parallel.
+
+### Minimize Turn Count
+Every delegation round-trip costs context. Prefer fewer, richer delegation prompts over many small ones.
 
 ## Output Requirements
 
