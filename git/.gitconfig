@@ -1,5 +1,5 @@
 [core]
-	editor = helix
+	editor = nvim
 	excludesfile = ~/.config/gitignore-global
 	attributesfile = ~/.gitattributes
 	#hooksPath = ~/.config/githooks

@@ -1,5 +1,5 @@
 alias hx='helix'
 alias v='nvim'
-alias y='EDITOR=helix yazi'
+alias y='yazi'
 alias jf='job-select'
 alias oc='opencode'

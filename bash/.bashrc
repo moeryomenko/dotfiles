@@ -77,8 +77,8 @@ abbrev-alias -g pkgclean='sudo pacman -Rncs $(pacman -Qdtq)'
 abbrev-alias -g pkgcache='sudo pacman -Scc'
 
 export XKB_DEFAULT_LAYOUT=us
-export EDITOR=helix
-export VISUAL=helix
+export EDITOR=nvim
+export VISUAL=nvim
 
 export PATH=$PATH:$XDG_CONFIG_HOME/git-commands
 export PATH=$PATH:$HOME/.local/bin
