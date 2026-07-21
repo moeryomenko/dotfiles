@@ -2,7 +2,6 @@ local vars = require("lua.vars")
 
 -- General
 hl.bind(vars.mainMod .. " + Q", hl.dsp.exec_cmd(vars.terminal))
-hl.bind(vars.mainMod .. " + O", hl.plugin.gloview.toggle)
 hl.bind(vars.mainMod .. " + C", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + ALT + M", hl.dsp.exec_cmd("exit"))
 hl.bind(vars.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
