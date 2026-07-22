@@ -10,6 +10,7 @@
 # the stale launcher degrades to --only of the NEW revision (legacy UX, no
 # regression) instead of opening the OLD revision the user already reviewed.
 # output: annotations from revdiff stdout (empty if no annotations)
+# exit: 0 clean, 10 annotations captured, other nonzero failure
 
 set -euo pipefail
 
@@ -60,7 +61,9 @@ CWD="$(pwd)"
 OUTPUT_FILE=$(mktemp "$TMPBASE/plan-review-output-XXXXXX")
 trap 'rm -f "$OUTPUT_FILE"' EXIT
 
-REVDIFF_CMD="$(sq "$REVDIFF_BIN") $REVDIFF_ARGS $(sq "--output=$OUTPUT_FILE") $(sq --wrap)"
+# pass exit-code-on-annotations via env, not a CLI flag: an old revdiff binary
+# silently ignores an unknown env var but hard-fails on an unknown flag
+REVDIFF_CMD="REVDIFF_EXIT_CODE_ON_ANNOTATIONS=true $(sq "$REVDIFF_BIN") $REVDIFF_ARGS $(sq "--output=$OUTPUT_FILE") $(sq --wrap)"
 # in compare mode, default to --collapsed so the user reads the new state with
 # new-line highlights instead of full +/- diff visual clutter — better UX for
 # rolling plan-revision review where each round is a focused list of edits
@@ -68,6 +71,48 @@ if [ "$COMPARE_MODE" = "1" ]; then
     REVDIFF_CMD="$REVDIFF_CMD $(sq --collapsed)"
 fi
 OVERLAY_TITLE="plan: $(basename "$PLAN_FILE")"
+
+is_cmux_session() {
+    if [ -n "${CMUX_SURFACE_ID:-}" ]; then
+        return 0
+    fi
+    if [ "${__CFBundleIdentifier:-}" = "com.cmuxterm.app" ]; then
+        return 0
+    fi
+    case "${GHOSTTY_RESOURCES_DIR:-}:${GHOSTTY_BIN_DIR:-}" in
+        *cmux.app*) return 0 ;;
+    esac
+    return 1
+}
+
+# agterm: `agtermctl session overlay open <cmd> --block` opens revdiff in a full-pane overlay over
+# the agent's own session and blocks until it exits — like tmux's display-popup -E, so no sentinel is
+# needed. checked first so an agterm session always uses its native overlay even when a multiplexer is
+# also present. needs $AGTERM_SESSION_ID (set in every agterm session) and agtermctl on PATH; passes
+# $AGTERM_SOCKET so it reaches the agterm instance hosting this session, and --cwd "$CWD" so the
+# overlay runs in the launcher's directory. the overlay-open stdout is discarded so only the review
+# output reaches this script's stdout (the hook reads it for annotations); revdiff's own exit code is
+# propagated. sets the session status indicator to blocked while the overlay is up and restores active
+# on every exit path.
+if [ -n "${AGTERM_SESSION_ID:-}" ] && command -v agtermctl >/dev/null 2>&1; then
+    AGTERM_TARGET=(--target "$AGTERM_SESSION_ID")
+    [ -n "${AGTERM_SOCKET:-}" ] && AGTERM_TARGET+=(--socket "$AGTERM_SOCKET")
+    # record which pane owns the block so agterm nav lands on the reviewing pane; agterm defaults to
+    # the left pane otherwise, which misroutes navigation from a split or scratch session. only a
+    # recognized value is passed, so anything else falls back to agterm's own default.
+    AGTERM_STATUS=(session status blocked --blink)
+    case "${AGTERM_PANE:-}" in
+        left|right|scratch) AGTERM_STATUS+=(--pane "$AGTERM_PANE") ;;
+    esac
+    agtermctl "${AGTERM_STATUS[@]}" "${AGTERM_TARGET[@]}" >/dev/null 2>&1 || true
+    trap 'agtermctl session status active "${AGTERM_TARGET[@]}" >/dev/null 2>&1 || true; rm -f "$OUTPUT_FILE"' EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    rc=0
+    agtermctl session overlay open "$REVDIFF_CMD" "${AGTERM_TARGET[@]}" --cwd "$CWD" --block >/dev/null || rc=$?
+    cat "$OUTPUT_FILE"
+    exit "$rc"
+fi
 
 # tmux: display-popup -E blocks until command exits
 if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
@@ -79,9 +124,10 @@ if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
         fi
     fi
     TMUX_ARGS+=(-- sh -c "$REVDIFF_CMD")
-    "${TMUX_ARGS[@]}"
+    rc=0
+    "${TMUX_ARGS[@]}" || rc=$?
     cat "$OUTPUT_FILE"
-    exit 0
+    exit "$rc"
 fi
 
 # zellij: floating pane with sentinel file carrying revdiff's exit code
@@ -97,15 +143,98 @@ $REVDIFF_CMD; rc=\$?; printf "%s" "\$rc" > $(sq "$SENTINEL").tmp && mv -f $(sq "
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
-    zellij run --floating --close-on-exit \
-        --width 90 --height 90 \
-        --name "$OVERLAY_TITLE" \
-        -- "$LAUNCH_SCRIPT" >/dev/null 2>&1
+    ZELLIJ_ORIG_TAB_ID=""
+    if [ -n "${ZELLIJ_PANE_ID:-}" ] && command -v jq >/dev/null 2>&1; then
+        ZELLIJ_ORIG_TAB_ID=$(zellij action list-panes --json --tab 2>/dev/null \
+            | jq -r --arg p "$ZELLIJ_PANE_ID" \
+                '.[] | select((.is_plugin // false) == false and .tab_id != null and .id == ($p | tonumber)) | .tab_id' 2>/dev/null \
+            | head -1 || true)
+    fi
+
+    if [ -n "$ZELLIJ_ORIG_TAB_ID" ] && zellij run --floating --close-on-exit --tab-id "$ZELLIJ_ORIG_TAB_ID" \
+            --width 90% --height 90% \
+            --name "$OVERLAY_TITLE" \
+            -- "$LAUNCH_SCRIPT" >/dev/null 2>&1; then
+        :
+    else
+        zellij run --floating --close-on-exit \
+            --width 90% --height 90% \
+            --name "$OVERLAY_TITLE" \
+            -- "$LAUNCH_SCRIPT" >/dev/null 2>&1
+    fi
 
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
     rc=$(cat "$SENTINEL" 2>/dev/null || echo 1)
+    rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+    cat "$OUTPUT_FILE"
+    exit "${rc:-1}"
+fi
+
+# herdr: open a new fullscreen tab via the herdr CLI (must precede kitty —
+# inside herdr-in-kitty KITTY_LISTEN_ON is set, so the kitty branch would
+# otherwise win and open an overlay window herdr cannot composite into its panes)
+if [ "${HERDR_ENV:-}" = "1" ] && command -v herdr >/dev/null 2>&1; then
+    SENTINEL=$(mktemp "$TMPBASE/plan-review-done-XXXXXX")
+    rm -f "$SENTINEL"
+
+    LAUNCH_SCRIPT=$(mktemp "$TMPBASE/plan-review-launch-XXXXXX")
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
+    cat > "$LAUNCH_SCRIPT" <<LAUNCHER
+#!/bin/sh
+$REVDIFF_CMD; rc=\$?; printf "%s" "\$rc" > $(sq "$SENTINEL").tmp && mv -f $(sq "$SENTINEL").tmp $(sq "$SENTINEL")
+LAUNCHER
+    chmod +x "$LAUNCH_SCRIPT"
+
+    # pin the tab to the caller's workspace: without --workspace, herdr tab create
+    # targets the server's focused workspace (what the user is currently viewing),
+    # not the caller's workspace
+    HERDR_TAB_ARGS=(tab create --cwd "$CWD" --label "$OVERLAY_TITLE")
+    [ -n "${HERDR_WORKSPACE_ID:-}" ] && HERDR_TAB_ARGS+=(--workspace "$HERDR_WORKSPACE_ID")
+    HERDR_TAB_ARGS+=(--focus)
+    HERDR_NEW=$(herdr "${HERDR_TAB_ARGS[@]}" 2>&1) || {
+        echo "error: herdr tab create failed: $HERDR_NEW" >&2
+        exit 1
+    }
+    # parse the ids: jq when available, falling back to grep when jq is absent OR
+    # yields empty (e.g. herdr mixed a stderr line into the JSON via 2>&1). || true
+    # keeps a parse miss from tripping set -e so the explicit id check below stays
+    # reachable to emit a real error and close any created tab
+    HERDR_TAB_ID=""
+    HERDR_PANE_ID=""
+    if command -v jq >/dev/null 2>&1; then
+        HERDR_TAB_ID=$(printf '%s' "$HERDR_NEW" | jq -r '.result.tab.tab_id // empty' 2>/dev/null || true)
+        HERDR_PANE_ID=$(printf '%s' "$HERDR_NEW" | jq -r '.result.root_pane.pane_id // empty' 2>/dev/null || true)
+    fi
+    if [ -z "$HERDR_TAB_ID" ]; then
+        HERDR_TAB_ID=$(printf '%s' "$HERDR_NEW" | grep -o '"tab_id":"[^"]*"' | head -1 | cut -d'"' -f4 || true)
+    fi
+    if [ -z "$HERDR_PANE_ID" ]; then
+        HERDR_PANE_ID=$(printf '%s' "$HERDR_NEW" | grep -o '"pane_id":"[^"]*"' | head -1 | cut -d'"' -f4 || true)
+    fi
+
+    if [ -z "$HERDR_PANE_ID" ] || [ -z "$HERDR_TAB_ID" ]; then
+        echo "error: herdr tab create did not return pane/tab ids: $HERDR_NEW" >&2
+        if [ -n "$HERDR_TAB_ID" ]; then
+            herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
+        fi
+        rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+        exit 1
+    fi
+
+    if ! herdr pane run "$HERDR_PANE_ID" "sh $(sq "$LAUNCH_SCRIPT")" >/dev/null 2>&1; then
+        echo "error: herdr pane run failed for pane $HERDR_PANE_ID" >&2
+        herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
+        rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+        exit 1
+    fi
+
+    while [ ! -f "$SENTINEL" ]; do
+        sleep 0.3
+    done
+    rc=$(cat "$SENTINEL" 2>/dev/null || echo 1)
+    herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
     cat "$OUTPUT_FILE"
     exit "${rc:-1}"
@@ -162,8 +291,12 @@ if [ -n "${WEZTERM_PANE:-}" ]; then
     fi
 fi
 
-# cmux: split pane via cmux CLI (must precede ghostty — cmux also sets TERM_PROGRAM=ghostty)
-if [ -n "${CMUX_SURFACE_ID:-}" ] && command -v cmux >/dev/null 2>&1; then
+# cmux: split pane via cmux CLI (must precede ghostty because cmux may expose Ghostty env vars)
+if is_cmux_session; then
+    if ! command -v cmux >/dev/null 2>&1; then
+        echo "error: cmux session detected but cmux CLI not found" >&2
+        exit 1
+    fi
     SENTINEL=$(mktemp "$TMPBASE/plan-review-done-XXXXXX")
     rm -f "$SENTINEL"
 
@@ -194,7 +327,9 @@ LAUNCHER
         sleep 0.3
     done
     rc=$(cat "$SENTINEL" 2>/dev/null || echo 1)
-    cmux close-surface --surface "$CMUX_SURF" 2>/dev/null || true
+    # no explicit close: the exec'd launch script exits when the review tool does,
+    # so cmux auto-closes the surface. closing by the short ref (surface:N) here
+    # would risk hitting a recycled ref — another tab or the caller (see #217).
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
     cat "$OUTPUT_FILE"
     exit "${rc:-1}"
@@ -382,5 +517,5 @@ LAUNCHER
     exit "${rc:-1}"
 fi
 
-echo "error: no overlay terminal available (requires tmux, zellij, kitty, wezterm, cmux, ghostty, iTerm2, or emacs vterm)" >&2
+echo "error: no overlay terminal available (requires agterm, tmux, zellij, herdr, kitty, wezterm, cmux, ghostty, iTerm2, or emacs vterm)" >&2
 exit 1

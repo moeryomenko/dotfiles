@@ -6,7 +6,7 @@
  * annotations are injected back as a user message so the AI can revise.
  *
  * Requires launch-plan-review.sh in ~/.config/opencode/plugins/ and revdiff
- * on $PATH. Supports tmux, kitty, wezterm, cmux, ghostty, iTerm2, emacs.
+ * on $PATH. Supports tmux, herdr, kitty, wezterm, cmux, ghostty, iTerm2, emacs.
  */
 import type { Plugin } from "@opencode-ai/plugin";
 import path from "path";
@@ -17,6 +17,7 @@ const LAUNCHER = path.join(
     os.homedir(),
     ".config/opencode/plugins/launch-plan-review.sh",
 );
+const EXIT_CODE_ANNOTATIONS = 10;
 
 async function isExecutable(filePath: string): Promise<boolean> {
   try {
@@ -58,11 +59,25 @@ async function getLastPlanContent(
 
 async function launchReview(planFile: string): Promise<string> {
   try {
-    return await Bun.$`bash ${LAUNCHER} ${planFile}`.text().then((t) => t.trim());
+    const result = await Bun.$`bash ${LAUNCHER} ${planFile}`.quiet().nothrow();
+    const stdout = new TextDecoder().decode(result.stdout).trim();
+    if (isRevdiffSuccess(result.exitCode)) {
+      return stdout;
+    }
+
+    const stderr = new TextDecoder().decode(result.stderr).trim();
+    console.error(
+      stderr || `revdiff-plan-review: launcher exited with code ${result.exitCode}`,
+    );
+    return "";
   } catch (e) {
     console.error("revdiff-plan-review: failed to launch review:", e);
     return "";
   }
+}
+
+function isRevdiffSuccess(exitCode: number): boolean {
+  return exitCode === 0 || exitCode === EXIT_CODE_ANNOTATIONS;
 }
 
 async function injectAnnotations(

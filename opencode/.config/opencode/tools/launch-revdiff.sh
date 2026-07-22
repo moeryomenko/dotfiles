@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# launch revdiff in a terminal overlay (tmux/zellij/kitty/wezterm/cmux/ghostty/iterm2) and capture annotations.
+# launch revdiff in a terminal overlay (agterm/tmux/zellij/herdr/kitty/wezterm/cmux/ghostty/iterm2) and capture annotations.
 # usage: launch-revdiff.sh [ref] [--staged] [--untracked] [--only=file1 ...]
 # output: annotation text from revdiff stdout (empty if no annotations)
+# exit: 0 clean, 10 annotations captured, other nonzero failure
 
 set -euo pipefail
 
@@ -25,10 +26,50 @@ REVDIFF_CMD="$(sq "$REVDIFF_BIN")"
 if [ -n "${REVDIFF_CONFIG:-}" ] && [ -f "$REVDIFF_CONFIG" ]; then
     REVDIFF_CMD="$REVDIFF_CMD $(sq "--config=$REVDIFF_CONFIG")"
 fi
-REVDIFF_CMD="$REVDIFF_CMD $(sq "--output=$OUTPUT_FILE")"
+# pass exit-code-on-annotations via env, not a CLI flag: an old revdiff binary
+# silently ignores an unknown env var but hard-fails on an unknown flag
+REVDIFF_CMD="REVDIFF_EXIT_CODE_ON_ANNOTATIONS=true $REVDIFF_CMD $(sq "--output=$OUTPUT_FILE")"
 for arg in "$@"; do
     REVDIFF_CMD="$REVDIFF_CMD $(sq "$arg")"
 done
+
+write_rc_cmd() {
+    local sentinel="$1"
+    # single-quoted format keeps $?/$rc literal for the generated inner script
+    # shellcheck disable=SC2016
+    printf '%s; rc=$?; printf "%%s" "$rc" > %s.tmp && mv -f %s.tmp %s' \
+        "$REVDIFF_CMD" "$(sq "$sentinel")" "$(sq "$sentinel")" "$(sq "$sentinel")"
+}
+
+write_fifo_rc_cmd() {
+    local sentinel="$1"
+    # single-quoted format keeps $?/$rc literal for the generated inner script
+    # shellcheck disable=SC2016
+    printf '%s; rc=$?; echo "$rc" > %s; exit' "$REVDIFF_CMD" "$(sq "$sentinel")"
+}
+
+read_rc() {
+    cat "$1" 2>/dev/null || echo 1
+}
+
+print_output_and_exit() {
+    local rc="${1:-0}"
+    cat "$OUTPUT_FILE"
+    exit "$rc"
+}
+
+is_cmux_session() {
+    if [ -n "${CMUX_SURFACE_ID:-}" ]; then
+        return 0
+    fi
+    if [ "${__CFBundleIdentifier:-}" = "com.cmuxterm.app" ]; then
+        return 0
+    fi
+    case "${GHOSTTY_RESOURCES_DIR:-}:${GHOSTTY_BIN_DIR:-}" in
+        *cmux.app*) return 0 ;;
+    esac
+    return 1
+}
 
 # overlay backends (kitty @ launch, tmux display-popup, zellij run, etc.) spawn
 # children from a server/app process whose env predates user shell rc files,
@@ -63,9 +104,53 @@ for arg in "$@"; do
 done
 OVERLAY_TITLE="rd: ${DIR_NAME}${TITLE_REF:+ [$TITLE_REF]}"
 
-# popup size: override via REVDIFF_POPUP_WIDTH / REVDIFF_POPUP_HEIGHT env vars (tmux and wezterm)
+# popup size: override via REVDIFF_POPUP_WIDTH / REVDIFF_POPUP_HEIGHT env vars (tmux, zellij, and wezterm)
 POPUP_W="${REVDIFF_POPUP_WIDTH:-90%}"
 POPUP_H="${REVDIFF_POPUP_HEIGHT:-90%}"
+
+# agterm: `agtermctl session overlay open <cmd> --block` opens revdiff in a FULL-pane overlay (no
+# --size-percent) over the agent's own session and blocks until it exits, returning revdiff's exit
+# code directly — so, unlike the sentinel-polling backends below, no sentinel is needed. Checked
+# first so an agterm session always uses its native overlay even when a multiplexer is also present.
+# Needs $AGTERM_SESSION_ID (set in every agterm session) and agtermctl on PATH; passes the bound
+# $AGTERM_SOCKET so it reaches the agterm instance hosting this session. Passes --cwd "$CWD" so the
+# overlay runs in the launcher's working directory (e.g. a PR worktree) instead of agtermctl's
+# default of the agent session's current directory. Sets the session's agent-status indicator to
+# blocked (blinking) while the overlay is up and back to active after, since claude code does not
+# flag the session blocked while revdiff owns the overlay.
+if [ -n "${AGTERM_SESSION_ID:-}" ] && command -v agtermctl >/dev/null 2>&1; then
+    # shared target (+ socket) for every agtermctl call in this branch
+    AGTERM_TARGET=(--target "$AGTERM_SESSION_ID")
+    [ -n "${AGTERM_SOCKET:-}" ] && AGTERM_TARGET+=(--socket "$AGTERM_SOCKET")
+    # record which pane owns the block so agterm nav lands on the reviewing pane; agterm defaults to
+    # the left pane otherwise, which misroutes navigation from a split or scratch session. only a
+    # recognized value is passed, so anything else falls back to agterm's own default.
+    AGTERM_STATUS=(session status blocked --blink)
+    case "${AGTERM_PANE:-}" in
+        left|right|scratch) AGTERM_STATUS+=(--pane "$AGTERM_PANE") ;;
+    esac
+    # claude code does not flag the session blocked while revdiff owns the overlay, so set it here
+    # (blocked + blink draws attention from other windows). the EXIT trap restores active AND removes
+    # the temp output file on every exit path, and INT/TERM exit through it, so an interrupt never
+    # leaves the indicator stuck or the file behind (this trap supersedes the earlier output-file one).
+    agtermctl "${AGTERM_STATUS[@]}" "${AGTERM_TARGET[@]}" >/dev/null 2>&1 || true
+    trap 'agtermctl session status active "${AGTERM_TARGET[@]}" >/dev/null 2>&1 || true; rm -f "$OUTPUT_FILE"' EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    rc=0
+    agtermctl session overlay open "$REVDIFF_CMD" "${AGTERM_TARGET[@]}" --cwd "$CWD" --block || rc=$?
+    print_output_and_exit "$rc"
+fi
+
+# agent-deck: its control-mode tmux UI cannot render display-popup, so when detected this sourced
+# backend runs revdiff in a tmux window instead and exits. It returns here (no-op) for every
+# non-agent-deck tmux, leaving the popup path below unchanged.
+if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
+    _RD_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+    # shellcheck source=/dev/null  # sibling backend resolved at runtime; not followed at lint time
+    # shellcheck disable=SC1091
+    [ -f "$_RD_SCRIPT_DIR/agentdeck-window.sh" ] && . "$_RD_SCRIPT_DIR/agentdeck-window.sh"
+fi
 
 # tmux: display-popup -E blocks until command exits
 if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
@@ -77,9 +162,9 @@ if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
         fi
     fi
     TMUX_ARGS+=(-d "$CWD" -- sh -c "$REVDIFF_CMD")
-    "${TMUX_ARGS[@]}"
-    cat "$OUTPUT_FILE"
-    exit 0
+    rc=0
+    "${TMUX_ARGS[@]}" || rc=$?
+    print_output_and_exit "$rc"
 fi
 
 # zellij: floating pane with sentinel file for blocking
@@ -88,26 +173,108 @@ if [ -n "${ZELLIJ:-}" ] && command -v zellij >/dev/null 2>&1; then
     rm -f "$SENTINEL"
 
     LAUNCH_SCRIPT=$(mktemp "$TMPBASE/revdiff-launch-XXXXXX")
-    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$LAUNCH_SCRIPT"' EXIT
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
     cat > "$LAUNCH_SCRIPT" <<LAUNCHER
 #!/bin/sh
-$REVDIFF_CMD; touch $(sq "$SENTINEL")
+$(write_rc_cmd "$SENTINEL")
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
-    ZELLIJ_W="${POPUP_W%%%}"
-    ZELLIJ_H="${POPUP_H%%%}"
-    zellij run --floating --close-on-exit \
-        --width "$ZELLIJ_W" --height "$ZELLIJ_H" \
-        --name "$OVERLAY_TITLE" --cwd "$CWD" \
-        -- "$LAUNCH_SCRIPT" >/dev/null 2>&1
+    ZELLIJ_ORIG_TAB_ID=""
+    if [ -n "${ZELLIJ_PANE_ID:-}" ] && command -v jq >/dev/null 2>&1; then
+        ZELLIJ_ORIG_TAB_ID=$(zellij action list-panes --json --tab 2>/dev/null \
+            | jq -r --arg p "$ZELLIJ_PANE_ID" \
+                '.[] | select((.is_plugin // false) == false and .tab_id != null and .id == ($p | tonumber)) | .tab_id' 2>/dev/null \
+            | head -1 || true)
+    fi
+
+    if [ -n "$ZELLIJ_ORIG_TAB_ID" ] && zellij run --floating --close-on-exit --tab-id "$ZELLIJ_ORIG_TAB_ID" \
+            --width "$POPUP_W" --height "$POPUP_H" \
+            --name "$OVERLAY_TITLE" --cwd "$CWD" \
+            -- "$LAUNCH_SCRIPT" >/dev/null 2>&1; then
+        :
+    else
+        zellij run --floating --close-on-exit \
+            --width "$POPUP_W" --height "$POPUP_H" \
+            --name "$OVERLAY_TITLE" --cwd "$CWD" \
+            -- "$LAUNCH_SCRIPT" >/dev/null 2>&1
+    fi
 
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
+    rc=$(read_rc "$SENTINEL")
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
+fi
+
+# herdr: open a new fullscreen tab via the herdr CLI (must precede kitty —
+# inside herdr-in-kitty KITTY_LISTEN_ON is set, so the kitty branch would
+# otherwise win and open an overlay window herdr cannot composite into its panes)
+if [ "${HERDR_ENV:-}" = "1" ] && command -v herdr >/dev/null 2>&1; then
+    SENTINEL=$(mktemp "$TMPBASE/revdiff-done-XXXXXX")
+    rm -f "$SENTINEL"
+
+    LAUNCH_SCRIPT=$(mktemp "$TMPBASE/revdiff-launch-XXXXXX")
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
+    cat > "$LAUNCH_SCRIPT" <<LAUNCHER
+#!/bin/sh
+$(write_rc_cmd "$SENTINEL")
+LAUNCHER
+    chmod +x "$LAUNCH_SCRIPT"
+
+    # pin the tab to the caller's workspace: without --workspace, herdr tab create
+    # targets the server's focused workspace (what the user is currently viewing),
+    # not the caller's workspace
+    HERDR_TAB_ARGS=(tab create --cwd "$CWD" --label "$OVERLAY_TITLE")
+    [ -n "${HERDR_WORKSPACE_ID:-}" ] && HERDR_TAB_ARGS+=(--workspace "$HERDR_WORKSPACE_ID")
+    HERDR_TAB_ARGS+=(--focus)
+    HERDR_NEW=$(herdr "${HERDR_TAB_ARGS[@]}" 2>&1) || {
+        echo "error: herdr tab create failed: $HERDR_NEW" >&2
+        exit 1
+    }
+    # parse the ids: jq when available, falling back to grep when jq is absent OR
+    # yields empty (e.g. herdr mixed a stderr line into the JSON via 2>&1). || true
+    # keeps a parse miss from tripping set -e so the explicit id check below stays
+    # reachable to emit a real error and close any created tab
+    HERDR_TAB_ID=""
+    HERDR_PANE_ID=""
+    if command -v jq >/dev/null 2>&1; then
+        HERDR_TAB_ID=$(printf '%s' "$HERDR_NEW" | jq -r '.result.tab.tab_id // empty' 2>/dev/null || true)
+        HERDR_PANE_ID=$(printf '%s' "$HERDR_NEW" | jq -r '.result.root_pane.pane_id // empty' 2>/dev/null || true)
+    fi
+    if [ -z "$HERDR_TAB_ID" ]; then
+        HERDR_TAB_ID=$(printf '%s' "$HERDR_NEW" | grep -o '"tab_id":"[^"]*"' | head -1 | cut -d'"' -f4 || true)
+    fi
+    if [ -z "$HERDR_PANE_ID" ]; then
+        HERDR_PANE_ID=$(printf '%s' "$HERDR_NEW" | grep -o '"pane_id":"[^"]*"' | head -1 | cut -d'"' -f4 || true)
+    fi
+
+    # bail explicitly when ids are missing — sending the launch command into the
+    # wrong pane would type it into the caller's interactive shell
+    if [ -z "$HERDR_PANE_ID" ] || [ -z "$HERDR_TAB_ID" ]; then
+        echo "error: herdr tab create did not return pane/tab ids: $HERDR_NEW" >&2
+        if [ -n "$HERDR_TAB_ID" ]; then
+            herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
+        fi
+        rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+        exit 1
+    fi
+
+    if ! herdr pane run "$HERDR_PANE_ID" "sh $(sq "$LAUNCH_SCRIPT")" >/dev/null 2>&1; then
+        echo "error: herdr pane run failed for pane $HERDR_PANE_ID" >&2
+        herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
+        rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+        exit 1
+    fi
+
+    while [ ! -f "$SENTINEL" ]; do
+        sleep 0.3
+    done
+    rc=$(read_rc "$SENTINEL")
+    herdr tab close "$HERDR_TAB_ID" >/dev/null 2>&1 || true
+    rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
+    print_output_and_exit "${rc:-1}"
 fi
 
 # kitty: overlay with sentinel file for blocking
@@ -115,21 +282,22 @@ KITTY_SOCK="${KITTY_LISTEN_ON:-}"
 if [ -n "$KITTY_SOCK" ] && command -v kitty >/dev/null 2>&1; then
     SENTINEL=$(mktemp "$TMPBASE/revdiff-done-XXXXXX")
     rm -f "$SENTINEL"
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp"' EXIT
 
     KITTY_ARGS=(kitty @ --to "$KITTY_SOCK" launch --type=overlay --title="$OVERLAY_TITLE" --cwd=current)
     if [ -n "${KITTY_WINDOW_ID:-}" ]; then
         KITTY_ARGS+=(--match "window_id:${KITTY_WINDOW_ID}")
     fi
-    KITTY_ARGS+=(sh -c "cd $(sq "$CWD") && $REVDIFF_CMD; touch $(sq "$SENTINEL")")
+    KITTY_ARGS+=(sh -c "cd $(sq "$CWD") && $(write_rc_cmd "$SENTINEL")")
 
     "${KITTY_ARGS[@]}" >/dev/null 2>&1
 
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
+    rc=$(read_rc "$SENTINEL")
     rm -f "$SENTINEL"
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
 fi
 
 # wezterm/kaku: split-pane with sentinel file for blocking
@@ -147,28 +315,33 @@ if [ -n "${WEZTERM_PANE:-}" ]; then
 
         WEZTERM_PCT="${REVDIFF_POPUP_HEIGHT:-90%}"
         WEZTERM_PCT="${WEZTERM_PCT%%%}"
+        trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp"' EXIT
         "${WEZTERM_CLI[@]}" split-pane --bottom --percent "$WEZTERM_PCT" \
-            --pane-id "$WEZTERM_PANE" --cwd "$CWD" -- sh -c "$REVDIFF_CMD; touch $(sq "$SENTINEL")" >/dev/null 2>&1
+            --pane-id "$WEZTERM_PANE" --cwd "$CWD" -- sh -c "$(write_rc_cmd "$SENTINEL")" >/dev/null 2>&1
 
         while [ ! -f "$SENTINEL" ]; do
             sleep 0.3
         done
+        rc=$(read_rc "$SENTINEL")
         rm -f "$SENTINEL"
-        cat "$OUTPUT_FILE"
-        exit 0
+        print_output_and_exit "${rc:-1}"
     fi
 fi
 
-# cmux: split pane via cmux CLI (must precede ghostty — cmux also sets TERM_PROGRAM=ghostty)
-if [ -n "${CMUX_SURFACE_ID:-}" ] && command -v cmux >/dev/null 2>&1; then
+# cmux: split pane via cmux CLI (must precede ghostty because cmux may expose Ghostty env vars)
+if is_cmux_session; then
+    if ! command -v cmux >/dev/null 2>&1; then
+        echo "error: cmux session detected but cmux CLI not found" >&2
+        exit 1
+    fi
     SENTINEL=$(mktemp "$TMPBASE/revdiff-done-XXXXXX")
     rm -f "$SENTINEL"
 
     LAUNCH_SCRIPT=$(mktemp "$TMPBASE/revdiff-launch-XXXXXX")
-    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$LAUNCH_SCRIPT"' EXIT
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
     cat > "$LAUNCH_SCRIPT" <<LAUNCHER
 #!/bin/sh
-$REVDIFF_CMD; touch $(sq "$SENTINEL")
+$(write_rc_cmd "$SENTINEL")
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
@@ -191,11 +364,12 @@ LAUNCHER
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
-    # close the split pane
-    cmux close-surface --surface "$CMUX_SURF" 2>/dev/null || true
+    rc=$(read_rc "$SENTINEL")
+    # no explicit close: the exec'd launch script exits when revdiff does, so
+    # cmux auto-closes the surface. closing by the short ref (surface:N) here
+    # would risk hitting a recycled ref — another tab or the caller (see #217).
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
 fi
 
 # ghostty: split pane via AppleScript (macOS only, requires Ghostty 1.3.0+)
@@ -205,10 +379,10 @@ if [ "${TERM_PROGRAM:-}" = "ghostty" ] && command -v osascript >/dev/null 2>&1; 
     rm -f "$SENTINEL"
 
     LAUNCH_SCRIPT=$(mktemp "$TMPBASE/revdiff-launch-XXXXXX")
-    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$LAUNCH_SCRIPT"' EXIT
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
     cat > "$LAUNCH_SCRIPT" <<LAUNCHER
 #!/bin/sh
-$REVDIFF_CMD; touch $(sq "$SENTINEL")
+$(write_rc_cmd "$SENTINEL")
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
@@ -236,6 +410,7 @@ APPLESCRIPT
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
+    rc=$(read_rc "$SENTINEL")
     # close the split pane (dismisses "press any key" prompt)
     osascript - "$GHOSTTY_TERM_ID" <<'APPLESCRIPT' 2>/dev/null
 on run argv
@@ -243,8 +418,7 @@ on run argv
 end run
 APPLESCRIPT
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
 fi
 
 # iterm2: split pane via AppleScript (macOS only)
@@ -254,10 +428,10 @@ if [ -n "${ITERM_SESSION_ID:-}" ] && command -v osascript >/dev/null 2>&1; then
 
     # use launcher script to avoid single-quote injection in paths
     LAUNCH_SCRIPT=$(mktemp "$TMPBASE/revdiff-launch-XXXXXX")
-    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$LAUNCH_SCRIPT"' EXIT
+    trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$SENTINEL.tmp" "$LAUNCH_SCRIPT"' EXIT
     cat > "$LAUNCH_SCRIPT" <<LAUNCHER
 #!/bin/sh
-cd "\$1" && $REVDIFF_CMD; touch "\$2"
+cd "\$1" && $REVDIFF_CMD; rc=\$?; printf "%s" "\$rc" > "\$2.tmp" && mv -f "\$2.tmp" "\$2"
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
@@ -304,6 +478,7 @@ APPLESCRIPT
     while [ ! -f "$SENTINEL" ]; do
         sleep 0.3
     done
+    rc=$(read_rc "$SENTINEL")
     # close the split pane to avoid a dead session
     osascript - "$ITERM_NEW_SESSION" <<'APPLESCRIPT' 2>/dev/null
 on run argv
@@ -323,8 +498,7 @@ on run argv
 end run
 APPLESCRIPT
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
 fi
 
 # emacs vterm: open revdiff in a new vterm buffer via emacsclient
@@ -338,7 +512,7 @@ if [ "${INSIDE_EMACS:-}" = "vterm" ] && command -v emacsclient >/dev/null 2>&1; 
     trap 'rm -f "$OUTPUT_FILE" "$SENTINEL" "$LAUNCH_SCRIPT"' EXIT
     cat > "$LAUNCH_SCRIPT" <<LAUNCHER
 #!/bin/sh
-cd $(sq "$CWD") && $REVDIFF_CMD; echo d > $(sq "$SENTINEL"); exit
+cd $(sq "$CWD") && $(write_fifo_rc_cmd "$SENTINEL")
 LAUNCHER
     chmod +x "$LAUNCH_SCRIPT"
 
@@ -373,7 +547,7 @@ LAUNCHER
           (let ((vterm-shell \"$ESCAPED_SCRIPT\"))
             (vterm-mode)))))" >/dev/null 2>&1
 
-    read -r < "$SENTINEL"
+    read -r rc < "$SENTINEL"
     rm -f "$SENTINEL" "$LAUNCH_SCRIPT"
     emacsclient --no-wait --eval "(progn (require 'cl-lib)
       (when-let ((f (cl-find-if (lambda (f) (string= (frame-parameter f 'name) \"$ESCAPED_TITLE\")) (frame-list))))
@@ -383,9 +557,8 @@ LAUNCHER
       (when-let ((f (cl-find-if (lambda (f) (frame-parameter f 'revdiff-caller)) (frame-list))))
         (set-frame-parameter f 'revdiff-caller nil)
         (select-frame-set-input-focus f)))" >/dev/null 2>&1
-    cat "$OUTPUT_FILE"
-    exit 0
+    print_output_and_exit "${rc:-1}"
 fi
 
-echo "error: no overlay terminal available (requires tmux, zellij, kitty, wezterm, cmux, ghostty, iTerm2, or emacs vterm)" >&2
+echo "error: no overlay terminal available (requires agterm, tmux, zellij, herdr, kitty, wezterm, cmux, ghostty, iTerm2, or emacs vterm)" >&2
 exit 1
