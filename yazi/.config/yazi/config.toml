@@ -1,4 +1,4 @@
 [opener]
 edit = [
-    { run = 'nvim %s', block = true }
+    { run = 'helix %s', block = true }
 ]

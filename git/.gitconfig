@@ -1,5 +1,5 @@
 [core]
-	editor = nvim
+	editor = helix
 	excludesfile = ~/.config/gitignore-global
 	attributesfile = ~/.gitattributes
 	#hooksPath = ~/.config/githooks
@@ -59,8 +59,8 @@
 	rmb     = remove-merged-branches
 	cp      = cherry-pick
 	cpc     = cherry-pick --continue
-	cr      = code-review --command 'git show-commit --view nvim HEAD'
-	fcr     = code-review --command 'git show-commit --view nvim HEAD' --stash
+	cr      = code-review --command 'git show-commit --view helix HEAD'
+	fcr     = code-review --command 'git show-commit --view helix HEAD' --stash
 	po      = push-origin
 	pfo     = push-force-origin
 	rt      = regression-testing

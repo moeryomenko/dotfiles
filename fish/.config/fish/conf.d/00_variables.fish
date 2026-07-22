@@ -7,8 +7,8 @@ end
 
 set -gx DOCKER_HOST unix:///run/user/(id -u)/podman/podman.sock
 
-set -Ux EDITOR nvim
-set -Ux VISUAL nvim
+set -Ux EDITOR helix
+set -Ux VISUAL helix
 set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin

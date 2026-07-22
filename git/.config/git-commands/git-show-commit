@@ -22,7 +22,7 @@ while [[ $# -gt 0 ]]; do
         -*)
             echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
             echo "Examples:" >&2
-            echo "  $0 --view nvim HEAD~1" >&2
+            echo "  $0 --view helix HEAD~1" >&2
             echo "  $0 --view delta HEAD~1" >&2
             echo "  $0 --view less HEAD~1" >&2
             exit 1
@@ -39,7 +39,7 @@ done
 if [[ -z "$COMMIT_HASH" ]]; then
     echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
     echo "Examples:" >&2
-    echo "  $0 --view nvim HEAD~1" >&2
+    echo "  $0 --view helix HEAD~1" >&2
     echo "  $0 --view delta HEAD~1" >&2
     echo "  $0 --view less HEAD~1" >&2
     exit 1
@@ -51,7 +51,7 @@ REFLOG_ENTRY=$(git reflog show -n1 --format="%H %gd")
 
 # Check if the view command is an editor that should open file content
 case "$VIEW_CMD" in
-    nvim|vim|nano|emacs|code|subl|atom|vi)
+    nvim|vim|nano|emacs|code|subl|atom|helix|vi)
         # For editors, create a temporary file with the content and open it
         # Also handle soft reset and restore
         EXECUTE_CMD="echo '{}' | xargs -I % sh -c '
