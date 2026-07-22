@@ -125,5 +125,5 @@
 	useBitmapBoundaryTraversal = true
 [includeIf "gitdir:~/workspace/"]
 	path = ~/workspace/.gitconfig
-[includeIf "gitdir:~/projectsj/"]
+[includeIf "gitdir:~/projects/"]
 	path = ~/projects/.gitconfig
