@@ -48,6 +48,10 @@
     "ty": {
       "command": ["ty", "server"],
       "extensions": [".py", ".pyi"]
+    },
+    "make-ls": {
+      "command": ["make-ls"],
+      "extensions": [".mk", "Makefile", "makefile"]
     }
   },
   "formatter": true,
