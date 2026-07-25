@@ -1,3 +1,6 @@
+[language-server.make-ls]
+command = "make-ls"
+
 [language-server.css-variable-lsp]
 command = "css-variable-lsp"
 args = []
@@ -9,3 +12,7 @@ language-servers = ["css-lsp", "css-variable-lsp"]
 [[language]]
 name = "scss"
 language-servers = ["css-lsp", "css-variable-lsp"]
+
+[[language]]
+name = "make"
+language-servers = ["make-ls"]
