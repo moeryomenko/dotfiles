@@ -49,6 +49,10 @@
       "command": ["ty", "server"],
       "extensions": [".py", ".pyi"]
     },
+    "autotools": {
+      "command": ["autotools-language-server"],
+      "extensions": [".ac"]
+    },
     "make-ls": {
       "command": ["make-ls"],
       "extensions": [".mk", "Makefile", "makefile"]
