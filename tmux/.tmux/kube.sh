@@ -32,4 +32,10 @@ else
     namespace=$(kubectl config view --minify -o jsonpath='{..namespace}' 2>/dev/null)
 fi
 
-[ -n "$context" ] && echo "${context}:${namespace:-default}"
+if [ -n "$context" ]; then
+    # Output icon + value as a single format segment so tmux status bar
+    # can show/hide the entire section. Empty output = nothing displayed.
+    # Include separators so the entire kube section (|  context:ns |)
+    # atomically appears/disappears from the status bar.
+    echo "|#[fg=blue]  #[fg=default]${context}:${namespace:-default} "
+fi
