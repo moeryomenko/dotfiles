@@ -363,8 +363,8 @@ Affected item: [requirement ID, spec section, or task detail]
 
 | Parallel-safe | Sequential required |
 |---------------|-------------------|
-| Multiple explorer reads | Engineer implementations (file write conflicts) |
-| Reviewer + explorer | Fixer after QA fail |
+| Multiple explore reads | Engineer implementations (file write conflicts) |
+| Reviewer + explore | Fixer after QA fail |
 | Independent QA verifications | Commit after all gates pass |
 
 ## Execution Optimization
