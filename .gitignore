@@ -30,3 +30,4 @@ gpg/.gnupg/tofu.db
 AGENTS.md
 .plans/
 firefox/neon_dreams.xpi
+gpg/.gnupg/*.workstation.*
