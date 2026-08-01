@@ -1,5 +1,5 @@
 [general]
-import = ["./neon_dreams.toml"]
+import = ["./noir.toml"]
 
 [colors]
 draw_bold_text_with_bright_colors = true
@@ -66,7 +66,7 @@ dynamic_padding = false
 dynamic_title = true
 startup_mode = "Maximized"
 blur = true
-opacity = 0.95
+opacity = 0.8
 
 [window.dimensions]
 columns = 0

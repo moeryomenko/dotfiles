@@ -7,7 +7,7 @@ local M = {}
 -- Neovim default named color palette (highlight_group.c:2947-2974)
 local colors = {
 	-- Core backgrounds
-	bg = "#14161b",      -- NvimDarkGrey2
+	bg = "none",         -- NvimDarkGrey2
 	bg_alt = "#07080d",  -- NvimDarkGrey1 (floats, folded bg)
 	bg_light = "#2c2e33", -- NvimDarkGrey3 (cursor line, pmenu)
 	bg_lighter = "#4f5258", -- NvimDarkGrey4 (visual, matchparen)
