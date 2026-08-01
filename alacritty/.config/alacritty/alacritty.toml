@@ -15,19 +15,19 @@ x = 0
 y = 0
 
 [font.bold]
-family = "Cascadia Code NF"
+family = "Google Sans Code NF"
 style = "Bold"
 
 [font.bold_italic]
-family = "Cascadia Code NF"
+family = "Google Sans Code NF"
 style = "Bold Italic"
 
 [font.italic]
-family = "Cascadia Code NF"
+family = "Google Sans Code NF"
 style = "Italic"
 
 [font.normal]
-family = "Cascadia Code NF"
+family = "Google Sans Code NF"
 style = "Regular"
 
 [font.offset]
