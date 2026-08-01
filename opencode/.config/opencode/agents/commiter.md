@@ -55,7 +55,7 @@ Format:
 
 <body: problem, impact, solution and justification>
 
-Refs: TASK-NNN
+Signed-off-by: <auto-appended by git commit --signoff>
 ```
 
 Rules:
@@ -65,12 +65,12 @@ Rules:
   1. Problem statement (present tense): What the code does now and why it is wrong.
   2. Impact: What users, systems, or downstream consumers experience.
   3. Solution and justification: What the change does and why this approach was chosen.
-- **Trailers**: `Refs: TASK-NNN` first. Add `Signed-off-by:` last.
+- **Trailers**: End the prepared message with a blank line after the final body paragraph, then run `git commit --signoff` — git appends the `Signed-off-by:` trailer automatically on its own line after that blank line. Do not add the trailer manually: a manually inserted trailer, or a message without the trailing blank line, can end up glued to the last body line. Ending with a blank line guarantees separation.
 
 ### Step 4: Apply via Git
 1. Stage exact paths only: `git add <path1> <path2>` (never `-A` or `.`)
 2. Run `git status` and verify ONLY your files are staged.
-3. Run `git commit` with the prepared message.
+3. Ensure the prepared message ends with a blank line, then run `git commit --signoff` with the prepared message so the `Signed-off-by:` trailer lands on its own line after an empty line.
 
 ### Step 5: Report
 Provide:
@@ -116,8 +116,6 @@ The token validation middleware returns a 500 error for expired
 JWTs, causing alert noise and preventing automatic token refresh.
 
 Return a proper 401 so clients can detect expiry and retry.
-
-Refs: TASK-123
 ```
 
 Performance:
@@ -129,14 +127,14 @@ payload exceeds 100 MB and the query times out after 30 seconds.
 
 Add cursor-based pagination with a default limit of 100 records.
 Reduces p99 response from ~30s to ~200ms for large result sets.
-
-Refs: TASK-456
 ```
 
 ## Git Safety Rules
 
 - Stage explicit paths: `git add <path1> <path2>`
 - Run `git status` before committing to verify only your files are staged
+- Always commit with `--signoff` (`git commit --signoff`) to record the Developer Certificate of Origin; never omit the flag
+- Always end the prepared commit message with a blank line so `git commit --signoff` places the `Signed-off-by:` trailer after an empty line
 - Always pass `--no-ext-diff` with `git diff`, `git log -p`, and `git show` to prevent external diff tools from hanging or failing in non-interactive environments
 - Never run: `reset --hard`, `checkout .`, `clean -fd`, `stash`, `commit --no-verify`
 - Rebase conflicts: resolve only in files you modified. For conflicts in unmodified files, abort and ask the user.
