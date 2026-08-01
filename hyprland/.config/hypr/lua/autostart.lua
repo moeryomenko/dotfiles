@@ -3,7 +3,7 @@ local function start_hyprsunset()
 end
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd("~/.config/bin/wallpaper.sh")
+	hl.exec_cmd("swaybg -i $HOME/pictures/wallpapers/hello-december-dice-assorted-wooden-background-pine-5633x3169-3809.jpg")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("mako")
 	hl.exec_cmd("wayle panel start")

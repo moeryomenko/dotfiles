@@ -4,7 +4,8 @@ tearing-mode = true
 
 [bar]
 scale = 0.6000000238418579
-bg = "#1a2642"
+bg = "#14161b"
+border-color = "transparent"
 
 [[bar.layout]]
 monitor = "*"
@@ -12,25 +13,23 @@ show = true
 left = ["dashboard"]
 center = ["clock"]
 right = [
-    "media",
     "bluetooth",
     "network",
-    "microphone",
     "volume",
     "systray",
 ]
 
 [styling.palette]
-bg = "#1a2642"
-surface = "#243556"
-elevated = "#2a3d5f"
-fg = "#c5d4ff"
-fg-muted = "#a8b9e6"
-primary = "#5f9eff"
-red = "#ff668c"
-yellow = "#ffeb99"
-green = "#66e8b5"
-blue = "#7eb5ff"
+bg = "#14161b"
+surface = "#2c2e33"
+elevated = "#4f5258"
+fg = "#eef1f8"
+fg-muted = "#e0e2ea"
+primary = "#8cf8f7"
+red = "#ffc0b9"
+yellow = "#fce094"
+green = "#b3f6c0"
+blue = "#a6dbff"
 
 [modules.dashboard]
 border-show = true

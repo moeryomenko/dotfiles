@@ -1,0 +1,12 @@
+# Noir palette (canonical: alacritty/noir.toml, nvim default dark scheme)
+# Ten-color snake_case palette per themes/schema.json (wayle-theme-0.7.0).
+bg = "#14161b"
+surface = "#2c2e33"
+elevated = "#4f5258"
+fg = "#eef1f8"
+fg_muted = "#e0e2ea"
+primary = "#8cf8f7"
+red = "#ffc0b9"
+yellow = "#fce094"
+green = "#b3f6c0"
+blue = "#a6dbff"
