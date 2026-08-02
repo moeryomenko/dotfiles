@@ -6,13 +6,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "mpv-rules",
-	match = { class = "^(mpv)$" },
-	workspace = 9,
-	fullscreen = true,
-})
-
-hl.window_rule({
 	name = "telegram",
 	match = { class = "^(org.telegram.desktop)$" },
 	no_screen_share = true,
