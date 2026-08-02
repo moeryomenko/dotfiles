@@ -3,7 +3,7 @@
 # Minimal palette — most syntax groups stay at fg for maximum contrast
 
 # ██ Editor UI
-"ui.background" = { bg = "bg" }
+"ui.background" = { bg = "none" }
 "ui.background.separator" = { fg = "gray_dark", bg = "bg" }
 
 "ui.cursor" = { fg = "bg", bg = "fg" }
@@ -24,7 +24,7 @@
 "ui.linenr" = { fg = "fg_dark" }
 "ui.linenr.selected" = { fg = "fg", modifiers = ["bold"] }
 
-"ui.gutter" = { bg = "bg" }
+"ui.gutter" = { bg = "none" }
 "ui.gutter.selected" = { bg = "bg_light" }
 
 "ui.selection" = { bg = "bg_lighter" }
