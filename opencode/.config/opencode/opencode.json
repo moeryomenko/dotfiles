@@ -35,6 +35,15 @@
         "mcp-dap-server"
       ],
       "enabled": true
+    },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "enabled": true
     }
   },
   "lsp": {
@@ -52,20 +61,21 @@
   },
   "formatter": true,
   "provider": {
-    "llama": {
+    "gis": {
+      "name": "2GIS",
       "npm": "@ai-sdk/openai-compatible",
-      "name": "llama",
       "options": {
-        "baseURL": "http://127.0.0.1:8080/v1",
-        "timeout": false
+        "baseURL": "https://ai-dev-proxy.k8s.n3.2gis.io"
       },
       "models": {
-        "qwen": {
-          "name": "qwen",
-          "limit": {
-            "context": 262144,
-            "output": 65536
-          }
+        "coding-medium": {
+          "name": "coding-medium"
+        },
+        "local-coding-medium": {
+          "name": "local-coding-medium"
+        },
+        "coding-large": {
+          "name": "coding-large"
         }
       }
     }
