@@ -1,5 +1,5 @@
 alias hx='helix'
 alias cp='cpx'
-alias v='nvim'
 alias jf='job-select'
 alias oc='opencode'
+alias rw='tuicr tui'
