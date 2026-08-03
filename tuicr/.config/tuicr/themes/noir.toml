@@ -1,0 +1,70 @@
+# Noir — tuicr local theme
+# Ported from the repo noir palette (Neovim default dark colorscheme):
+#   btop/.config/btop/themes/noir.theme
+#   tmux/.tmux/themes/noir.conf
+#   discord/noir.vencord.css
+#
+# The optional syntax-theme key is intentionally omitted: keep tuicr's
+# bundled dark syntax highlighting (Base16EightiesDark fallback for a dark
+# panel_bg).
+
+# Base
+panel_bg = "#14161b"
+bg_highlight = "#2c2e33"
+fg_primary = "#e0e2ea"
+fg_secondary = "#9b9ea4"
+fg_dim = "#4f5258"
+
+# Diff
+# diff_del is the palette red hue at 75% lightness for text contrast on the
+# near-black bg (palette dark red #aa0008 is too dark as fg).
+diff_add = "#b3f6c0"
+diff_add_bg = "#2a3532"
+diff_del = "#ff8c86"
+diff_del_bg = "#35272a"
+diff_context = "#e0e2ea"
+diff_hunk_header = "#a6dbff"
+expanded_context_fg = "#4f5258"
+
+# Syntax-highlighted diff line backgrounds (diff chrome, not token colors)
+syntax_add_bg = "#2a3532"
+syntax_del_bg = "#35272a"
+
+# File status
+file_added = "#b3f6c0"
+file_modified = "#fbe29e"
+file_deleted = "#ff8c86"
+file_renamed = "#d785d7"
+
+# Review status
+reviewed = "#b3f6c0"
+pending = "#fbe29e"
+
+# Comment types
+comment_note = "#a6dbff"
+comment_suggestion = "#8cf8f7"
+comment_issue = "#ff8c86"
+comment_praise = "#b3f6c0"
+
+# UI chrome
+border_focused = "#8cf8f7"
+border_unfocused = "#2c2e33"
+status_bar_bg = "#121418"
+cursor_color = "#fbe29e"
+cursor_line_bg = "#1e2025"
+branch_name = "#8cf8f7"
+help_indicator = "#4f5258"
+
+# Messages / badges
+message_info_fg = "#14161b"
+message_info_bg = "#8cf8f7"
+message_warning_fg = "#14161b"
+message_warning_bg = "#fbe29e"
+message_error_fg = "#14161b"
+message_error_bg = "#ff8c86"
+update_badge_fg = "#14161b"
+update_badge_bg = "#fbe29e"
+
+# Mode indicator
+mode_fg = "#14161b"
+mode_bg = "#8cf8f7"
