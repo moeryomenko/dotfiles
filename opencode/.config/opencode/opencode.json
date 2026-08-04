@@ -6,7 +6,8 @@
     "@plannotator/opencode@latest",
     "@spoons-and-mirrors/subtask2@latest",
     "./plugins/revdiff-plan-review.ts",
-    "@prevalentware/opencode-goal-plugin"
+    "@prevalentware/opencode-goal-plugin",
+    "/home/eryoma/workspace/tuicr-opencode-plugin/plugin/index.ts"
   ],
   "mcp": {
     "filesystem": {
