@@ -36,3 +36,4 @@ opencode.json*
 .code-review-graph/
 .agent/
 spec/
+.specs/
