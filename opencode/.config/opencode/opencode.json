@@ -6,7 +6,8 @@
     "@plannotator/opencode@latest",
     "@spoons-and-mirrors/subtask2@latest",
     "./plugins/revdiff-plan-review.ts",
-    "@prevalentware/opencode-goal-plugin"
+    "@prevalentware/opencode-goal-plugin",
+    "/Users/eryoma/projects/tuicr-opencode-plugin/plugin/index.ts"
   ],
   "mcp": {
     "filesystem": {
@@ -47,10 +48,6 @@
     }
   },
   "lsp": {
-    "slint": {
-      "command": ["slint-lsp"],
-      "extensions": [".slint"]
-    },
     "pyright": {
       "disabled": true
     },
