@@ -1,0 +1,30 @@
+# KDash — Kubernetes dashboard TUI
+# Managed by GNU Stow: kdash/.config/kdash/config.yaml -> ~/.config/kdash/config.yaml
+# Upstream docs: https://github.com/kdash-rs/kdash (README > Configuration)
+
+# Historical log lines fetched before live streaming starts.
+log_tail_lines: 250
+
+# Start on the user-defined noir theme (cycle with t / Alt+t).
+default_theme: custom
+
+# Noir — ported from the repo noir palette (Neovim default dark colorscheme).
+# Canonical palette: alacritty/.config/alacritty/noir.toml
+# Sibling ports:     btop/.config/btop/themes/noir.theme
+#                    tmux/.tmux/themes/noir.conf
+#                    cmus/.config/cmus/noir.theme
+#                    tuicr/.config/tuicr/themes/noir.toml
+custom_theme:
+  base: macchiato    # dark fallback base; every slot is overridden below
+  is_dark: true
+  bg: "#14161b"      # noir bg
+  fg: "#e0e2ea"      # noir fg
+  accent: "#8cf8f7"  # noir cyan — title bar + unfocused panel borders
+  on_accent: "#14161b"  # noir bg — text over the cyan title bar
+  secondary: "#fce094"  # noir yellow — panel titles
+  label: "#a6dbff"      # noir blue — table column labels
+  muted: "#9b9ea4"      # noir fg_alt — help / hint text
+  highlight: "#eef1f8"  # noir fg_light — focused panel border (brighter)
+  success: "#b3f6c0"    # noir green — Running / Ready
+  warning: "#fce094"    # noir yellow — Pending / in-progress
+  error: "#ffc0b9"      # noir red — CrashLoopBackOff / Error
