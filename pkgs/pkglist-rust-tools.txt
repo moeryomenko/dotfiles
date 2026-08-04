@@ -7,3 +7,5 @@ neocmakelsp
 cmakefmt
 # tuicr -- TUI code review (tuicr/.config/tuicr)
 tuicr
+# kdash -- Kubernetes dashboard TUI (kdash/.config/kdash)
+kdash
