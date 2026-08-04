@@ -17,7 +17,9 @@ default_theme: custom
 custom_theme:
   base: macchiato    # dark fallback base; every slot is overridden below
   is_dark: true
-  bg: "#14161b"      # noir bg
+  bg: "default"      # transparent: kdash parses `default` to ratatui Color::Reset, so the
+                     # terminal default bg shows through — matches alacritty opacity 0.8 and the
+                     # sibling noir ports (btop theme_background=false, cmus bg=default, tmux bg=default)
   fg: "#e0e2ea"      # noir fg
   accent: "#8cf8f7"  # noir cyan — title bar + unfocused panel borders
   on_accent: "#14161b"  # noir bg — text over the cyan title bar
