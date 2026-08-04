@@ -33,7 +33,7 @@ fi
 4. **Analyze Diff**: Read the implementation changes
 5. **Structural Check**: Use LSP to verify types, signatures, interfaces
 6. **Generate Report**: Follow the review-output-contract format
-7. **Launch Interactive Review**: Call revdiff for user annotations
+7. **Launch Interactive Review**: Call tuicr_review (action "launch") for user annotations
 
 ## Output
 
