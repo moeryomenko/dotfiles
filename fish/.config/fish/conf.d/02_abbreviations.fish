@@ -18,7 +18,6 @@ abbr --add hxf "hx (sk --preview 'bat --color=always --style=numbers --line-rang
 
 # kubectl related abbreviations
 abbr --add k kubectl
-abbr --add kdp "kubectl get po -o name | cut -d/ -f2 | sk --reverse --preview-window=right:75% --preview 'kubectl describe po {} | bat'"
 
 # golang related abbreviations
 abbr --add fmtgou "git status --short | grep '[A|M]' | grep -E -o '[^ ]*\$' | grep '\.go\$' | xargs -I{} goimports -local (go list -m -f {{.Path}}) -w {}"
