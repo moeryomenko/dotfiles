@@ -1,0 +1,51 @@
+# Ghostty config — mirrors alacritty/.config/alacritty/alacritty.toml
+# (Ghostty 1.3.1). Reload with ctrl+shift+, after edits.
+
+# Theme (was [general] import = ["./noir.toml"])
+# Custom themes live in ~/.config/ghostty/themes/<name>
+theme = noir
+
+# Bold text uses bright palette (was draw_bold_text_with_bright_colors)
+bold-color = bright
+
+# TERM env var (was [env] TERM = "tmux-256color")
+term = tmux-256color
+
+# Font (was [font] size=14.0 + normal/bold/italic/bold_italic families)
+font-family = FiraCode Nerd Font
+font-family-bold = FiraCode Nerd Font
+font-family-italic = FiraCode Nerd Font
+font-family-bold-italic = FiraCode Nerd Font
+font-size = 15
+
+# Keybindings (was [[keyboard.bindings]])
+keybind = alt+c=copy_to_clipboard
+keybind = alt+v=paste_from_clipboard
+# NOTE: overwrites default ctrl+shift+enter=toggle_split_zoom (parity with
+# Alacritty SpawnNewInstance). Remove this line to restore split zoom toggle.
+keybind = ctrl+shift+enter=new_window
+
+# Mouse (was [mouse] hide_when_typing = false; false is Ghostty default)
+mouse-hide-while-typing = false
+
+# Scrolling (was history=100000, multiplier=3)
+# NOTE: scrollback-limit is BYTES, not lines. 10MB = Ghostty default ~= 100k lines.
+scrollback-limit = 10000000
+# 3 is already the discrete-wheel default; explicit for parity.
+mouse-scroll-multiplier = 3
+
+# Shell (was [terminal.shell] program/args). Parsed via /bin/sh -c.
+command = /opt/homebrew/bin/fish -l -c "tmux attach || tmux"
+
+# Window (was [window] ...)
+# Alacritty "Buttonless" is macOS-only; Linux equivalent = no decorations.
+window-decoration = false
+# was startup_mode = "Maximized"
+maximize = true
+# was opacity = 0.8
+background-opacity = 0.8
+# was blur = true — no-op on Hyprland (KDE-only); kept for parity.
+background-blur = true
+# was padding x=0 y=0 (Ghostty default is 2, so set explicitly)
+window-padding-x = 0
+window-padding-y = 0
