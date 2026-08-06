@@ -2,7 +2,11 @@ config:
   show-name: false
 
 icons:
+  mpv: ""
+  cmus: ""
   nvim: ""
   helix: ""
   resterm: ""
   opencode: "󰟍"
+  yazi: ""
+  elio: ""
