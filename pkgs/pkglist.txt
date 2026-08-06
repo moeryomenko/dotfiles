@@ -12,6 +12,7 @@
 # SHELL & TERMINAL
 # ================================================================
 alacritty              # default terminal (hyprland/lua/vars.lua)
+ghostty                # alternative terminal (ghostty/.config/ghostty)
 bash                   # /bin/bash, .bashrc
 fish                   # primary interactive shell (config.fish, alacritty.toml)
 foot                   # alternative terminal (foot/foot.ini)

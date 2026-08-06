@@ -1,5 +1,5 @@
 return {
-	terminal = "alacritty",
+	terminal = "ghostty",
 	menu = "hyprlauncher",
 	mainMod = "SUPER"
 }
