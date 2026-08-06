@@ -1,0 +1,8 @@
+# elio config — mirrors yazi/.config/yazi behavior.
+# Yazi: text/* mime opens with `helix %s` in a blocking opener.
+# Elio: text/code/config types open with helix; terminal=true suspends elio,
+# waits for helix to exit, then restores (yazi's block mode).
+[open]
+rules = [
+  { type = ["text", "code", "config"], command = "helix", terminal = true },
+]

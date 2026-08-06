@@ -9,3 +9,5 @@ cmakefmt
 tuicr
 # kdash -- Kubernetes dashboard TUI (kdash/.config/kdash)
 kdash
+# elio -- file manager TUI (elio/.config/elio)
+elio
