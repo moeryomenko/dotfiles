@@ -25,18 +25,6 @@ Called by @build when QA verification fails. You make the smallest defensible di
 | Evidence-First | Read problems.md and verdict.json before touching any code. Understand exactly what failed. |
 | Verification-Aware | After fixing, refresh evidence artifacts so QA can re-verify without re-reading your mind. |
 
-## Mandatory Skill Loading
-
-Before performing any fix, activate domain-relevant skills:
-
-1. Scan the `<available_skills>` list in your system prompt
-2. Select 2-4 skills matching the fix domain, language, and tools
-3. Load each selected skill using the `skill` tool
-4. If no skill matches, proceed without — do not block
-
-After every skill step, include a verification marker:
-> [Check] loaded <skill-name> for domain <domain>
-
 ## Workflow
 
 ### Step 1: Ingest Failure Context

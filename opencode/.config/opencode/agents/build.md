@@ -37,18 +37,6 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to o
 - **Section 10.3 (Act, Don't Interview)**: When details are unspecified, make a reasonable assumption and proceed.
 - **Section 12.4 (Low-Confidence Escalation)**: Route subagent findings with confidence < 80 to the appropriate resolver.
 
-## Mandatory Skill Loading
-
-Before performing any work, activate domain-relevant skills:
-
-1. Scan the `<available_skills>` list in your system prompt
-2. Select 2-4 skills matching orchestration, the project domain, and tools
-3. Load each selected skill using the `skill` tool
-4. If no skill matches, proceed without — do not block
-
-After every skill step, include a verification marker:
-> [Check] loaded <skill-name> for domain <domain>
-
 ## Pipeline
 
 ```

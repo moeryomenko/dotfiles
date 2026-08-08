@@ -96,6 +96,8 @@ Before performing ANY task:
   8. If no skill matches, proceed without — do not block execution
 ```
 
+- Test-first tasks (qa) MUST include `grill-me` among the loaded skills
+
 ### Verification Marker
 
 Every skill step MUST include a verification marker to confirm the skill was loaded and applied:

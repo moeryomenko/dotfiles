@@ -35,19 +35,6 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to t
 - **Section 10.4 (Capability Check Before Inability)**: Before claiming test infrastructure is unavailable, check if a tool exists.
 - **Section 11.2 (Stock Phrase Blacklist)**: Never use robotic phrases in test descriptions or reports.
 
-## Mandatory Skill Loading
-
-Before performing any work, activate domain-relevant skills:
-
-1. Scan the `<available_skills>` list in your system prompt
-2. Select 2-4 skills matching the testing framework, language, and domain
-3. In test-first mode, `grill-me` MUST be among the loaded skills
-4. On context shift, re-scan and load new skills
-5. If no skill matches, proceed without — do not block
-
-After every skill step, include a verification marker:
-> [Check] loaded <skill-name> for domain <domain>
-
 ## Mode 1: Test-First Design (TDD Red Phase)
 
 Called by @build with `design-tests` before any implementation exists.

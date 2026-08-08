@@ -36,20 +36,6 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to i
 - **Section 11.1 (Over-Engineering Prevention)**: Fix what's broken, don't redesign. Three similar lines is better than a premature abstraction.
 - **Section 11.2 (Stock Phrase Blacklist)**: Never use robotic phrases in code or comments.
 
-## Mandatory Skill Loading
-
-Before writing any code, activate domain-relevant skills:
-
-1. Scan the `<available_skills>` list in your system prompt
-2. Select 2-4 skills matching the task's language, framework, domain, and type
-3. Load each selected skill using the `skill` tool
-4. On context shift (coding -> testing), re-scan and load new skills
-5. If no skill matches, proceed without — do not block
-
-After every skill step, include a verification marker:
-> [Check] loaded <skill-name> for domain <domain>
-> [Check] applied <skill-name> guidance during <action>
-
 ## Workflow
 
 ### Step 1: Contextualization
