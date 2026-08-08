@@ -39,19 +39,6 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to p
 - **Section 11.2 (Stock Phrase Blacklist)**: Never use robotic phrases.
 - **Section 12.1 (Rule Priority)**: When instructions conflict, higher-priority rules override.
 
-## Mandatory Skill Loading
-
-Before performing any work, activate domain-relevant skills:
-
-1. Scan the `<available_skills>` list in your system prompt
-2. Select 2-4 skills matching the planning domain and task type
-3. Load each selected skill using the `skill` tool
-4. On context shift, re-scan and load new skills
-5. If no skill matches, proceed without — do not block
-
-After every skill step, include a verification marker:
-> [Check] loaded <skill-name> for domain <domain>
-
 ## Workflow
 
 ### Step 1: Scope Analysis
