@@ -1,8 +1,12 @@
 # elio config — mirrors yazi/.config/yazi behavior.
 # Yazi: text/* mime opens with `helix %s` in a blocking opener.
-# Elio: text/code/config types open with helix; terminal=true suspends elio,
-# waits for helix to exit, then restores (yazi's block mode).
+# Elio: text/code/config types open with hx (helix); terminal=true suspends elio,
+# waits for the editor to exit, then restores (yazi's block mode).
+# Markdown files are classified as `document` in elio, so they are matched
+# explicitly by extension below, before the broad type rule.
+# `hx` is the helix binary on this machine ($EDITOR/$VISUAL are set to hx).
 [open]
 rules = [
-  { type = ["text", "code", "config"], command = "helix", terminal = true },
+  { ext = ["md", "markdown", "mdown", "mkd", "mdx", "qmd"], command = "hx", terminal = true },
+  { type = ["text", "code", "config"], command = "hx", terminal = true },
 ]
