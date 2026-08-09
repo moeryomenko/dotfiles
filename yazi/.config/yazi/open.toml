@@ -1,4 +1,8 @@
+[opener.zathura]
+run = "zathura"
+
 [open]
 rules = [
     { mime = "text/*", use = "edit" },
+    { mime = "image/vnd.djvu*", use = "zathura" },
 ]

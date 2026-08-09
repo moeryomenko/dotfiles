@@ -155,6 +155,7 @@ ttf-nerd-fonts-symbols-mono # Nerd Font icons
 yazi                   # terminal file manager (yazi/ config, fish alias)
 zathura                # PDF viewer (zathura/ config, hyprland windowrules)
 zathura-pdf-poppler    # PDF backend for zathura
+zathura-djvu           # DjVu backend for zathura
 unzip                  # archive extraction (bash/oneliners.sh)
 7zip                   # archive extraction (bash/oneliners.sh)
 

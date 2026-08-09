@@ -107,3 +107,5 @@ audio/x-pls=cmus.desktop;
 
 # Document viewer — Zathura
 application/pdf=org.pwmt.zathura-pdf-poppler.desktop;
+image/vnd.djvu=org.pwmt.zathura-djvu.desktop;
+image/vnd.djvu+multipage=org.pwmt.zathura-djvu.desktop;

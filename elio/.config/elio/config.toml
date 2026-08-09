@@ -4,5 +4,7 @@
 # waits for helix to exit, then restores (yazi's block mode).
 [open]
 rules = [
+  { ext = "djvu", command = "zathura" },
+  { ext = "djv", command = "zathura" },
   { type = ["text", "code", "config"], command = "helix", terminal = true },
 ]
