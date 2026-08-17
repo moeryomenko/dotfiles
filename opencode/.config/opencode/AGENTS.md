@@ -50,6 +50,7 @@ Detailed command rules are in the `multi-agent-git-safety` skill.
 - QA verification MUST produce `verdict.json` (PASS/FAIL per VC) + `problems.md` (on FAIL).
 - Verifiers judge current code and current command results, not prior chat claims.
 - Do not claim completion unless every acceptance criterion is PASS.
+- UUIDs in evidence artifacts (`verifier_session`, `verifier_session_id`, any generated ID) MUST be produced by running `uuidgen`. Never read the kernel's random UUID pseudo-file directly.
 
 ## 6. Fresh Verifier Rule (CRITICAL)
 

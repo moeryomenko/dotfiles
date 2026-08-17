@@ -125,9 +125,11 @@ Create `.agent/tasks/<TASK_ID>/verdict.json`:
     {"vc_id": "VC-01", "status": "PASS", "evidence": "test_auth_token_expiry passes"},
     {"vc_id": "VC-02", "status": "PASS", "evidence": "test_auth_missing_header passes"}
   ],
-  "verifier_session_id": "<fresh-uuid>"
+  "verifier_session_id": "$(uuidgen)"
 }
 ```
+
+Generate the session ID with `uuidgen`; never read the kernel's random UUID pseudo-file directly.
 
 ### Step 6: Handle Failure
 If any VC fails:

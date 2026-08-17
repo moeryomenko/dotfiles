@@ -75,9 +75,11 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to i
      "criteria": [
        {"id": "AC-01", "status": "PASS", "evidence": "build compiles, test passes"},
        {"id": "AC-02", "status": "PASS", "evidence": "all edge cases handled"}
-     ]
+     ],
+     "verifier_session": "$(uuidgen)"
    }
    ```
+3. Set `verifier_session` in evidence.json — generate the value with `uuidgen`.
 
 ### Step 6: Compliance Mapping
 Produce a mapping from spec requirements to implementation details:

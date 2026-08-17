@@ -52,6 +52,7 @@ Called by @build when QA verification fails. You make the smallest defensible di
 1. Update `.agent/tasks/<TASK_ID>/evidence.md` with the fix details: what was wrong, what was changed, and why.
 2. Update `.agent/tasks/<TASK_ID>/evidence.json` with updated AC status (should now show PASS for the fixed VCs).
 3. Archive the old problems.md to `.agent/tasks/<TASK_ID>/raw/problems.md` to preserve the audit trail.
+4. If a new session ID is needed, generate it with `uuidgen`; otherwise preserve the existing ID. Never read the kernel's random UUID pseudo-file directly.
 
 ### Step 5: Signal Ready for Re-Verification
 Report to @build with:

@@ -60,7 +60,7 @@ Every implemented task MUST produce evidence artifacts before being considered c
     "lint_pass": true,
     "build_pass": true
   },
-  "verifier_session": "fresh-<uuid>"
+  "verifier_session": "$(uuidgen)"
 }
 ```
 
@@ -75,7 +75,7 @@ Every implemented task MUST produce evidence artifacts before being considered c
     {"vc_id": "VC-02", "status": "FAIL", "evidence": "Edge case not covered"}
   ],
   "problems_file": "problems.md",
-  "verifier_session_id": "<uuid>"
+  "verifier_session_id": "$(uuidgen)"
 }
 ```
 
@@ -111,6 +111,9 @@ All artifacts stored at: `.agent/tasks/<TASK_ID>/`
 1. Run fresh verification in new subagent session
 2. Create `.agent/tasks/<TASK_ID>/verdict.json`
 3. If FAIL: create `.agent/tasks/<TASK_ID>/problems.md`
+
+### ID Generation
+Run `uuidgen` via bash and use stdout as the ID, e.g. `verifier_session_id=$(uuidgen)`. Never read the kernel's random UUID pseudo-file directly.
 
 ---
 

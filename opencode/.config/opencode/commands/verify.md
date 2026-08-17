@@ -47,6 +47,7 @@ Verification report with per-VC PASS/FAIL status.
 
 When running as the QA agent, you MUST use a fresh subagent session.
 Do not reuse the engineer's session. Produce verdict.json with your session ID.
+Produce `verifier_session_id` with `uuidgen`.
 
 ## Verification Markers
 

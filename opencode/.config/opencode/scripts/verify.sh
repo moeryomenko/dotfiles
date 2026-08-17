@@ -6,7 +6,7 @@ echo "=== CI Gate ==="
 pass=true
 
 # 1. Validate all skill frontmatter
-echo "[1/5] Validating skills..."
+echo "[1/6] Validating skills..."
 if python3 scripts/validate-skills; then
     echo "  Skills: OK"
 else
@@ -15,7 +15,7 @@ else
 fi
 
 # 2. Validate agent config JSON
-echo "[2/5] Validating opencode.json..."
+echo "[2/6] Validating opencode.json..."
 if python3 -c "import json; json.load(open('opencode.json')); print('  OK')" 2>/dev/null; then
     echo "  Config: OK"
 else
@@ -24,7 +24,7 @@ else
 fi
 
 # 3. Check all referenced prompt files exist
-echo "[3/5] Checking prompt files..."
+echo "[3/6] Checking prompt files..."
 errors=0
 python3 -c "
 import json, os, sys
@@ -47,7 +47,7 @@ sys.exit(1 if errors > 0 else 0)
 
 # 4. Verify all referenced skills exist
 # Note: create-specification is a bundled skill at ~/.agents/skills/
-echo "[4/5] Checking skills..."
+echo "[4/6] Checking skills..."
 errors=0
 python3 -c "
 import json, os, sys
@@ -73,11 +73,25 @@ sys.exit(1 if errors > 0 else 0)
 " 2>/dev/null || pass=false
 
 # 5. Lint scripts
-echo "[5/5] Linting scripts..."
+echo "[5/6] Linting scripts..."
 if command -v shellcheck &>/dev/null; then
     find scripts/ -name '*.sh' -exec shellcheck {} \; 2>&1 | head -20
 else
     echo "  shellcheck not installed, skipping"
+fi
+
+# 6. Enforce the uuidgen evidence policy: the forbidden kernel pseudo-file
+#    pattern must never appear in the config repo. Built from a suffix so the
+#    literal forbidden string never occurs in this file (the policy gate
+#    itself must not trip the rule it enforces).
+echo "[6/6] Checking UUID policy..."
+uuid_suffix="uuid"
+forbidden_pattern="proc/sys/kernel/random/${uuid_suffix}"
+if grep -rnI -- "$forbidden_pattern" AGENTS.md agents/ skills/ commands/ scripts/; then
+    echo "  UUID policy: FAILED (use uuidgen)"
+    pass=false
+else
+    echo "  UUID policy: OK (uuidgen only)"
 fi
 
 echo ""
