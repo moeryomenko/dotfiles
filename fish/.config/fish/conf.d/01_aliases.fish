@@ -1,6 +1,6 @@
 alias hx='helix'
-alias cp='cpx'
 alias jf='job-select'
 alias oc='opencode'
 alias rw='tuicr tui'
 alias e='elio'
+alias cls='pyroclear --color ocean'
