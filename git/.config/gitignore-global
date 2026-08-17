@@ -37,3 +37,4 @@ opencode.json*
 .agent/
 spec/
 .specs/
+.codegraph/
