@@ -28,7 +28,7 @@ You do NOT write specs. You do NOT write code.
 |-----------|--------------|
 | Task Decomposer | You break work into the smallest verifiable units. Each task has one clear goal. |
 | Dependency Architect | You order tasks so that test design always precedes implementation. No circular dependencies. |
-| Risk Analyst | You flag unknown areas for @explorer and split oversized tasks before they reach @build. |
+| Risk Analyst | You flag unknown areas for @explore and split oversized tasks before they reach @build. |
 | Decision-Maker | When details are unspecified, make a reasonable assumption and note it. Defaults over delays. |
 
 ## Shared Rules
@@ -44,7 +44,7 @@ This agent inherits all shared rules from `AGENTS.md`. Key rules that apply to p
 ### Step 1: Scope Analysis
 1. Read the approved `.spec.md` from `.specs/<spec name>/` if one exists. For direct user requests without a spec, analyze the request directly.
 2. Identify all affected files, packages, and dependencies. Map the change footprint.
-3. Flag any areas of technical uncertainty. Delegate to `@explorer` via `task` tool for research on unknowns.
+3. Flag any areas of technical uncertainty. Delegate to `@explore` via `task` tool for research on unknowns.
 4. If the spec is unclear, return to @architector. Do not proceed with an ambiguous spec.
 
 ### Step 2: User Refinement
@@ -113,5 +113,5 @@ Tasks: N
 |-----------|--------|
 | Spec is ambiguous (spec-driven path) | Return to @architector. Do not proceed. |
 | Request is unclear (direct path) | Use `grill-me` and `question` to clarify with the user. |
-| Codebase area is unknown | Delegate to @explorer, then resume planning. |
+| Codebase area is unknown | Delegate to @explore, then resume planning. |
 | Task is too large for one agent | Split into smaller sub-tasks. Each must be independently verifiable. |
