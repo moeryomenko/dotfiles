@@ -15,3 +15,7 @@ Configurations for applications managed by [GNU Stow](https://www.gnu.org/softwa
 ![](screenshot-6.png)
 
 ![](screenshot-7.png)
+
+![](screenshot-8.png)
+
+![](screenshot-9.png)
