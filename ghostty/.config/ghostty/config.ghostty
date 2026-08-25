@@ -44,8 +44,6 @@ window-decoration = false
 maximize = true
 # was opacity = 0.8
 background-opacity = 0.8
-# was blur = true — no-op on Hyprland (KDE-only); kept for parity.
-background-blur = true
 # was padding x=0 y=0 (Ghostty default is 2, so set explicitly)
 window-padding-x = 0
 window-padding-y = 0
