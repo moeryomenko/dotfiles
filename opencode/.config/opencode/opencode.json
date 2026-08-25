@@ -70,6 +70,13 @@
       "models": {
         "qwen": {
           "name": "qwen",
+          "variants": {
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto",
+            }
+          },
           "limit": {
             "context": 262144,
             "output": 65536
