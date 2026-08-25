@@ -3,9 +3,10 @@
 # Install:
 #   paru -S --needed - < <(grep -vE '^#|^$' pkglist-aur.txt)
 #
-# Hyprland status bar (autostart wayle panel start)
-wayle-bin
+# Hyprland status bar (autostart wayle panel start) — REMOVED: replaced by tide-island
 # Diff review tool for opencode agents/tools
 revdiff
 # Unified kernel image generator for dracut
 dracut-ukify
+# Dynamic island for Hyprland (replaces wayle panel)
+tide-island

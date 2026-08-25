@@ -1,0 +1,13 @@
+{
+    "dynamicIslandLeftSwipeItems": [
+        "cava",
+        "date",
+        "time",
+        "volume"
+    ],
+    "islandAutoHideEnabled": false,
+    "tlpPermissionMode": "skip",
+    "tlpSudoPassword": null,
+    "wallpaperLibraryPath": "/home/eryoma/pictures/wallpapers",
+    "wallpaperPywalEnabled": false
+}

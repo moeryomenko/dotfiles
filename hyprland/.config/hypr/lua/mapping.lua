@@ -5,11 +5,8 @@ hl.bind(vars.mainMod .. " + Q", hl.dsp.exec_cmd(vars.terminal))
 hl.bind(vars.mainMod .. " + C", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + ALT + M", hl.dsp.exec_cmd("exit"))
 hl.bind(vars.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd(vars.menu))
-hl.bind(vars.mainMod .. " + ALT + F",
-	hl.dsp.exec_cmd("flatpak list --app --columns=application | wofi --dmenu | xargs flatpak run"))
-hl.bind(vars.mainMod .. " + SHIFT + K",
-	hl.dsp.exec_cmd("flatpak ps --columns=application | sort | uniq | wofi --dmenu | xargs flatpak kill"))
+hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleApplicationLauncher"))
+hl.bind(vars.mainMod .. " + W", hl.dsp.exec_cmd("tide toggleWorkspaceOverview"))
 hl.bind(vars.mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(vars.mainMod .. " + F", hl.dsp.window.fullscreen())
 
@@ -52,9 +49,6 @@ hl.bind(vars.mainMod .. "+ SHIFT + R", hl.dsp.exec_cmd('~/.config/hypr/bin/scree
 -- Audio
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),
 	{ locked = true, repeating = true })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ +10%"),
 	{ locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -10%"),

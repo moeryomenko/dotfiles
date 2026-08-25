@@ -106,7 +106,7 @@ hyprsunset             # blue light filter (hyprland/lua/autostart.lua)
 # ================================================================
 # WAYLAND UTILITIES
 # ================================================================
-wofi                   # app launcher (hyprland mapping.lua, wofi/ config)
+# wofi — REMOVED: replaced by tide application launcher
 mako                   # notification daemon (hyprland/lua/autostart.lua, mako/ config)
 wl-clipboard           # clipboard (hyprland autostart wl-paste, tmux.conf wl-copy)
 cliphist               # clipboard history (hyprland autostart cliphist)
@@ -163,7 +163,6 @@ unzip                  # archive extraction (bash/oneliners.sh)
 # MEDIA
 # ================================================================
 mpv                    # media player (mpv/ config, hyprland windowrules)
-cmus                   # music player (cmus/ config)
 imv                    # image viewer
 yt-dlp                 # video downloader
 
