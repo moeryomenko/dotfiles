@@ -71,6 +71,14 @@ install_hyprpm_plugins() {
     fi
 
     hyprpm enable gloview 2>/dev/null || echo "    WARNING: gloview enable failed"
+
+    # HyprCapture — screenshot plugin (replaces grim+swappy)
+    if ! hyprpm list 2>/dev/null | grep -q hyprcapture; then
+        echo "    Adding HyprCapture repository..."
+        hyprpm add https://github.com/gfhdhytghd/HyprCapture || echo "    WARNING: HyprCapture add failed"
+    fi
+
+    hyprpm enable hyprcapture 2>/dev/null || echo "    WARNING: HyprCapture enable failed"
     hyprpm reload -n
     echo "    done."
 }

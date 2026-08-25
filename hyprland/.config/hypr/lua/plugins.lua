@@ -3,6 +3,11 @@
 hl.exec_cmd("hyprctl plugin load /var/cache/hyprpm/eryoma/hymission/hymission.so")
 hl.config({
 	plugin = {
+		hyprcapture = {
+			fusion_mode = true,
+			save_dir = "/home/eryoma/pictures/screenshots",
+			filename_template = "screenshot-%Y%m%d-%H%M%S.png",
+		},
 		hymission = {
 			-- Layout: common geometry and sizing
 			outer_padding_top = 92,

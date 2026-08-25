@@ -42,7 +42,10 @@ hl.bind(vars.mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Screenshots / Screen Recording
-hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | swappy -f -'))
+-- Screenshots (HyprCapture plugin)
+if hl.plugin and hl.plugin.hyprcapture then
+	hl.bind("Print", hl.plugin.hyprcapture.open)
+end
 hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh'))
 hl.bind(vars.mainMod .. "+ SHIFT + R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh stop'))
 -- Audio
