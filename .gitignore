@@ -32,3 +32,5 @@ AGENTS.md
 firefox/neon_dreams.xpi
 gpg/.gnupg/*.workstation.*
 containers/.config/containers/systemd/capishim*
+containers/.config/containers/systemd/k8netd.container
+containers/.config/containers/systemd/cluster-api-hypervisor.container
