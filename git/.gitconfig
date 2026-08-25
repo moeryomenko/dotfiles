@@ -5,8 +5,8 @@
 	#hooksPath = ~/.config/githooks
 [add.interactive]
 	useBuiltin = false
-[interactive]
-	diffFilter = delta --color-only
+# [interactive]
+# 	diffFilter = delta --color-only
 [delta]
 	navigate = true
 	light = false
@@ -16,10 +16,10 @@
 [merge "mergiraf"]
 	name = mergiraf
 	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
-[diff]
-	external = difft
-	colorMoved = default
-	tool = difftastic
+# [diff]
+# 	external = difft
+# 	colorMoved = default
+# 	tool = difftastic
 [difftool]
 	prompt = false
 [pager]
