@@ -6,7 +6,6 @@ hl.bind(vars.mainMod .. " + C", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + ALT + M", hl.dsp.exec_cmd("exit"))
 hl.bind(vars.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleApplicationLauncher"))
-hl.bind(vars.mainMod .. " + W", hl.dsp.exec_cmd("tide toggleWorkspaceOverview"))
 hl.bind(vars.mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(vars.mainMod .. " + F", hl.dsp.window.fullscreen())
 
@@ -53,3 +52,16 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_
 	{ locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -10%"),
 	{ locked = true, repeating = true })
+
+-- Hymission Mission Control
+if hl.plugin and hl.plugin.hymission then
+	hl.bind(vars.mainMod .. " + O", hl.plugin.hymission.toggle)
+end
+-- hl.bind(vars.mainMod .. " + SHIFT + TAB", function()
+--     hl.plugin.hymission.toggle("reverse")
+-- end)
+-- hl.bind(vars.mainMod .. " + CTRL + TAB", hl.plugin.hymission.close)
+-- hl.bind(vars.mainMod .. " + A", function()
+--     hl.plugin.hymission.toggle("onlycurrentworkspace")
+-- end)
+-- hl.bind(vars.mainMod .. " + S", hl.plugin.hymission.debug_current_layout)
