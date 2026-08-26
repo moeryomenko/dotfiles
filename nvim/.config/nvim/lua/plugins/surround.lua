@@ -1,16 +1,8 @@
 return {
 	"kylechui/nvim-surround",
 	lazy = false,
-	keys = { "cs", "ds", "ys" },
 	config = function()
 		require("nvim-surround").setup({
-			keymaps = { -- vim-surround style keymaps
-				-- insert = "ys",
-				-- insert_line = "yss",
-				visual = "S",
-				delete = "ds",
-				change = "cs",
-			},
 			surrounds = {
 				HTML = {
 					["t"] = "type", -- Change just the tag type
