@@ -11,5 +11,6 @@
     "tlpPermissionMode": "skip",
     "tlpSudoPassword": null,
     "wallpaperLibraryPath": "/home/eryoma/pictures/wallpapers",
-    "wallpaperPywalEnabled": false
+    "wallpaperPywalEnabled": false,
+    "wallpaperTransitionType": "grow"
 }
