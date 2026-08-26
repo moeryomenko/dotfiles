@@ -3,6 +3,8 @@
         "cava",
         "date",
         "time",
+        "cpu",
+        "ram",
         "volume"
     ],
     "islandAutoHideEnabled": false,
