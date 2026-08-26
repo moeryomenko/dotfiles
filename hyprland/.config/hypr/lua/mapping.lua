@@ -71,11 +71,4 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_
 if hl.plugin and hl.plugin.hymission then
 	hl.bind(vars.mainMod .. " + O", hl.plugin.hymission.toggle)
 end
--- hl.bind(vars.mainMod .. " + SHIFT + TAB", function()
---     hl.plugin.hymission.toggle("reverse")
--- end)
--- hl.bind(vars.mainMod .. " + CTRL + TAB", hl.plugin.hymission.close)
--- hl.bind(vars.mainMod .. " + A", function()
---     hl.plugin.hymission.toggle("onlycurrentworkspace")
--- end)
--- hl.bind(vars.mainMod .. " + S", hl.plugin.hymission.debug_current_layout)
+
