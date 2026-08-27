@@ -3,7 +3,7 @@
 
 # Theme (was [general] import = ["./noir.toml"])
 # Custom themes live in ~/.config/ghostty/themes/<name>
-theme = noir
+theme = navi
 
 # Bold text uses bright palette (was draw_bold_text_with_bright_colors)
 bold-color = bright

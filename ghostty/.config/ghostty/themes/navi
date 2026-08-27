@@ -1,0 +1,28 @@
+# navi — extracted from elio examples/themes/navi/theme.toml
+# (dark blue theme)
+
+background = #02050c
+foreground = #edf4ff
+
+cursor-color = #eaf5ff
+cursor-text = #02050c
+
+selection-background = #204064
+selection-foreground = #eaf5ff
+
+palette = 0=#02050c
+palette = 1=#e86060
+palette = 2=#57c957
+palette = 3=#ffb86c
+palette = 4=#7ec4ff
+palette = 5=#95d3ff
+palette = 6=#7ec4ff
+palette = 7=#edf4ff
+palette = 8=#10192a
+palette = 9=#e86060
+palette = 10=#57c957
+palette = 11=#ffb86c
+palette = 12=#7ec4ff
+palette = 13=#95d3ff
+palette = 14=#7ec4ff
+palette = 15=#eaf5ff
