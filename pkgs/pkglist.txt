@@ -181,3 +181,4 @@ stow                   # dotfile manager (README.md)
 gtk3                   # GTK theme (gtk/ settings.ini)
 dog                    # DNS client
 dnsproxy               # DNS-over-HTTPS upstream proxy for dnsmasq (pkgs/dns-doh/)
+dnsmasq                # main DNS service, forwards to dnsproxy over DoH (pkgs/dns-doh/)

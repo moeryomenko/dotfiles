@@ -18,7 +18,7 @@ because dnsmasq itself cannot speak DoH. systemd-resolved is disabled.
 ## Deploy on a fresh machine
 
 ```sh
-sudo pacman -S dnsproxy            # or via pkgs/install.sh (pkglist.txt)
+sudo pacman -S dnsproxy dnsmasq      # or via pkgs/install.sh (pkglist.txt)
 sudo install -Dm644 etc/dnsproxy/dnsproxy.yaml /etc/dnsproxy/dnsproxy.yaml
 sudo install -Dm644 etc/dnsmasq.d/10-doh.conf /etc/dnsmasq.d/10-doh.conf
 sudo install -m644 etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
@@ -49,3 +49,12 @@ dig @127.0.0.1 example.com A        # via dnsmasq -> dnsproxy -> DoH
 dig @127.0.0.1 -p 5053 example.com A # via dnsproxy directly
 sudo ss -tnp | grep dnsproxy        # live TLS 443 to cloudflare / quad9
 ```
+
+## Only-DoH guarantee
+
+All resolution goes over HTTPS: dnsmasq's only upstream is the local dnsproxy,
+and dnsproxy's only upstreams are `https://cloudflare-dns.com/dns-query` and
+`https://dns.quad9.net/dns-query`. The single plaintext element is dnsproxy's
+`bootstrap` list (router `192.168.3.1` + `8.8.8.8`) — used only to resolve the
+DoH endpoint hostnames, an unavoidable chicken-and-egg. No general DNS query
+ever leaves the machine as plaintext.
