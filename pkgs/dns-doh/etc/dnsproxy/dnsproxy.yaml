@@ -1,0 +1,15 @@
+# dnsproxy — DNS-over-HTTPS proxy, upstream resolver for dnsmasq
+# Path: dnsmasq:53 -> dnsproxy:5053 -> DoH (Cloudflare/Quad9)
+# Deploy: sudo install -Dm644 dnsproxy.yaml /etc/dnsproxy/dnsproxy.yaml
+bootstrap:
+  - "192.168.3.1:53"
+  - "8.8.8.8:53"
+dnssec: true
+listen-addrs:
+  - "127.0.0.1"
+listen-ports:
+  - 5053
+upstream:
+  - "https://cloudflare-dns.com/dns-query"
+  - "https://dns.quad9.net/dns-query"
+timeout: "10s"
