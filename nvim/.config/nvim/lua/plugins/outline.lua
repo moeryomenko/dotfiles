@@ -3,7 +3,7 @@ return {
 	lazy = false,
 	cmd = { "Outline", "OutlineOpen" },
 	keys = { -- Example mapping to toggle outline
-		{ "\\o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+		{ "<space>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
 	},
 	config = function()
 		require("outline").setup()
