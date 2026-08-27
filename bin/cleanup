@@ -1,0 +1,756 @@
+#!/usr/bin/env bash
+#
+# cleanup — Clean system caches and trash data.
+#
+# Dry-run by default; --apply performs actual deletion.
+# Logs full output to ~/.logs/cleanup.log (truncated when > 1MB).
+# Config sourced from ~/.config/cleanup/config when present.
+#
+# Usage:
+#   cleanup [--apply] [--dry-run] [--only cat1,cat2] [--category name]
+#           [--all] [--list] [--yes] [--verbose] [--install]
+
+# shellcheck disable=SC2034  # CLEANUP_* config vars are read via ${!name} indirection
+
+set -Eeuo pipefail
+shopt -s inherit_errexit
+IFS=$'\n\t'
+
+# ---- Config defaults (overridden by ~/.config/cleanup/config) ----------------
+: "${CLEANUP_PACMAN:=yes}"
+: "${CLEANUP_PARU_CLONE:=yes}"
+: "${CLEANUP_NPM:=yes}"
+: "${CLEANUP_BUN:=yes}"
+: "${CLEANUP_PNPM:=yes}"
+: "${CLEANUP_PIP:=yes}"
+: "${CLEANUP_UV:=yes}"
+: "${CLEANUP_GO:=yes}"
+: "${CLEANUP_CARGO:=yes}"
+: "${CLEANUP_MISE:=yes}"
+: "${CLEANUP_TOOLBUILD:=yes}"
+: "${CLEANUP_RUNTIME:=yes}"
+: "${CLEANUP_TRASH:=yes}"
+: "${CLEANUP_TMP:=yes}"
+: "${CLEANUP_COREDUMPS:=yes}"
+: "${CLEANUP_DOWNLOADS:=yes}"
+: "${CLEANUP_LOGS:=yes}"
+: "${CLEANUP_JOURNAL:=yes}"
+: "${CLEANUP_FIREFOX:=yes}"
+: "${CLEANUP_FLATPAK:=yes}"
+: "${CLEANUP_PODMAN:=yes}"
+
+: "${CLEANUP_RUNTIME_AGE:=7}"
+: "${CLEANUP_TMP_AGE:=1}"
+: "${CLEANUP_TRASH_AGE:=30}"
+: "${CLEANUP_DOWNLOADS_AGE:=90}"
+: "${CLEANUP_LOGS_AGE:=30}"
+: "${CLEANUP_COREDUMP_AGE:=7}"
+: "${CLEANUP_JOURNAL_SIZE:=500M}"
+: "${CLEANUP_FIREFOX_KEEP_BACKUPS:=5}"
+: "${CLEANUP_PODMAN_UNTIL:=168h}"
+
+CONFIG_FILE="$HOME/.config/cleanup/config"
+if [[ -f "$CONFIG_FILE" ]]; then
+    # shellcheck disable=SC1090,SC1091  # user-owned key=value config, sourced intentionally
+    source "$CONFIG_FILE"
+fi
+
+# ---- Globals -----------------------------------------------------------------
+DRY_RUN=true
+APPLY=false
+VERBOSE=false
+YES=false
+LIST=false
+INSTALL=false
+FAILED_CATEGORIES=()
+TOTAL_ITEMS=0
+TOTAL_BYTES=0
+LOG_FILE="$HOME/.logs/cleanup.log"
+
+ALL_CATEGORIES=(pkgmanagers toolbuild runtime trashmisc)
+
+PKGMANAGER_FLAGS=(CLEANUP_PACMAN CLEANUP_PARU_CLONE CLEANUP_NPM CLEANUP_BUN CLEANUP_PNPM CLEANUP_PIP CLEANUP_UV CLEANUP_GO CLEANUP_CARGO CLEANUP_MISE)
+TOOLBUILD_FLAGS=(CLEANUP_TOOLBUILD)
+RUNTIME_FLAGS=(CLEANUP_RUNTIME)
+TRASHMISC_FLAGS=(CLEANUP_TRASH CLEANUP_TMP CLEANUP_COREDUMPS CLEANUP_DOWNLOADS CLEANUP_LOGS CLEANUP_JOURNAL CLEANUP_FIREFOX CLEANUP_FLATPAK CLEANUP_PODMAN)
+
+RUNTIME_CACHE_NAMES=(
+    mesa_shader_cache radv_builtin_shaders 'qtshadercache*' fontconfig gtk-4.0 cliphist
+    hyprland quickshell starship wofi mpv helix nvim tree-sitter vim clangd gopls
+    golangci-lint goimports neocmakelsp ty tuistore semble opencode skillfish
+    tide-island-config-app awww glycin ddcutil fish matplotlib hugo_cache libvirt
+    containers flatpak mozilla wayle zephyr 'event-sound-cache*' .bluetoothctl_history
+    wofi-dmenu
+)
+
+TOOLBUILD_DIRS=(
+    .cache/go-build .cache/sccache .cache/node-gyp .cache/deno .cache/huggingface
+    .cache/yt-dlp .cache/transmission .cache/helm .cache/packer .cache/cilium-cli
+    .cache/kubebuilder-envtest .cache/giget .cache/mise
+)
+
+# ---- Output helpers ----------------------------------------------------------
+info()   { printf '%s\n' "$*"; }
+warn()   { printf '  WARN: %s\n' "$*"; }
+err()    { printf '  ERROR: %s\n' "$*" >&2; }
+header() { printf '\n== %s ==\n' "$*"; }
+
+verbose() {
+    [[ "$VERBOSE" == true ]] || return 0
+    printf '    %s\n' "$*"
+}
+
+# human_bytes <bytes> — format a byte count as B/K/M/G/T
+human_bytes() {
+    local bytes="$1" val="$1" i=0
+    local units=(B K M G T)
+    while (( val >= 1024 && i < 4 )); do
+        val=$((val / 1024))
+        i=$((i + 1))
+    done
+    printf '%s%s\n' "$val" "${units[$i]}"
+}
+
+# is_enabled <flag> — true if a config flag is "yes"
+is_enabled() {
+    local name="$1"
+    [[ "${!name:-no}" == "yes" ]]
+}
+
+# valid_category <name> — true if name is a known category
+valid_category() {
+    local name="$1" c
+    for c in "${ALL_CATEGORIES[@]}"; do
+        [[ "$c" == "$name" ]] && return 0
+    done
+    return 1
+}
+
+# category_enabled <name> — true if any sub-flag of the category is "yes"
+category_enabled() {
+    local name="$1"
+    local flags
+    case "$name" in
+        pkgmanagers) flags=("${PKGMANAGER_FLAGS[@]}") ;;
+        toolbuild)   flags=("${TOOLBUILD_FLAGS[@]}") ;;
+        runtime)     flags=("${RUNTIME_FLAGS[@]}") ;;
+        trashmisc)   flags=("${TRASHMISC_FLAGS[@]}") ;;
+        *) return 1 ;;
+    esac
+    local f
+    for f in "${flags[@]}"; do
+        is_enabled "$f" && return 0
+    done
+    return 1
+}
+
+# category_config <name> — flag=value summary for a category
+category_config() {
+    local name="$1"
+    local flags
+    case "$name" in
+        pkgmanagers) flags=("${PKGMANAGER_FLAGS[@]}") ;;
+        toolbuild)   flags=("${TOOLBUILD_FLAGS[@]}") ;;
+        runtime)     flags=("${RUNTIME_FLAGS[@]}") ;;
+        trashmisc)   flags=("${TRASHMISC_FLAGS[@]}") ;;
+        *) return 1 ;;
+    esac
+    local out=() f short
+    for f in "${flags[@]}"; do
+        short="${f#CLEANUP_}"
+        short="${short,,}"
+        out+=("${short}=${!f}")
+    done
+    local IFS=' '
+    printf '%s\n' "${out[*]}"
+}
+
+# count_entries <path> — number of entries under a dir, or 1 for a file
+count_entries() {
+    local p="$1"
+    if [[ -d "$p" ]]; then
+        find "$p" -mindepth 1 2>/dev/null | wc -l || true
+    else
+        printf '1\n'
+    fi
+}
+
+# path_bytes <path> — total bytes of a path (du -sb)
+path_bytes() {
+    local p="$1"
+    du -sb "$p" 2>/dev/null | cut -f1 || true
+}
+
+# run_command <label> <cmd...> — run a command, or print it in dry-run
+run_command() {
+    local label="$1"
+    shift
+    local IFS=' '
+    if [[ "$DRY_RUN" == true ]]; then
+        info "  [dry-run] would run: $*"
+        return 0
+    fi
+    info "  running: $*"
+    if ! "$@"; then
+        warn "$label failed: $*"
+        return 1
+    fi
+}
+
+# clear_path <path> <items_ref> <bytes_ref> — fully remove a path
+clear_path() {
+    local p="$1"
+    local -n _items="$2" _bytes="$3"
+    [[ -e "$p" ]] || return 0
+    local i b
+    i=$(count_entries "$p")
+    b=$(path_bytes "$p")
+    b=${b:-0}
+    if [[ "$DRY_RUN" == true ]]; then
+        verbose "would remove: $p"
+    else
+        verbose "removed: $p"
+        if ! rm -rf -- "$p"; then
+            warn "failed to remove: $p"
+            return 1
+        fi
+    fi
+    _items=$((_items + i))
+    _bytes=$((_bytes + b))
+}
+
+# sweep_entries <base> <pattern> <age_days> <items_ref> <bytes_ref> [opts...]
+#   opts: --sudo, --user, --type <t>, --maxdepth <n>, --exclude <name>
+# Sweeps entries under base matching pattern with mtime older than age_days.
+sweep_entries() {
+    local base="$1" pattern="$2" age="$3"
+    local -n _items="$4" _bytes="$5"
+    shift 5
+    local use_sudo=false use_user=false type_filter="" maxdepth="" exclude=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --sudo)     use_sudo=true; shift ;;
+            --user)     use_user=true; shift ;;
+            --type)     type_filter="$2"; shift 2 ;;
+            --maxdepth) maxdepth="$2"; shift 2 ;;
+            --exclude)  exclude="$2"; shift 2 ;;
+            *) shift ;;
+        esac
+    done
+
+    [[ -d "$base" ]] || return 0
+
+    local find_cmd=(find "$base" -mindepth 1 -name "$pattern" -mtime "+$age")
+    [[ -n "$maxdepth" ]] && find_cmd+=(-maxdepth "$maxdepth")
+    [[ -n "$type_filter" ]] && find_cmd+=(-type "$type_filter")
+    [[ -n "$exclude" ]] && find_cmd+=(! -name "$exclude")
+    [[ "$use_user" == true ]] && find_cmd+=(-user "$(id -u)")
+    if [[ "$use_sudo" == true ]]; then
+        find_cmd=(sudo "${find_cmd[@]}")
+    fi
+
+    local rm_cmd=(rm -rf --)
+    [[ "$use_sudo" == true ]] && rm_cmd=(sudo rm -rf --)
+
+    local f rm_failed=0
+    while IFS= read -r -d '' f; do
+        local sz
+        sz=$(path_bytes "$f")
+        sz=${sz:-0}
+        _items=$((_items + 1))
+        _bytes=$((_bytes + sz))
+        if [[ "$DRY_RUN" == true ]]; then
+            verbose "would remove: $f"
+        else
+            verbose "removed: $f"
+            if ! "${rm_cmd[@]}" "$f"; then
+                warn "failed to remove: $f"
+                rm_failed=1
+            fi
+        fi
+    done < <("${find_cmd[@]}" -print0 2>/dev/null || true)
+    return "$rm_failed"
+}
+
+# summary <name> <items> <bytes> — per-category summary + grand total accumulation
+summary() {
+    local name="$1" items="$2" bytes="$3"
+    printf '  %-12s %s items, %s\n' "$name" "$items" "$(human_bytes "$bytes")"
+    TOTAL_ITEMS=$((TOTAL_ITEMS + items))
+    TOTAL_BYTES=$((TOTAL_BYTES + bytes))
+}
+
+# ---- Category: pkgmanagers ---------------------------------------------------
+cat_pkgmanagers() {
+    local items=0 bytes=0 failed=0
+
+    if is_enabled CLEANUP_PACMAN; then
+        if command -v pacman &>/dev/null; then
+            local pacman_cmd=(sudo pacman -Scc)
+            [[ "$YES" == true ]] && pacman_cmd+=(--noconfirm)
+            run_command "pacman cache" "${pacman_cmd[@]}" || failed=1
+        else
+            warn "pacman not found — skipping pacman cache"
+        fi
+    fi
+
+    if is_enabled CLEANUP_PARU_CLONE; then
+        clear_path "$HOME/.cache/paru/clone" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_NPM; then
+        if command -v npm &>/dev/null; then
+            run_command "npm cache" npm cache clean --force || failed=1
+        else
+            warn "npm not found — skipping npm cache"
+        fi
+    fi
+
+    if is_enabled CLEANUP_BUN; then
+        if command -v bun &>/dev/null; then
+            run_command "bun cache" bun pm cache rm || failed=1
+        else
+            warn "bun not found — skipping bun cache"
+        fi
+    fi
+
+    if is_enabled CLEANUP_PNPM; then
+        if command -v pnpm &>/dev/null; then
+            run_command "pnpm store" pnpm store prune || failed=1
+        else
+            warn "pnpm not found — skipping pnpm store"
+        fi
+    fi
+
+    if is_enabled CLEANUP_PIP; then
+        if command -v pip &>/dev/null; then
+            run_command "pip cache" pip cache purge || failed=1
+        else
+            warn "pip not found — skipping pip cache"
+        fi
+    fi
+
+    if is_enabled CLEANUP_UV; then
+        if command -v uv &>/dev/null; then
+            run_command "uv cache" uv cache clean || failed=1
+        else
+            warn "uv not found — skipping uv cache"
+        fi
+    fi
+
+    if is_enabled CLEANUP_GO; then
+        if command -v go &>/dev/null; then
+            run_command "go build cache" go clean -cache || failed=1
+        else
+            warn "go not found — skipping go clean -cache"
+        fi
+        clear_path "$HOME/go/pkg/mod" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_CARGO; then
+        clear_path "$HOME/.cargo/registry" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_MISE; then
+        if command -v mise &>/dev/null; then
+            run_command "mise cache" mise cache prune || failed=1
+        else
+            warn "mise not found — skipping mise cache"
+        fi
+    fi
+
+    summary "pkgmanagers" "$items" "$bytes"
+    return "$failed"
+}
+
+# ---- Category: toolbuild -----------------------------------------------------
+cat_toolbuild() {
+    local items=0 bytes=0 failed=0 dir
+    for dir in "${TOOLBUILD_DIRS[@]}"; do
+        clear_path "$HOME/$dir" items bytes || failed=1
+    done
+    summary "toolbuild" "$items" "$bytes"
+    return "$failed"
+}
+
+# ---- Category: runtime -------------------------------------------------------
+cat_runtime() {
+    local items=0 bytes=0 failed=0
+    local age="${CLEANUP_RUNTIME_AGE:-7}"
+    local name
+    for name in "${RUNTIME_CACHE_NAMES[@]}"; do
+        if [[ "$VERBOSE" == true ]]; then
+            verbose "sweeping ~/.cache/$name (age ${age}d)"
+        fi
+        sweep_entries "$HOME/.cache" "$name" "$age" items bytes --maxdepth 1 || failed=1
+    done
+    summary "runtime" "$items" "$bytes"
+    return "$failed"
+}
+
+# ---- Category: trashmisc -----------------------------------------------------
+cat_trashmisc() {
+    local items=0 bytes=0 failed=0
+
+    if is_enabled CLEANUP_TRASH; then
+        sweep_entries "$HOME/.local/share/Trash/files" "*" "${CLEANUP_TRASH_AGE:-30}" items bytes || failed=1
+        sweep_entries "$HOME/.local/share/Trash/info" "*" "${CLEANUP_TRASH_AGE:-30}" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_TMP; then
+        sweep_entries "/tmp" "*" "${CLEANUP_TMP_AGE:-1}" items bytes --user || failed=1
+    fi
+
+    if is_enabled CLEANUP_COREDUMPS; then
+        sweep_entries "$HOME" "core" "${CLEANUP_COREDUMP_AGE:-7}" items bytes --type f --maxdepth 1 || failed=1
+        sweep_entries "$HOME" "core.*" "${CLEANUP_COREDUMP_AGE:-7}" items bytes --type f --maxdepth 1 || failed=1
+        sweep_entries "/var/lib/systemd/coredump" "*" "${CLEANUP_COREDUMP_AGE:-7}" items bytes --sudo --type f --maxdepth 1 || failed=1
+    fi
+
+    if is_enabled CLEANUP_DOWNLOADS; then
+        sweep_entries "$HOME/downloads" "*" "${CLEANUP_DOWNLOADS_AGE:-90}" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_LOGS; then
+        sweep_entries "$HOME/.logs" "*" "${CLEANUP_LOGS_AGE:-30}" items bytes --exclude cleanup.log || failed=1
+    fi
+
+    if is_enabled CLEANUP_JOURNAL; then
+        if command -v journalctl &>/dev/null; then
+            run_command "journalctl system" sudo journalctl --vacuum-size="${CLEANUP_JOURNAL_SIZE:-500M}" || failed=1
+            run_command "journalctl user" journalctl --user --vacuum-size="${CLEANUP_JOURNAL_SIZE:-500M}" || failed=1
+        else
+            warn "journalctl not found — skipping journal vacuum"
+        fi
+    fi
+
+    if is_enabled CLEANUP_FIREFOX; then
+        firefox_steps items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_FLATPAK; then
+        if command -v flatpak &>/dev/null; then
+            local flatpak_cmd=(flatpak uninstall --unused)
+            [[ "$YES" == true ]] && flatpak_cmd+=(-y)
+            run_command "flatpak unused" "${flatpak_cmd[@]}" || failed=1
+        else
+            warn "flatpak not found — skipping flatpak uninstall"
+        fi
+        sweep_entries "$HOME/.var/app" "cache" "${CLEANUP_TRASH_AGE:-30}" items bytes || failed=1
+    fi
+
+    if is_enabled CLEANUP_PODMAN; then
+        podman_prune || failed=1
+    fi
+
+    summary "trashmisc" "$items" "$bytes"
+    return "$failed"
+}
+
+# bookmark_backup_cleanup <dir> <items_ref> <bytes_ref> — keep N newest backups
+bookmark_backup_cleanup() {
+    local dir="$1"
+    local -n _items="$2" _bytes="$3"
+    [[ -d "$dir" ]] || return 0
+    local keep="${CLEANUP_FIREFOX_KEEP_BACKUPS:-5}"
+    local newest=() f
+    while IFS= read -r -d '' f; do
+        newest+=("${f#* }")
+    done < <(find "$dir" -maxdepth 1 -type f -printf '%T@ %p\0' 2>/dev/null | sort -z -rn || true)
+
+    local i=0 rm_failed=0 sz
+    for f in "${newest[@]}"; do
+        if (( i < keep )); then
+            i=$((i + 1))
+            continue
+        fi
+        sz=$(path_bytes "$f")
+        sz=${sz:-0}
+        _items=$((_items + 1))
+        _bytes=$((_bytes + sz))
+        if [[ "$DRY_RUN" == true ]]; then
+            verbose "would remove (bookmark backup): $f"
+        else
+            verbose "removed (bookmark backup): $f"
+            if ! rm -f -- "$f"; then
+                warn "failed to remove: $f"
+                rm_failed=1
+            fi
+        fi
+    done
+    return "$rm_failed"
+}
+
+# firefox_steps <items_ref> <bytes_ref> — per-profile firefox cleanup
+firefox_steps() {
+    local -n _items="$1" _bytes="$2"
+    local fi_items=0 fi_bytes=0 failed=0
+    local profiles=() p
+    while IFS= read -r -d '' p; do
+        profiles+=("$p")
+    done < <(find "$HOME/.mozilla/firefox" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null || true)
+
+    if [[ ${#profiles[@]} -eq 0 ]]; then
+        verbose "no firefox profiles found"
+        return 0
+    fi
+
+    for p in "${profiles[@]}"; do
+        verbose "firefox profile: $p"
+        sweep_entries "$p/crashes" "*" 30 fi_items fi_bytes || failed=1
+        sweep_entries "$p/datareporting/telemetry" "*" 30 fi_items fi_bytes || failed=1
+        bookmark_backup_cleanup "$p/bookmarkbackups" fi_items fi_bytes || failed=1
+        if pgrep -x firefox &>/dev/null; then
+            warn "SKIP: firefox is running — cache2 clear skipped for $p"
+        else
+            clear_path "$p/cache2" fi_items fi_bytes || failed=1
+        fi
+    done
+
+    _items=$((_items + fi_items))
+    _bytes=$((_bytes + fi_bytes))
+    return "$failed"
+}
+
+# podman_prune — prune podman if no containers are running
+podman_prune() {
+    if ! command -v podman &>/dev/null; then
+        warn "podman not found — skipping podman prune"
+        return 0
+    fi
+    if podman ps -q 2>/dev/null | grep -q .; then
+        warn "SKIP: containers running — podman prune skipped"
+        return 0
+    fi
+    local prune_cmd=(podman system prune --all --volumes --filter "until=${CLEANUP_PODMAN_UNTIL:-168h}")
+    [[ "$YES" == true ]] && prune_cmd+=(--force)
+    run_command "podman prune" "${prune_cmd[@]}"
+}
+
+# run_category <name> — run a category function, tracking failures
+run_category() {
+    local name="$1"
+    header "$name"
+    if ! "cat_$name"; then
+        err "category $name FAILED"
+        FAILED_CATEGORIES+=("$name")
+        return 1
+    fi
+    return 0
+}
+
+# ---- CLI ---------------------------------------------------------------------
+usage() {
+    cat <<EOF
+Usage: cleanup [OPTIONS]
+
+Clean system caches and trash data. Dry-run by default; --apply deletes.
+
+Options:
+  --apply              Perform actual deletion (default: dry-run)
+  --dry-run            Explicit dry-run (same as default)
+  --only <cat1,cat2>   Run only the listed categories (comma-separated)
+  --category <name>    Run a single category
+  --all                Run all categories (same as default)
+  --list               Print categories, enabled state, and config values; exit
+  --yes                Skip confirmation prompts (used by the timer)
+  --verbose            Print per-path detail in addition to summaries
+  --install            Print stow + systemctl install commands; exit
+  -h, --help           Show this help and exit
+
+Categories: pkgmanagers, toolbuild, runtime, trashmisc
+Config:     ~/.config/cleanup/config (key=value, sourced if present)
+Log:        ~/.logs/cleanup.log (truncated when larger than 1MB)
+EOF
+}
+
+# print_list — show categories, enabled state, and config values
+print_list() {
+    local c state
+    printf 'cleanup categories (config: %s)\n' "$CONFIG_FILE"
+    for c in "${ALL_CATEGORIES[@]}"; do
+        if category_enabled "$c"; then
+            state="enabled"
+        else
+            state="disabled"
+        fi
+        printf '  %-12s %-9s %s\n' "$c" "$state" "$(category_config "$c")"
+    done
+    printf '  thresholds: runtime_age=%sd tmp_age=%sd trash_age=%sd downloads_age=%sd logs_age=%sd coredump_age=%sd journal_size=%s firefox_keep_backups=%s podman_until=%s\n' \
+        "${CLEANUP_RUNTIME_AGE:-7}" "${CLEANUP_TMP_AGE:-1}" "${CLEANUP_TRASH_AGE:-30}" \
+        "${CLEANUP_DOWNLOADS_AGE:-90}" "${CLEANUP_LOGS_AGE:-30}" "${CLEANUP_COREDUMP_AGE:-7}" \
+        "${CLEANUP_JOURNAL_SIZE:-500M}" "${CLEANUP_FIREFOX_KEEP_BACKUPS:-5}" "${CLEANUP_PODMAN_UNTIL:-168h}"
+}
+
+# print_install — print stow + systemctl commands (does not execute)
+print_install() {
+    cat <<'EOF'
+Install the cleanup system (GNU Stow + systemd user timer):
+
+  cd ~/dotfiles
+  stow bin conf systemd
+  systemctl --user daemon-reload
+  systemctl --user enable --now cleanup.timer
+
+Verify:
+  systemctl --user list-timers cleanup.timer
+  systemctl --user status cleanup.service
+
+The timer runs cleanup --dry-run --yes weekly at 07:00 (Persistent=true).
+EOF
+}
+
+# ---- Main --------------------------------------------------------------------
+main() {
+    local selected=() cats=() c
+    local answer=""
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --apply)
+                APPLY=true
+                DRY_RUN=false
+                shift
+                ;;
+            --dry-run)
+                DRY_RUN=true
+                APPLY=false
+                shift
+                ;;
+            --only)
+                [[ $# -ge 2 ]] || { err "--only requires a value"; return 2; }
+                IFS=',' read -ra cats <<< "$2"
+                selected+=("${cats[@]}")
+                shift 2
+                ;;
+            --category)
+                [[ $# -ge 2 ]] || { err "--category requires a value"; return 2; }
+                selected+=("$2")
+                shift 2
+                ;;
+            --all)
+                shift
+                ;;
+            --list)
+                LIST=true
+                shift
+                ;;
+            --yes)
+                YES=true
+                shift
+                ;;
+            --verbose)
+                VERBOSE=true
+                shift
+                ;;
+            --install)
+                INSTALL=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                return 0
+                ;;
+            *)
+                err "unknown option: $1"
+                usage
+                return 2
+                ;;
+        esac
+    done
+
+    if [[ "$LIST" == true ]]; then
+        print_list
+        return 0
+    fi
+    if [[ "$INSTALL" == true ]]; then
+        print_install
+        return 0
+    fi
+
+    if [[ ${#selected[@]} -gt 0 ]]; then
+        cats=()
+        local valid_list
+        local IFS=' '
+        valid_list="${ALL_CATEGORIES[*]}"
+        for c in "${selected[@]}"; do
+            if ! valid_category "$c"; then
+                err "unknown category: $c (valid: $valid_list)"
+                return 2
+            fi
+            cats+=("$c")
+        done
+    else
+        cats=("${ALL_CATEGORIES[@]}")
+    fi
+
+    local enabled_cats=()
+    for c in "${cats[@]}"; do
+        if category_enabled "$c"; then
+            enabled_cats+=("$c")
+        else
+            info "category $c disabled by config — skipping"
+        fi
+    done
+
+    if [[ ${#enabled_cats[@]} -eq 0 ]]; then
+        info "no categories enabled"
+        return 0
+    fi
+
+    if [[ "$APPLY" == true && "$YES" != true ]]; then
+        local IFS=' '
+        printf 'This will delete files in: %s\n' "${enabled_cats[*]}"
+        read -r -p 'Continue? [y/N] ' answer || true
+        if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+            info "aborted — no changes made"
+            return 0
+        fi
+    fi
+
+    local mode_label="dry-run"
+    if [[ "$APPLY" == true ]]; then
+        mode_label="apply"
+    fi
+    header "cleanup ($mode_label)"
+
+    local exit_code=0
+    for c in "${enabled_cats[@]}"; do
+        if ! run_category "$c"; then
+            exit_code=1
+        fi
+    done
+
+    printf '\nTOTAL: %s items, %s\n' "$TOTAL_ITEMS" "$(human_bytes "$TOTAL_BYTES")"
+
+    if (( exit_code != 0 )); then
+        local IFS=' '
+        err "completed with failures: ${FAILED_CATEGORIES[*]}"
+    fi
+    return "$exit_code"
+}
+
+# ---- Logging wrapper ---------------------------------------------------------
+# prepare_log — ensure log dir exists; truncate log if > 1MB
+prepare_log() {
+    mkdir -p "$HOME/.logs"
+    if [[ -f "$LOG_FILE" ]]; then
+        local size
+        size=$(stat -c %s "$LOG_FILE" 2>/dev/null || printf '0')
+        if (( size > 1048576 )); then
+            : > "$LOG_FILE"
+            printf 'log truncated (was > 1MB)\n'
+        fi
+    fi
+}
+
+# main_entry — run main, teeing full output to the log
+main_entry() {
+    prepare_log
+    {
+        printf '=== cleanup run %s ===\n' "$(date '+%Y-%m-%d %H:%M:%S')"
+        main "$@"
+    } 2>&1 | tee -a "$LOG_FILE"
+}
+
+main_entry "$@"

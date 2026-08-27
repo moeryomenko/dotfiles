@@ -1,0 +1,122 @@
+# cleanup configuration
+#
+# This file is sourced by ~/.local/bin/cleanup (key=value format).
+# Values here override the script's built-in defaults; the script runs
+# with these same values even when this file is absent.
+#
+# Enable flags accept "yes" (run the sub-step) or "no" (skip it).
+# Threshold keys accept the units shown in each comment.
+
+# ---- Package manager caches (category: pkgmanagers) --------------------------
+
+# CLEANUP_PACMAN: run `sudo pacman -Scc` to clear the pacman package cache.
+CLEANUP_PACMAN=yes
+
+# CLEANUP_PARU_CLONE: delete ~/.cache/paru/clone (paru AUR build clones).
+CLEANUP_PARU_CLONE=yes
+
+# CLEANUP_NPM: run `npm cache clean --force` to clear the npm cache.
+CLEANUP_NPM=yes
+
+# CLEANUP_BUN: run `bun pm cache rm` to clear the bun package cache.
+CLEANUP_BUN=yes
+
+# CLEANUP_PNPM: run `pnpm store prune` to remove unreferenced pnpm packages.
+CLEANUP_PNPM=yes
+
+# CLEANUP_PIP: run `pip cache purge` to clear the pip wheel cache.
+CLEANUP_PIP=yes
+
+# CLEANUP_UV: run `uv cache clean` to clear the uv package cache.
+CLEANUP_UV=yes
+
+# CLEANUP_GO: run `go clean -cache` and delete ~/go/pkg/mod (Go build/module cache).
+CLEANUP_GO=yes
+
+# CLEANUP_CARGO: delete ~/.cargo/registry (downloaded crate sources).
+CLEANUP_CARGO=yes
+
+# CLEANUP_MISE: run `mise cache prune` to clear mise tool caches.
+CLEANUP_MISE=yes
+
+# ---- Build/tool caches (category: toolbuild) ---------------------------------
+
+# CLEANUP_TOOLBUILD: fully clear ~/.cache/go-build, sccache, node-gyp, deno,
+# huggingface, yt-dlp, transmission, helm, packer, cilium-cli,
+# kubebuilder-envtest, giget, and mise caches.
+CLEANUP_TOOLBUILD=yes
+
+# ---- Runtime caches (category: runtime) --------------------------------------
+
+# CLEANUP_RUNTIME: age-sweep ~/.cache entries for running apps (shader caches,
+# fontconfig, editors, language servers, etc.). Only entries older than
+# CLEANUP_RUNTIME_AGE days are removed.
+CLEANUP_RUNTIME=yes
+
+# ---- Trash and misc data (category: trashmisc) -------------------------------
+
+# CLEANUP_TRASH: empty XDG trash entries older than CLEANUP_TRASH_AGE days.
+CLEANUP_TRASH=yes
+
+# CLEANUP_TMP: remove your own files in /tmp older than CLEANUP_TMP_AGE days.
+CLEANUP_TMP=yes
+
+# CLEANUP_COREDUMPS: remove core dumps in $HOME and /var/lib/systemd/coredump
+# (sudo) older than CLEANUP_COREDUMP_AGE days.
+CLEANUP_COREDUMPS=yes
+
+# CLEANUP_DOWNLOADS: remove files in ~/downloads older than
+# CLEANUP_DOWNLOADS_AGE days. User data — the riskiest category; disable if
+# you want downloads kept indefinitely.
+CLEANUP_DOWNLOADS=yes
+
+# CLEANUP_LOGS: remove files in ~/.logs older than CLEANUP_LOGS_AGE days.
+# cleanup.log itself is always exempt.
+CLEANUP_LOGS=yes
+
+# CLEANUP_JOURNAL: vacuum the systemd journal (system + user) to
+# CLEANUP_JOURNAL_SIZE (sudo for the system journal).
+CLEANUP_JOURNAL=yes
+
+# CLEANUP_FIREFOX: clean Firefox crash reports and telemetry pings older than
+# 30 days, keep the CLEANUP_FIREFOX_KEEP_BACKUPS newest bookmark backups, and
+# fully clear profile cache2 (skipped while firefox is running).
+CLEANUP_FIREFOX=yes
+
+# CLEANUP_FLATPAK: run `flatpak uninstall --unused` and age-sweep
+# ~/.var/app/*/cache with CLEANUP_TRASH_AGE.
+CLEANUP_FLATPAK=yes
+
+# CLEANUP_PODMAN: run `podman system prune --all --volumes` for images,
+# containers, and volumes unused for CLEANUP_PODMAN_UNTIL (skipped while
+# containers are running).
+CLEANUP_PODMAN=yes
+
+# ---- Thresholds ---------------------------------------------------------------
+
+# CLEANUP_RUNTIME_AGE: minimum age in days for runtime cache entries.
+CLEANUP_RUNTIME_AGE=7
+
+# CLEANUP_TMP_AGE: minimum age in days for /tmp files.
+CLEANUP_TMP_AGE=1
+
+# CLEANUP_TRASH_AGE: minimum age in days for trash and flatpak app cache entries.
+CLEANUP_TRASH_AGE=30
+
+# CLEANUP_DOWNLOADS_AGE: minimum age in days for ~/downloads files.
+CLEANUP_DOWNLOADS_AGE=90
+
+# CLEANUP_LOGS_AGE: minimum age in days for ~/.logs files.
+CLEANUP_LOGS_AGE=30
+
+# CLEANUP_COREDUMP_AGE: minimum age in days for core dump files.
+CLEANUP_COREDUMP_AGE=7
+
+# CLEANUP_JOURNAL_SIZE: journal vacuum target size (e.g. 500M, 1G).
+CLEANUP_JOURNAL_SIZE=500M
+
+# CLEANUP_FIREFOX_KEEP_BACKUPS: number of newest bookmark backups to keep.
+CLEANUP_FIREFOX_KEEP_BACKUPS=5
+
+# CLEANUP_PODMAN_UNTIL: podman prune age filter (e.g. 168h = 7 days).
+CLEANUP_PODMAN_UNTIL=168h
