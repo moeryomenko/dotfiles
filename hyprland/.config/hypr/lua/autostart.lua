@@ -3,6 +3,7 @@ local function start_hyprsunset()
 end
 
 hl.on("hyprland.start", function()
+	hl.exec_cmd("tide-island")
 	hl.exec_cmd("awww-daemon")
 	hl.exec_cmd("sleep 0.5 && awww restore")  -- restore last set wallpaper	hl.exec_cmd("systemctl --user enable --now tide-island.service")
 	hl.exec_cmd("hypridle")
