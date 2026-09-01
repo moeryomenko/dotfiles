@@ -7,6 +7,6 @@
 # `hx` is the helix binary on this machine ($EDITOR/$VISUAL are set to hx).
 [open]
 rules = [
-  { ext = ["md", "markdown", "mdown", "mkd", "mdx", "qmd"], command = "hx", terminal = true },
-  { type = ["text", "code", "config"], command = "hx", terminal = true },
+  { ext = ["md", "markdown", "mdown", "mkd", "mdx", "qmd"], command = "elio-helix", terminal = true },
+  { type = ["text", "code", "config"], command = "elio-helix", terminal = true },
 ]
