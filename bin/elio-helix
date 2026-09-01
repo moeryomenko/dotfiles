@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# elio-helix — open files in stacked side-by-side tmux panes running helix.
+# Called by elio's [open] rules with file paths as arguments.
+#
+# - First open: side-by-side split, 60% width for helix, elio keeps the left.
+# - Further opens (bulk or later invocations): one pane per file, stacked
+#   vertically in the helix column, resized to strictly equal heights.
+# - Cap: 4 helix panes. Past the cap the oldest (top) pane is killed and the
+#   new file opens in a fresh pane at the top slot.
+# - Panes are marked with the tmux per-pane user option @elio_helix.
+# - Not inside tmux: fall back to blocking helix (previous elio behavior).
+set -Eeuo pipefail
+shopt -s inherit_errexit
+
+readonly MAX_PANES=4
+readonly MARK=@elio_helix
+
+helix_panes() {
+	# Marked pane ids in the current window, top-to-bottom (one id per line).
+	tmux list-panes -F "#{pane_id} #{${MARK}} #{pane_top}" |
+		awk '$2 == 1 { print $3, $1 }' |
+		sort -n |
+		awk '{ print $2 }'
+}
+
+helix_pane_count() {
+	tmux list-panes -F "#{${MARK}}" | awk '$1 == 1 { c++ } END { print c + 0 }'
+}
+
+mark_pane() {
+	tmux set-option -p -t "$1" "${MARK}" 1
+}
+
+# $@ = split-window flags followed by exactly one file path (last arg).
+open_pane() {
+	local file="${*: -1}"
+	local -a flags=("${@:1:$#-1}")
+	local pid
+	pid=$(tmux split-window "${flags[@]}" -c "$PWD" -P -F '#{pane_id}' helix "$file")
+	mark_pane "$pid"
+}
+
+equalize() {
+	local -a panes=()
+	mapfile -t panes < <(helix_panes)
+	local k=${#panes[@]}
+	(( k > 1 )) || return 0
+
+	local total
+	total=$(tmux list-panes -F "#{pane_id} #{${MARK}} #{pane_height}" |
+		awk '$2 == 1 { s += $3 } END { print s + 0 }')
+
+	local target=$(( total / k ))
+	(( target > 0 )) || return 0
+
+	# Resize all but the bottom pane; the bottom keeps the remainder.
+	local i
+	for (( i = 0; i < k - 1; i++ )); do
+		tmux resize-pane -t "${panes[i]}" -y "$target" 2>/dev/null || true
+	done
+}
+
+if [[ -z "${TMUX:-}" ]]; then
+	# Not inside tmux: fall back to blocking helix (previous elio behavior).
+	exec helix "$@"
+fi
+
+count=0
+top=''
+bottom=''
+for file in "$@"; do
+	count=$(helix_pane_count)
+	if (( count == 0 )); then
+		open_pane -h -l 60% "$file"
+	elif (( count < MAX_PANES )); then
+		bottom=$(helix_panes | tail -n 1)
+		open_pane -v -t "$bottom" "$file"
+	else
+		# Cap reached: recycle the oldest (top) pane's slot.
+		top=$(helix_panes | head -n 1)
+		tmux kill-pane -t "$top"
+		next_top=$(helix_panes | head -n 1)
+		open_pane -v -b -t "$next_top" "$file"
+	fi
+done
+
+equalize

@@ -1,10 +1,11 @@
 # elio config — mirrors yazi/.config/yazi behavior.
 # Yazi: text/* mime opens with `helix %s` in a blocking opener.
-# Elio: text/code/config types open with helix; terminal=true suspends elio,
-# waits for helix to exit, then restores (yazi's block mode).
+# Elio: text/code/config types open with the elio-helix wrapper, which opens
+# the file(s) in a new side-by-side tmux pane running helix (blocking helix
+# when not inside tmux); terminal=true suspends elio while the wrapper runs.
 [open]
 rules = [
   { ext = "djvu", command = "zathura" },
   { ext = "djv", command = "zathura" },
-  { type = ["text", "code", "config"], command = "helix", terminal = true },
+  { type = ["text", "code", "config"], command = "elio-helix", terminal = true },
 ]
