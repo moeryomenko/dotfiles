@@ -20,6 +20,8 @@ Configurations for applications managed by [GNU Stow](https://www.gnu.org/softwa
 
 ![](screenshot-9.png)
 
+![](screenshot-10.png)
+
 ## Cleanup System
 
 A Bash script that clears package-manager caches, tool/build caches, runtime caches, and trash/misc data. Dry-run by default; `--apply` performs deletion. Wired to a weekly systemd user timer that runs dry-run only.
