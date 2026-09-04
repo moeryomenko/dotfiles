@@ -2,7 +2,6 @@ hl.window_rule({
 	name = "zathura-rules",
 	match = { class = "^(org.pwmt.zathura)$" },
 	workspace = 2,
-	fullscreen = true,
 })
 
 hl.window_rule({
