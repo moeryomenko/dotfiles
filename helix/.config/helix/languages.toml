@@ -25,3 +25,21 @@ language-servers = ["autotools-language-server"]
 [[language]]
 name = "make"
 language-servers = ["make-ls"]
+
+# SELinux Type Enforcement policy modules (.te) and interface files (.if).
+# Grammar: https://github.com/moeryomenko/tree-sitter-selinux
+[[language]]
+name = "selinux-te"
+scope = "source.selinux-te"
+file-types = ["te", "if"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+
+[language.auto-pairs]
+"(" = ")"
+"{" = "}"
+"`" = "'"
+
+[[grammar]]
+name = "selinux-te"
+source = { git = "https://github.com/moeryomenko/tree-sitter-selinux", rev = "dc813009a179083dcefc111bb2bc19418e50ab5c" }
