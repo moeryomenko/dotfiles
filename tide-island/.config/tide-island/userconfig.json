@@ -1,10 +1,12 @@
 {
+    "disableAutoExpandOnTrackChange": true,
     "dynamicIslandLeftSwipeItems": [
         "cava",
         "date",
         "time",
         "volume"
     ],
+    "hoverExpandAction": 0,
     "islandAutoHideEnabled": false,
     "tlpPermissionMode": "skip",
     "tlpSudoPassword": null,
