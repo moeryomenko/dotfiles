@@ -3,7 +3,7 @@
 
 # Theme (was [general] import = ["./noir.toml"])
 # Custom themes live in ~/.config/ghostty/themes/<name>
-theme = noir
+theme = nord
 
 # Bold text uses bright palette (was draw_bold_text_with_bright_colors)
 bold-color = bright
@@ -42,8 +42,6 @@ command = /opt/homebrew/bin/fish -l -c "tmux attach || tmux"
 window-decoration = false
 # was startup_mode = "Maximized"
 maximize = true
-# was opacity = 0.8
-background-opacity = 0.8
 # was padding x=0 y=0 (Ghostty default is 2, so set explicitly)
 window-padding-x = 0
 window-padding-y = 0
