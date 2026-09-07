@@ -14,6 +14,7 @@ set -Ux BUN_INSTALL "$HOME/.bun"
 set -gx PROTO_HOME "$HOME/.proto"
 set -gx PATH "$PROTO_HOME/shims" "$PROTO_HOME/bin" $PATH
 
+fish_add_path $HOME/.docker/bin
 fish_add_path $XDG_CONFIG_HOME/git-commands
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
