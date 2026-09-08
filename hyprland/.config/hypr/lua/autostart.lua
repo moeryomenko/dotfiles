@@ -9,6 +9,7 @@ hl.on("hyprland.start", function()
 	start_hyprsunset()
 	hl.exec_cmd("wl-paste --watch cliphist store")
 	hl.exec_cmd("~/.config/hypr/bin/xdg-portal.sh")
+	hl.exec_cmd("hyprpm reload")
 end)
 
 hl.on("config.reloaded", function()
