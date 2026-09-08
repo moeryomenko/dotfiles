@@ -6,16 +6,8 @@ hl.bind(vars.mainMod .. " + C", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + ALT + M", hl.dsp.exec_cmd("exit"))
 hl.bind(vars.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 
-hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleApplicationLauncher"))
-hl.bind(vars.mainMod .. " + Tab", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call overview toggle"))
-hl.bind(vars.mainMod .. " + Right", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide swipeRight"))
-hl.bind(vars.mainMod .. " + Left", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide swipeLeft"))
-hl.bind(vars.mainMod .. " + Down", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide showClock"))
-hl.bind(vars.mainMod .. " + ALT + C", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleControlCenter"))
-hl.bind(vars.mainMod .. " + N", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleNotificationCenter"))
-hl.bind(vars.mainMod .. " + W", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleWallpaperPicker"))
-hl.bind(vars.mainMod .. " + ALT + O", hl.dsp.exec_cmd("/usr/bin/quickshell ipc --any-display -p /usr/share/tide-island call tide toggleFileShelf"))
-
+hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
+hl.bind(vars.mainMod .. " + N", hl.dsp.exec_cmd("noctalia msg panel-toggle noctalia/notes:panel"))
 
 hl.bind(vars.mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(vars.mainMod .. " + F", hl.dsp.window.fullscreen())
@@ -57,8 +49,8 @@ hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true }
 if hl.plugin and hl.plugin.hyprcapture then
 	hl.bind("Print", hl.plugin.hyprcapture.open)
 end
-hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh'))
-hl.bind(vars.mainMod .. "+ SHIFT + R", hl.dsp.exec_cmd('~/.config/hypr/bin/screen-record.sh stop'))
+hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd('noctalia msg plugin noctalia/screen_recorder:service all toggle'))
+
 -- Audio
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),
 	{ locked = true, repeating = true })
