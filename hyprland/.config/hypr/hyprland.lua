@@ -4,6 +4,7 @@ require("lua.env")
 require("lua.inputs")
 require("lua.style")
 require("lua.windowrules")
+require("lua.telegram_pair")
 require("lua.plugins")
 require("lua.mapping")
 
