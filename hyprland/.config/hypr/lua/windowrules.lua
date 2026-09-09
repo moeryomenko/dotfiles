@@ -7,7 +7,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "telegram",
 	match = { class = "^(org.telegram.desktop)$" },
-	no_screen_share = true,
+	scrolling_width = 0.25,
 })
 
-hl.workspace_rule({ workspace = "w[1-10]", animation = "slidefadevert" })
+hl.workspace_rule({ workspace = "w[1-10]", animation = "slidevert" })

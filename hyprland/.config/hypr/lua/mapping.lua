@@ -44,6 +44,9 @@ hl.bind(vars.mainMod .. " + ALT + j", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(vars.mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- Scrolling layout
+hl.bind(vars.mainMod .. " + G", hl.dsp.layout("colresize 1"))
+
 -- Screenshots / Screen Recording
 -- Screenshots (HyprCapture plugin)
 if hl.plugin and hl.plugin.hyprcapture then
@@ -60,7 +63,5 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_
 	{ locked = true, repeating = true })
 
 -- Hymission Mission Control
-if hl.plugin and hl.plugin.hymission then
-	hl.bind(vars.mainMod .. " + O", hl.plugin.hymission.toggle)
-end
+hl.bind(vars.mainMod .. " + O", hl.plugin.scrolloverview.overview("toggle all"))
 

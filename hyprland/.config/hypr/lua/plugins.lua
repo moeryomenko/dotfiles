@@ -1,8 +1,22 @@
 -- Load hymission plugin (hyprpm per-user cache). Async; triggers config reload
 -- once loaded, so bindings guarded by hl.plugin.hymission register on re-run.
-hl.exec_cmd("hyprctl plugin load /var/cache/hyprpm/eryoma/hymission/hymission.so")
+hl.plugin.load("/var/cache/hyprpm/eryoma/hymission/hymission.so")
+hl.plugin.load("/home/eryoma/workspace/hyprland-scroll-overview/scrolloverview.so")
+
 hl.config({
 	plugin = {
+		scrolloverview = {
+			gesture_distance = 300, -- how far is the "max" for the gesture
+			scale = 0.5,   -- preferred overview scale
+			workspace_gap = 100,
+			layout = "vertical", -- vertical, horizontal, or auto (per-monitor orientation)
+			wallpaper = 2, -- 0: global only, 1: per-workspace only, 2: both
+			blur = true,   -- blur only the main overview wallpaper
+			shadow = {
+				enabled = true,
+				range = 50,
+			},
+		},
 		hyprcapture = {
 			fusion_mode = true,
 			save_dir = "/home/eryoma/pictures/screenshots",

@@ -1,17 +1,30 @@
 hl.config({
 	general = {
-		gaps_in = 0,
-		gaps_out = 0,
+		gaps_in = 5,
+		gaps_out = 10,
 		layout = "scrolling",
 		allow_tearing = false,
-		border_size = 0,
+		border_size = 2,
 	},
 	decoration = {
-		rounding = 0,
-	},
+    rounding = 20,
+    rounding_power = 2,
+    shadow = {
+      enabled = true,
+      range = 4,
+      render_power = 3,
+      color = 0xee1a1a1a,
+    },
+    blur = {
+      enabled = true,
+      size = 3,
+      passes = 2,
+      vibrancy = 0.1696,
+    },
+  },
 	scrolling = {
 		direction = "right",
-		column_width = 1,
+		column_width = 0.5,
 		fullscreen_on_one_column = true,
 	},
 	misc = {
@@ -43,7 +56,7 @@ hl.animation({ leaf = "layersIn", enabled = true, speed = 4, bezier = "easeOutQu
 hl.animation({ leaf = "layersOut", enabled = true, speed = 1.5, bezier = "linear", style = "fade" })
 hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = 1.79, bezier = "almostLinear" })
 hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "almostLinear" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 7, bezier = "easeOutQuint", style = "slidevert" })
+hl.animation({ leaf = "workspacesIn", enabled = true, speed = 7, bezier = "easeOutQuint", style = "slidevert" })
+hl.animation({ leaf = "workspacesOut", enabled = true, speed = 7, bezier = "easeOutQuint", style = "slidevert" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
