@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/tui.json",
-  "theme": "noir",
+  "theme": "tokyonight",
   "plugin": [
     "@prevalentware/opencode-goal-plugin"
   ]
