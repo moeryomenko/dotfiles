@@ -2,6 +2,8 @@ theme = "tokyonight_storm"
 
 [editor]
 line-number = "relative"
+true-color = true
+bufferline = "multiple"
 
 [editor.file-picker]
 git-ignore = false

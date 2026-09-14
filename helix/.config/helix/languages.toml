@@ -1,3 +1,9 @@
+[language-server.autotools-language-server]
+command = "autotools-language-server"
+
+[language-server.make-ls]
+command = "make-ls"
+
 [language-server.css-variable-lsp]
 command = "css-variable-lsp"
 args = []
@@ -9,3 +15,13 @@ language-servers = ["css-lsp", "css-variable-lsp"]
 [[language]]
 name = "scss"
 language-servers = ["css-lsp", "css-variable-lsp"]
+
+[[language]]
+name = "autoconf"
+scope = "source.autoconf"
+file-types = ["configure.ac"]
+language-servers = ["autotools-language-server"]
+
+[[language]]
+name = "make"
+language-servers = ["make-ls"]
