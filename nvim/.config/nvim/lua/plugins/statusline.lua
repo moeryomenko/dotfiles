@@ -32,10 +32,13 @@ local function filetype()
 end
 
 return {
-	"nvim-lualine/lualine.nvim",
-	dependencies = { "echasnovski/mini.icons" },
-	config = function()
-		require("lualine").setup({
+	{
+		src = "https://github.com/echasnovski/mini.icons",
+	},
+	{
+		src = "https://github.com/nvim-lualine/lualine.nvim",
+		config = function()
+			require("lualine").setup({
 			options = {
 				icons_enabled = false,
 				theme = "auto",
@@ -61,5 +64,6 @@ return {
 				lualine_z = { "location" },
 			},
 		})
-	end,
+		end,
+	},
 }

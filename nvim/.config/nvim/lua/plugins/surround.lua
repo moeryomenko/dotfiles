@@ -1,26 +1,26 @@
 return {
-	"kylechui/nvim-surround",
-	lazy = false,
-	config = function()
-		require("nvim-surround").setup({
-			surrounds = {
-				HTML = {
-					["t"] = "type", -- Change just the tag type
-					["T"] = "whole", -- Change the whole tag contents
+	{
+		src = "https://github.com/kylechui/nvim-surround",
+		config = function()
+			require("nvim-surround").setup({
+				surrounds = {
+					HTML = {
+						["t"] = "type",
+						["T"] = "whole",
+					},
+					aliases = {
+						["a"] = ">",
+						["b"] = ")",
+						["B"] = "}",
+						["r"] = "]",
+						["q"] = { '"', "'", "`" },
+						["s"] = { ")", "]", "}", ">", "'", '"', "`" },
+					},
 				},
-				aliases = {
-					["a"] = ">", -- Single character aliases apply everywhere
-					["b"] = ")",
-					["B"] = "}",
-					["r"] = "]",
-					-- Table aliases only apply for changes/deletions
-					["q"] = { '"', "'", "`" }, -- Any quote character
-					["s"] = { ")", "]", "}", ">", "'", '"', "`" }, -- Any surrounding delimiter
+				highlight = {
+					duration = 2,
 				},
-			},
-			highlight = { -- Highlight before inserting/changing surrounds
-				duration = 2,
-			},
-		})
-	end,
+			})
+		end,
+	},
 }

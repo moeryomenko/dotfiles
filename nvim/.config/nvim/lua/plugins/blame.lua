@@ -1,14 +1,12 @@
 return {
-	"FabijanZulj/blame.nvim",
-	opts = {},
-	cmd = {
-		"BlameToggle",
-	},
-	config = function()
-		local blame = require("blame")
+	{
+		src = "https://github.com/FabijanZulj/blame.nvim",
+		config = function()
+			local blame = require("blame")
 
-		blame.setup({
-			default = blame.virtual_view,
-		})
-	end,
+			blame.setup({
+				default = blame.virtual_view,
+			})
+		end,
+	},
 }

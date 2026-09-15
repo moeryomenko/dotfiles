@@ -28,3 +28,4 @@ gpg/.gnupg/tofu.db
 .codegraph/
 /AGENTS.md
 .plans/
+nvim/.config/nvim/nvim-pack-lock.json

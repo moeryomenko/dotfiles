@@ -1,11 +1,12 @@
 return {
 	{
-		"L3MON4D3/LuaSnip",
-		dependencies = {
-			"honza/vim-snippets",
-			"rafamadriz/friendly-snippets",
-		},
-		event = "InsertEnter",
+		src = "https://github.com/honza/vim-snippets",
+	},
+	{
+		src = "https://github.com/rafamadriz/friendly-snippets",
+	},
+	{
+		src = "https://github.com/L3MON4D3/LuaSnip",
 		config = function()
 			local ls = require("luasnip")
 
@@ -38,7 +39,6 @@ return {
 			end)
 
 			require("luasnip.loaders.from_snipmate").lazy_load()
-
 			require("luasnip.loaders.from_lua").lazy_load({
 				paths = "~/.config/nvim/snippets/",
 			})

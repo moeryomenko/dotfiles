@@ -1,37 +1,18 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
-	branch = "main",
-	dependencies = {
-		"RRethy/nvim-treesitter-endwise",
+	{
+		src = "https://github.com/RRethy/nvim-treesitter-endwise",
 	},
-	event = { "BufReadPre", "BufNewFile" },
-	config = function()
-		require("nvim-treesitter.config").setup({
-			ensure_installed = {
-				"bash",
-				"cmake",
-				"c",
-				"cpp",
-				"fish",
-				"go",
-				"vimdoc",
-				"lua",
-				"json",
-				"markdown",
-				"markdown_inline",
-				"python",
-				"rust",
-				"yaml",
-			},
-			sync_install = false,
-			ignore_install = {},
-			auto_install = true,
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
-			indent = { enable = true },
-		})
-	end,
+	{
+		src = "https://github.com/nvim-treesitter/nvim-treesitter",
+		version = "main",
+		config = function()
+			require("nvim-treesitter").setup({})
+
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function()
+					pcall(vim.treesitter.start)
+				end,
+			})
+		end,
+	},
 }

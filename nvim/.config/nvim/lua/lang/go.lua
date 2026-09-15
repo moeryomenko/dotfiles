@@ -1,116 +1,91 @@
+local pack = require("core.pack")
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "go", "gomod", "gowork", "gotmpl", "proto" },
 	callback = function()
-		-- set go specific options
 		vim.opt_local.tabstop = 2
-		vim.opt_local.shiftwidth = 2
 		vim.opt_local.shiftwidth = 2
 		vim.opt_local.colorcolumn = "120"
 	end,
 })
 
+pack.neotest_adapters["neotest-golang"] = {
+	go_test_args = {
+		"-v",
+		"-race",
+		"-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
+	},
+}
+
 return {
 	{
-		"stevearc/conform.nvim",
-		dependencies = {
-			{
-				"williamboman/mason.nvim",
-				opts = function(_, opts)
-					opts.ensure_installed = opts.ensure_installed or {}
-					vim.list_extend(opts.ensure_installed, { "gofumpt", "goimports", "gci", "golines" })
-				end,
-			},
-		},
-		ft = { "go", "gomod", "gowork", "gotmpl" },
-		opts = {
-			formatters_by_ft = {
-				go = { "gofumpt", "goimports", "gci", "golines" },
-			},
-			formatters = {
-				gofumpt = {
-					prepend_args = { "-extra" },
-				},
-				gci = {
-					args = {
-						"write",
-						"--skip-generated",
-						"-s",
-						"standard",
-						"-s",
-						"default",
-						"--skip-vendor",
-						"$FILENAME",
-					},
-				},
-				goimports = {
-					args = { "-srcdir", "$FILENAME" },
-				},
-				golines = {
-					-- golines will use goimports as base formatter by default which is slow.
-					-- see https://github.com/segmentio/golines/issues/33
-					prepend_args = { "--base-formatter=gofumpt", "--ignore-generated", "--tab-len=1", "--max-len=120" },
-				},
-			},
-		},
+		src = "https://github.com/williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
 	},
 	{
-		"nvim-neotest/neotest",
-		dependencies = {
-			{
-				"fredrikaverpil/neotest-golang",
-				dependencies = {
-					{
-						"leoluz/nvim-dap-go",
-						opts = {},
-					},
+		src = "https://github.com/stevearc/conform.nvim",
+		config = function()
+			local conform = require("conform")
+
+			conform.formatters_by_ft.go = { "gofumpt", "goimports", "gci", "golines" }
+			conform.formatters.gofumpt = { prepend_args = { "-extra" } }
+			conform.formatters.gci = {
+				args = {
+					"write",
+					"--skip-generated",
+					"-s",
+					"standard",
+					"-s",
+					"default",
+					"--skip-vendor",
+					"$FILENAME",
 				},
-				branch = "main",
-			},
-		},
-		opts = function(_, opts)
-			opts.adapters = opts.adapters or {}
-			opts.adapters["neotest-golang"] = {
-				go_test_args = {
-					"-v",
-					"-race",
-					"-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
-				},
+			}
+			conform.formatters.goimports = { args = { "-srcdir", "$FILENAME" } }
+			conform.formatters.golines = {
+				prepend_args = { "--base-formatter=gofumpt", "--ignore-generated", "--tab-len=1", "--max-len=120" },
 			}
 		end,
 	},
 	{
-		"mfussenegger/nvim-dap",
-		ft = { "go" },
-		dependencies = {
-			{
-				"jay-babu/mason-nvim-dap.nvim",
-				dependencies = {
-					"williamboman/mason.nvim",
+		src = "https://github.com/fredrikaverpil/neotest-golang",
+		version = "main",
+	},
+	{
+		src = "https://github.com/jay-babu/mason-nvim-dap.nvim",
+		config = function()
+			require("mason-nvim-dap").setup({
+				-- delve is managed by the Go toolchain (go install); mason's
+				-- copy lags behind and dlv refuses to debug newer Go versions.
+				ensure_installed = {},
+			})
+		end,
+	},
+	{
+		src = "https://github.com/leoluz/nvim-dap-go",
+		config = function()
+			local go_bin = vim.fn.expand("~/go/bin")
+			local dlv = vim.fn.executable(go_bin .. "/dlv") == 1 and (go_bin .. "/dlv") or vim.fn.exepath("dlv")
+
+			require("dap-go").setup({
+				dap_configurations = {
+					{
+						type = "go",
+						name = "Debug",
+						request = "launch",
+						program = "${file}",
+					},
 				},
-				opts = {
-					ensure_installed = { "delve" },
+				delve = {
+					path = dlv,
+					initialize_timeout_sec = 20,
+					args = { "--check-go-version=false" },
 				},
-			},
-			{
-				"leoluz/nvim-dap-go",
-				config = function()
-					require("dap-go").setup({
-						dap_configurations = {
-							{
-								type = "go",
-								name = "Debug",
-								request = "launch",
-								program = "${file}",
-							},
-						},
-						delve = {
-							path = vim.fn.exepath("dlv"), -- Make sure this points to your updated delve
-							initialize_timeout_sec = 20,
-							args = {"--check-go-version=false"},
-						},
-					})
-				end,
-			},
-		},
+			})
+
+			vim.keymap.set("n", "\\dt", function() require("dap-go").debug_test() end, { desc = "Debug: Go test" })
+		end,
 	},
 }
