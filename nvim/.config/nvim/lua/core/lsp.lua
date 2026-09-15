@@ -17,16 +17,15 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.INFO] = '»',
 		},
 	},
-	virtual_lines = true,
+	virtual_lines = {
+		current_line = true,
+	},
 	float = {
 		border = 'rounded',
 		source = 'if_many',
 	},
 	severity_sort = true,
 })
-
--- Set sign column to always show
-vim.o.signcolumn = 'yes'
 
 -- Format on save autocmd
 local fmt_group = vim.api.nvim_create_augroup('autoformat_cmds', { clear = true })

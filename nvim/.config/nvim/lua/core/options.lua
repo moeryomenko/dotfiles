@@ -39,11 +39,12 @@ vim.o.undolevels = 10000
 vim.o.updatetime = 200 -- Save swap file and trigger CursorHold
 
 -- Set basic oions
-vim.o.backspace = { "indent", "eol", "start" }
+vim.opt.backspace = { "indent", "eol", "start" }
 vim.o.textwidth = 120
 vim.o.colorcolumn = "+1"
 
 vim.o.autocomplete = true
+vim.o.signcolumn = 'yes'
 
 --#region line number settings.
 vim.o.number = true
