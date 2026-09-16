@@ -3,7 +3,7 @@
 
 # Theme (was [general] import = ["./noir.toml"])
 # Custom themes live in ~/.config/ghostty/themes/<name>
-theme = noir
+theme = neon_dreams
 
 # Bold text uses bright palette (was draw_bold_text_with_bright_colors)
 bold-color = bright
@@ -40,7 +40,7 @@ command = /opt/homebrew/bin/fish -l -c "tmux attach || tmux"
 # Window (was [window] ...)
 # Alacritty "Buttonless" is macOS-only; Linux equivalent = no decorations.
 window-decoration = false
-background-opacity = 0.8
+background-opacity = 0.95
 # was startup_mode = "Maximized"
 maximize = true
 # was padding x=0 y=0 (Ghostty default is 2, so set explicitly)
