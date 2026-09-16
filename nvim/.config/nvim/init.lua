@@ -1,4 +1,6 @@
-require('vim._core.ui2').enable()
+require("vim._core.ui2").enable()
+
+require("colors.neon_dreams").setup()
 
 require("core.options")
 require("core.functions")

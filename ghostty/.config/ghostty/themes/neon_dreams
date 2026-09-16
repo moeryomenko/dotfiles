@@ -1,0 +1,33 @@
+# neon_dreams — converted from alacritty/.config/alacritty/neon_dreams.toml
+# (vibrant neon blue and pink/purple aesthetic)
+
+background = #1a2642
+foreground = #a8b9e6
+
+cursor-color = #ff6eb5
+cursor-text = #1a2642
+
+selection-background = #3d7acc
+selection-foreground = #c5d4ff
+
+search-background = #ffeb99
+search-foreground = #1a2642
+search-selected-background = #ff6eb5
+search-selected-foreground = #1a2642
+
+palette = 0=#1a2642
+palette = 1=#ff668c
+palette = 2=#66e8b5
+palette = 3=#ffeb99
+palette = 4=#5f9eff
+palette = 5=#c576ff
+palette = 6=#5fc9e8
+palette = 7=#a8b9e6
+palette = 8=#3d4d73
+palette = 9=#ff6eb5
+palette = 10=#66e8b5
+palette = 11=#ffeb99
+palette = 12=#7eb5ff
+palette = 13=#e066ff
+palette = 14=#5fc9e8
+palette = 15=#c5d4ff
