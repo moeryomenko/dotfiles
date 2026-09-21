@@ -1,44 +1,38 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "@franlol/opencode-md-table-formatter@latest",
+  "plugins": [
     "@plannotator/opencode@latest",
     "@spoons-and-mirrors/subtask2@latest"
   ],
   "mcp": {
-    "filesystem": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "."
-      ],
-      "enabled": true
-    },
-    "semble": {
-      "command": [
-        "uvx",
-        "--from",
-        "semble[mcp]",
-        "semble"
-      ],
-      "type": "local",
-      "enabled": true
-    },
-    "mcp-dap-server": {
-      "type": "local",
-      "command": [
-        "mcp-dap-server"
-      ],
-      "enabled": true
+    "servers": {
+      "filesystem": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "."
+        ]
+      },
+      "semble": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "semble[mcp]",
+          "semble"
+        ]
+      },
+      "mcp-dap-server": {
+        "type": "local",
+        "command": [
+          "mcp-dap-server"
+        ]
+      }
     }
   },
   "lsp": {
-    "slint": {
-      "command": ["slint-lsp"],
-      "extensions": [".slint"]
-    },
     "pyright": {
       "disabled": true
     },
@@ -56,24 +50,40 @@
     }
   },
   "formatter": true,
-  "provider": {
+  "agents": {
+    "plan": {
+      "model": "anthropic/claude-opus-5"
+    },
+    "build": {
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "providers": {
+    "anthropic": {
+      "settings": {
+        "baseURL": "https://claude-n-codex.com:8443/v1"
+      }
+    },
     "llama": {
-      "npm": "@ai-sdk/openai-compatible",
+      "package": "@opencode/ai/providers/openai-compatible",
       "name": "llama",
-      "options": {
+      "settings": {
         "baseURL": "http://127.0.0.1:8080/v1",
         "timeout": false
       },
       "models": {
         "qwen": {
           "name": "qwen",
-          "variants": {
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto",
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low",
+                "textVerbosity": "low",
+                "reasoningSummary": "auto"
+              }
             }
-          },
+          ],
           "limit": {
             "context": 262144,
             "output": 65536

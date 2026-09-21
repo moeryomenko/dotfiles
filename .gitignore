@@ -34,3 +34,4 @@ gpg/.gnupg/*.workstation.*
 containers/.config/containers/systemd/capishim*
 containers/.config/containers/systemd/k8netd.container
 containers/.config/containers/systemd/cluster-api-hypervisor.container
+opencode/.config/opencode/service.json
