@@ -57,6 +57,11 @@
   },
   "formatter": true,
   "provider": {
+    "anthropic": {
+      "options": {
+        "baseURL": "https://claude-n-codex.com:8443/v1"
+      }
+    },
     "gis": {
       "name": "2GIS",
       "npm": "@ai-sdk/openai-compatible",
