@@ -6,8 +6,7 @@ hl.bind(vars.mainMod .. " + C", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + ALT + M", hl.dsp.exec_cmd("exit"))
 hl.bind(vars.mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 
-hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
-hl.bind(vars.mainMod .. " + N", hl.dsp.exec_cmd("noctalia msg panel-toggle noctalia/notes:panel"))
+hl.bind(vars.mainMod .. " + D", hl.dsp.exec_cmd(vars.menu))
 
 hl.bind(vars.mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(vars.mainMod .. " + F", hl.dsp.window.fullscreen())
@@ -25,7 +24,7 @@ hl.bind(vars.mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "up" })
 hl.bind(vars.mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "down" }))
 
 -- Logout
-hl.bind(vars.mainMod .. " + DELETE", hl.dsp.exec_cmd("wlogout"))
+hl.bind(vars.mainMod .. " + DELETE", hl.dsp.exec_cmd("~/.config/waybar/bin/powermenu.sh"))
 
 -- Workspaces
 for i = 1, 10 do
@@ -52,7 +51,8 @@ hl.bind(vars.mainMod .. " + G", hl.dsp.layout("colresize 1"))
 if hl.plugin and hl.plugin.hyprcapture then
 	hl.bind("Print", hl.plugin.hyprcapture.open)
 end
-hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd('noctalia msg plugin noctalia/screen_recorder:service all toggle'))
+hl.bind(vars.mainMod .. "+ R", hl.dsp.exec_cmd("~/.config/hypr/bin/screen-record.sh"))
+hl.bind(vars.mainMod .. "+ SHIFT + R", hl.dsp.exec_cmd("~/.config/hypr/bin/screen-record.sh stop"))
 
 -- Audio
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pactl set-sink-mute @DEFAULT_SINK@ toggle"),

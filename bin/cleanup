@@ -79,7 +79,7 @@ RUNTIME_CACHE_NAMES=(
     hyprland quickshell starship wofi mpv helix nvim tree-sitter vim clangd gopls
     golangci-lint goimports neocmakelsp ty tuistore semble opencode skillfish
     tide-island-config-app awww glycin ddcutil fish matplotlib hugo_cache libvirt
-    containers flatpak mozilla wayle zephyr 'event-sound-cache*' .bluetoothctl_history
+    containers flatpak mozilla zephyr 'event-sound-cache*' .bluetoothctl_history
     wofi-dmenu
 )
 

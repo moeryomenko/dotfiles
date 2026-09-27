@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Screen recording helper using wl-screenrec with wofi selection menu.
+# Screen recording helper using wl-screenrec with a Wofi selection menu.
 # Usage:
 #   screen-record.sh           # open wofi menu to select recording mode
 #   screen-record.sh stop      # stop recording directly (for keybinding)

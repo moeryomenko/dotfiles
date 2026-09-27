@@ -98,16 +98,15 @@ lldb                   # debugger (nvim/plugins/tasks.lua dap_name=lldb)
 # WINDOW MANAGER (Hyprland)
 # ================================================================
 hyprland               # Wayland compositor (hyprland/ config, fish/config.fish)
-hypridle               # idle management daemon (hypridle.conf, autostart)
-hyprlock               # screen locker (hyprlock.conf, hypridle.conf lock_cmd)
 hyprlauncher           # app launcher (hyprland/lua/vars.lua menu)
+waybar                 # status bar (waybar/ config, hyprland/lua/autostart.lua)
 hyprsunset             # blue light filter (hyprland/lua/autostart.lua)
 # hyprls                -- Hyprland LSP (go install -- see above)
 
 # ================================================================
 # WAYLAND UTILITIES
 # ================================================================
-# wofi — REMOVED: replaced by tide application launcher
+wofi                   # menu picker (screen recording and power menu)
 mako                   # notification daemon (hyprland/lua/autostart.lua, mako/ config)
 wl-clipboard           # clipboard (hyprland autostart wl-paste, tmux.conf wl-copy)
 cliphist               # clipboard history (hyprland autostart cliphist)
@@ -126,21 +125,21 @@ pipewire               # audio server (pipewire/ config)
 pipewire-pulse         # PulseAudio compat (needed by pactl)
 wireplumber            # session manager (waybar wireplumber module)
 pavucontrol            # volume control GUI
-playerctl              # MPRIS media control (hyprland mapping.lua, hyprlock scripts)
+playerctl              # MPRIS media control utility
 
 # ================================================================
 # SYSTEM
 # ================================================================
 networkmanager         # network management (waybar network module)
 network-manager-applet # network manager systray (waybar tray)
-ddcutil                # monitor brightness DDC/CI (hypridle-brightness.sh)
+ddcutil                # monitor brightness DDC/CI utility
 bc                     # calculator (tmux.conf version comparison)
 openssh                # SSH client (fish ssh_copy.fish, keychain, git)
 keychain               # SSH/GPG key agent (bash/.bashrc, fish/config.local.fish)
 gnupg                  # GPG (gpg/ config, git/.gitconfig gpgsign, bash/.bashrc)
 pass                   # password store (fish 00_variables.fish, himalaya)
 pacman                 # package manager (bash/.bashrc pkgclean/pkgcache aliases)
-systemd                # system/service manager (wlogout layout systemctl, hypridle)
+systemd                # system/service manager (power menu actions)
 
 # ================================================================
 # FONTS

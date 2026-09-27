@@ -7,7 +7,3 @@ require("lua.windowrules")
 require("lua.telegram_pair")
 require("lua.plugins")
 require("lua.mapping")
-
-
--- For Noctalia Color templates
-require("noctalia").apply_theme()

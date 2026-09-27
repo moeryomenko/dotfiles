@@ -11,9 +11,9 @@ hl.config({
 			workspace_gap = 100,
 			layout = "vertical", -- vertical, horizontal, or auto (per-monitor orientation)
 			wallpaper = 2, -- 0: global only, 1: per-workspace only, 2: both
-			blur = true,   -- blur only the main overview wallpaper
+			blur = false,
 			shadow = {
-				enabled = true,
+				enabled = false,
 				range = 50,
 			},
 		},
@@ -54,10 +54,9 @@ hl.config({
 			grouped_windows_collapsed_labels = 1,
 			grouped_windows_collapsed_scroll = 1,
 
-			-- Animation: hover relayout
 			hover_relayout_animation = "",
-			hover_relayout_duration = 140,
-			hover_relayout_curve = "ease_out_cubic",
+			hover_relayout_duration = 0,
+			hover_relayout_curve = "linear",
 
 			-- Behavior: toggle switch and gestures
 			toggle_switch_mode = 1,
@@ -79,8 +78,8 @@ hl.config({
 			hide_bar_when_strip = 1,
 			hide_hyprbars_during_overview = 0,
 			bar_single_mission_control = 0,
-			hide_bar_animation = 1,
-			hide_bar_animation_blur = 1,
+			hide_bar_animation = 0,
+			hide_bar_animation_blur = 0,
 			hide_bar_animation_move_multiplier = 0.8,
 			hide_bar_animation_scale_divisor = 1.1,
 			hide_bar_animation_alpha_end = 0,

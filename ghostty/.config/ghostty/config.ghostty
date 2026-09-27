@@ -35,7 +35,7 @@ scrollback-limit = 10000000
 mouse-scroll-multiplier = 3
 
 # Shell (was [terminal.shell] program/args). Parsed via /bin/sh -c.
-command = /usr/bin/fish -l -c "tmux attach || tmux"
+command = /usr/bin/fish -l -c "exec ~/.config/ghostty/tmux-home-session.sh"
 
 # Window (was [window] ...)
 # Alacritty "Buttonless" is macOS-only; Linux equivalent = no decorations.

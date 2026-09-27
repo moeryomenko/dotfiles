@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
 			settings = {
 				hyprls = {
 					preferIgnoreFile = true, -- set to false to prefer `hyprls.ignore`
-					ignore = { "hyprlock.conf", "hypridle.conf" }
+					ignore = {}
 				}
 			}
 		}

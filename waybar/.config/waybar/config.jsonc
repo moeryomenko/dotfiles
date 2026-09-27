@@ -1,0 +1,74 @@
+{
+  "position": "top",
+  "height": 26,
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "wireplumber",
+    "network",
+    "clock",
+    "hyprland/language",
+    "tray",
+    "custom/powermenu"
+  ],
+  "hyprland/workspaces": {
+    "format": "{windows}",
+    "on-click": "activate",
+    "format-icons": {
+      "1": "",
+      "2": "󰏗",
+      "3": "󰸏",
+      "4": "",
+      "5": ""
+    },
+    "icon-size": 50,
+    "sort-by-number": true,
+    "special-visible-only": false,
+    "format-window-separator": "  ",
+    "window-rewrite-default": "",
+    "window-rewrite": {
+      "alacritty": "",
+      "ghostty": "",
+      "class<firefox>": "",
+      "zathura": "󰈦",
+      "telegram": "",
+      "discord": "",
+      "steam": ""
+    }
+  },
+  "clock": {
+    "format": "{:%I:%M }",
+    "format-alt": "{:%Y-%m-%d}"
+  },
+  "network": {
+    "format": "",
+    "format-ethernet": "󰈝 ",
+    "format-wifi": "{icon} ",
+    "format-disconnected": "󰈜 ",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname}",
+    "tooltip-format-disconnected": "Disconnected"
+  },
+  "wireplumber": {
+    "format": "󰕾  {volume}%",
+    "max-volume": 100,
+    "scroll-step": 5,
+    "on-click": "pavucontrol"
+  },
+  "hyprland/language": {
+    "format": "{short}"
+  },
+  "custom/powermenu": {
+    "format": "",
+    "on-click": "~/.config/waybar/bin/powermenu.sh",
+    "tooltip": false
+  }
+}

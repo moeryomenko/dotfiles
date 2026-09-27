@@ -10,4 +10,4 @@ hl.window_rule({
 	scrolling_width = 0.25,
 })
 
-hl.workspace_rule({ workspace = "w[1-10]", animation = "slidevert" })
+hl.workspace_rule({ workspace = "w[1-10]" })
