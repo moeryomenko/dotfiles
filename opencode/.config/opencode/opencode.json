@@ -32,6 +32,31 @@
           "mcp-dap-server"
         ]
       }
+    },
+    "headroom": {
+      "type": "local",
+      "command": [
+        "/home/eryoma/.local/bin/headroom",
+        "mcp",
+        "serve"
+      ],
+      "enabled": true
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "serena-agent",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context",
+        "agent",
+        "--open-web-dashboard",
+        "False"
+      ],
+      "enabled": true
     }
   },
   "lsp": {
@@ -39,16 +64,32 @@
       "disabled": true
     },
     "ty": {
-      "command": ["ty", "server"],
-      "extensions": [".py", ".pyi"]
+      "command": [
+        "ty",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
     },
     "autotools": {
-      "command": ["autotools-language-server"],
-      "extensions": [".ac"]
+      "command": [
+        "autotools-language-server"
+      ],
+      "extensions": [
+        ".ac"
+      ]
     },
     "make-ls": {
-      "command": ["make-ls"],
-      "extensions": [".mk", "Makefile", "makefile"]
+      "command": [
+        "make-ls"
+      ],
+      "extensions": [
+        ".mk",
+        "Makefile",
+        "makefile"
+      ]
     }
   },
   "formatter": true,
@@ -89,6 +130,31 @@
           "limit": {
             "context": 262144,
             "output": 65536
+          }
+        }
+      }
+    }
+  },
+  "provider": {
+    "headroom": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Headroom Proxy",
+      "options": {
+        "baseURL": "http://127.0.0.1:8787/v1"
+      },
+      "models": {
+        "gpt-4o": {
+          "name": "GPT-4o",
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-4.1": {
+          "name": "GPT-4.1",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
           }
         }
       }

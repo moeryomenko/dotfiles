@@ -84,7 +84,27 @@ install_hyprpm_plugins() {
 }
 
 # ================================================================
-# Step 5: Install Go tools
+# Step 5: Install Python applications
+# ================================================================
+install_python_apps() {
+    echo "==> Installing Python applications..."
+    if ! command -v pipx &>/dev/null; then
+        echo "    WARNING: pipx not found -- skipping tmux-bro. (Install 'pipx' from pkglist.txt first and re-run.)"
+        return
+    fi
+
+    if pipx list 2>/dev/null | grep -qE '^package tmux-bro '; then
+        echo "    tmux-bro already installed, skipping."
+    else
+        echo "    pipx install tmux-bro"
+        pipx install git+https://github.com/raine/tmux-bro.git || echo "    WARNING: tmux-bro installation failed (non-fatal)"
+    fi
+    pipx ensurepath || echo "    WARNING: pipx could not update PATH (non-fatal)"
+    echo "    done."
+}
+
+# ================================================================
+# Step 6: Install Go tools
 # ================================================================
 install_go_tools() {
     echo "==> Installing Go tools from pkglist-go-tools.txt..."
@@ -149,6 +169,8 @@ main() {
     install_pacman_packages
     echo ""
     # install_aur_packages
+    echo ""
+    install_python_apps
     echo ""
     install_go_tools
     echo ""
