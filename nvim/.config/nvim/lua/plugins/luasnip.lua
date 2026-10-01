@@ -13,6 +13,26 @@ return {
 				updateevents = "TextChanged,TextChangedI",
 			})
 
+			vim.keymap.set({ "i", "s" }, "<Tab>", function()
+				if vim.fn.pumvisible() == 1 then
+					return "<C-n>"
+				elseif ls.expand_or_jumpable() then
+					ls.expand_or_jump()
+					return ""
+				end
+				return "<Tab>"
+			end, { expr = true, silent = true })
+
+			vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+				if vim.fn.pumvisible() == 1 then
+					return "<C-p>"
+				elseif ls.jumpable(-1) then
+					ls.jump(-1)
+					return ""
+				end
+				return "<S-Tab>"
+			end, { expr = true, silent = true })
+
 			vim.keymap.set({ "i", "s" }, "<C-k>", function()
 				if ls.jumpable(-1) then
 					ls.jump(-1)
