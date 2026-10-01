@@ -9,7 +9,7 @@ for command in wofi hyprctl systemctl; do
   }
 done
 
-choice=$(printf '%s\n' 'Logout' 'Suspend' 'Reboot' 'Power off' | wofi --dmenu --prompt 'Power') || exit 0
+choice=$(printf '%s\n' 'Logout' 'Suspend' 'Hibernate' 'Reboot' 'Power off' | wofi --dmenu --prompt 'Power') || exit 0
 
 case "$choice" in
   Logout)
@@ -17,6 +17,9 @@ case "$choice" in
     ;;
   Suspend)
     systemctl suspend
+    ;;
+  Hibernate)
+    systemctl hibernate
     ;;
   Reboot)
     systemctl reboot
