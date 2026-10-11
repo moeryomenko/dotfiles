@@ -1,4 +1,5 @@
 vim.o.shell = "fish"
+vim.o.exrc = true
 vim.o.winborder = 'rounded'
 
 -- indent
