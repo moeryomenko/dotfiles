@@ -1,62 +1,45 @@
-# Trait & Generics Design (MEDIUM)
+# Traits and Generics
 
-## Use Associated Types When Each Impl Has Exactly One Output Type
+Design a trait around the behavior consumers need, then make extension, dispatch, ownership, and compatibility explicit. Keep bounds minimal and avoid publishing a trait merely to abstract one implementation.
 
-Use generic parameters when a type can implement the trait for many input types:
+## Associated types and parameters
+
+Use an associated type when an implementation has one natural relationship for the trait; use a type parameter when the same implementing type should support multiple relationships.
 
 ```rust
-// Associated type: each impl has one fixed output
-trait Iterator {
-    type Item;
-    fn next(&mut self) -> Option<Self::Item>;
+trait Decode {
+    type Output;
+    fn decode(&self) -> Self::Output;
 }
 
-// Generic: many possible outputs per impl
-trait From<T> {
-    fn from(value: T) -> Self;
+trait Convert<T> {
+    fn convert(value: T) -> Self;
 }
 ```
 
-## Use Blanket Impls for Widespread Behavior
+The orphan rule permits an implementation only when the trait or the implementing type is local. A newtype can establish a local API boundary, but does not automatically make the conversion desirable.
+
+## Dyn compatibility
+
+Only use `dyn Trait` when runtime polymorphism or heterogeneous storage is required. A dyn-compatible trait cannot have associated constants, generic methods, or non-receiver associated functions available through the object. Methods using `Self` outside the receiver/allowed forms generally require `where Self: Sized` if they should coexist with trait objects.
 
 ```rust
-impl<T: Debug> Debug for MyWrapper<T> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        self.inner.fmt(f)
-    }
+trait Renderer {
+    fn render(&self) -> String;
+    fn named(name: &str) -> Self
+    where
+        Self: Sized;
 }
 ```
 
-## Respect the Orphan Rule
+`named` remains usable on concrete implementors but not through `dyn Renderer`. Native `async fn` in traits is stable, but such traits are not dyn-compatible without an adapter/design that erases the future type.
 
-Wrap a foreign type in a newtype to implement a foreign trait on it.
+## Implementations and defaults
 
-## Define Traits in Terms of a Few Required Methods Plus Defaulted Ones
+A blanket implementation is generic over a family of types, such as `impl<T: Display> Label for T`; an implementation for `Wrapper<T>` is a generic implementation, but only a blanket impl when it applies to an open family through its bounds. Default methods should be derivable from a small required core and should not surprise implementors with hidden cost or side effects.
 
-```rust
-trait Animal {
-    fn make_sound(&self) -> String;  // Required
-    
-    fn speak(&self) {                // Default based on required
-        println!("{}", self.make_sound());
-    }
-}
-```
+## Load next
 
-## Choose Static Dispatch vs Dynamic Dispatch Deliberately
-
-| Approach | Use Case |
-|----------|----------|
-| Generics / `impl Trait` (static) | Hot paths, monomorphization OK, known types |
-| `dyn Trait` (dynamic) | Reduced code size, heterogeneous collections, plugin architectures |
-
-## Keep Traits Object-Safe When You Need `dyn Trait`
-
-Object-safe traits: no `Self: Sized`, no generic methods, no associated `const` with type references.
-
-## Cross-References
-
-- For type system features: load `type-safety`
-- For closure patterns: load `closures`
-- For static vs dynamic dispatch: load `zero-cost`
-- For object safety rules: load `zero-cost`
+- Static/dynamic dispatch tradeoffs: `zero-cost.md`
+- Public trait compatibility: `api-design.md`
+- Async trait constraints: `async.md`

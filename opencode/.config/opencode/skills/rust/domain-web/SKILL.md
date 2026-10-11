@@ -1,121 +1,55 @@
 ---
 name: domain-web
-description: Use when building web services in Rust. Keywords: web server, HTTP, REST API, axum, actix, warp, tower, middleware, extractors, state management, authentication, JWT, CORS, rate limiting, WebSocket.
+description: Use when building Rust HTTP services or clients, including handlers, middleware, state, extractors, authentication, and runtime behavior.
 ---
 
-# Domain: Web (Rust)
+# Rust Web Guidance
 
-**Triggers**: web server, HTTP, REST API, axum, actix-web, warp, rocket, tower, hyper, reqwest, middleware, router, handler, extractor, state management, auth, JWT, session, cookie, CORS, rate limiting.
+Inspect the selected framework, runtime, feature flags, deployment model, and service-level objectives before choosing handler shapes or shared state. Framework APIs and required `Send`/`Sync` bounds vary, so do not transfer patterns blindly between Axum, Actix Web, Hyper, Tower, or other stacks.
 
-## Domain Constraints -> Design Implications
+## Handler work and runtime health
 
-| Domain Rule | Design Constraint | Rust Implication |
-|-------------|-------------------|------------------|
-| Stateless HTTP | No request-local globals | State in extractors |
-| Concurrency | Handle many connections | Async, Send + Sync |
-| Latency SLA | Fast response | Efficient ownership |
-| Security | Input validation | Type-safe extractors |
-| Observability | Request tracing | tracing + tower layers |
+Do not perform unbounded blocking work on an async runtime worker. A blocking task may delay other work sharing that worker; the impact depends on the runtime topology and load. For blocking I/O, use an asynchronous client when practical. For bounded CPU or blocking work, use the framework/runtime's approved offload mechanism and bound concurrency. Sustained CPU workloads may instead need a worker pool, Rayon, or an external worker system.
 
----
+Keep lock guards across `.await` only with a deliberate runtime and contention analysis. Prefer taking a snapshot, narrowing the critical section, or redesigning ownership when possible. Tokio's async synchronization primitives may intentionally support a guard across an await, but that does not remove deadlock, latency, or queueing concerns.
 
-## Critical Constraints
+## State and lifetime
 
-### Async by Default
+Application-scoped resources commonly include immutable configuration, pools, clients, caches, metrics, and background-service handles. They usually outlive an individual request. Make state shareable only where the framework and topology require it:
 
-```
-RULE: Web handlers must not block
-WHY: Blocking one async task blocks other requests
-RUST: async/await, spawn_blocking for CPU work
-```
+- immutable, cheap-to-clone handles may need no lock;
+- connection pools and clients commonly provide their own concurrency control;
+- mutable in-process state needs an explicit consistency and contention design;
+- `Arc<RwLock<T>>` is one option, not a default.
 
-### State Management
+`Rc` is unsuitable for state required to cross threads or for futures that must be `Send`, but can be valid in a deliberately local, single-threaded configuration.
 
-```
-RULE: Shared state must be thread-safe
-WHY: Handlers can run on any thread
-RUST: Arc<T>, Arc<RwLock<T>> for mutable state
-```
+## Input, authentication, and responses
 
-### Request Lifecycle
+Framework extractors parse and deserialize; they do not replace semantic validation, authorization, body-size limits, content-type policy, rate limiting, or CSRF/CORS policy. Validate at the HTTP boundary, convert into domain types, and avoid exposing internal errors in responses.
 
-```
-RULE: Resources live only for request duration
-WHY: Memory management, no leaks
-RUST: Extractors with proper ownership
-```
-
----
-
-## Framework Comparison
-
-| Framework | Style | Best For |
-|-----------|-------|----------|
-| axum | Functional, tower-based | Modern REST APIs |
-| actix-web | Actor-based | High throughput |
-| warp | Filter composition | Composable APIs |
-| rocket | Macro-driven | Rapid prototyping |
-
-## Key Crates
-
-| Purpose | Crate |
-|---------|-------|
-| HTTP server | axum, actix-web |
-| HTTP client | reqwest |
-| JSON | serde_json |
-| Auth/JWT | jsonwebtoken |
-| Session | tower-sessions |
-| Database | sqlx, diesel |
-| Middleware | tower |
-
-## Design Patterns
-
-| Pattern | Purpose | Implementation |
-|---------|---------|----------------|
-| Extractors | Request parsing | `State(db)`, `Json(payload)` |
-| Error response | Unified errors | `impl IntoResponse` |
-| Middleware | Cross-cutting | Tower layers |
-| Shared state | App config | `Arc<AppState>` |
-
-## Code Pattern: Axum Handler
+Use a single application error-to-response policy that maps expected client errors deliberately and logs unexpected failures with request context at an appropriate boundary. Do not treat an HTTP status mapping as the full error-reporting strategy.
 
 ```rust
-async fn handler(
-    State(db): State<Arc<DbPool>>,
-    Json(payload): Json<CreateUser>,
+// Axum-shaped excerpt: imports and application types are intentionally omitted.
+async fn create_user(
+    State(state): State<AppState>,
+    Json(request): Json<CreateUser>,
 ) -> Result<Json<User>, AppError> {
-    let user = db.create_user(&payload).await?;
+    let input = request.validate()?;
+    let user = state.users.create(input).await?;
     Ok(Json(user))
-}
-
-// Error handling
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        let (status, message) = match self {
-            Self::NotFound => (StatusCode::NOT_FOUND, "Not found"),
-            Self::Internal(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Internal error"),
-        };
-        (status, Json(json!({"error": message}))).into_response()
-    }
 }
 ```
 
----
+## Operational choices
 
-## Common Mistakes
+Add request IDs, tracing spans, timeouts, backpressure, health endpoints, and graceful shutdown according to the service's deployment and observability requirements. Treat authentication, secrets, TLS, and rate limits as system policies rather than handler-local details.
 
-| Mistake | Domain Violation | Fix |
-|---------|-----------------|-----|
-| Blocking in handler | Latency spike | spawn_blocking |
-| Rc in state | Not Send + Sync | Use Arc |
-| No validation | Security risk | Type-safe extractors |
-| No IntoResponse for errors | Bad UX | Implement IntoResponse |
+## Load next
 
-## Layer Mapping
-
-| Constraint | Feature File |
-|------------|--------------|
-| Async handlers | load `features/async.md` |
-| Thread-safe state | load `features/concurrency.md` |
-| Request lifecycle | load `features/lifecycle.md` |
-| Middleware composition | load `features/traits.md` |
+- Runtime, cancellation, task ownership: `features/async.md`
+- Locks, atomics, and parallel work: `features/concurrency.md`
+- Error boundaries: `features/error-handling.md`, `features/domain-error.md`
+- Structured diagnostics: `features/observability.md`
+- API types and compatibility: `features/api-design.md`, `features/serde.md`

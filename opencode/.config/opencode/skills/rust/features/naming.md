@@ -1,44 +1,27 @@
-# Naming Conventions (MEDIUM)
+# Naming
 
-## Casing Conventions
+Follow the Rust API Guidelines and the repository's established vocabulary. Names should reveal the domain meaning, ownership, and cost where that distinction helps callers.
 
-| Item | Convention |
-|------|-----------|
-| Types, traits, enum names | `UpperCamelCase` |
-| Enum variants | `UpperCamelCase` |
+| Item | Usual spelling |
+|---|---|
+| Types, traits, enum variants | `UpperCamelCase` |
 | Functions, methods, variables, modules | `snake_case` |
 | Constants and statics | `SCREAMING_SNAKE_CASE` |
-| Lifetime names | `'a`, `'b`, `'de`, `'src` (short, conventional) |
-| Type parameters | Single uppercase: `T`, `E`, `K`, `V` |
+| Lifetimes | short contextual names such as `'a`, `'de`, or `'src` |
 
-## Prefix Conventions
+Use acronym casing as words: `HttpServer`, `parse_json`, and `user_id` rather than all-capital acronyms. Preserve externally specified protocol names only at their boundary, then translate into idiomatic Rust names.
 
-| Prefix | Meaning |
-|--------|---------|
-| `as_` | Free reference conversion: `as_str()` |
-| `to_` | Expensive conversion (allocates/computes): `to_string()` |
-| `into_` | Ownership-consuming conversion: `into_inner()` |
-| (none) | Simple getter: `name()` not `get_name()` |
-| `is_`, `has_`, `can_`, `should_` | Boolean-returning methods |
+## Conversion and query names
 
-## Iterator Method Naming
+- `as_*` conventionally borrows or views data cheaply, such as `as_str`.
+- `to_*` conventionally creates a value and may allocate or compute, such as `to_string`.
+- `into_*` consumes `self`, such as `into_inner`.
+- Name boolean queries `is_*`, `has_*`, `can_*`, or a clear predicate.
+- Prefer `name()` over `get_name()` unless it distinguishes an operation from a field-like accessor in the local API.
 
-```rust
-fn iter(&self) -> Iter<'_, T>       // &T references
-fn iter_mut(&mut self) -> IterMut<'_, T>  // &mut T references
-fn into_iter(self) -> IntoIter<T>  // owned T values
-```
+Use `iter`, `iter_mut`, and `into_iter` only when their item ownership follows the conventional meanings. Do not force a naming pattern that obscures a domain operation.
 
-Name iterator types after their source method: `Iter`, `IterMut`, `IntoIter`.
+## Load next
 
-## Acronyms as Words
-
-Treat acronyms as words in identifiers: `HttpServer` (not `HTTPServer`), `parseJson` (not `parseJSON`).
-
-## Crate Names
-
-Don't suffix crate names with `-rs` or `-rust`. The crate is already in Rust.
-
-## Cross-References
-
-- For API design conventions: load `api-design`
+- Public contracts and compatibility: `api-design.md`
+- Newtypes and domain distinctions: `type-safety.md`

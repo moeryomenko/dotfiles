@@ -1,117 +1,37 @@
-# Anti-patterns (REFERENCE)
+# Anti-Patterns
 
-## Don't Use `.unwrap()` in Production Code
+Treat these as review prompts, not unconditional bans. Choose the simpler representation and error behavior that preserves the target crate's contract, then measure performance-sensitive paths.
 
-Use `?`, `.ok_or()`, pattern matching, or `.unwrap_or()` instead. Reserve `.unwrap()` for tests and truly impossible cases.
+## Errors and invariants
 
-```rust
-// Bad
-let content = fs::read_to_string("config.toml").unwrap();
-
-// Good
-let content = fs::read_to_string("config.toml")?;
-```
-
-## Don't Use `expect` for Recoverable Errors
-
-`expect()` is for invariants/bugs, not user-facing errors.
-
-## Don't Clone When Borrowing Works
+Use `Result` for expected input, I/O, and integration failures. `expect` or `unwrap` is appropriate only when a documented local invariant makes failure a bug and panicking is an acceptable contract. Do not silently discard a `Result`; propagate it, deliberately recover, or record a failure at the selected handling boundary.
 
 ```rust
-// Bad: unnecessary clone
-fn process(data: &String) {
-    let copy = data.clone();
-    println!("{}", copy);
-}
-
-// Good: just borrow
-fn process(data: &str) {
-    println!("{}", data);
+fn load(path: &std::path::Path) -> std::io::Result<String> {
+    std::fs::read_to_string(path)
 }
 ```
 
-## Don't Hold Locks Across Await Points
+## Ownership and interfaces
 
-Holding a `Mutex` or `RwLock` across `.await` can cause deadlocks.
+Avoid clones that do not serve an ownership boundary, but do not turn a clear owned API into borrowed plumbing merely to avoid allocation. Prefer `&str` or `&[T]` when the API only reads string or sequence data; accept owned or generic inputs when that genuinely improves the contract.
 
-## Don't Accept `&String` When `&str` Works
+Narrow standard-lock critical sections before `.await` by default. Async-aware locking can intentionally span an await, but requires a deadlock, contention, cancellation, and shutdown argument.
 
-Same pattern for `&Vec<T>` vs `&[T]`.
+## Abstraction and dispatch
 
-## Don't Use Indexing When Iterators Work
+Stay concrete until variability is required. Choose generic dispatch, enum dispatch, trait objects, or a closure based on extensibility, code size, allocation, and caller ergonomics. `Box<dyn Trait>` is useful for heterogeneous or runtime-selected behavior; `impl Trait` is useful when the concrete type can remain hidden without dynamic dispatch.
 
-```rust
-// Bad
-for i in 0..items.len() {
-    process(items[i]);  // Bounds check each iteration
-}
+## Performance
 
-// Good
-for item in items {
-    process(item);
-}
-```
+Avoid optimizing from folklore. Reuse buffers, avoid intermediate collections, or choose a different data structure only after identifying a relevant allocation, latency, memory, or throughput cost. `format!` allocates a new `String`; use it when that ownership is appropriate, and use a reusable buffer only when measurement justifies it.
 
-## Don't Panic on Expected or Recoverable Errors
+## Domain representation
 
-Return `Result` and let the caller decide.
+Use enums or newtypes when they represent a meaningful closed set or distinction. A string is appropriate when the domain is intentionally open-ended or interoperates with external text.
 
-## Don't Silently Ignore Errors
+## Load next
 
-```rust
-// Bad
-let _ = do_something();  // Error silently discarded
-
-// Good
-if let Err(e) = do_something() {
-    warn!("operation failed: {}", e);
-}
-
-// Even better
-do_something()?;
-```
-
-## Don't Over-Abstract with Excessive Generics
-
-Stay concrete until patterns prove they're needed. Prefer simple, direct code.
-
-## Don't Optimize Before Profiling
-
-Measure first, then optimize the actual bottlenecks.
-
-## Don't Use `Box<dyn Trait>` When `impl Trait` Works
-
-```rust
-// Bad
-fn process() -> Box<dyn Fn(i32) -> i32> { Box::new(|x| x + 1) }
-
-// Good
-fn process() -> impl Fn(i32) -> i32 { |x| x + 1 }
-```
-
-## Don't Use `format!()` in Hot Paths
-
-`format!()` allocates. Prefer writing to a pre-allocated buffer.
-
-## Don't Collect Intermediate Iterators
-
-Chain iterator adapters and collect only at the end.
-
-## Don't Use Strings Where Enums or Newtypes Provide Type Safety
-
-```rust
-// Bad
-fn set_role(role: &str) { /* role could be anything */ }
-
-// Good
-enum Role { Admin, User, Guest }
-fn set_role(role: Role) { /* compiler guarantees valid role */ }
-```
-
-## Cross-References
-
-- For each anti-pattern, load the corresponding positive guidance feature
-- For stringly-typed APIs: load `type-driven`
-- For premature optimization: load `zero-cost`
-- For error swallowing: load `domain-error`
+- Error boundaries: `error-handling.md`
+- Ownership and locks: `ownership.md`, `async.md`
+- Measured optimization: `performance.md`, `optimization.md`

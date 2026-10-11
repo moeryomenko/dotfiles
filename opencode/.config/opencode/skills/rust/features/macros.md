@@ -1,103 +1,45 @@
-# Macros (MEDIUM)
+# Macros
 
-## Reach for a Macro Only When a Function or Generic Cannot Express It
+Use a macro when syntax or compile-time generation provides value a function, generic, trait, or build step cannot provide clearly. Macros become public API when exported, so preserve diagnostics, hygiene, and expansion compatibility.
 
-Prefer functions and generics first. Use macros for: code repetition that generics cannot handle, domain-specific syntax, or compile-time code generation.
+## Declarative macros
 
-## Rely on `macro_rules!` Hygiene
-
-Use `$crate` for paths to your crate's items:
-
-```rust
-macro_rules! my_macro {
-    ($val:expr) => {
-        $crate::my_function($val)  // Not ::my_function
-    };
-}
-```
-
-## Capture with Precise Fragment Specifiers
-
-| Specifier | What It Captures |
-|-----------|-----------------|
-| `:expr` | Expressions |
-| `:stmt` | Statements |
-| `:ty` | Types |
-| `:ident` | Identifiers |
-| `:pat` | Patterns |
-| `:path` | Paths |
-| `:tt` | Token tree (most flexible, least safe) |
-
-Prefer specific specifiers over raw `:tt` where possible.
-
-## Export Declarative Macros with `#[macro_export]`
+Use the narrowest fragment specifier that expresses the grammar and `$crate` for references to items in the defining crate.
 
 ```rust
 #[macro_export]
-macro_rules! my_macro {
-    // ...
+macro_rules! ensure_nonempty {
+    ($value:expr) => {
+        if $value.is_empty() {
+            return Err($crate::Error::Empty);
+        }
+    };
 }
 ```
 
-## Hide Macro-Generated Helper Items
+`#[macro_export]` exports at crate root; it is not needed for internal macros. Hidden helper modules can support expansions, but `#[doc(hidden)]` does not make them private or stable-free.
 
-```rust
-#[doc(hidden)]
-pub mod __private {
-    pub fn helper() { /* ... */ }
-}
-```
+## Procedural macros
 
-## Put Procedural Macros in a Dedicated Crate
-
-```toml
-# Cargo.toml
-[lib]
-proc-macro = true
-```
-
-Re-export from the facade crate:
-
-```rust
-// In the main crate
-pub use my_macro_derive::MyDerive;
-```
-
-## Build Procedural Macros with `syn`, `quote`, and `proc-macro2`
+Proc macros need a `proc-macro` crate. Parse input, preserve identifiers and generics, and report user mistakes as `syn::Error` rather than panicking. A derive must implement for the parsed input identifier—not for the whole parsed syntax tree.
 
 ```rust
 #[proc_macro_derive(MyDerive)]
-pub fn my_derive(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    let expanded = quote! {
-        impl MyTrait for #input {
-            // ...
-        }
-    };
-    expanded.into()
-}
-```
+pub fn my_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let input = syn::parse_macro_input!(input as syn::DeriveInput);
+    let name = &input.ident;
+    let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
-## Report Proc-Macro Errors as Spanned Compile Errors
-
-```rust
-#[proc_macro]
-pub fn my_macro(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as MyInput);
-    
-    if !input.is_valid() {
-        return syn::Error::new(input.span(), "invalid input")
-            .to_compile_error()
-            .into();
+    quote::quote! {
+        impl #impl_generics MyTrait for #name #ty_generics #where_clause {}
     }
-    
-    // ...
+    .into()
 }
 ```
 
-Never panic in procedural macros — it produces inscrutable compiler output.
+Use `trybuild` or focused compile-fail tests for macro diagnostics and expansion edge cases. Keep generated APIs minimal; expansion spans and error messages are part of the developer experience.
 
-## Cross-References
+## Load next
 
-- For function vs macro: load `performance`
-- For anti-patterns: load `anti-patterns`
+- API compatibility: `api-design.md`
+- Build and dependency policy: `project-structure.md`

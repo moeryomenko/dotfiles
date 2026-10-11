@@ -1,188 +1,54 @@
-# Error Handling Patterns
+# Error-Handling Patterns
 
-## Error → Design Question Mapping
+Choose `Option` for meaningful absence and `Result` for failures callers need to observe or recover from. Error representation follows API boundaries and recovery needs, not whether a crate is called a library or application.
 
-| Pattern | Misguided Fix | Better Question |
-|---------|---------------|-----------------|
-| unwrap panics | "Use ?" | Is None/Err actually possible here? |
-| Type mismatch on ? | "Use anyhow" | Are error types designed correctly? |
-| Lost error context | "Add .context()" | What does the caller need to know? |
-| Too many error variants | "Use Box<dyn Error>" | Is error granularity matching use? |
+## Typed boundaries and reporting
 
----
-
-## Error Handling Decision Flowchart
-
-```
-Is failure expected?
-├─ Yes → Is absence the only "failure"?
-│        ├─ Yes → Option<T>
-│        └─ No → Result<T, E>
-│                 ├─ Library → thiserror
-│                 └─ Application → anyhow
-└─ No → Is it a bug?
-        ├─ Yes → panic!, assert!, unreachable!
-        └─ No → Consider if really unrecoverable
-
-Use ? → Need context?
-├─ Yes → .context("message")
-└─ No → Plain ?
-```
-
----
-
-## Library vs Application Error Handling
-
-| Context | Error Crate | Why |
-|---------|-------------|-----|
-| Library | `thiserror` | Typed errors for consumers |
-| Application | `anyhow` | Ergonomic error handling |
-| Mixed | Both | thiserror at boundaries, anyhow internally |
-
-### Boundary Conversion Pattern
+Expose typed, matchable errors where a caller needs distinctions such as invalid input, retryability, or compatibility. Use a report type such as `anyhow::Error` at an executable boundary that owns final presentation.
 
 ```rust
-// Library layer: typed error
-#[derive(thiserror::Error, Debug)]
-pub enum ConfigError {
-    #[error("missing key: {0}")]
-    MissingKey(String),
-    #[error("parse error: {0}")]
-    Parse(#[from] toml::de::Error),
-}
-
-// Application layer: convert at boundary
-use anyhow::{Context, Result};
-
-fn load_config() -> Result<Config> {
-    let raw = std::fs::read_to_string("config.toml")
-        .context("failed to read config file")?;
-    let config: Config = toml::from_str(&raw)
-        .context("failed to parse config")?;
-    Ok(config)
+#[derive(Debug, thiserror::Error)]
+enum ConfigError {
+    #[error("failed to read configuration")]
+    Read(#[from] std::io::Error),
+    #[error("configuration has no endpoint")]
+    MissingEndpoint,
 }
 ```
 
----
+`#[from]` belongs on a permitted single-field source variant. Add separate variants or constructors when the conversion requires extra context.
 
-## Error Propagation with Context
+## Propagation and context
 
-### Basic Pattern
+Propagate with `?` where the current layer adds no semantic information. Add context when opening a named resource, converting an external format, or crossing an ownership/domain boundary. Log or render a failure once at a deliberate handling boundary rather than at each propagation layer.
 
 ```rust
 use anyhow::{Context, Result};
 
-fn process_file(path: &str) -> Result<Output> {
-    let content = std::fs::read_to_string(path)
-        .with_context(|| format!("failed to read {}", path))?;
-
-    let parsed: Data = serde_json::from_str(&content)
-        .context("malformed JSON in input")?;
-
-    let result = transform(parsed)
-        .context("transform step failed")?;
-
-    Ok(result)
+fn load(path: &std::path::Path) -> Result<String> {
+    std::fs::read_to_string(path)
+        .with_context(|| format!("failed to read {}", path.display()))
 }
 ```
 
-### Context Placement Guidelines
+## Intentional non-fatal failures
 
-- Add `.context()` at each fallible step that could fail independently
-- Include the relevant inputs in the context message
-- Use `.with_context()` (lazy) over `.context()` (eager) when the message requires allocation
-- Don't add context for trivially clear operations like string parsing
-
----
-
-## Common Error Handling Patterns
-
-### Fallible Constructor
+Ignore an error only after confirming it is harmless to the contract. Match the expected condition and propagate or report unexpected errors:
 
 ```rust
-#[derive(Debug)]
-struct Email(String);
-
-impl Email {
-    fn new(s: String) -> Result<Self, InvalidEmail> {
-        if s.contains('@') {
-            Ok(Self(s))
-        } else {
-            Err(InvalidEmail(s))
-        }
-    }
+match std::fs::remove_file("cache.tmp") {
+    Ok(()) => {}
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+    Err(error) => return Err(error),
 }
 ```
 
-### Error Type with Multiple Sources
+For partial iterator results, `partition(Result::is_ok)` produces `Vec<Result<T, E>>` on both sides; it does not unwrap values/errors. Explicitly convert those results, or use a helper whose output contract is understood.
 
-```rust
-#[derive(thiserror::Error, Debug)]
-pub enum ApiError {
-    #[error("network error: {0}")]
-    Network(#[from] reqwest::Error),
-    #[error("parse error: {0}")]
-    Parse(#[from] serde_json::Error),
-    #[error("rate limited until {0:?}")]
-    RateLimited(chrono::DateTime<chrono::Utc>),
-}
-```
+`expect` documents a local invariant when a panic is contractually appropriate; it is not ordinary error handling.
 
-### Result Alias
+## Load next
 
-```rust
-type Result<T> = std::result::Result<T, AppError>;
-
-fn do_thing() -> Result<Value> {
-    Ok(compute()?)
-}
-```
-
-### Swallowing Errors Deliberately
-
-```rust
-// When error is expected and harmless
-let _ = fs::remove_file("cache.tmp");  // Ignore if file doesn't exist
-
-// When error is informative but non-critical
-if let Err(e) = metrics::record(&event) {
-    tracing::warn!("failed to record metric: {}", e);
-}
-```
-
-### Unwrap/Except Usage Decision
-
-```rust
-// TEST/EXAMPLE: unwrap is fine
-#[test]
-fn test_parse() {
-    let data = parse("valid").unwrap();
-}
-
-// INVARIANT HOLDS: expect with reason
-let home = env::var("HOME").expect("HOME must be set");
-
-// BUG/DEAD CODE: should never happen
-let idx = match some_enum {
-    A => 0,
-    B => 1,
-    // When new variant added, panic signals missing update
-};
-```
-
-### Partial Errors with Iterator
-
-```rust
-// Collect partial results, don't fail on first error
-let (successes, errors): (Vec<_>, Vec<_>) = items
-    .into_iter()
-    .map(|item| process(item))
-    .partition(Result::is_ok);
-
-// Or use itertools::partition_result
-use itertools::Itertools;
-let (successes, errors): (Vec<_>, Vec<_>) = items
-    .into_iter()
-    .map(|item| process(item))
-    .partition_result();
-```
+- Error API design: `../../error-handling.md`
+- Retrying/fault boundaries: `../../domain-error.md`
+- Async cancellation: `../async/common-patterns.md`

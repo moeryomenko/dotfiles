@@ -1,75 +1,39 @@
-# Concurrency (HIGH)
+# Concurrency
 
-**Triggers**: parallel, thread, spawn, rayon, par_iter, Send, Sync, Mutex, RwLock, Atomic, atomics, Ordering, thread-local, thread_local, cross-thread, data race, deadlock.
+Start with the required invariant, owner, progress behavior, and shutdown policy. Use the simplest synchronization design that preserves them, then measure contention and throughput under representative load.
 
-## Use Rayon's `par_iter()` for CPU-Bound Data Parallelism
+## Threads and parallelism
 
-Rayon automatically manages a thread pool and splits work across available cores:
+Rayon is often useful for data-parallel CPU work, but pool ownership, nested parallelism, blocking operations, order, and workload size still matter. Use `std::thread::scope` when child threads should borrow data from the enclosing scope; scoped threads remove the `'static` requirement but still require data to satisfy the relevant `Send`/`Sync` constraints.
 
-```rust
-use rayon::prelude::*;
+## Locks and message passing
 
-let sum: i32 = (0..1000000).into_par_iter().sum();
-let results: Vec<Output> = items.par_iter().map(process).collect();
-```
+Use channels when ownership or work moves between components; use locks for shared, multi-field state; use atomics for independently synchronized values with a proven protocol. `RwLock` and lock-free designs are not automatically faster than a mutex.
 
-## Use `std::thread::scope` to Borrow Stack Data Across Threads
+`thread_local!` is valid for genuinely per-thread state, not as a generic replacement for shared mutable global state. It creates one value per thread and changes semantics rather than synchronizing shared data.
 
-Scoped threads allow borrowing stack data without requiring `'static`:
+## Atomics
 
-```rust
-let data = vec![1, 2, 3];
-std::thread::scope(|s| {
-    s.spawn(|| {
-        println!("{:?}", data);  // Borrows from parent scope
-    });
-    s.spawn(|| {
-        println!("{:?}", data);  // Multiple threads can share
-    });
-});
-```
-
-## Use the Weakest Correct Memory Ordering
-
-For every atomic operation, use the weakest `Ordering` that is correct:
+Select memory ordering from a justified happens-before relationship, not a slogan about always choosing the weakest ordering. `Relaxed` only synchronizes the atomic modification order itself. An acquire load provides visibility when it observes the appropriate release sequence. `SeqCst` can be a sound clarity-first baseline while designing or reviewing a protocol.
 
 ```rust
 use std::sync::atomic::{AtomicBool, Ordering};
 
-let flag = AtomicBool::new(false);
+// The producer initializes the associated data before this release store.
+ready.store(true, Ordering::Release);
 
-// Producer:
-flag.store(true, Ordering::Release);
-
-// Consumer:
-if flag.load(Ordering::Acquire) {
-    // Guaranteed to see all writes before the store
+// On observing that store (or its release sequence), this acquire load
+// synchronizes with it.
+if ready.load(Ordering::Acquire) {
+    consume_initialized_data();
 }
 ```
 
-**Guidelines:**
-- `Relaxed`: Single atomic variable, no ordering constraints
-- `Acquire`/`Release`: Pairs of operations that need synchronization
-- `AcqRel`: Read-modify-write that both acquires and releases
-- `SeqCst`: Strongest ordering, use only when nothing else works
+Do not derive an ordering for a multi-atomic protocol from this small example. Document the invariant and test/review the whole protocol. Loom can explore bounded schedules for synchronization code modeled with Loom primitives; it does not prove arbitrary production concurrency correct.
 
-## Prefer `thread_local!` with `Cell`/`RefCell` Over `static mut`
+## Load next
 
-```rust
-use std::cell::RefCell;
-
-thread_local! {
-    static CACHE: RefCell<HashMap<String, Data>> = RefCell::new(HashMap::new());
-}
-
-CACHE.with(|cache| {
-    cache.borrow_mut().insert(key, value);
-});
-```
-
-## Cross-References
-
-- For async abstractions: load `async`
-- For shared ownership patterns: load `ownership`
-- For concurrency errors with examples: load `patterns/concurrency/common-errors.md`
-- For concurrent resource lifecycle: load `lifecycle`
+- Async runtime constraints: `async.md`
+- Ownership choices: `ownership.md`
+- Common concurrency failures: `patterns/concurrency/common-errors.md`
+- Unsafe auto-trait claims: `unsafe.md`

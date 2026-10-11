@@ -1,59 +1,46 @@
-# Pattern Matching (MEDIUM)
+# Pattern Matching
 
-## Use `let ... else` for Early-Return Pattern Extraction
+Use a pattern form that makes the control flow and ownership intent clear. Check the crate MSRV before using recently stabilized syntax such as `let` chains.
 
-```rust
-let Some(value) = optional_value else {
-    return Err("missing value");
-};
-```
+## Extraction and tests
 
-## Use `matches!()` for Boolean Pattern Tests
+Use `let ... else` when the non-match is an early return or diverging path:
 
 ```rust
-if matches!(status, Status::Active | Status::Pending) {
-    process();
-}
-
-// Instead of:
-if let Status::Active | Status::Pending = status {
-    process();
+fn parse_port(value: Option<u16>) -> Result<u16, &'static str> {
+    let Some(port) = value else {
+        return Err("missing port");
+    };
+    Ok(port)
 }
 ```
 
-## Use `if let` Chains to Combine Pattern Bindings and Conditions
+Use `matches!` when only a boolean is needed. Match a reference when the owned value is needed afterwards:
 
 ```rust
-if let Some(user) = users.get(id)
-    && user.is_active()
-    && let Some(role) = user.role()
-{
-    grant_access(role);
+if matches!(&status, Status::Active | Status::Pending) {
+    process(&status);
 }
 ```
 
-## Match Owned Enums Exhaustively
+`if let` is useful for one relevant shape. Let chains can combine bindings and guards on toolchains that support them; nested `if let` is the portable alternative.
 
-Avoid catch-all `_` that hides new variants:
+## Exhaustiveness and public APIs
+
+Exhaustive matching catches additions for enums the crate owns. A public `#[non_exhaustive]` enum requires external callers to include a wildcard arm, so handle known variants and choose an intentional fallback:
 
 ```rust
-match status {
-    Status::Active => handle_active(),
-    Status::Inactive => handle_inactive(),
-    Status::Pending => handle_pending(),
-    // No `_ =>` — so adding a new variant causes a compile error
+match response {
+    Response::Ok => handle_ok(),
+    Response::Retryable => retry(),
+    _ => handle_unknown_response(),
 }
 ```
 
-## Use `@` Bindings to Capture While Matching
+Use `@` bindings when both a structure and the matched value are needed. Avoid destructuring merely for style when direct access is clearer.
 
-```rust
-if let Some(user @ User { name: "admin", .. }) = maybe_user {
-    println!("Admin logged in: {:?}", user);
-}
-```
+## Load next
 
-## Cross-References
-
-- For early return patterns: load `error-handling`
-- For destructuring in loops: load `performance`
+- Result/Option boundaries: `error-handling.md`
+- Ownership of matched data: `ownership.md`
+- Iteration cost: `performance.md`

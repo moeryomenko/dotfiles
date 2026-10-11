@@ -1,97 +1,47 @@
-# Documentation (MEDIUM)
+# Documentation
 
-## Document All Public Items with `///` Doc Comments
+Document public contracts where a caller needs information not expressed by the type system: purpose, valid input, ownership, effects, errors, panics, safety preconditions, ordering, and compatibility. Follow the repository's public-documentation policy rather than requiring every item to have the same sections or a runnable example.
 
-Every public function, struct, trait, enum, type, constant, and module needs documentation.
+Use `///` for item documentation and `//!` for module or crate documentation. Intra-doc links are useful when a referenced API is part of the reader's next decision.
 
-## Use `//!` for Module-Level Documentation
+## Examples
 
-```rust
-//! This module provides parsing utilities.
-//!
-//! It includes tokenizers, AST builders, and error types.
-```
-
-## Include Standard Doc Sections
-
-| Section | When |
-|---------|------|
-| `# Examples` | On all public items (with runnable code) |
-| `# Errors` | On fallible functions |
-| `# Panics` | On functions that can panic |
-| `# Safety` | On unsafe functions |
+Doctests should compile when they claim to be runnable. A snippet using `?` needs a result-returning context:
 
 ```rust
-/// Parses a configuration string.
+/// Parses a configuration value.
 ///
-/// # Examples
 /// ```
+/// # fn run() -> Result<(), ParseError> {
 /// let config = parse("key=value")?;
 /// assert_eq!(config.get("key"), Some("value"));
+/// # Ok(())
+/// # }
 /// ```
-///
 /// # Errors
-/// Returns `ParseError` if the input is malformed.
-///
-/// # Panics
-/// Panics if the internal buffer overflows (only for strings > 1MB).
-fn parse(input: &str) -> Result<Config, ParseError> { /* ... */ }
+/// Returns `ParseError` when the input is malformed.
+fn parse(_: &str) -> Result<Config, ParseError> { todo!() }
+# struct Config;
+# impl Config { fn get(&self, _: &str) -> Option<&str> { Some("value") } }
+# struct ParseError;
 ```
 
-## Use `?` in Examples, Not `.unwrap()`
+Hide setup lines with `# ` when that improves readability, but retain enough visible context for users to understand correct use. Mark platform-, feature-, network-, or deliberately illustrative examples accordingly instead of presenting them as universal doctests.
+
+## Crate documentation and metadata
+
+A crate-level inner attribute must appear at the crate root before items:
 
 ```rust
-/// ```
-/// use my_crate::parse;
-/// let config = parse("key=value")?;
-/// # Ok::<(), my_crate::Error>(())
-/// ```
-```
-
-## Use `# ` Prefix to Hide Example Setup Code
-
-```rust
-/// ```
-/// # use my_crate::Config;
-/// # let mut config = Config::new();
-/// config.set("key", "value");  // Only this line is visible
-/// ```
-```
-
-## Use Intra-Doc Links to Reference Types
-
-```rust
-/// See also [`Config`] and [`parse`](crate::parse::parse).
-```
-
-## Fill `Cargo.toml` Metadata
-
-```toml
-[package]
-name = "my-crate"
-version = "0.1.0"
-description = "A concise description"
-authors = ["Author Name"]
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/user/my-crate"
-documentation = "https://docs.rs/my-crate"
-readme = "README.md"
-keywords = ["rust", "cli", "tool"]
-categories = ["command-line-utilities"]
-edition = "2021"
-```
-
-## Unify README and Crate Root Docs
-
-```rust
-//! # My Crate
-//!
-//! [![crates.io](https://img.shields.io/crates/v/my-crate.svg)](https://crates.io/crates/my-crate)
-//!
 #![doc = include_str!("../README.md")]
+
+pub struct Client;
 ```
 
-## Cross-References
+Use README inclusion only when the README is appropriate crate API documentation and the path works for the crate layout. Package metadata, repository links, license, categories, MSRV, and examples are publication decisions; keep them accurate rather than copying a generic template.
 
-- For doc examples that test: load `testing`
-- For safety sections in docs: load `unsafe`
+## Load next
+
+- Documentation tests: `testing.md`
+- Unsafe contracts: `unsafe.md`
+- Public API design: `api-design.md`

@@ -1,98 +1,41 @@
-# Compiler Optimization (HIGH)
+# Compiler Optimization
 
-**Triggers**: inline, LTO, codegen-units, PGO, target-cpu, SIMD, #[inline], #[cold], optimization, release build, profile-guided, bounds check, monomorphization.
+Profile representative release workloads before changing compiler settings or source structure. Record the target hardware, input distribution, benchmark method, and the measured metric; a speedup in a microbenchmark can regress code size, compile time, latency, portability, or power use.
 
-## Use `#[inline]` for Small Hot Functions
+## Build configuration
 
-Guidance:
-- `#[inline]` for small functions called from a different crate
-- `#[inline(always)]` only for critical hot paths proven by profiling
-- `#[inline(never)]` for error paths and cold functions to reduce code size
-
-```rust
-#[inline]
-pub fn small_hot_function(x: i32) -> i32 {
-    x + 1
-}
-
-#[cold]
-#[inline(never)]
-fn error_path() -> ! {
-    panic!("unexpected state")
-}
-```
-
-## Mark Unlikely Code Paths with `#[cold]`
-
-Helps the compiler optimize for the common case:
-
-```rust
-#[cold]
-fn handle_rate_limit() -> ! {
-    std::process::exit(1);
-}
-```
-
-## Use Code Structure to Hint at Likely Branches
-
-Use `if`/`else` order to indicate which branch is more likely. On nightly, use `std::intrinsics::likely`/`unlikely`.
-
-## Enable LTO in Release Builds
+`lto`, `codegen-units`, optimization level, stripping, and PGO are release-engineering tradeoffs. Evaluate them per deployable artifact rather than treating one profile as universally best.
 
 ```toml
 [profile.release]
-lto = "fat"   # Full link-time optimization
+lto = "thin"
+codegen-units = 1
 ```
 
-## Set `codegen-units = 1` for Maximum Optimization
+This can improve some whole-program optimizations while increasing build time. Check the target crate/workspace policy and artifact measurements before adopting it.
 
-```toml
-[profile.release]
-codegen-units = 1  # Best optimization, slower compile
-```
+`target-cpu` is not a Cargo profile key. Set target CPU features through the selected build environment or `RUSTFLAGS` only for a controlled deployment target; binaries built with unsupported CPU instructions can fail on other machines. Do not apply `target-cpu=native` to distributable artifacts unless the deployment contract guarantees that CPU.
 
-## Use Profile-Guided Optimization (PGO)
+## Source-level choices
 
-Collect profiles from representative runs, then rebuild with optimization guided by the profile data.
+The optimizer already inlines and removes bounds checks in many cases. Use `#[inline]`, `#[cold]`, or `#[inline(never)]` only where profiling and cross-crate/API needs justify the hint; these attributes are hints, not guarantees. Source branch order is not a reliable portable branch-prediction directive.
 
-## Use `target-cpu=native` on Known Deployment Targets
-
-```toml
-[profile.release]
-target-cpu = "native"  # Maximizes CPU-specific optimizations
-```
-
-## Use Iterators and Patterns That Eliminate Bounds Checks
-
-Iterators track their bounds at compile time, eliminating runtime bounds checks:
+Prefer clear iteration when it matches the access pattern, then inspect generated behavior only if it is a measured bottleneck:
 
 ```rust
-// Bad: bounds checks on every access
-for i in 0..slice.len() {
-    process(slice[i]);
-}
-
-// Good: no bounds checks
 for item in slice {
     process(item);
 }
 ```
 
-## Use Portable SIMD for Vectorized Operations
+Data layout, allocation behavior, and locality depend on the workload. A struct-of-arrays layout may benefit column-oriented hot loops, while an array-of-structs layout may be better for per-record processing.
 
-```rust
-use std::simd::{f32x4, StdFloat};
+## SIMD
 
-let a = f32x4::from_array([1.0, 2.0, 3.0, 4.0]);
-let b = f32x4::from_array([5.0, 6.0, 7.0, 8.0]);
-let c = a + b;
-```
+`std::simd` is nightly-only. Use it only under an explicitly supported nightly toolchain and target-feature policy. On stable Rust, evaluate an established crate, explicit platform intrinsics behind feature detection, or a scalar implementation based on the portability, maintenance, and measured-performance requirements.
 
-## Organize Data for Cache-Efficient Access
+## Load next
 
-Prefer struct-of-arrays over array-of-structs for hot paths. Access memory sequentially rather than randomly.
-
-## Cross-References
-
-- For runtime performance: load `performance`
-- For memory layout: load `memory`
+- Runtime and allocation measurements: `performance.md`
+- Representation and layout: `memory.md`
+- Numeric semantics: `numeric.md`

@@ -1,89 +1,34 @@
-# Observability (MEDIUM)
+# Observability
 
-## Use `tracing` for Structured, Span-Aware Diagnostics
+Design telemetry around the operational questions the service or program must answer. Follow the repository's `tracing`/logging setup, sampling, privacy policy, and cardinality budget; emit structured events without installing global subscribers from library code.
 
-Prefer `tracing` over `println!` or bare `log`:
+## Events and spans
+
+Use fields for data queried or correlated downstream, and messages for human meaning:
 
 ```rust
-use tracing::{info, warn, error};
-
-info!("processing item {}", id);
-warn!("slow query detected: {:?}", query);
-error!(error = %e, "failed to process request");
+tracing::info!(user_id = user.id, request_id = %request_id, "user authenticated");
 ```
 
-## Libraries Emit Through the Tracing/Log Facade
-
-Libraries should never install a subscriber — they emit through the facade, and the application chooses the output:
+`#[tracing::instrument]` creates and enters a span around a function or async future. It records selected arguments by default, so skip or redact sensitive and high-cardinality values. It does not automatically record duration, return values, or errors unless the subscriber/layer and macro options are configured to do so.
 
 ```rust
-// In library Cargo.toml
-tracing = { version = "0.1", default-features = false, features = ["std"] }
-```
-
-## Record Structured Key-Value Fields
-
-Not values interpolated into the message string:
-
-```rust
-// Bad: values in message
-info!("user {} logged in from {}", user.id, user.ip);
-
-// Good: structured fields
-info!(user.id, user.ip, "user logged in");
-```
-
-## Use `#[tracing::instrument]` and Spans
-
-```rust
-#[tracing::instrument(skip(password))]
+#[tracing::instrument(skip(password), err)]
 fn authenticate(user: &str, password: &str) -> Result<Session, AuthError> {
-    // Function entry/exit automatically traced
-    // Fields: user, function name, duration
+    verify(user, password)
 }
 ```
 
-## Use Log Levels Meaningfully
+The `err` option records an event when the result is an error; choose return-value recording deliberately because it can expose large or sensitive data.
 
-| Level | When to Use |
-|-------|------------|
-| `error` | Recoverable or unrecoverable failures |
-| `warn` | Unexpected but handled situations |
-| `info` | Important normal operations (startup, shutdown, state changes) |
-| `debug` | Detailed information for debugging |
-| `trace` | Very fine-grained function-level tracing |
+## Boundaries and levels
 
-Filter with `EnvFilter` / `RUST_LOG`:
+Choose levels according to the team's alerting and investigation practices. Add context as a failure crosses a meaningful ownership or semantic boundary, then record/report it at a deliberate handling boundary rather than logging every propagation layer.
 
-```bash
-RUST_LOG=warn,my_crate=debug cargo run
-```
+Libraries may emit through `tracing` or `log`; applications own subscribers, filtering, output, and exporter configuration. Never rely on telemetry as the only integrity or audit record, and avoid secrets, credentials, personal data, and unbounded-cardinality fields unless policy explicitly permits them.
 
-## Log Errors with Their Full Source Chain
+## Load next
 
-Log each error exactly once:
-
-```rust
-fn process() -> Result<()> {
-    if let Err(e) = do_something() {
-        // Log the full chain once
-        warn!(error = &*e, "operation failed");
-        return Err(e);
-    }
-    Ok(())
-}
-```
-
-## Never Log Secrets or PII
-
-Redact or skip sensitive fields:
-
-```rust
-#[tracing::instrument(skip(password, secret_key))]
-fn process_login(user: &str, password: &str, secret_key: &str) { /* ... */ }
-```
-
-## Cross-References
-
-- For error chains: load `error-handling`
-- For tracing with async: load `async`
+- Error propagation: `error-handling.md`
+- Async task context: `async.md`
+- CLI or web boundaries: `../domain-cli/SKILL.md`, `../domain-web/SKILL.md`

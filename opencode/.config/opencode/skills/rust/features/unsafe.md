@@ -1,97 +1,53 @@
-# Unsafe Code (CRITICAL)
+# Unsafe Code
 
-**Triggers**: unsafe, raw pointer, FFI, extern, transmute, *mut, *const, union, #[repr(C)], libc, std::ffi, MaybeUninit, NonNull, SAFETY comment, soundness, undefined behavior, UB, safe wrapper, bindgen, CString, CStr, Send, Sync.
+Use unsafe only when a safe design cannot meet the requirement. Before writing it, state the safety invariant, identify who establishes and preserves it, and prefer a small safe wrapper that validates inputs at its boundary.
 
-## Write `// SAFETY:` Comment Above Every `unsafe` Block
+## Scope and documentation
 
-Every `unsafe` block requires a `// SAFETY:` comment explaining why this specific operation upholds the required invariants. Enable `clippy::undocumented_unsafe_blocks` to catch omissions.
+Keep unsafe operations as narrow as practical and keep surrounding logic safe. A `// SAFETY:` explanation is valuable review documentation and can be enforced by a project policy such as `clippy::undocumented_unsafe_blocks`; it is not itself a language requirement.
 
-```rust
-// SAFETY: we just checked slice has at least 11 elements
-unsafe { *slice.as_ptr().add(10) }
-```
-
-## Write `# Safety` Section in Every `unsafe fn`
-
-The `# Safety` doc section describes the *caller's* obligations (preconditions that must hold for the call to be sound). The inline `// SAFETY:` comment targets *auditors* of the implementation.
+An `unsafe fn` documents obligations placed on its caller with a `# Safety` section. In Rust 2024, `unsafe_op_in_unsafe_fn` requires unsafe operations inside an `unsafe fn` to remain in explicit `unsafe {}` blocks; it does not require a particular comment format.
 
 ```rust
 /// # Safety
-/// - `ptr` must be valid for reads for at least `offset + 1` bytes.
-/// - `ptr` must not be null and must be properly aligned.
-pub unsafe fn read_at(ptr: *const u8, offset: usize) -> u8 {
-    // SAFETY: caller guarantees ptr is valid for offset + 1 bytes
-    unsafe { *ptr.add(offset) }
+/// `ptr` must be valid for one properly aligned `u8` read.
+pub unsafe fn read_byte(ptr: *const u8) -> u8 {
+    // SAFETY: this is the caller's documented precondition.
+    unsafe { *ptr }
 }
 ```
 
-In the 2024 edition, `unsafe_op_in_unsafe_fn` lint requires `// SAFETY:` comments even inside `unsafe fn` bodies.
+## Initialization and raw memory
 
-## Keep `unsafe` Blocks as Small as Possible
-
-Mark only the operation that requires unsafety, not the surrounding safe code:
-
-```rust
-// Bad: entire function body in unsafe
-unsafe {
-    let slice = std::slice::from_raw_parts(ptr, len);
-    let val = slice[0];
-    println!("{}", val);
-}
-
-// Good: only the unsafe operation
-let slice = unsafe { std::slice::from_raw_parts(ptr, len) };
-let val = slice[0];  // Safe
-println!("{}", val);  // Safe
-```
-
-## Run `cargo miri test` in CI
-
-Every crate containing `unsafe` code should run Miri in CI to detect undefined behavior.
-
-## Use `MaybeUninit<T>` for Uninitialized Memory
-
-Never use `mem::uninitialized()` or `mem::zeroed()` for types with validity invariants.
+Use `MaybeUninit<T>` to control initialization, and call `assume_init` only after the entire claimed `T` is initialized. Pointer types must match the object being written.
 
 ```rust
 use std::mem::MaybeUninit;
 
-let mut data = MaybeUninit::<[u8; 1024]>::uninit();
-// SAFETY: we initialize the first element
-data.as_mut_ptr().write(42);
-```
-
-## In Rust 2024, Wrap `extern` Blocks in `unsafe extern { }`
-
-```rust
-unsafe extern "C" {
-    safe fn malloc(size: usize) -> *mut u8;  // safe to call
-    unsafe fn free(ptr: *mut u8);            // unsafe to call
+let mut bytes = MaybeUninit::<[u8; 4]>::uninit();
+let ptr = bytes.as_mut_ptr().cast::<u8>();
+for (index, byte) in [1_u8, 2, 3, 4].into_iter().enumerate() {
+    // SAFETY: `index < 4`, and each byte slot is written exactly once.
+    unsafe { ptr.add(index).write(byte) };
 }
+// SAFETY: all four elements of the array have been initialized.
+let bytes = unsafe { bytes.assume_init() };
+assert_eq!(bytes, [1, 2, 3, 4]);
 ```
 
-## Document Invariants When Manually Implementing `Send` or `Sync`
+Avoid deprecated/unreliable initialization shortcuts. Zero bytes are not a valid value for every Rust type.
 
-Prefer letting the compiler derive them automatically:
+## Auto traits, FFI, and tools
 
-```rust
-// SAFETY: MyType contains only Send-compatible fields
-unsafe impl Send for MyType {}
-```
+Do not manually implement `Send` or `Sync` merely because fields look compatible. Prove the full aliasing, ownership, thread-affinity, and synchronization contract, including operations exposed by the type. Prefer compiler-derived auto traits.
 
-## Use `#[unsafe(no_mangle)]` in Rust 2024
+Rust 2024 requires `unsafe extern` blocks. ABI, layout, ownership, nullability, callbacks, and unwinding rules are part of every FFI contract; use `repr(C)` only where the counterpart ABI/layout requires it. Unsafe attributes such as `#[unsafe(no_mangle)]` have collision and linker-contract obligations.
 
-Not the bare attribute form:
+Run Miri as an additional supported test target when it can exercise the relevant unsafe paths. It finds classes of undefined behavior but does not prove a design sound. Use sanitizers, fuzzing, platform tests, and review where they fit the project.
 
-```rust
-#[unsafe(no_mangle)]
-pub extern "C" fn my_function() {}
-```
+## Load next
 
-## Cross-References
-
-- For SAFETY comments: load `documentation`
-- For lint enforcement: load `linting`
-- For types used with unsafe: load `type-safety`
-- For FFI interop and bindgen: load `ecosystem`
-- For PhantomData and variance: load `type-driven`
+- FFI/dependency integration: `ecosystem.md`
+- Type/lifetime invariants: `type-safety.md`, `type-driven.md`
+- Resource destruction: `lifecycle.md`
+- Lint policy: `linting.md`

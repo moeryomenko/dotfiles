@@ -1,81 +1,33 @@
-# Clippy & Linting (LOW)
+# Linting and Formatting
 
-## Enable `clippy::correctness` as Deny
+Treat linting as repository policy. Start with the crate's existing toolchain, MSRV, generated-code policy, and CI commands; add a lint because it catches a failure mode the project intends to maintain.
 
-```rust
-#![deny(clippy::correctness)]
-```
+Run `cargo fmt --check`, `cargo clippy --all-targets` with the repository's selected feature matrix, and tests as appropriate. Do not blanket-enable every restriction lint without an ownership and remediation policy.
 
-## Enable Clippy Warning Groups
+## Workspace lints
 
-```rust
-#![warn(clippy::suspicious)]    // Likely bugs
-#![warn(clippy::style)]        // Idiomatic code
-#![warn(clippy::complexity)]   // Simpler alternatives
-#![warn(clippy::perf)]         // Performance improvements
-```
-
-## Enable Pedantic Lints Selectively
-
-```rust
-#![warn(clippy::pedantic)]
-// Silence specific noisy lints:
-#![allow(clippy::module_name_repetitions)]
-#![allow(clippy::must_use_candidate)]
-```
-
-## Warn on Missing Documentation
-
-```rust
-#![warn(missing_docs)]  // For public items
-```
-
-## Require Documentation for Unsafe Blocks
-
-```rust
-#![warn(clippy::undocumented_unsafe_blocks)]
-```
-
-## Enable Clippy::Cargo for Published Crates
-
-```rust
-#![warn(clippy::cargo)]
-```
-
-## Run `cargo fmt --check` in CI
-
-## Configure Lints at Workspace Level
+Define shared lint policy at the workspace root and opt member crates into it:
 
 ```toml
-# Cargo.toml (workspace root)
+# workspace Cargo.toml
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[workspace.lints.clippy]
+unwrap_used = "warn"
+```
+
+```toml
+# member Cargo.toml
 [lints]
 workspace = true
-
-[lints.clippy]
-correctness = "deny"
-suspicious = "warn"
-style = "warn"
-complexity = "warn"
-perf = "warn"
-pedantic = "warn"
 ```
 
-## Enable `unexpected_cfgs` and Declare Known Cfgs
+Lint names, groups, toolchain support, and generated-code exceptions can change, so verify configuration against the selected Cargo version. A lint warning is a review signal, not a proof that every exception is wrong.
 
-```rust
-// In Cargo.toml
-[lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("serde"))'] }
-```
+Use `#[allow]` narrowly with a reason when the local code intentionally differs from policy. Prefer fixing the underlying issue to suppressing a lint globally.
 
-## Enable High-Value Nursery Lints Selectively
+## Load next
 
-```rust
-#![warn(clippy::semicolon_if_nothing_returned)]
-#![warn(clippy::missing_panics_doc)]
-```
-
-## Cross-References
-
-- For unsafe linting: load `unsafe`
-- For docs and lints: load `documentation`
+- Unsafe-policy documentation: `unsafe.md`
+- Project/toolchain policy: `project-structure.md`

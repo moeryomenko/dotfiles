@@ -1,102 +1,66 @@
-# Serde (MEDIUM)
+# Serde
 
-## Match External Naming Convention with `rename_all`
+Treat serialized data as an external compatibility contract. Inspect the actual format, versioning policy, untrusted-input limits, and enabled Serde features before choosing a representation.
+
+## Fields and defaults
+
+Use `rename` or `rename_all` only to match an established wire format. `Option<T>` naturally accepts an absent field; use `#[serde(default)]` when a non-optional field has a deliberate compatible default.
 
 ```rust
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct Config {
-    max_connections: u32,  // serializes as "max_connections"
-}
-```
-
-Common values: `"camelCase"`, `"snake_case"`, `"kebab-case"`, `"PascalCase"`, `"SCREAMING_SNAKE_CASE"`.
-
-## Use `#[serde(default)]` for Optional and Backward-Compatible Fields
-
-```rust
-#[derive(Deserialize)]
-struct Config {
-    #[serde(default)]
-    timeout: Duration,  // Uses Default::default() if missing
-    #[serde(default = "default_host")]
-    host: String,
+    #[serde(default = "default_timeout_ms")]
+    timeout_ms: u64,
+    endpoint: Option<String>,
 }
 
-fn default_host() -> String { "localhost".into() }
+fn default_timeout_ms() -> u64 { 5_000 }
 ```
 
-## Omit Empty Fields with `skip_serializing_if`
+`skip_serializing_if` changes output compatibility, so use it only when omission and the alternate value are intentionally equivalent to consumers.
+
+## Enums and conversion
+
+Externally tagged enums are the default Serde representation. `#[serde(tag = "type")]` selects *internally* tagged representation; adding `content` selects adjacently tagged representation; `untagged` tries variants in order and can be ambiguous or slower.
+
+Validate a deserialized representation at a conversion boundary. `try_from` is a container attribute, not a field attribute:
 
 ```rust
-#[derive(Serialize)]
-struct Response {
-    data: Vec<Item>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    error: Option<String>,
-}
-```
-
-## Inline Nested Structs or Capture Extra Keys with `flatten`
-
-```rust
-#[derive(Deserialize)]
-struct Params {
-    #[serde(flatten)]
-    extra: HashMap<String, Value>,
-}
-```
-
-## Choose Enum Tagging Deliberately
-
-```rust
-// Internally tagged (default): {"type": "A", "value": 1}
-#[serde(tag = "type")]
-
-// Adjacently tagged: {"type": "A", "content": {"value": 1}}
-#[serde(tag = "type", content = "content")]
-
-// Untagged: tries each variant in order
-#[serde(untagged)]
-```
-
-## Reject Unexpected Keys with `deny_unknown_fields`
-
-```rust
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct StrictConfig { /* ... */ }
-```
-
-## Customize Field Serialization with `with`
-
-```rust
-#[serde(with = "serde_bytes")]
-    data: Vec<u8>,
-```
-
-## Validate While Deserializing with `try_from`
-
-```rust
-#[derive(Deserialize)]
+#[derive(serde::Deserialize)]
 struct RawEmail(String);
 
+struct Email(String);
+
 impl TryFrom<RawEmail> for Email {
-    type Error = String;
+    type Error = &'static str;
+
     fn try_from(raw: RawEmail) -> Result<Self, Self::Error> {
-        if raw.0.contains('@') { Ok(Email(raw.0)) }
-        else { Err("invalid email".into()) }
+        raw.0.contains('@').then_some(Self(raw.0)).ok_or("invalid email")
     }
 }
 
-#[derive(Deserialize)]
-struct User {
-    #[serde(try_from = "RawEmail")]
-    email: Email,
+#[derive(serde::Deserialize)]
+#[serde(try_from = "RawEmail")]
+struct Contact(Email);
+
+impl TryFrom<RawEmail> for Contact {
+    type Error = &'static str;
+
+    fn try_from(raw: RawEmail) -> Result<Self, Self::Error> {
+        Ok(Self(Email::try_from(raw)?))
+    }
 }
 ```
 
-## Cross-References
+## Unknown fields
 
-- For API design for serde: load `api-design`
-- For type safety: load `type-safety`
+`#[serde(flatten)]` can merge nested fields or capture extra keys. It is incompatible in important cases with `deny_unknown_fields`; choose strict rejection or forward-compatible capture deliberately and verify the selected format's behavior.
+
+Deserialization validates syntax and shape, not authorization, semantic invariants, resource limits, or migration policy.
+
+## Load next
+
+- Public wire contracts: `api-design.md`
+- Domain invariants: `type-safety.md`
+- Error boundaries: `error-handling.md`

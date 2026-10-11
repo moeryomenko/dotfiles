@@ -1,121 +1,49 @@
-# Error Handling (CRITICAL)
+# Error Handling
 
-**Triggers**: Result, Option, Error, ?, unwrap, expect, panic, anyhow, thiserror, recoverable error, fallible, error propagation, error chaining, context, From, try.
+Design errors from the caller's recovery and diagnostic needs. Keep failure information structured at reusable boundaries; add context at meaningful semantic transitions; report or log once at a chosen handling boundary.
 
-## Use `thiserror` for Library Error Types
+## Error types and reporting types
 
-Libraries should expose typed, matchable errors. `thiserror` generates `Error` trait implementations with minimal boilerplate.
+A library should expose a typed error when callers need to distinguish causes, retry behavior, or compatibility. `thiserror` is useful for implementing `std::error::Error` without changing the public semantics. An executable boundary can use an ergonomic report type such as `anyhow::Error` when it owns final presentation.
 
 ```rust
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Debug, Error)]
 pub enum ParseError {
-    #[error("invalid syntax at line {line}: {message}")]
-    Syntax { line: usize, message: String },
-    #[error("io error reading input")]
+    #[error("invalid syntax at line {line}")]
+    Syntax { line: usize },
+    #[error("failed to read input")]
     Io(#[from] std::io::Error),
 }
 ```
 
-Key attributes: `#[error("...")]` for messages, `#[from]` for automatic `From` impls, `#[source]` for error chaining, `#[error(transparent)]` for delegation.
+`#[from]` both marks an error source and generates a conversion only when the variant shape permits it. Add separate context fields with a dedicated variant or constructor when needed.
 
-## Use `anyhow` for Application Error Handling
+## Propagation and context
 
-Applications benefit from `anyhow::Result` and `.context()` for ergonomic error handling with rich context.
+Use `?` to preserve the error flow where the current layer adds no useful meaning. Add `context` or `with_context` at operations such as opening a named resource, crossing a protocol boundary, or translating into a domain action—not mechanically at every fallible expression.
 
 ```rust
 use anyhow::{Context, Result};
 
-fn load_user(id: u64) -> Result<User> {
-    let path = format!("users/{}.json", id);
-    let content = std::fs::read_to_string(&path)
-        .with_context(|| format!("failed to read {}", path))?;
-    Ok(serde_json::from_str(&content)?)
+fn load_config(path: &std::path::Path) -> Result<String> {
+    std::fs::read_to_string(path)
+        .with_context(|| format!("failed to read configuration at {}", path.display()))
 }
 ```
 
-## Return `Result<T, E>` Instead of Panicking for Recoverable Errors
+Avoid logging the same error at every propagation layer; logs multiply without improving diagnosis. Preserve source chains and ensure final reports render them according to the application's observability setup.
 
-Panics unwind the stack and crash the thread. `Result` gives callers the choice to retry, fallback, propagate, or log.
+## Panics and expectations
 
-**Panic is appropriate for:** invariant violations (bugs), initialization failures where the program cannot proceed, tests, and examples.
+Return `Result` for recoverable input, I/O, and external failures. `expect` is appropriate when an explicit, local invariant would make failure a bug; include that invariant in the message. `unwrap` in production code is acceptable only when the invariant is equally clear and a panic is contractually acceptable—not merely because error handling is inconvenient.
 
-## Use `?` Operator for Clean Propagation
+Document error conditions for public fallible APIs where callers need them. Error-message capitalization/punctuation should follow repository and user-interface conventions rather than a universal style rule.
 
-The `?` operator is Rust's idiomatic way to propagate errors, automatically converting between compatible error types via `From`.
+## Load next
 
-```rust
-fn load_config() -> Result<Config, Error> {
-    let content = std::fs::read_to_string("config.toml")?;
-    Ok(toml::from_str(&content)?)
-}
-```
-
-`?` works with `Option` too:
-```rust
-fn get_first_word(text: &str) -> Option<&str> {
-    let first_line = text.lines().next()?;
-    first_line.split_whitespace().next()
-}
-```
-
-## Add Context with `.context()` or `.with_context()`
-
-Always add context when propagating errors to make debugging easier:
-
-```rust
-.content(|| "failed to read config")
-// vs
-.context("failed to read config")  // For simple strings
-```
-
-## Avoid `unwrap()` in Production Code
-
-Use `?`, `.expect()`, or handle errors properly. Reserve `unwrap()` for tests and truly impossible cases.
-
-## Use `expect()` Only for Invariants That Indicate Bugs
-
-```rust
-let value = cache.get(key).expect("key was just inserted");
-```
-
-## Implement `From<E>` for Error Conversions
-
-This enables the `?` operator to convert between error types automatically. `thiserror`'s `#[from]` generates these.
-
-## Preserve Error Chains
-
-Use `#[source]` (thiserror) or implement `source()` to preserve error chains. Log errors with their full source chain.
-
-## Start Error Messages Lowercase, No Trailing Punctuation
-
-Consistent with standard library conventions:
-```rust
-#[error("invalid value: {0}")]  // ✅ lowercase, no period
-#[error("Invalid value: {0}.")]  // ❌
-```
-
-## Document Error Conditions
-
-Include `# Errors` section in doc comments for fallible functions:
-```rust
-/// Parses a configuration string.
-///
-/// # Errors
-/// Returns `ParseError` if the input is malformed or contains invalid values.
-```
-
-## Define Custom Error Types for Domain-Specific Failures
-
-Custom error types carry domain semantics and can include relevant context fields.
-
-## Cross-References
-
-- For type definitions: load `type-safety`
-- For doc sections: load `documentation`
-- For unwrap anti-patterns: load `anti-patterns`
-- For Result in async: load `async`
-- For domain error strategies: load `domain-error`
-- For error recovery and retry: load `domain-error`
-- For error handling patterns with examples: load `patterns/error-handling/common-patterns.md`
+- Retry and fault boundaries: `domain-error.md`
+- Async cancellation/error ownership: `async.md`
+- Error-pattern examples: `patterns/error-handling/common-patterns.md`
+- Public contracts: `api-design.md`

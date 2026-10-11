@@ -1,50 +1,31 @@
-# Collections (MEDIUM)
+# Collections
 
-## Pick the Map by Access Pattern
+Choose a collection from access pattern, ordering, mutation, memory layout, and expected size. Prefer the standard library until a measured or semantic requirement justifies another container.
 
-| Map | Use Case |
-|-----|----------|
-| `HashMap<K, V>` | Fast, unordered lookups (default choice) |
-| `BTreeMap<K, V>` | Sorted keys, range queries |
-| `IndexMap<K, V>` | Insertion-order preservation |
+| Need | Common fit |
+|---|---|
+| Growable contiguous sequence | `Vec<T>` |
+| Front and back queue operations | `VecDeque<T>` |
+| Expected fast key lookup without order | `HashMap<K, V>` / `HashSet<T>` |
+| Sorted iteration or range lookup | `BTreeMap<K, V>` / `BTreeSet<T>` |
+| Insertion-order map | `indexmap` when the dependency is justified |
+| Repeated highest/lowest priority work | `BinaryHeap<T>` |
 
-## Default to `Vec` for Sequences
-
-| Sequence | Use Case |
-|----------|----------|
-| `Vec<T>` | Default — fast index, push/pop. Best for most cases. |
-| `VecDeque<T>` | Queue/deque behavior — push/pop at both ends |
-| `LinkedList<T>` | Avoid — poor cache locality, rarely beneficial |
-
-## Use `HashSet`/`BTreeSet` for Membership Tests
-
-Not linear `Vec::contains`:
+Hash maps and sets provide expected/amortized constant-time lookup under their hashing assumptions; they do not make every membership test categorically faster. A small `Vec` may be simpler and faster for small, short-lived, or one-off membership tests because it avoids hashing and allocation.
 
 ```rust
-// Bad: O(n) per check
-let items = vec![1, 2, 3];
-items.contains(&4);
+fn contains_small(values: &[u32], wanted: u32) -> bool {
+    values.contains(&wanted)
+}
 
-// Good: O(1) per check
-let items: HashSet<i32> = vec![1, 2, 3].into_iter().collect();
-items.contains(&4);
+fn contains_many(values: &std::collections::HashSet<u32>, wanted: u32) -> bool {
+    values.contains(&wanted)
+}
 ```
 
-## Use `BinaryHeap` for Priority Queues
+`LinkedList` has valid specialized uses, but cache locality and allocator behavior make it a poor default for general sequences. Benchmark the actual mutation pattern before replacing a `Vec`.
 
-When you need repeated max-extraction:
+## Load next
 
-```rust
-use std::collections::BinaryHeap;
-
-let mut heap = BinaryHeap::new();
-heap.push(3);
-heap.push(1);
-heap.push(4);
-assert_eq!(heap.pop(), Some(4));  // Max value first
-```
-
-## Cross-References
-
-- For memory optimization: load `memory`
-- For performance: load `performance`
+- Allocation and layout: `memory.md`
+- Measured hot-path decisions: `performance.md`
