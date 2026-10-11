@@ -1,173 +1,69 @@
 # Go Linter Guide
 
-## Setup
+Treat linting as a repository policy, not a universal list of rules. Start with a small correctness baseline, then add checks that match the codebase's APIs, dependencies, security posture, generated code, and review capacity. A clean first run and an agreed remediation plan are more valuable than enabling every available linter.
 
-### Recommended Config (golangci-lint)
+## Establish a baseline
+
+Use `gofmt` and `go test ./...` regardless of a linter. A practical Go correctness baseline normally includes:
+
+| Tool or linter | Value |
+|---|---|
+| `govet` | suspicious constructs recognized by `go vet` |
+| `staticcheck` | high-value static analysis, including simplifications and correctness checks |
+| `errcheck` | ignored returned errors |
+| `ineffassign` | assignments that cannot affect a result |
+| `unused` | unused code where its analysis scope supports it |
+| `goimports` or the repository formatter | import organization and formatting |
+
+For current `golangci-lint` releases that support the v2 configuration format, an intentionally small starting point is:
 
 ```yaml
-# .golangci.yml
+version: "2"
+
 linters:
+  default: standard
   enable:
-    - errcheck      # unchecked errors
-    - gosimple      # simplify code
-    - govet         # correctness (run at minimum)
-    - ineffassign   # ineffective assignments
-    - staticcheck   # static analysis (high-value)
-    - typecheck     # type errors
-    - unused        # unused code
-    - asasalint     # variadic arg passing
-    - asciicheck    # non-ASCII identifiers
-    - bodyclose     # HTTP response body not closed
-    - canonicalheader # canonical HTTP header casing
-    - containedctx  # struct contains context.Context
-    - contextcheck  # context.WithValue key type
-    - copyloopvar   # loop var copied by value
-    - cyclop        # cyclomatic complexity
-    - decorder      # declaration order
-    - dupl          # duplicate code
-    - durationcheck # time.Duration multiplication
-    - errname       # error naming convention
-    - errorlint     # error wrapping
-    - exhaustive    # exhaustive enum checks
-    - fatcontext    # t.Fatal in goroutines
-    - forcetypeassert # type assertion without ok
-    - funlen        # function length
-    - gochecknoglobals # no globals (library code)
-    - gochecknoinits  # no init functions
-    - goconst       # repeated string to const
-    - gocritic      # opinionated style checks
-    - godot         # comments end in period
-    - gofmt         # formatting
-    - goheader      # license header
-    - goimports     # import grouping
-    - gomoddirectives # replace/retract directives
-    - gomodguard    # banned/blocked modules
-    - gosec         # security
-    - lll           # line length
-    - loggercheck   # key-value pairs
-    - makezero      # make(..., 0) then append
-    - mirror        # mirror to stdlib
-    - mnd           # magic numbers
-    - musttag       # struct tags
-    - nakedret      # naked returns
-    - nestif        # deeply nested ifs
-    - nilerr        # nil error return
-    - nilnil        # nil, nil returns
-    - nlreturn      # newline before return
-    - noctx         # no context.Context
-    - nolintlint    # nolint directives
-    - nonamedreturns # named returns
-    - nosprintfhostport # sprintf host:port
-    - paralleltest  # parallel test detection
-    - perfsprint    # fmt.Sprintf to strconv
-    - predeclared   # shadowing predeclared
-    - promlinter    # Prometheus metrics
-    - protogetter   # proto getters
-    - reassign      # reassigning variables
-    - revive        # golint replacement
-    - rowserrcheck  # sql.Rows errors
-    - sloglint      # slog usage
-    - spancheck     # otel spans
-    - sqlclosecheck # sql.Rows, sql.Stmt close
-    - tagalign      # struct tag alignment
-    - tagliatelle   # naming convention tags
-    - tenv          # testing os.Setenv
-    - testableexamples # examples
-    - testifylint   # testify assertions
-    - testpackage   # _test.go packages
-    - thelper       # testing.T helper
-    - unconvert     # unnecessary conversion
-    - unparam       # unused params
-    - usestdlibvars # standard library vars
-    - wastedassign  # wasted assignments
-    - whitespace    # blank lines
-    - wrapcheck     # error wrapping
-    - wsl           # whitespace (strict)
-  disable:
-    - depguard      # restrictive
-    - exhaustruct   # struct literal exhaustiveness
-    - forbidigo     # forbidding identifiers
-    - ireturn       # interface return restriction
-    - prealloc      # premature slice preallocation
-    - varnamelen    # short var names (noisy)
+    - errcheck
+    - staticcheck
 
-issues:
-  max-issues-per-linter: 0
-  max-same-issues: 0
+formatters:
+  enable:
+    - gofmt
+    - goimports
 ```
 
-## Linter Categories
+Do not copy this into a repository using an older `golangci-lint` version without checking that version's configuration schema. Inspect the installed version, preserve existing policy, and validate a configuration by running its documented config-verification command (where available) followed by:
 
-### Critical (must-have for correctness)
-
-| Linter | What it catches |
-|---|---|
-| `govet` | Suspicious constructs |
-| `staticcheck` | Bugs, dead code, bad practices (SA series) |
-| `errcheck` | Unchecked errors |
-| `ineffassign` | Assignments with no effect |
-| `bodyclose` | HTTP body leaks |
-| `contextcheck` | Context misuse |
-
-### Recommended (style + simplicity)
-
-| Linter | What it enforces |
-|---|---|
-| `gofmt` / `goimports` | Formatting, import grouping |
-| `gosimple` | Simpler constructs (S series) |
-| `revive` | Golint replacement |
-| `gocritic` | Opinionated style checks |
-| `errorlint` | Error wrapping correctness |
-| `mirror` | Mirror operations to stdlib (slices, maps) |
-
-### Go Version–Aware
-
-| Linter | Watches for |
-|---|---|
-| `copyloopvar` | Unnecessary loop var copies (Go 1.22+) |
-| `perfsprint` | `fmt.Sprintf` → `strconv` (Go 1.21+) |
-| `sloglint` | `log/slog` usage (Go 1.21+) |
-
-### Testing
-
-| Linter | What it enforces |
-|---|---|
-| `paralleltest` | Parallel test detection |
-| `testifylint` | Require/assert consistency |
-| `thelper` | `t.Helper()` calls |
-| `fatcontext` | `t.Fatal` in goroutines |
-| `tenv` | `os.Setenv` → `t.Setenv` |
-
-## Linter Coverage by Concern
-
-| Concern | Tool |
-|---------|------|
-| Package naming & documentation | `revive` (package-comments) |
-| Formatting (`gofmt`) | `gofmt` / `goimports` |
-| Variable shadowing | `govet` (-shadow) |
-| Unique interface names | Manual review |
-| Enum size optimization | Manual review |
-| Deterministic initialization | `gochecknoinits` |
-| Minimal variable scope | `gocritic` (paramTypeCombine) |
-| Performance invariants | Manual review |
-| Duplicate code | `dupl` |
-| Zero-value readiness | Manual review |
-
-## CI Integration
-
-```yaml
-# GitHub Actions
-- name: Lint
-  uses: golangci/golangci-lint-action@v6
-  with:
-    version: latest
-    args: --out-format=colored-line-number
-    only-new-issues: true  # comment on PR diffs
+```bash
+golangci-lint run ./...
 ```
 
-## Cross-References
+Pin the linter and CI action versions according to the repository's dependency-update policy; avoid an unreviewed `latest` in reproducible CI.
 
-- For Go style enforced by linters: load `style`
-- For error linting rules: load `error-handling`
-- For test linting rules: load `testing`
-- For modern features that avoid legacy lint warnings: load `modern-features`
+## Add targeted checks
+
+Enable a linter because it catches a failure mode the project has, and configure it with a clear ownership policy.
+
+| Concern | Candidates | When it fits |
+|---|---|---|
+| Error contracts | `errorlint`, `wrapcheck` | APIs with deliberate wrapping and matching rules; tune to avoid forcing wrappers at translation boundaries |
+| Context propagation | `contextcheck`, `noctx` | request-driven code; `noctx` can be noisy for intentionally context-free APIs |
+| HTTP and SQL cleanup | `bodyclose`, `rowserrcheck`, `sqlclosecheck` | repositories using those APIs |
+| Security | `gosec` | security-reviewed services, with documented suppressions for accepted findings |
+| Structured logging | `loggercheck`, `sloglint` | a repository committed to the corresponding logging style |
+| Tests | `thelper`, `paralleltest`, `tenv`, `testifylint` | only for the testing frameworks and parallelization policy actually used |
+| Module policy | `gomoddirectives`, `gomodguard`, `depguard` | controlled dependency or module governance |
+| Generated schemas and metrics | `protogetter`, `promlinter`, `tagliatelle` | repositories that own those artifacts |
+| Complexity or style | `gocritic`, `revive`, `cyclop`, `funlen`, `dupl` | teams that have calibrated thresholds and will maintain exceptions |
+
+`copyloopvar` is useful when the module targets Go 1.22 or later, where redundant loop-variable copies are often unnecessary. It is not a replacement for reviewing closure lifetimes, synchronization, or compatibility with older module language versions.
+
+## Avoid noisy policy by default
+
+Line-length rules, naming restrictions, mandatory comment punctuation, declaration order, function size, magic-number bans, global bans, and blanket interface-return restrictions are style choices. Enable them only after the team agrees on the rule, its exceptions, and how existing code will be migrated.
+
+Do not rely on `govet` as a general shadowing checker: shadow analysis is not part of ordinary default `go vet` behavior. Likewise, `fatcontext` addresses context growth in loops; it does not detect `t.Fatal` in a worker goroutine. Review goroutine test failures with the testing guidance and synchronization-aware tooling.
+
+## CI rollout
+
+Run the same pinned linter version locally and in CI. During adoption, either fix findings or use narrowly scoped, explained suppressions; do not silently suppress an entire linter to make the first run pass. Gate only the directories and build tags CI actually tests, and include generated-code handling explicitly in the configuration.

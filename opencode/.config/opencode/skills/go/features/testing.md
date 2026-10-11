@@ -1,31 +1,8 @@
 # Go Testing
 
-## Table-Driven Tests
+## Table-driven tests and subtests
 
-The standard Go testing pattern. Name the table `tests`, each case `tt`. Prefix inputs/outputs with `give`/`want`:
-
-```go
-func TestJoin(t *testing.T) {
-    tests := []struct {
-        give []string
-        sep  string
-        want string
-    }{
-        {give: []string{"a", "b"}, sep: ",", want: "a,b"},
-        {give: []string{}, sep: ",", want: ""},
-    }
-    for _, tt := range tests {
-        got := strings.Join(tt.give, tt.sep)
-        if got != tt.want {
-            t.Errorf("Join(%v, %q) = %q, want %q", tt.give, tt.sep, got, tt.want)
-        }
-    }
-}
-```
-
-### Subtests
-
-Use `t.Run` for subtests, especially with table-driven tests:
+Use table-driven tests when cases exercise the same behavior through different inputs. Name fields for cases with enough values that positional literals obscure intent. Use subtests when independent case names, filtering, setup, or failure isolation help the reader.
 
 ```go
 func TestJoin(t *testing.T) {
@@ -36,83 +13,46 @@ func TestJoin(t *testing.T) {
         want string
     }{
         {name: "two elements", give: []string{"a", "b"}, sep: ",", want: "a,b"},
-        {name: "empty slice", give: []string{}, sep: ",", want: ""},
+        {name: "empty slice", give: nil, sep: ",", want: ""},
     }
+
     for _, tt := range tests {
         t.Run(tt.name, func(t *testing.T) {
             got := strings.Join(tt.give, tt.sep)
             if got != tt.want {
-                t.Errorf("got %q, want %q", got, tt.want)
+                t.Errorf("Join(%v, %q) = %q, want %q", tt.give, tt.sep, got, tt.want)
             }
         })
     }
 }
 ```
 
-### Filtering by Subtest
+Run a named subtest with `go test -run 'TestJoin/two_elements'`.
 
-```bash
-go test -run TestJoin/two_elements
-go test -run TestJoin/empty
-```
+## Helpers and failure control
 
-## Test Helpers vs Assertion Helpers
+Call `t.Helper()` in helpers so failures point to the caller. Helpers are appropriate for repeated setup, assertions with domain-specific diagnostics, or test fixtures; keep one-off assertions local when that is clearer.
 
-- **Test helpers**: Setup/cleanup. Failures are environment issues. Call `t.Helper()`.
-- **Assertion helpers**: NOT idiomatic in Go. Keep assertions in the `Test` function.
+Use `t.Fatal` or `t.FailNow` only from the test goroutine. They stop that goroutine with `runtime.Goexit`, not work launched by it. A worker should return its result through synchronization, then the test goroutine decides how to fail.
 
 ```go
-// Good — test helper, uses t.Fatal for environment failures
-func mustAddGameAssets(t *testing.T, dir string) {
-    t.Helper()
-    if err := os.WriteFile(path.Join(dir, "pak0.pak"), pak0, 0644); err != nil {
-        t.Fatalf("Setup failed: could not write pak0 asset: %v", err)
+func TestEngine(t *testing.T) {
+    errCh := make(chan error, 1)
+    go func() {
+        errCh <- engine.Vroom()
+    }()
+
+    if err := <-errCh; err != nil {
+        t.Fatalf("Vroom: %v", err)
     }
 }
-
-// Bad — assertion helper pattern, not idiomatic
-func assertEqual(t *testing.T, got, want interface{}) {
-    t.Helper()
-    if got != want { t.Errorf("got %v, want %v", got, want) }
-}
 ```
 
-### `t.Error` vs `t.Fatal`
+`t.Error` may be called from another goroutine, but arrange for the test to wait for that goroutine. Prefer sending errors back when it makes ownership and completion explicit.
 
-| Scenario | Use |
-|---|---|
-| Test setup failure (can't proceed) | `t.Fatal` |
-| Single table entry (no subtests) | `t.Error` + `continue` |
-| Single subtest (inside `t.Run`) | `t.Fatal` (ends only the subtest) |
+## Scope setup and cleanup
 
-### `t.Fatal` from Goroutines
-
-Only the test goroutine can call `t.Fatal`. Use `t.Error` from goroutines:
-
-```go
-go func() {
-    if err := engine.Vroom(); err != nil {
-        t.Errorf("No vroom left on engine: %v", err) // NOT t.Fatalf
-        return
-    }
-}()
-```
-
-## Keep Setup Scoped
-
-Call setup functions explicitly in tests that need them, not globally:
-
-```go
-func TestParseData(t *testing.T) {
-    data := mustLoadDataset(t) // Only this test pays the cost
-}
-
-func TestFast(t *testing.T) {
-    // No dataset needed
-}
-```
-
-For expensive shared setup, use `sync.Once`:
+Keep setup as narrow as practical: tests that do not need an expensive fixture should not pay for it. For shared immutable setup, `sync.Once` can avoid repeated work; record and check initialization errors on every caller.
 
 ```go
 var dataset struct {
@@ -121,113 +61,49 @@ var dataset struct {
     err  error
 }
 
-func mustLoadDataset(t *testing.T) []byte {
+func loadDataset(t *testing.T) []byte {
     t.Helper()
     dataset.once.Do(func() {
-        dataset.data, dataset.err = os.ReadFile("path/to/dataset")
+        dataset.data, dataset.err = os.ReadFile("testdata/dataset")
     })
+    if dataset.err != nil {
+        t.Fatalf("read dataset: %v", dataset.err)
+    }
     return dataset.data
 }
 ```
 
-## Use Real Transports
+Use `t.Cleanup` for cleanup associated with the current test. Avoid package-global mutable fixtures unless isolation and reset behavior are explicit.
 
-When testing HTTP/RPC integrations, use real clients connected to test servers — don't hand-implement clients.
+## Contexts
 
-## Use `t.Context()` (Go 1.24+)
-
-Always use `t.Context()` for test contexts:
+`testing.T.Context` is available in Go 1.24 and later. It is useful for work that should end with the test, but derive a context with its own cancellation, timeout, or lifetime when that is the behavior under test.
 
 ```go
-// Before
-func TestFoo(t *testing.T) {
-    ctx, cancel := context.WithCancel(context.Background())
-    defer cancel()
-}
-
-// After
-func TestFoo(t *testing.T) {
-    ctx := t.Context()
+func TestWorker(t *testing.T) {
+    ctx := t.Context() // Go 1.24+
+    _ = ctx
 }
 ```
 
-## Field Names in Test Structs
+For earlier Go versions, start with an appropriate context and ensure the test cancels contexts it creates.
 
-Specify field names in table-driven tests, especially with many fields:
+## Selecting test boundaries
 
-```go
-tests := []struct {
-    slice     []string
-    separator string
-    skipEmpty bool
-    want      string
-}{
-    {
-        slice:     []string{"a", "b", ""},
-        separator: ",",
-        want:      "a,b,",
-    },
-}
-```
+Choose the narrowest test that proves the behavior:
 
-## Test Double Packages
-
-Name test double packages by appending `test` to the production package name:
-
-```go
-// Package creditcard -> creditcardtest
-package creditcardtest
-
-type Stub struct{}
-func (Stub) Charge(*creditcard.Card, money.Money) error { return nil }
-```
-
-Prefix double variable names for clarity:
-
-```go
-var spyCC creditcardtest.Spy
-proc := &Processor{CC: spyCC}
-```
-
-## Functional Test Infrastructure
-
-For black-box HTTP functional tests with Docker Compose + pytest, use a 3-layer architecture:
-
-```
-Layer 1: Infrastructure (Docker Compose)
-    Data deps → SUT → Test runner
-
-Layer 2: Test Code (Python pytest)
-    conftest.py → helpers.py → test_*.py
-
-Layer 3: Orchestration (Makefile)
-    make functional-tests
-```
-
-### Directory Structure
-
-```
-tests/
-  functional/
-    conftest.py          # Session-scoped fixtures (URLs, payloads)
-    helpers.py           # HTTP wrappers, validators
-    requirements.txt     # pytest + requests
-    test_core.py         # Happy path, edge cases, errors
-  docker-compose.test.yml
-```
-
-### Key Patterns
-
-| Pattern | Implementation |
+| Boundary | Typical tools |
 |---|---|
-| **Fixtures** | Session-scoped, env vars with defaults |
-| **Helpers** | Single `make_request()` entry point; typed wrappers |
-| **Infra** | `service_healthy` condition prevents races |
-| **Cleanup** | `down --volumes --remove-orphans` always runs |
-| **CI** | Only `docker` + `docker compose` required |
+| Pure logic | direct unit tests and table cases |
+| Owned dependency behavior | fakes or stubs implementing a consumer-owned interface |
+| HTTP handler or client behavior | `httptest` server/recorder and real request/response encoding |
+| Database, broker, or service integration | the real dependency when its semantics are what must be proven |
+| End-to-end behavior | the repository's deployment and orchestration tooling |
 
-## Cross-References
+Do not hand-implement a protocol client merely to test it when `httptest` or a real test server exercises the intended boundary more faithfully. Conversely, use fakes when an external system is not part of the behavior under test.
 
-- For error handling patterns in tests: load `error-handling`
-- For modern Go testing features (Go 1.24+): load `modern-features`
-- For linting test code: load `linter-guide`
+## Test doubles
+
+Name and package test doubles according to local conventions. A separate `foo_test` helper package can make a reusable fake clear, but keeping a small fake next to its tests is often simpler. Model the minimum behavior the consumer relies on and expose observations needed for assertions.
+
+Use `t.Setenv`, `t.TempDir`, and `t.Cleanup` where supported instead of manually restoring process-scoped test state.
