@@ -5,15 +5,15 @@
 ## Rules
 
 1. Use ConfigMaps for non-sensitive configuration; `data` holds UTF-8 strings and `binaryData` holds base64. Why: ConfigMaps are the plaintext config object.
-2. Keep ConfigMaps and Secrets under 1 MiB each; use a volume or external store for larger data. Why: both are stored in etcd and capped at 1 MiB.
-3. Keep ConfigMaps/Secrets in the same namespace as the consuming Pod; static Pods cannot reference ConfigMaps or Secrets. Why: cross-namespace references are not allowed (and static Pod refs become invalid in v1.37).
+2. Keep ConfigMaps and Secrets under 1 MiB each; mounting one as a volume does not bypass that API-object limit. Use a different volume source, PV/CSI driver, or external store for larger data. Why: both objects are stored in etcd and capped at 1 MiB.
+3. Keep ConfigMaps/Secrets in the same namespace as the consuming Pod; static Pods cannot consume ConfigMaps or Secrets through API references. Why: cross-namespace references are not allowed, and static Pod configuration must use node-local inputs instead.
 4. Choose the Secret type deliberately: `Opaque` (default), `kubernetes.io/tls`, `kubernetes.io/dockercfg`, `kubernetes.io/dockerconfigjson`, `kubernetes.io/basic-auth`, `kubernetes.io/ssh-auth`, `bootstrap.kubernetes.io/token`, `kubernetes.io/service-account-token`. Why: the API server validates type-specific fields.
 5. Write Secret `data` as base64; use `stringData` for plaintext only when not using server-side apply. Why: `stringData` interacts poorly with SSA.
 6. Do not expect secrecy from base64: Secrets are stored unencrypted in etcd by default. Why: base64 is encoding, not encryption.
 7. Enable encryption at rest, least-privilege RBAC on Secrets, per-container access limits, and consider external stores (Secrets Store CSI). Why: etcd compromise would otherwise leak every Secret.
 8. Consume ConfigMaps four ways: container command/args, env vars, files in a volume, or direct API reads (which can watch updates). Why: each fits a different consumption pattern.
 9. Use `envFrom` to pull all keys (ConfigMap or Secret), `valueFrom.configMapKeyRef`/`secretKeyRef` for a single key, and `optional: true` when a missing key must not block the Pod. Why: a non-optional missing ref prevents Pod start.
-10. Beware `envFrom` key collisions: colliding keys are silently dropped instead of failing the Pod. Why: the merge rules skip conflicting keys by design.
+10. Avoid `envFrom` key collisions: later `envFrom` sources override earlier ones, and explicit `env` entries override `envFrom`. Use explicit `env` wiring when a critical value needs obvious precedence; invalid environment-variable names are skipped and reported by an Event.
 11. Mark ConfigMaps/Secrets `immutable: true` (v1.19+) when values are fixed; immutable objects cannot be reverted, and the cluster uses less API-server watch load for them. Why: immutability prevents accidental mutation and trims watch traffic.
 12. Changing an immutable ConfigMap/Secret requires creating a new object with a new name and updating references. Why: immutability is enforced at write time.
 13. Generate ConfigMaps/Secrets in Kustomize from `files:`, `envs:`, or `literals:` with content-hash name suffixes; use `generatorOptions.disableNameSuffixHash: true` to pin names. Why: the hash propagates data changes to dependent workloads.
@@ -115,15 +115,14 @@ ConfigMap vs Secret:
 
 - `immutable` field for ConfigMaps/Secrets available since v1.19 (docs:concepts/configuration/configmap.md).
 - v1.36 GA: "CSI driver opt-in for service account tokens via secrets field" (KEP-5538) and external ServiceAccount token signing (KEP-740) are stable; relevant for advanced secret patterns, not day-to-day authoring (blog:_posts/2026/kubernetes-v1-36-release/index.md).
-- **FUTURE (v1.37)**: Static Pods referencing Secrets/ConfigMaps becomes invalid (`configMapRef`/`secretRef` in static pod manifests rejected) (blog:_posts/2026/kubernetes-v1-37-sneak-peek.md).
 
 ## Pitfalls
 
 - `stringData` + server-side apply conflicts: prefer `data` for SSA-managed manifests (docs:concepts/configuration/secret.md).
 - Secrets are not encrypted at rest by default — do not store credentials in plaintext manifests or expect secrecy from base64 (docs:concepts/configuration/secret.md).
 - Missing non-optional ConfigMap/Secret reference prevents Pod start; kubelet retries and emits Events while the object is unavailable (docs:tasks/configure-pod-container/configure-pod-configmap.md; docs:concepts/configuration/secret.md).
-- ConfigMap/Secret data >1 MiB is rejected — use a volume or external store for large config (docs:concepts/configuration/configmap.md).
-- `envFrom` key collisions silently drop conflicting keys instead of failing the Pod (docs:tasks/configure-pod-container/configure-pod-configmap.md).
+- ConfigMap/Secret data >1 MiB is rejected; mounting the same object as a volume does not bypass the limit, so use another volume source or an external store for large config (docs:concepts/configuration/configmap.md).
+- `envFrom` sources merge in order: later sources override earlier ones, and explicit `env` entries override `envFrom`; invalid names are skipped with an Event (docs:tasks/configure-pod-container/configure-pod-configmap.md).
 - Changing an immutable ConfigMap/Secret requires creating a new object with a new name and updating references (docs:concepts/configuration/configmap.md).
 
 ## Cross-References

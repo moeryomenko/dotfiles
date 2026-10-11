@@ -16,11 +16,11 @@
 10. Use `trafficDistribution` `PreferSameZone` or `PreferSameNode`; `PreferClose` is deprecated (v1.34) and an alias of `PreferSameZone`. Why: trafficDistribution expresses locality preference declaratively.
 11. Ingress (networking.k8s.io/v1) requires an Ingress controller; set `pathType` per path (`ImplementationSpecific`, `Exact`, `Prefix`), prefer a default IngressClass, and `.spec.defaultBackend` is required when no rules exist. Why: missing `pathType` fails validation.
 12. Prefer Gateway API for new greenfield work: four stable kinds (GatewayClass, Gateway, HTTPRoute, GRPCRoute), role-oriented, and the documented successor to Ingress; install its CRDs from the Gateway API project (third-party). Why: Gateway API adds header-based matching and traffic weighting that Ingress lacks.
-13. Cluster DNS: `cluster.local` by default; Service A records are `my-svc.my-ns.svc.cluster.local`; headless Services get per-Pod A records; SRV records are `_port-name._port-protocol.my-svc.my-ns.svc.cluster.local`. Why: DNS names are the primary in-cluster discovery mechanism.
-14. Use Pod `hostname`/`subdomain` fields to control Pod FQDN (`foo.bar.my-ns.svc.cluster.local`). Why: per-Pod hostnames need the subdomain to join the Service DNS namespace.
+13. Cluster DNS commonly uses `cluster.local`; Service A records are typically `my-svc.my-ns.svc.cluster.local`, and SRV records are `_port-name._port-protocol.my-svc.my-ns.svc.cluster.local`. A headless Service can publish per-Pod records, subject to endpoint readiness and `publishNotReadyAddresses`. Why: DNS names are the primary in-cluster discovery mechanism.
+14. Use Pod `hostname`/`subdomain` with a matching headless Service to request a per-Pod FQDN such as `foo.bar.my-ns.svc.cluster.local`; `setHostnameAsFQDN` changes the hostname visible in the Pod, not DNS-record creation. Why: hostname/subdomain alone do not create a DNS record.
 15. NetworkPolicy (networking.k8s.io/v1) isolation is opt-in per direction (`policyTypes` defaults to `Ingress`, plus `Egress` if egress rules exist) and policies are additive (union). Why: no policy means allow-all; policies only add restrictions.
 16. An empty `podSelector` selects all Pods in the namespace; selectors combine `podSelector`, `namespaceSelector`, and `ipBlock`. Why: empty selectors are the standard default-deny building block.
-17. A default-deny-egress policy also blocks DNS — add an egress rule for the cluster DNS Service (kube-system). Why: DNS traffic is egress like any other.
+17. A default-deny-egress policy also blocks DNS — allow TCP and UDP port 53 to the actual DNS workload namespace and Pod labels discovered in the target cluster. NetworkPolicy cannot select a Service by name; validate lookup behavior after applying because CNI/DNAT handling varies. Why: DNS traffic is egress like any other.
 18. `endPort` range targeting is stable since v1.25 but requires a CNI that implements it; unsupported plugins apply only the single `port`. Why: enforcement depends on the CNI.
 19. NetworkPolicy semantics: entries inside one `from` item are ANDed; separate `- from:` list items are ORed. Why: YAML indentation mistakes silently change policy meaning.
 20. `hostNetwork` Pods' policy behavior is implementation-defined, and namespaces can be targeted via the immutable `kubernetes.io/metadata.name` label. Why: the label makes namespace identity stable for selectors.
@@ -91,7 +91,7 @@ spec:
               servicePort: 80
 ```
 
-Good (default-deny egress with DNS allowed):
+Good (default-deny egress with DNS allowed; replace selectors with the target cluster's DNS workload):
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -105,10 +105,15 @@ spec:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: kube-system
+              kubernetes.io/metadata.name: dns-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: dns
       ports:
         - port: 53
           protocol: UDP
+        - port: 53
+          protocol: TCP
 ```
 Bad:
 ```yaml
@@ -153,7 +158,7 @@ Service type choice:
 
 - Missing `pathType` fails validation; a wrong `pathType` (e.g. `Prefix` vs `Exact`) silently changes routing semantics (docs:concepts/services-networking/ingress.md).
 - NetworkPolicy `from` array AND/OR semantics are indentation-sensitive; verify with `kubectl describe` (docs:concepts/services-networking/network-policies.md).
-- Deny-all egress blocks CoreDNS — workloads lose name resolution unless DNS egress is allowed (docs:concepts/services-networking/network-policies.md).
+- Deny-all egress blocks DNS; allow TCP and UDP port 53 to the discovered DNS workload labels/namespace, then verify lookups because CNI and Service translation behavior varies (docs:concepts/services-networking/network-policies.md).
 - NetworkPolicy `endPort` requires a CNI that supports it; unsupported plugins apply only the single `port` (docs:concepts/services-networking/network-policies.md).
 - `kubectl port-forward` is TCP-only (docs:tasks/access-application-cluster/port-forward-access-application-cluster.md).
 - A selector-less Service never gets EndpointSlices — traffic to it black-holes until you create them manually (docs:concepts/services-networking/service.md).

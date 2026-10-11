@@ -16,10 +16,10 @@
 10. Never let two controllers' selectors overlap; Deployment/StatefulSet selectors are immutable after creation. Why: overlapping selectors make controllers fight over the same Pods.
 11. Prefer declarative object management: `kubectl apply -f` over `kubectl create -f` or imperative `kubectl create` commands. Why: apply records desired state and last-applied config for merge behavior.
 12. Do not hand-scale a manifest-managed Deployment and then re-apply: `kubectl apply` overwrites the manual scale with the manifest's `replicas` value. Why: the manifest is the source of truth for apply.
-13. Use `kubectl apply --server-side` for concurrent writers, and pass `--field-manager` to avoid field-conflict errors. Why: server-side apply reports ownership of every managed field.
+13. Use `kubectl apply --server-side` when multiple declarative actors manage the same object, and name each actor with `--field-manager`. Why: field managers identify ownership; conflicting writes still require explicit resolution or a deliberate ownership transfer.
 14. Kustomize: declare resources and generators in `kustomization.yaml`; generate ConfigMaps/Secrets via `configMapGenerator`/`secretGenerator`; set cross-cutting fields (`namespace`, `namePrefix`, `nameSuffix`, `labels`, `commonAnnotations`); patch via `patches` (strategic merge) or `patches` + `target` (JSON6902); override images via `images`; inject values via `replacements`. Why: overlays let one base serve multiple environments without a templating language.
 15. Keep `generatorOptions.disableNameSuffixHash: true` only when you want stable ConfigMap/Secret names; otherwise the content-hash suffix propagates data changes automatically. Why: the hash suffix forces dependent workloads to restart when generated data changes.
-16. Set `includeSelectors: true` when a `labels:` block in kustomization must also update selectors; without it, selectors and template labels drift. Why: the docs' cross-cutting example sets this flag explicitly to keep the two in sync.
+16. Set `includeSelectors: true` only when the added label intentionally participates in selectors, normally while creating a new workload. Why: Deployment and StatefulSet selectors are immutable, and template-only labels need not belong to a selector.
 17. `kubectl convert` is a plugin, not a built-in kubectl command, as of v1.36. Why: it was removed from the kubectl binary; see `features/api-migrations.md`.
 18. `.kuberc` (user preferences separate from kubeconfig) is beta and enabled by default; disable with `KUBECTL_KUBERC=false` or `KUBERC=off`. Why: the format is `kubectl.config.k8s.io/v1beta1` at `$HOME/.kube/kuberc`.
 
@@ -38,7 +38,7 @@ Bad:
 metadata:
   labels:
     kubernetes.io/name: myapp   # reserved prefix; not yours to use
-    1bad_key: value             # invalid: starts with digit, wrong charset
+    _bad: value                  # invalid: label name segments must start with alphanumeric
 ```
 
 Good (equality selector on a Deployment):
@@ -56,7 +56,7 @@ selector:
       values: [frontend, backend]
 ```
 
-Good (Kustomize overlay that stays in sync):
+Good (new workload with an intentionally selector-participating label):
 ```yaml
 # overlay/kustomization.yaml
 resources:
@@ -66,14 +66,15 @@ labels:
       app.kubernetes.io/part-of: myapp
     includeSelectors: true
 ```
-Bad:
+Bad (adding that selector label to an existing Deployment or StatefulSet):
 ```yaml
 # overlay/kustomization.yaml
 resources:
   - ../base
 labels:
   - pairs:
-      app.kubernetes.io/part-of: myapp   # no includeSelectors -> selectors not updated
+      app.kubernetes.io/part-of: myapp
+    includeSelectors: true   # selector mutation is rejected; recreate only if intentional
 ```
 
 Good (memory units):
@@ -123,7 +124,7 @@ Object-management technique:
 - `kubectl apply` after a manual `kubectl scale` reverts the replica count to the manifest value (docs:concepts/workloads/controllers/deployment.md).
 - YAML memory units are case-sensitive: `400m` memory means 0.4 bytes, not 400 MiB (docs:concepts/configuration/manage-resources-containers.md).
 - Missing `pathType` on Ingress paths fails validation; see `features/services-networking.md` (docs:concepts/services-networking/ingress.md).
-- Kustomize `labels:` without `includeSelectors: true` does not update selectors, so selectors and template labels drift (docs:tasks/manage-kubernetes-objects/kustomization.md).
+- Adding `includeSelectors: true` to an existing Deployment or StatefulSet can attempt an immutable selector change; use it only for labels that must select a newly created workload (docs:tasks/manage-kubernetes-objects/kustomization.md).
 - Annotation keys/values must be strings (no numeric/boolean/list types) (docs:concepts/overview/working-with-objects/annotations.md).
 
 ## Cross-References

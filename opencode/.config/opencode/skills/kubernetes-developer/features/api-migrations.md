@@ -79,7 +79,7 @@ Source for all rows in this table: `reference/using-api/deprecation-guide.md` (s
 
 ### gitRepo volume migration in Pod specs
 
-- Replace `gitRepo` volumes with `initContainers` + `emptyDir`: the init container clones the repo into the `emptyDir`, and app containers mount it.
+- Replace `gitRepo` volumes with `initContainers` + `emptyDir`: pin the Git image by digest and fetch an immutable, independently verified full commit ID or signed tag rather than a default branch. Ensure the remote retains that revision; provide credentials through a dedicated mount or workload identity, never a Git URL.
 
 Good:
 ```yaml
@@ -88,8 +88,15 @@ volumes:
     emptyDir: {}
 initContainers:
   - name: git-clone
-    image: alpine/git
-    command: ["git", "clone", "https://example.com/repo.git", "/repo"]
+    image: alpine/git@sha256:<pinned-image-digest>
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        git init /repo
+        git -C /repo remote add origin https://example.com/repo.git
+        git -C /repo fetch --depth=1 origin <full-verified-commit>
+        git -C /repo checkout --detach FETCH_HEAD
     volumeMounts:
       - name: repo
         mountPath: /repo
@@ -124,7 +131,7 @@ volumes:
 
 - The built-in `kubectl convert` subcommand was removed from kubectl and moved to a plugin (kubectl issue #725) (docs:reference/using-api/deprecation-guide.md).
 - Historical API-version removals that still appear in migrated manifests: see the shared table above (e.g. `extensions/v1beta1`/`apps/v1beta1|beta2` workloads removed v1.16; `batch/v1beta1` CronJob and `policy/v1beta1` PDB removed v1.25; `autoscaling/v2beta2` removed v1.26; `flowcontrol.apiserver.k8s.io/v1beta3` removed v1.32) (docs:reference/using-api/deprecation-guide.md).
-- **FUTURE (v1.37)**: `kubectl run --filename/-f` planned deprecation; static Pods' API references (Secrets/ConfigMaps) become invalid; kube-proxy `ipvs` mode deprecation announced (removal expected v1.43) (blog:_posts/2026/kubernetes-v1-37-sneak-peek.md).
+- **FUTURE (v1.37)**: `kubectl run --filename/-f` planned deprecation; kube-proxy `ipvs` mode deprecation announced (removal expected v1.43) (blog:_posts/2026/kubernetes-v1-37-sneak-peek.md).
 
 ## Pitfalls
 
