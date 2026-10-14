@@ -44,6 +44,22 @@
         "--mcp"
       ],
       "enabled": true
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "serena-agent",
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context",
+        "agent",
+        "--open-web-dashboard",
+        "False"
+      ],
+      "enabled": true
     }
   },
   "lsp": {
@@ -51,8 +67,14 @@
       "disabled": true
     },
     "ty": {
-      "command": ["ty", "server"],
-      "extensions": [".py", ".pyi"]
+      "command": [
+        "ty",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
     }
   },
   "formatter": true,
