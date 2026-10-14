@@ -19,3 +19,6 @@
 [submodule "tmux/.tmux/plugins/tmux-nerd-font-window-name"]
 	path = tmux/.tmux/plugins/tmux-nerd-font-window-name
 	url = git@github.com:joshmedeski/tmux-nerd-font-window-name.git
+[submodule "tmux/.tmux/plugins/tmux-assistant-resurrect"]
+	path = tmux/.tmux/plugins/tmux-assistant-resurrect
+	url = https://github.com/timvw/tmux-assistant-resurrect.git

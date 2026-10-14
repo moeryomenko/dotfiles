@@ -2,6 +2,8 @@ config:
   show-name: false
 
 icons:
+  go: ""
+  gotestsum: ""
   mpv: ""
   cmus: ""
   nvim: ""
@@ -11,3 +13,6 @@ icons:
   yazi: ""
   elio: ""
   tuicr: ""
+  claude: ""
+  bluetui: ""
+  make: ""

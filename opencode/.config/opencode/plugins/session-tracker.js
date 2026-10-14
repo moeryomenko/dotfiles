@@ -1,0 +1,1 @@
+/Users/eryoma/.tmux/plugins/tmux-assistant-resurrect/hooks/opencode-session-track.js
