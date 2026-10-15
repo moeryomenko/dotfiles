@@ -112,3 +112,4 @@ image/vnd.djvu+multipage=org.pwmt.zathura-djvu.desktop;
 
 # Claude Code cli url handler
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+inode/directory=io.github.lgse.Strata.desktop
