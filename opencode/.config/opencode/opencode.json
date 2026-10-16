@@ -52,14 +52,6 @@
     }
   },
   "formatter": true,
-  "agents": {
-    "plan": {
-      "model": "anthropic/claude-opus-5"
-    },
-    "build": {
-      "model": "anthropic/claude-sonnet-5"
-    }
-  },
   "providers": {
     "anthropic": {
       "settings": {
