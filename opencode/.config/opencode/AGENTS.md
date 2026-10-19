@@ -76,6 +76,21 @@ All commits MUST follow Scoped Commits format (https://scopedcommits.com/):
 - **Imperative mood**: "add pagination" not "added pagination" or "adding pagination".
 - **Scope must be a real subsystem**: Use the repo directory name. Use `treewide` for cross-cutting changes.
 - **Body explains WHY**: See commiter agent for full body writing rules.
+- **Mandatory trailers**: Every commit MUST contain `Assisted-By: LLM` and a populated `Signed-off-by: Name <email>` trailer.
+- **Sign off with Git**: Create every commit with `git commit --signoff` and include `Assisted-By: LLM` in the commit message. Git MUST generate the sign-off from the committer's configured identity; never leave it empty or invent an identity.
+
+Example command:
+
+```bash
+git commit --signoff -m "<scope>: <description>" -m "<why>" -m "Assisted-By: LLM"
+```
+
+Required trailers in the resulting commit message:
+
+```text
+Assisted-By: LLM
+Signed-off-by: Name <email>
+```
 
 ## 9. Mandatory Skill Activation Before Work (HIGH)
 
