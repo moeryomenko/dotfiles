@@ -1,0 +1,545 @@
+#!/usr/bin/env bash
+#
+# tmux-workspaces — persistent project workspaces for tmux-bro and workmux.
+#
+# tmux-bro creates a layout for a project, but it does not remember the layout
+# you changed afterwards, and it cannot restore a session you closed. This
+# script adds the missing lifecycle:
+#
+#   pick            choose a live session, a saved workspace, or a new project
+#   save            snapshot every session in the current project group
+#   close [name]    save, return to the previous session, then close
+#   open <target>   restore a project group or a single saved session
+#   forget <target> delete saved archives for a project or session
+#   list            list live and saved workspaces
+#
+# Snapshots are produced by tmux-resurrect and tmux-assistant-resurrect. Each
+# session is archived separately so a project can be restored without bringing
+# back unrelated sessions, and so deliberately closed sessions survive later
+# full-server saves.
+#
+# Environment overrides (used by the verification harness):
+#   TMUX_WORKSPACES_STATE   state directory
+#   TMUX_WORKSPACES_PLUGINS tmux-resurrect scripts directory
+#   TMUX_WORKSPACES_FZF     fzf binary (default: fzf)
+
+set -Eeuo pipefail
+shopt -s inherit_errexit
+IFS=$'\n\t'
+
+readonly PROG="${0##*/}"
+readonly STATE="${TMUX_WORKSPACES_STATE:-${XDG_STATE_HOME:-$HOME/.local/state}/tmux-workspaces}"
+readonly WORKSPACES="$STATE/workspaces"
+readonly LOCK_FILE="$STATE/lock"
+
+log() { printf '[%s] %s\n' "$PROG" "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+
+usage() {
+  cat <<'EOF'
+Usage: tmux-workspaces <command> [args]
+
+  pick                  Select a live session, saved workspace, or new project
+  save [session]        Snapshot the project group containing session (default: current)
+  close [session]       Save, return to the previous session, then close
+  open <target>         Restore: project:/abs/path or session:name
+  forget <target>       Remove archives for project:/abs/path or session:name
+  list                  List live sessions and saved workspaces
+EOF
+}
+
+require() { command -v "$1" >/dev/null 2>&1 || die "missing dependency: $1"; }
+
+# --- tmux and filesystem helpers ------------------------------------------------
+
+
+session_exists() {
+  [[ -n "${1:-}" ]] || return 1
+  tmux has-session -t "=$1" 2>/dev/null
+}
+
+current_session() {
+  if [[ -n "${TMUX_PANE:-}" ]] && tmux display-message -p -t "$TMUX_PANE" '#{session_name}' 2>/dev/null; then
+    return 0
+  fi
+  tmux display-message -p '#{session_name}' 2>/dev/null
+}
+
+assert_default_resurrect_dir() {
+  if [[ -n "$(tmux show-option -gqv @resurrect-dir 2>/dev/null || true)" ]]; then
+    die "a custom @resurrect-dir is not supported; workspaces need tmux-resurrect's default directory"
+  fi
+}
+
+plugin_scripts_dir() {
+  if [[ -n "${TMUX_WORKSPACES_PLUGINS:-}" ]]; then
+    printf '%s\n' "$TMUX_WORKSPACES_PLUGINS"
+    return 0
+  fi
+  local configured fallback attempt=0
+  # A freshly started or just-restarted server may not have the plugin options
+  # yet, so retry briefly before falling back to the default install path.
+  while ((attempt < 5)); do
+    configured=$(tmux show-option -gqv @resurrect-save-script-path 2>/dev/null || true)
+    if [[ -n "$configured" ]]; then
+      dirname "$configured"
+      return 0
+    fi
+    attempt=$((attempt + 1))
+    sleep 0.2
+  done
+  fallback="$HOME/.tmux/plugins/tmux-resurrect/scripts"
+  if [[ -x "$fallback/save.sh" ]]; then
+    printf '%s\n' "$fallback"
+    return 0
+  fi
+  die "tmux-resurrect is not loaded"
+}
+
+require_tmux() { require tmux; }
+
+# --- workspace identity ---------------------------------------------------------
+
+safe_slug() {
+  # Readable prefix plus a short hash; session names may contain icons, spaces
+  # and path separators, so they are not usable as directory names.
+  local value="$1" prefix
+  prefix=$(printf '%s' "$value" | tr -c 'A-Za-z0-9._-' '_' | cut -c1-40)
+  printf '%s-%s\n' "${prefix:-x}" "$(printf '%s' "$value" | sha256sum | cut -c1-10)"
+}
+
+session_primary_path() {
+  local session="$1" path
+  path=$(tmux list-panes -s -t "=$session" -F '#{pane_current_path}' 2>/dev/null | head -n 1 || true)
+  printf '%s\n' "$path"
+}
+
+session_paths() {
+  local session="$1"
+  tmux list-panes -s -t "=$session" -F '#{pane_current_path}' 2>/dev/null || true
+}
+
+projects_root() {
+  local config="$HOME/.config/tmux-bro.yaml" root=""
+  if [[ -r "$config" ]]; then
+    root=$(sed -n 's/^projects_dir:[[:space:]]*"\{0,1\}\([^"]*\)"\{0,1\}[[:space:]]*$/\1/p' "$config" | head -n 1)
+  fi
+  printf '%s\n' "${root:-$HOME/workspace}"
+}
+
+project_for_session() {
+  local session="$1" path root
+  path=$(session_primary_path "$session")
+  [[ -n "$path" ]] || return 1
+  case "$path" in
+    */.worktrees/*) printf '%s\n' "${path%%/.worktrees/*}"; return 0 ;;
+  esac
+  # A tmux-bro session is named after its project directory. Prefer that over
+  # the first pane's path, which may point at a subdirectory of the project.
+  root=$(projects_root)
+  if [[ -d "$root/$session" ]]; then
+    printf '%s\n' "$root/$session"
+  else
+    printf '%s\n' "$path"
+  fi
+}
+
+workspace_dir_for_project() {
+  printf '%s/%s\n' "$WORKSPACES" "$(safe_slug "$1")"
+}
+
+# Sessions belonging to a project: the tmux-bro session named after the project
+# plus every live session with a pane inside <project>/.worktrees/.
+group_sessions() {
+  local project="$1" name="$2" session path
+  while IFS= read -r session; do
+    [[ -n "$session" ]] || continue
+    if [[ "$session" == "$name" ]]; then
+      printf '%s\n' "$session"
+      continue
+    fi
+    while IFS= read -r path; do
+      [[ -n "$path" ]] || continue
+      case "$path" in
+        "$project"/.worktrees/*) printf '%s\n' "$session"; break ;;
+      esac
+    done < <(session_paths "$session")
+  done < <(tmux list-sessions -F '#{session_name}' 2>/dev/null || true)
+}
+
+session_dir() {
+  local ws_dir="$1" session="$2"
+  printf '%s/sessions/%s\n' "$ws_dir" "$(safe_slug "$session")"
+}
+
+meta_file() { printf '%s/meta.json\n' "$1"; }
+
+# --- locking and atomic writes --------------------------------------------------
+
+with_lock() {
+  mkdir -p "$STATE"
+  exec 9>"$LOCK_FILE"
+  flock 9
+  "$@"
+}
+
+atomic_write() {
+  local target="$1" tmp
+  tmp=$(mktemp "$(dirname "$target")/.tmp.XXXXXX")
+  cat >"$tmp"
+  chmod 600 "$tmp"
+  mv -f -- "$tmp" "$target"
+}
+
+# --- snapshot and archive -------------------------------------------------------
+
+# Snapshot into a private XDG directory. This keeps per-workspace saves out of
+# tmux-resurrect's global history and avoids racing Continuum's periodic save
+# over the same `last` symlink. Prints the resurrect directory on success.
+global_save() {
+  local scripts tmp
+  scripts=$(plugin_scripts_dir)
+  [[ -x "$scripts/save.sh" ]] || die "tmux-resurrect save.sh not found in $scripts"
+  assert_default_resurrect_dir
+  tmp=$(mktemp -d)
+  mkdir -p "$tmp/tmux"
+  if ! XDG_DATA_HOME="$tmp" bash "$scripts/save.sh" >/dev/null 2>&1; then
+    rm -rf -- "$tmp"
+    die "tmux-resurrect snapshot failed"
+  fi
+  if [[ ! -s "$tmp/tmux/resurrect/last" ]]; then
+    rm -rf -- "$tmp"
+    die "tmux-resurrect produced an empty snapshot"
+  fi
+  printf '%s\n' "$tmp/tmux/resurrect"
+}
+
+# Keep only the resurrect lines for one session. The state line is rewritten to
+# reference the restored session so a filtered restore does not switch a client
+# to an unrelated (and possibly missing) session.
+filter_resurrect_file() {
+  local file="$1" session="$2"
+  awk -F'\t' -v OFS='\t' -v s="$session" '
+    $1 == "pane" && $2 == s { print; next }
+    $1 == "window" && $2 == s { print; next }
+    $1 == "grouped_session" && ($2 == s || $3 == s) { print; next }
+    $1 == "state" { print $1, s, s; next }
+  ' "$file"
+}
+
+filter_assistant_json() {
+  local file="$1" session="$2"
+  if [[ -s "$file" ]]; then
+    jq --arg s "$session" \
+      '.sessions = ((.sessions // []) | map(select(.session_name == $s)))' "$file"
+  else
+    printf '{"timestamp":"%s","sessions":[],"relaunch":[]}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  fi
+}
+
+archive_session() {
+  local ws_dir="$1" session="$2" global_file="$3" assistant_file="$4"
+  local dir resurrect_target stamp
+  dir=$(session_dir "$ws_dir" "$session")
+  mkdir -p "$dir/tmux/resurrect"
+  stamp=$(date -u +%Y%m%dT%H%M%S)
+  resurrect_target="$dir/tmux/resurrect/tmux_resurrect_${stamp}.txt"
+
+  filter_resurrect_file "$global_file" "$session" | atomic_write "$resurrect_target"
+  filter_assistant_json "$assistant_file" "$session" |
+    atomic_write "$dir/tmux/resurrect/assistant-sessions.json"
+  printf '%s\n' "$session" | atomic_write "$dir/name"
+
+  ln -sfn "$(basename "$resurrect_target")" "$dir/tmux/resurrect/last"
+  # Retain the newest archives; they are cheap text files.
+  ls -1t "$dir"/tmux/resurrect/tmux_resurrect_*.txt 2>/dev/null |
+    tail -n +6 | while IFS= read -r old; do rm -f -- "$old"; done || true
+  printf '%s\n' "$dir"
+}
+
+write_meta() {
+  local ws_dir="$1" project="$2" session="$3"
+  shift 3
+  local open=("$@") tmp
+  tmp=$(mktemp "$ws_dir/.meta.XXXXXX")
+  jq -n --arg project "$project" --arg session "$session" --arg updated "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+    --args '{project: $project, session: $session, updated: $updated, open: $ARGS.positional}' \
+    "${open[@]}" >"$tmp"
+  chmod 600 "$tmp"
+  mv -f -- "$tmp" "$(meta_file "$ws_dir")"
+}
+
+save_workspace() {
+  local session="$1" project project_session ws_dir global_file assistant_file
+  local -a group=()
+  project=$(project_for_session "$session") || die "cannot determine project for session '$session'"
+  project_session=$(basename "$project")
+  ws_dir=$(workspace_dir_for_project "$project")
+  mkdir -p "$ws_dir/sessions"
+
+  local snap_dir
+  snap_dir=$(global_save)
+  global_file="$snap_dir/last"
+  assistant_file="$snap_dir/assistant-sessions.json"
+
+  mapfile -t group < <(group_sessions "$project" "$project_session")
+  ((${#group[@]})) || group=("$session")
+
+  local member
+  for member in "${group[@]}"; do
+    archive_session "$ws_dir" "$member" "$global_file" "$assistant_file" >/dev/null
+  done
+  rm -rf -- "$(dirname "$(dirname "$snap_dir")")"
+  write_meta "$ws_dir" "$project" "$project_session" "${group[@]}"
+  log "saved ${#group[@]} session(s) for $project"
+}
+
+# --- restore --------------------------------------------------------------------
+
+archive_usable() {
+  local dir="$1" primary
+  [[ -f "$dir/tmux/resurrect/last" ]] || return 1
+  # Field 8 is the pane directory, prefixed with ":" and with spaces escaped.
+  primary=$(awk -F'\t' '$1=="pane"{print $8; exit}' "$dir/tmux/resurrect/last")
+  primary="${primary#:}"
+  primary="${primary//\\ / }"
+  # If the saved working directory is gone (for example a removed worktree),
+  # refuse to restore instead of silently landing in an unrelated directory.
+  [[ -n "$primary" && -d "$primary" ]]
+}
+
+restore_session_archive() {
+  local dir="$1" scripts xdg tmp
+  local session
+  session=$(<"$dir/name")
+  if session_exists "$session"; then
+    log "session '$session' is already live"
+    return 0
+  fi
+  archive_usable "$dir" || { log "skipping '$session': saved directory no longer exists"; return 1; }
+
+  scripts=$(plugin_scripts_dir)
+  [[ -x "$scripts/restore.sh" ]] || die "tmux-resurrect restore.sh not found in $scripts"
+  assert_default_resurrect_dir
+
+  # tmux-resurrect creates sessions with a socket taken from the TMUX variable,
+  # so recovery from a crashed server needs both a live server and a TMUX value.
+  # A short-lived holder session keeps the server alive while it restores.
+  local socket="${TMUX:-}" bootstrap=""
+  if ! tmux list-sessions >/dev/null 2>&1; then
+    if tmux new-session -d -s tmux-workspaces-bootstrap -c "$HOME" 2>/dev/null; then
+      bootstrap=tmux-workspaces-bootstrap
+    fi
+  fi
+  socket="${socket%%,*}"
+  if [[ -z "$socket" ]]; then
+    # tmux's own default resolution: $TMUX_TMPDIR/tmux-<uid>/<socket-name>.
+    socket="${TMUX_TMPDIR:-/tmp}/tmux-$(id -u)/${TMUX_WORKSPACES_SOCKET_NAME:-default}"
+    [[ -S "$socket" ]] || socket=""
+  fi
+  [[ -n "$socket" ]] && export TMUX="$socket,"
+
+  xdg=$(mktemp -d)
+  mkdir -p "$xdg/tmux"
+  ln -s "$dir/tmux/resurrect" "$xdg/tmux/resurrect"
+  set +e
+  XDG_DATA_HOME="$xdg" bash "$scripts/restore.sh"
+  local rc=$?
+  set -e
+  rm -rf -- "$xdg"
+  [[ -n "$bootstrap" ]] && tmux kill-session -t "=$bootstrap" 2>/dev/null
+  ((rc == 0)) || { log "restore failed for '$session'"; return 1; }
+  log "restored '$session'"
+}
+
+open_project() {
+  local project="$1" session="${2:-}" ws_dir meta
+  [[ -d "$project" ]] || die "project directory does not exist: $project"
+  ws_dir=$(workspace_dir_for_project "$project")
+  [[ -f "$(meta_file "$ws_dir")" ]] || die "no saved workspace for $project"
+  meta=$(meta_file "$ws_dir")
+  session="${session:-$(jq -r '.session' "$meta")}"
+
+  local restored=0 name dir
+  while IFS= read -r name; do
+    [[ -n "$name" ]] || continue
+    dir=$(session_dir "$ws_dir" "$name")
+    restore_session_archive "$dir" || true
+    restored=1
+  done < <(jq -r '.open[]?' "$meta")
+
+  ((restored)) || log "no sessions were restorable"
+  if session_exists "$session"; then
+    tmux switch-client -t "=$session" 2>/dev/null || true
+  fi
+}
+
+open_session() {
+  local session="$1" name project ws_dir dir
+  name="$session"
+  project=""
+  while IFS= read -r meta; do
+    project=$(jq -r '.project' "$meta")
+    dir=$(session_dir "$(dirname "$meta")" "$name")
+    [[ -f "$dir/name" ]] || continue
+    restore_session_archive "$dir" || true
+    if session_exists "$name"; then
+      tmux switch-client -t "=$name" 2>/dev/null || true
+    fi
+    return 0
+  done < <(find "$WORKSPACES" -name meta.json -type f 2>/dev/null)
+  die "no saved session named '$name'"
+}
+
+# --- close ----------------------------------------------------------------------
+
+# Only a managed close updates the open set. A crash or a direct kill leaves the
+# last saved open set intact so the workspace can be recovered from it.
+mark_closed() {
+  local session="$1" meta
+  while IFS= read -r meta; do
+    jq --arg s "$session" '.open = ((.open // []) - [$s])' "$meta" |
+      atomic_write "$meta"
+  done < <(find "$WORKSPACES" -name meta.json -type f 2>/dev/null)
+}
+
+managed_close() {
+  local session="$1"
+  session_exists "$session" || die "session '$session' is not running"
+  # Save first; a failed snapshot aborts the close so the session stays alive.
+  save_workspace "$session"
+  mark_closed "$session"
+  tmux switch-client -l 2>/dev/null || true
+  tmux kill-session -t "=$session"
+  log "closed '$session'"
+}
+
+forget() {
+  local target="$1" dir
+  if [[ "$target" == project:* ]]; then
+    dir=$(workspace_dir_for_project "${target#project:}")
+    [[ -d "$dir" ]] || die "no saved workspace for ${target#project:}"
+  elif [[ "$target" == session:* ]]; then
+    local name="${target#session:}"
+    dir=""
+    local meta candidate
+    while IFS= read -r meta; do
+      candidate=$(session_dir "$(dirname "$meta")" "$name")
+      if [[ -f "$candidate/name" ]]; then dir="$candidate"; break; fi
+    done < <(find "$WORKSPACES" -name meta.json -type f 2>/dev/null)
+    [[ -n "$dir" ]] || die "no saved session named '$name'"
+  else
+    die "target must be project:/path or session:name"
+  fi
+  rm -rf -- "$dir"
+  log "forgot $dir"
+}
+
+# --- listing and picker ---------------------------------------------------------
+
+saved_projects() {
+  local meta
+  while IFS= read -r meta; do
+    jq -r '[.session, .project] | @tsv' "$meta"
+  done < <(find "$WORKSPACES" -name meta.json -type f 2>/dev/null)
+}
+
+list_workspaces() {
+  local session
+  printf '%-8s %s\n' "STATUS" "SESSION"
+  while IFS= read -r session; do
+    [[ -n "$session" ]] || continue
+    printf '%-8s %s\n' "live" "$session"
+  done < <(tmux list-sessions -F '#{session_name}' 2>/dev/null || true)
+  local saved_session project
+  while IFS=$'\t' read -r saved_session project; do
+    session_exists "$saved_session" && continue
+    printf '%-8s %s\t%s\n' "saved" "$saved_session" "$project"
+  done < <(saved_projects)
+}
+
+pick() {
+  require tmux
+  local fzf="${TMUX_WORKSPACES_FZF:-fzf}"
+  command -v "$fzf" >/dev/null 2>&1 || fzf=fzf
+  if ! command -v "$fzf" >/dev/null 2>&1; then
+    die "fzf is not installed"
+  fi
+
+  local -a entries=()
+  local session
+  while IFS= read -r session; do
+    [[ -n "$session" ]] || continue
+    entries+=("live"$'\t'"$session"$'\t'"")
+  done < <(tmux list-sessions -F '#{session_name}' 2>/dev/null || true)
+
+  local saved_session project
+  while IFS=$'\t' read -r saved_session project; do
+    session_exists "$saved_session" && continue
+    entries+=("saved"$'\t'"$saved_session"$'\t'"$project")
+  done < <(saved_projects)
+
+  entries+=("new"$'\t'"new project"$'\t'"")
+
+  local selection
+  selection=$(printf '%s\n' "${entries[@]}" |
+    "$fzf" --delimiter='\t' --with-nth=1,2 --nth=2 --height 100% --reverse --prompt='workspace> ') || return 0
+  [[ -n "$selection" ]] || return 0
+
+  local kind name path
+  IFS=$'\t' read -r kind name path <<<"$selection"
+  case "$kind" in
+    live)
+      session_exists "$name" || die "session '$name' disappeared"
+      tmux switch-client -t "=$name" 2>/dev/null || true
+      ;;
+    saved) open_project "$path" "$name" ;;
+    new) exec tmux-bro ;;
+  esac
+}
+
+# --- entry point ----------------------------------------------------------------
+
+main() {
+  local command="${1:-}"
+  shift || true
+  case "$command" in
+    save)
+      require jq
+      with_lock save_workspace "${1:-$(current_session)}"
+      ;;
+    close)
+      require jq
+      with_lock managed_close "${1:-$(current_session)}"
+      ;;
+    open)
+      require jq
+      [[ $# -ge 1 ]] || die "open requires a target"
+      case "$1" in
+        project:*) with_lock open_project "${1#project:}" "${2:-}" ;;
+        session:*) with_lock open_session "${1#session:}" ;;
+        *) die "target must be project:/path or session:name" ;;
+      esac
+      ;;
+    forget)
+      require jq
+      [[ $# -ge 1 ]] || die "forget requires a target"
+      with_lock forget "$1"
+      ;;
+    list)
+      require jq
+      list_workspaces
+      ;;
+    pick)
+      pick
+      ;;
+    -h|--help|help|"")
+      usage
+      ;;
+    *)
+      die "unknown command: $command"
+      ;;
+  esac
+}
+
+main "$@"
