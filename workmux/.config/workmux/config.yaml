@@ -1,0 +1,14 @@
+nerdfont: true # Enable nerdfont icons (prompted on first run)
+agent: opencode
+
+mode: session # One tmux session per worktree
+base_branch: auto # Branch tasks from the detected main branch
+worktree_dir: .worktrees # Keep task worktrees inside the project
+
+merge_strategy: rebase # Make workmux merge do rebase by default
+merge_keep: true # Keep worktree, window, and branch after merge by default
+
+panes:
+  - command: <agent> # Start the configured agent (e.g., opencode)
+    focus: true
+  - split: horizontal # Second pane with default shell

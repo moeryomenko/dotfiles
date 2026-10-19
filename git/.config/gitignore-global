@@ -38,3 +38,4 @@ opencode.json*
 spec/
 .specs/
 .codegraph/
+.worktrees/
