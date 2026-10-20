@@ -1,0 +1,5 @@
+# Global npm packages needed by these dotfiles
+# Install: xargs -I{} npm install -g {} < pkglist-npm.txt
+#
+# opencode.jsonc -- MCP server for code intelligence
+@colbymchenry/codegraph

@@ -1,0 +1,112 @@
+# noir theme for cmus
+#
+# Inspired by the noir color scheme.
+# Canonical sources: alacritty/.config/alacritty/noir.toml,
+# btop/.config/btop/themes/noir.theme, tmux/.tmux/themes/noir.conf.
+# Dark graphite background with muted pastel accents: cyan, light blue,
+# mint green, soft yellow, and soft pink.
+#
+# Palette overview (hex -> ANSI 256):
+#   Background:  #14161b -> 234  (dark graphite)
+#   Foreground:  #e0e2ea -> 254  (soft off-white)
+#   Bright FG:   #eef1f8 -> 255  (bright off-white)
+#   Accent:      #ffcaff -> 225  (soft pink)
+#
+#   Normal:
+#     Black:   #14161b -> 234
+#     Red:     #ffc0b9 -> 217  (soft red)
+#     Green:   #b3f6c0 -> 158  (mint green)
+#     Yellow:  #fce094 -> 228  (soft yellow)
+#     Blue:    #8cf8f7 -> 123  (cyan)
+#     Magenta: #ffcaff -> 225  (soft pink)
+#     Cyan:    #a6dbff -> 117  (light blue)
+#     White:   #e0e2ea -> 254
+#
+#   Bright:
+#     Black:   #4f5258 -> 239  (gray, borders)
+#     Red:     #ffcaff -> 225  (soft pink)
+#     Green:   #b3f6c0 -> 158
+#     Yellow:  #fce094 -> 228
+#     Blue:    #a6dbff -> 117  (light blue)
+#     Magenta: #ffcaff -> 225
+#     Cyan:    #a6dbff -> 117
+#     White:   #eef1f8 -> 255
+#
+#   Orange:    #fce094 -> 228  (for directories)
+#
+# For a chart of 256 ANSI colors, run:
+#   for COLOR in {1..255}; do echo -en "\e[38;5;${COLOR}m"; echo -n "${COLOR} "; done; echo
+
+### command line ###
+
+# text color in the command bar (where you type commands)
+set color_cmdline_fg=254
+set color_cmdline_bg=default
+
+### separator ###
+
+# vertical line in the main (tree) view
+set color_separator=237
+
+### status line ###
+
+# bottom bar showing elapsed time / total time
+set color_statusline_bg=default
+set color_statusline_fg=254
+
+### title line ###
+
+# top bar showing the current song title
+set color_titleline_bg=234
+set color_titleline_fg=255
+
+### main window ###
+
+# background of the main window
+set color_win_bg=default
+
+# normal text in the main window
+set color_win_fg=254
+
+# currently-playing entry indicator (the little bar/arrow)
+set color_win_cur=225
+
+# directory entries (files view / tree view)
+set color_win_dir=228
+
+# (duplicate of win_fg, kept for compatibility)
+set color_win_fg=254
+
+### inactive window ###
+
+# currently-playing entry when selected in the INACTIVE window
+set color_win_inactive_cur_sel_bg=default
+set color_win_inactive_cur_sel_fg=158
+
+# selected entry (not currently playing) in the INACTIVE window
+set color_win_inactive_sel_bg=default
+set color_win_inactive_sel_fg=254
+
+### active window ###
+
+# currently-playing entry when selected in the ACTIVE window
+set color_win_cur_sel_bg=237
+set color_win_cur_sel_fg=158
+
+# selected entry (not currently playing) in the ACTIVE window
+set color_win_sel_bg=237
+set color_win_sel_fg=255
+
+### title bar ###
+
+# title bar at the top of each pane/window
+set color_win_title_bg=234
+set color_win_title_fg=123
+
+### status messages ###
+
+# error messages in the command bar
+set color_error=217
+
+# informational messages in the command bar
+set color_info=158

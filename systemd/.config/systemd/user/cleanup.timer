@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly dry-run cleanup of caches and trash data
+
+[Timer]
+OnCalendar=Mon *-*-* 07:00:00
+Persistent=true
+Unit=cleanup.service
+
+[Install]
+WantedBy=timers.target

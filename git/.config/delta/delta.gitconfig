@@ -1,0 +1,13 @@
+# Delta styling. Included from ~/.gitconfig.
+#
+# side-by-side is intentionally absent: base [delta] values win over feature
+# values, and delta 0.20.1 has no --side-by-side=false. The git-show-commit
+# viewer passes --side-by-side; the fzf preview stays unified.
+[delta]
+	navigate = true
+	light = false
+	syntax-theme = DarkNeon
+	hyperlinks = true
+	commit-decoration-style = bold yellow box ul
+	file-decoration-style = blue ul
+	hunk-header-style = file line-number syntax

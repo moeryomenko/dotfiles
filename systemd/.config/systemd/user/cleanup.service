@@ -1,0 +1,8 @@
+[Unit]
+Description=Clean system caches and trash data (dry-run)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/cleanup --dry-run --yes
+StandardOutput=append:%h/.logs/cleanup.log
+StandardError=append:%h/.logs/cleanup.log

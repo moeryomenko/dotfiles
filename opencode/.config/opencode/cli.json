@@ -14,5 +14,8 @@
     "scrollbar": false,
     "thinking": "hide"
   },
+  "experimental": {
+    "todo": true
+  },
   "animations": true
 }

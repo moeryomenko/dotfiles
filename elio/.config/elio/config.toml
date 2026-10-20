@@ -8,5 +8,6 @@
 [open]
 rules = [
   { ext = ["md", "markdown", "mdown", "mkd", "mdx", "qmd"], command = "elio-helix", terminal = true },
+  { ext = ["djvu", "djv"], command = "zathura" },
   { type = ["text", "code", "config"], command = "elio-helix", terminal = true },
 ]

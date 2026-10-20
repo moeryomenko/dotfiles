@@ -4,6 +4,9 @@
     "@plannotator/opencode@latest",
     {
       "package": "./plugins/rtk"
+    },
+    {
+      "package": "./plugins/opencode-subagent-graph/.opencode/plugins/orchestrator"
     }
   ],
   "model": "headroom/claude-sonnet-4-6",

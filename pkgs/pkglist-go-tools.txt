@@ -1,0 +1,18 @@
+# Go tools needed by these dotfiles
+# Install: xargs -I{} sh -c 'go install {}@latest || true' < pkglist-go-tools.txt
+#
+# nvim/lsp/gopls.lua
+golang.org/x/tools/gopls
+# nvim/lua/lang/go.lua -- go formatters (conform)
+mvdan.cc/gofumpt
+golang.org/x/tools/cmd/goimports
+github.com/daixiang0/gci
+github.com/segmentio/golines
+# nvim/lua/lang/go.lua -- delve debugger
+github.com/go-delve/delve/cmd/dlv
+# nvim/lsp/hyprls.lua -- Hyprland LSP
+github.com/hyprland-community/hyprls/cmd/hyprls
+# fish abbreviations -- gotestsum
+gotest.tools/gotestsum
+# fish abbreviations -- go vet/staticcheck
+honnef.co/go/tools/cmd/staticcheck
