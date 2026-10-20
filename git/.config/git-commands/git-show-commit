@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Parse command line options
-VIEW_CMD="less -R"  # default viewer
+VIEW_CMD="delta --side-by-side"  # default viewer
 COMMIT_HASH=""
 
 while [[ $# -gt 0 ]]; do
@@ -22,9 +22,10 @@ while [[ $# -gt 0 ]]; do
         -*)
             echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
             echo "Examples:" >&2
-            echo "  $0 --view helix HEAD~1" >&2
-            echo "  $0 --view delta HEAD~1" >&2
-            echo "  $0 --view less HEAD~1" >&2
+            echo "  $0 HEAD~1                       # delta, side-by-side" >&2
+            echo "  $0 --view delta HEAD~1          # delta, unified" >&2
+            echo "  $0 --view less HEAD~1           # raw less" >&2
+            echo "  $0 --view helix HEAD~1          # editor" >&2
             exit 1
             ;;
         *)
@@ -39,9 +40,16 @@ done
 if [[ -z "$COMMIT_HASH" ]]; then
     echo "Usage: $0 [--view COMMAND] COMMIT_HASH" >&2
     echo "Examples:" >&2
-    echo "  $0 --view helix HEAD~1" >&2
-    echo "  $0 --view delta HEAD~1" >&2
-    echo "  $0 --view less HEAD~1" >&2
+    echo "  $0 HEAD~1                       # delta, side-by-side" >&2
+    echo "  $0 --view delta HEAD~1          # delta, unified" >&2
+    echo "  $0 --view less HEAD~1           # raw less" >&2
+    echo "  $0 --view helix HEAD~1          # editor" >&2
+    exit 1
+fi
+
+viewer_bin="${VIEW_CMD%% *}"
+if ! command -v "$viewer_bin" >/dev/null 2>&1; then
+    echo "Error: viewer command '$viewer_bin' not found" >&2
     exit 1
 fi
 
@@ -69,6 +77,6 @@ esac
 
 git diff-tree --no-commit-id --name-only -r "$COMMIT_HASH" | \
     fzf --ansi --no-sort --reverse --tiebreak=index \
-        --preview "echo \"{}\" | xargs -I % sh -c 'git show --color=always $COMMIT_HASH % | bat ' @- " \
+        --preview "echo \"{}\" | xargs -I % sh -c 'git show --color=always $COMMIT_HASH % | delta --paging=never --width=\${FZF_PREVIEW_COLUMNS:-80}' @- " \
         --bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:$EXECUTE_CMD" \
         --preview-window=right:70%

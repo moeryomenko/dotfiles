@@ -5,12 +5,10 @@
 	#hooksPath = ~/.config/githooks
 [add.interactive]
 	useBuiltin = false
+[include]
+	path = ~/.config/delta/delta.gitconfig
 [interactive]
 	diffFilter = delta --color-only
-[delta]
-	navigate = true
-	light = false
-	side-by-side = true
 [merge]
     conflictStyle = "diff3"
 [merge "mergiraf"]
