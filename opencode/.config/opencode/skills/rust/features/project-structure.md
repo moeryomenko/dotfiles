@@ -1,153 +1,34 @@
-# Project Structure (LOW)
+# Project Structure
 
-## Keep `main.rs` Minimal
+Let the package's purpose, workspace boundaries, compilation time, public API, and deployment model determine structure. Preserve established repository layout unless it makes ownership, visibility, testing, or release boundaries unclear.
 
-Logic should live in `lib.rs` with `main.rs` as a thin entry point:
+## Crates and modules
 
-```rust
-// src/main.rs
-fn main() {
-    if let Err(e) = my_crate::run() {
-        eprintln!("Error: {}", e);
-        std::process::exit(1);
-    }
-}
+A binary may call a library entry point when the logic is reusable or benefits from integration testing, but a small binary need not manufacture a library solely for that pattern. Organize modules around coherent domain or capability boundaries; flat modules are often clearer until a hierarchy pays for itself.
 
-// src/lib.rs
-pub fn run() -> Result<(), Error> { /* ... */ }
-```
+Use the narrowest visibility that supports intended callers. Re-export a curated public API when it decouples callers from internal layout; do not add a prelude unless repeated imports and name-collision policy justify one.
 
-## Organize Modules by Feature
+Use separate packages/workspace members for independent release, feature, dependency, security, or compile-time boundaries—not merely to mirror folders.
 
-Not by technical layer:
+## Cargo policy
 
-```
-src/
-  auth/
-    mod.rs
-    login.rs
-    permissions.rs
-  api/
-    mod.rs
-    routes.rs
-    middleware.rs
-  models.rs
-  lib.rs
-```
-
-## Keep Small Projects Flat
-
-For small projects (under ~10 modules), a flat structure is simpler:
-
-```
-src/
-  auth.rs
-  api.rs
-  models.rs
-  lib.rs
-```
-
-## Use `mod.rs` for Multi-File Modules
-
-```
-src/
-  parser/
-    mod.rs
-    lexer.rs
-    ast.rs
-```
-
-## Use `pub(crate)` for Internal APIs
-
-```rust
-pub(crate) fn internal_helper() { /* ... */ }
-```
-
-## Use `pub(super)` for Parent-Only Visibility
-
-```rust
-mod inner {
-    pub(super) fn helper() { /* only usable by parent module */ }
-}
-```
-
-## Use `pub use` for Clean Public API
-
-Re-export to hide internal module hierarchy:
-
-```rust
-// src/lib.rs
-mod internal;
-pub use internal::PublicType;
-```
-
-## Create a Prelude Module for Common Imports
-
-```rust
-// src/prelude.rs
-pub use crate::types::{UserId, OrderId};
-pub use crate::traits::{Serialize, Deserialize};
-```
-
-## Put Multiple Binaries in `src/bin/`
-
-```
-src/
-  bin/
-    server.rs
-    client.rs
-    tool.rs
-  lib.rs
-```
-
-## Use Workspaces for Large Projects
-
-```
-my-project/
-  Cargo.toml        # [workspace]
-  crates/
-    core/
-    cli/
-    web/
-```
-
-## Use Workspace Dependency Inheritance
-
-```toml
-# workspace Cargo.toml
-[workspace.dependencies]
-serde = { version = "1", features = ["derive"] }
-tokio = { version = "1", features = ["full"] }
-
-# crate Cargo.toml
-[dependencies]
-serde.workspace = true
-tokio.workspace = true
-```
-
-## Design Cargo Features to Be Strictly Additive
-
-Features should only add functionality, never remove it. Follow the `dep:` syntax for optional dependencies:
-
-```toml
-[features]
-serde = ["dep:serde", "dep:serde_derive"]
-```
-
-## Declare MSRV in `Cargo.toml`
+Set `rust-version` to the actual minimum supported compiler and test that version in CI. Edition and local compiler availability do not raise the crate's MSRV.
 
 ```toml
 [package]
-rust-version = "1.75"  # Minimum supported Rust version
+edition = "2024"
+rust-version = "1.85"
+
+[dependencies]
+serde = { workspace = true }
 ```
 
-Test it in CI.
+At a workspace root, centralize only policy that is genuinely shared, such as `[workspace.package]`, `[workspace.dependencies]`, and `[workspace.lints]`. Member packages opt into inherited values deliberately. Select the resolver and features from the supported Cargo/toolchain and dependency graph; avoid broad feature sets such as `full` unless the package needs them.
 
-## Keep `build.rs` Minimal
+Keep `build.rs` deterministic, minimally privileged, and explicit about rebuild inputs with `cargo:rerun-if-changed`. A build script is not automatically preferable to runtime initialization or checked-in generated code.
 
-Deterministic, idempotent, and minimal. Prefer code generation in build scripts over runtime initialization.
+## Load next
 
-## Cross-References
-
-- For workspace lint setup: load `linting`
-- For visibility with tests: load `testing`
+- Workspace lint configuration: `linting.md`
+- Dependency and feature decisions: `ecosystem.md`
+- Public module contracts: `api-design.md`

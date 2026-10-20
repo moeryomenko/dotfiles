@@ -1,71 +1,50 @@
-# Closures (MEDIUM)
+# Closures
 
-## Require the Least Restrictive `Fn` Trait
+Choose a closure bound from how the callback uses captured state and how the caller needs to invoke or store it. Capture mode and dispatch are API decisions, not default performance settings.
 
-```rust
-// FnOnce - can be called once
-fn run_once<F: FnOnce()>(f: F) { f() }
+## Bounds and captures
 
-// FnMut - can mutate captured state
-fn run_mut<F: FnMut()>(mut f: F) { f(); f() }
-
-// Fn - can be called multiple times without mutation
-fn run<F: Fn() -> i32>(f: F) -> i32 { f() + f() }
-```
-
-## Return Closures as `impl Fn`/`FnMut`/`FnOnce`
-
-Not `Box<dyn Fn>`:
+`Fn` can be called through a shared reference, `FnMut` may mutate its environment, and `FnOnce` may consume it. Accept the least restrictive bound that expresses the required calls.
 
 ```rust
-fn make_adder(x: i32) -> impl Fn(i32) -> i32 {
-    move |y| x + y
+fn run_twice<F: FnMut()>(mut action: F) {
+    action();
+    action();
 }
+
+let mut count = 0;
+run_twice(|| count += 1);
+assert_eq!(count, 2);
 ```
 
-## Use `move` for Closures That Outlive the Current Scope
+Use `move` when the closure must own what it captures, such as a detached thread or task. It moves the captured values selected by the closure; clone first only when independent ownership is actually required.
 
 ```rust
 let data = vec![1, 2, 3];
-thread::spawn(move || {  // move takes ownership
-    process(data);
-});
+let worker_data = data.clone();
+let handle = std::thread::spawn(move || worker_data.len());
+assert_eq!(data.len(), 3);
+assert_eq!(handle.join().unwrap(), 3);
 ```
 
-Clone before `move` to keep the original:
+Edition 2021 disjoint capture can reduce what a closure captures, but public behavior should not depend on inferred capture details. Make ownership explicit when it affects an API or a borrow conflict.
+
+## Returning and accepting callbacks
+
+Return `impl Fn...` when one concrete closure type is sufficient. Use a generic parameter for static dispatch when that fits the API; use `&dyn Fn...` or an owned trait object when callbacks must be selected at runtime, stored heterogeneously, or code-size tradeoffs favor it.
 
 ```rust
-let data_clone = data.clone();
-thread::spawn(move || { process(data_clone); });
-// data is still available here
+fn make_adder(base: i32) -> impl Fn(i32) -> i32 {
+    move |value| base + value
+}
+
+assert_eq!(make_adder(2)(3), 5);
 ```
 
-## Accept `impl Fn` (Generic) for Hot Callbacks
+For async closures, account for the future's captures, lifetime, `Send`, and storage requirements rather than assuming an ordinary `Fn` bound is enough.
 
-Use `&dyn Fn`/`Box<dyn Fn>` to cut code size or when storing callbacks:
+## Load next
 
-```rust
-// Generic - monomorphized, faster
-fn with_callback<F: Fn(i32)>(f: F) { /* ... */ }
-
-// Dynamic dispatch - reduces code size
-fn with_dyn_callback(f: &dyn Fn(i32)) { /* ... */ }
-```
-
-## Capture Only What You Use
-
-Edition 2021 disjoint closure captures capture only the fields used:
-
-```rust
-struct Person { name: String, age: u32 }
-
-let person = Person { name: "Alice".into(), age: 30 };
-
-// Only captures name, not age
-let closure = || println!("{}", person.name);
-```
-
-## Cross-References
-
-- For trait dispatch choices: load `traits`
-- For async closures: load `async`
+- Trait dispatch: `traits.md`
+- Async task ownership: `async.md`
+- Borrowing and shared state: `ownership.md`

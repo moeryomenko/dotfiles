@@ -1,326 +1,58 @@
 # Async Patterns
 
-## Task Spawning Patterns
+Select patterns from the runtime, task ownership, cancellation semantics, delivery guarantees, and shutdown contract. A spawned task is detached work unless its handle is retained and joined.
 
-### Basic Spawn
+## Task groups
+
+Keep handles when task results, panics, cleanup, or ordered shutdown matter. Handle both a task's result and its `JoinError`:
 
 ```rust
-use tokio::task;
+async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    let handle = tokio::spawn(async { do_work().await });
+    handle.await??;
+    Ok(())
+}
 
-#[tokio::main]
-async fn main() {
-    let handle = task::spawn(async {
-        expensive_computation().await
-    });
+async fn do_work() -> Result<(), std::io::Error> { Ok(()) }
+```
 
-    other_work().await;
-    let result = handle.await.unwrap();
+Use `JoinSet` or structured framework facilities for a dynamic task group. Decide whether one failure cancels siblings, results are collected, or work continues before spawning.
+
+## Channels and backpressure
+
+A bounded `mpsc` channel limits queued work and gives the sender backpressure. Treat `send` failure as an ownership/shutdown decision, not an `unwrap` case.
+
+```rust
+async fn send_work(tx: tokio::sync::mpsc::Sender<u64>) -> Result<(), u64> {
+    tx.send(42).await.map_err(|error| error.0)
 }
 ```
 
-### Spawn with Shared State
+`broadcast` receivers can return `Lagged`; decide whether a consumer can resynchronize, should fail, or must receive every event. `watch` retains only the latest value; `oneshot` carries one response.
 
-```rust
-use std::sync::Arc;
-use tokio::sync::Mutex;
+A semaphore bounds concurrent work. It does not impose a time-based rate limit; use a token-bucket, interval, or service-specific policy when requests-per-time is the contract.
 
-async fn process_with_state() {
-    let state = Arc::new(Mutex::new(vec![]));
+## Cancellation and shutdown
 
-    let handles: Vec<_> = (0..10)
-        .map(|i| {
-            let state = Arc::clone(&state);
-            tokio::spawn(async move {
-                let mut guard = state.lock().await;
-                guard.push(i);
-            })
-        })
-        .collect();
-
-    for handle in handles {
-        handle.await.unwrap();
-    }
-}
-```
-
----
-
-## Select Pattern
-
-### Racing Futures
-
-```rust
-use tokio::select;
-
-async fn first_response() {
-    select! {
-        result = fetch_from_server_a() => {
-            println!("A responded: {:?}", result);
-        }
-        result = fetch_from_server_b() => {
-            println!("B responded: {:?}", result);
-        }
-    }
-}
-```
-
-### Select with Timeout
-
-```rust
-use tokio::time::{sleep, Duration};
-use tokio::select;
-
-async fn with_timeout() -> Result<Data, Error> {
-    select! {
-        result = fetch_data() => result,
-        _ = sleep(Duration::from_secs(5)) => {
-            Err(Error::Timeout)
-        }
-    }
-}
-
-// Or use timeout directly
-async fn with_timeout2() -> Result<Data, Error> {
-    timeout(Duration::from_secs(5), fetch_data())
-        .await
-        .map_err(|_| Error::Timeout)?
-}
-```
-
----
-
-## Channel Patterns
-
-### MPSC (Multi-Producer, Single-Consumer)
-
-```rust
-use tokio::sync::mpsc;
-
-async fn producer_consumer() {
-    let (tx, mut rx) = mpsc::channel(100);
-
-    for i in 0..3 {
-        let tx = tx.clone();
-        tokio::spawn(async move {
-            tx.send(format!("Message {}", i)).await.unwrap();
-        });
-    }
-
-    drop(tx);  // Close channel
-
-    while let Some(msg) = rx.recv().await {
-        println!("Received: {}", msg);
-    }
-}
-```
-
-### Oneshot (Request-Response)
-
-```rust
-use tokio::sync::oneshot;
-
-async fn request_response() {
-    let (tx, rx) = oneshot::channel();
-
-    tokio::spawn(async move {
-        let result = compute_something().await;
-        tx.send(result).unwrap();
-    });
-
-    let response = rx.await.unwrap();
-}
-```
-
-### Broadcast (Pub/Sub)
-
-```rust
-use tokio::sync::broadcast;
-
-async fn pub_sub() {
-    let (tx, _) = broadcast::channel(16);
-
-    let mut rx1 = tx.subscribe();
-    let mut rx2 = tx.subscribe();
-
-    tokio::spawn(async move {
-        while let Ok(msg) = rx1.recv().await {
-            println!("Consumer 1: {}", msg);
-        }
-    });
-
-    tokio::spawn(async move {
-        while let Ok(msg) = rx2.recv().await {
-            println!("Consumer 2: {}", msg);
-        }
-    });
-
-    tx.send("Hello").unwrap();
-}
-```
-
----
-
-## Structured Concurrency
-
-### JoinSet for Task Groups
-
-```rust
-use tokio::task::JoinSet;
-
-async fn parallel_fetch(urls: Vec<String>) -> Vec<Result<Response, Error>> {
-    let mut set = JoinSet::new();
-
-    for url in urls {
-        set.spawn(async move { fetch(&url).await });
-    }
-
-    let mut results = vec![];
-    while let Some(res) = set.join_next().await {
-        results.push(res.unwrap());
-    }
-    results
-}
-```
-
----
-
-## Cancellation Patterns
-
-### Using CancellationToken
+Cancellation stops future polling but does not roll back external effects. Design an operation to be safely abandoned, resumed, or compensated. Coordinate cancellation and await child tasks when shutdown requires their cleanup.
 
 ```rust
 use tokio_util::sync::CancellationToken;
 
-async fn cancellable_task(token: CancellationToken) {
-    loop {
-        select! {
-            _ = token.cancelled() => {
-                println!("Task cancelled");
-                break;
-            }
-            _ = do_work() => {}
-        }
+async fn worker(cancel: CancellationToken) {
+    tokio::select! {
+        _ = cancel.cancelled() => {}
+        result = do_work() => { let _ = result; }
     }
 }
 
-async fn main_with_cancellation() {
-    let token = CancellationToken::new();
-    let task_token = token.clone();
-
-    let handle = tokio::spawn(cancellable_task(task_token));
-
-    tokio::time::sleep(Duration::from_secs(5)).await;
-    token.cancel();
-
-    handle.await.unwrap();
-}
+async fn do_work() -> Result<(), std::io::Error> { Ok(()) }
 ```
 
-### Graceful Shutdown
+For a server, stop accepting first, signal owned workers, then join them subject to a deadline. Check each selected operation's cancellation-safety documentation; it is not uniform.
 
-```rust
-async fn serve_with_shutdown(shutdown: impl Future) {
-    let server = TcpListener::bind("0.0.0.0:8080").await.unwrap();
+## Load next
 
-    loop {
-        select! {
-            Ok((socket, _)) = server.accept() => {
-                tokio::spawn(handle_connection(socket));
-            }
-            _ = &mut shutdown => {
-                println!("Shutting down...");
-                break;
-            }
-        }
-    }
-}
-```
-
----
-
-## Backpressure
-
-### Bounded Channels
-
-```rust
-async fn with_backpressure() {
-    let (tx, mut rx) = mpsc::channel(10);  // Buffer of 10
-
-    let producer = tokio::spawn(async move {
-        for i in 0..1000 {
-            tx.send(i).await.unwrap();  // Waits if full
-        }
-    });
-
-    let consumer = tokio::spawn(async move {
-        while let Some(item) = rx.recv().await {
-            tokio::time::sleep(Duration::from_millis(10)).await;
-            process(item);
-        }
-    });
-}
-```
-
-### Semaphore for Rate Limiting
-
-```rust
-use tokio::sync::Semaphore;
-use std::sync::Arc;
-
-async fn rate_limited_requests(urls: Vec<String>) {
-    let semaphore = Arc::new(Semaphore::new(10));  // max 10 concurrent
-
-    let handles: Vec<_> = urls
-        .into_iter()
-        .map(|url| {
-            let sem = Arc::clone(&semaphore);
-            tokio::spawn(async move {
-                let _permit = sem.acquire().await.unwrap();
-                fetch(&url).await
-            })
-        })
-        .collect();
-
-    for handle in handles {
-        handle.await.unwrap();
-    }
-}
-```
-
----
-
-## Error Handling in Async
-
-### Handling Task Panics
-
-```rust
-async fn robust_spawn() {
-    let handle = tokio::spawn(async {
-        risky_operation().await
-    });
-
-    match handle.await {
-        Ok(result) => println!("Success: {:?}", result),
-        Err(e) if e.is_panic() => {
-            println!("Task panicked: {:?}", e);
-        }
-        Err(e) => {
-            println!("Task cancelled: {:?}", e);
-        }
-    }
-}
-```
-
-### Try-Join for Multiple Results
-
-```rust
-use tokio::try_join;
-
-async fn fetch_all() -> Result<(A, B, C), Error> {
-    try_join!(
-        fetch_a(),
-        fetch_b(),
-        fetch_c(),
-    )
-}
-```
+- Runtime/task constraints: `../../async.md`
+- Locks and atomics: `../../concurrency.md`
+- Error reporting: `../error-handling/common-patterns.md`

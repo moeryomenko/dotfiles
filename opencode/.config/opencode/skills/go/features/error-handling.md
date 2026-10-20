@@ -1,210 +1,105 @@
 # Go Error Handling
 
-## Core Principles
+## Error ownership
 
-- Return errors, don't panic.
-- Give errors structure so callers can interrogate them programmatically.
-- Handle errors once — do NOT log + return the same error.
+Return errors from libraries and lower-level operations so the layer with user-facing context can decide whether to retry, translate, report, or terminate. Avoid logging an error and returning it unchanged unless the layer is the designated reporting boundary; otherwise callers commonly produce duplicate logs.
 
-## Error Types Decision Table
-
-| Need matching? | Message type | Tool |
-|---|---|---|
-| No | Static | `errors.New` |
-| No | Dynamic | `fmt.Errorf` |
-| Yes | Static | `var ErrX = errors.New(...)` |
-| Yes | Dynamic | Custom error type (implement `Error() string`) |
+Handle an error where it can be resolved. Otherwise add concise operation context and propagate it.
 
 ```go
-// Sentinel error (static, matchable)
-var ErrCouldNotOpen = errors.New("could not open")
-
-// Dynamic, matchable
-type NotFoundError struct { File string }
-func (e *NotFoundError) Error() string {
-    return fmt.Sprintf("file %q not found", e.File)
-}
-```
-
-## Error Wrapping
-
-### `%w` vs `%v`
-
-| Verb | When to use |
-|---|---|
-| `%w` | Callers inspect with `errors.Is`/`errors.As`; documented API contract |
-| `%v` | Adding context; creating fresh errors at system boundaries; hiding implementation details |
-
-```go
-// %w: caller expected to inspect the chain
-return fmt.Errorf("new store: %w", err)
-
-// %v: at system boundary, translate to canonical error
-return nil, fmt.Errorf("couldn't find database: %v", err)
-```
-
-### Placement of `%w`
-
-Prefer placing `%w` at the **end** so error text mirrors chain order (newest-to-oldest):
-
-```go
-// Good — error text mirrors chain: err3: err2: err1
-err1 := fmt.Errorf("err1")
-err2 := fmt.Errorf("err2: %w", err1)
-err3 := fmt.Errorf("err3: %w", err2)
-
-// Exception: sentinel errors placing %w at the beginning so category is visible
-return fmt.Errorf("%w: invalid header: %v", ErrParseInvalidHeader, err)
-```
-
-### Keep Context Succinct
-
-```go
-// Good
-return fmt.Errorf("new store: %w", err)
-
-// Bad — redundant with wrapped error
-return fmt.Errorf("failed to create new store: %w", err)
-```
-
-## Error Matching
-
-```go
-// Bad — string matching is fragile
-if regexp.MatchString(`duplicate`, err.Error()) { ... }
-
-// Good — use errors.Is/errors.As
-if errors.Is(err, os.ErrNotExist) { ... }
-
-var pathErr *os.PathError
-if errors.As(err, &pathErr) {
-    fmt.Println(pathErr.Path)
-}
-```
-
-## Error Naming
-
-- Exported error vars: `ErrXxx`
-- Unexported error vars: `errXxx`
-- Custom error types: `XxxError` (exported), `xxxError` (unexported)
-
-## Handling Errors Once
-
-```go
-// Bad: log + return (logspam, caller double-handles)
-u, err := getUser(id)
-if err != nil {
-    log.Printf("could not get user %q: %v", id, err)
-    return err
-}
-
-// Good: wrap and let caller decide
-u, err := getUser(id)
+user, err := getUser(id)
 if err != nil {
     return fmt.Errorf("get user %q: %w", id, err)
 }
+```
 
-// Good: match specific error, degrade gracefully
-tz, err := getUserTimeZone(id)
-if err != nil {
-    if errors.Is(err, ErrUserNotFound) {
-        tz = time.UTC // Degrade gracefully
-    } else {
-        return fmt.Errorf("get user %q: %w", id, err)
+## Choosing an error representation
+
+| Caller needs | Prefer |
+|---|---|
+| Static text only | `errors.New` |
+| Dynamic text only | `fmt.Errorf` |
+| Stable category callers can match | exported or package-local sentinel error |
+| Structured dynamic details callers need | a custom error type |
+| Dynamic context around a matchable cause | `fmt.Errorf` with `%w` |
+
+```go
+var ErrNotFound = errors.New("not found")
+
+type FieldError struct {
+    Field string
+    Err   error
+}
+
+func (e *FieldError) Error() string { return fmt.Sprintf("%s: %v", e.Field, e.Err) }
+func (e *FieldError) Unwrap() error { return e.Err }
+```
+
+Use `ErrXxx` and `errXxx` consistently with the package's naming style. Expose only error values and types that callers are intended to inspect.
+
+## Wrapping is an API decision
+
+Use `%w` when callers should retain the ability to use `errors.Is` or `errors.As` on the cause. That choice exposes an inspection contract: changing the wrapped error later can be a compatibility change.
+
+Use `%v`, or construct a different error, when translating an implementation detail at a boundary that callers should not depend on.
+
+```go
+// The caller may distinguish unavailable storage.
+return fmt.Errorf("load profile: %w", err)
+
+// The service intentionally exposes a domain error instead.
+return ErrUnavailable
+```
+
+Place context where it reads naturally. The position of `%w` affects text, not matching behavior; optimize for a stable, useful message.
+
+Match programmatically rather than parsing messages.
+
+```go
+if errors.Is(err, fs.ErrNotExist) {
+    return nil
+}
+
+var pathErr *fs.PathError
+if errors.As(err, &pathErr) {
+    return fmt.Errorf("read configuration %q: %w", pathErr.Path, err)
+}
+```
+
+## Reporting and process exit
+
+At an executable boundary, turn a returned error into the repository's chosen logging or user-output format and a status code. At most one layer should normally emit the final diagnostic.
+
+```go
+func main() {
+    if err := run(); err != nil {
+        log.Print(err)
+        os.Exit(1)
     }
 }
 ```
 
-## Panics and Program Checks
+`log.Fatal` and `os.Exit` bypass deferred functions. Do not use them in libraries, handlers, tests, or code that still owns cleanup.
 
-- Standard error handling: return errors, don't panic.
-- Use `log.Fatal` (not `panic`) for unrecoverable invariant violations.
-- **Don't recover panics to avoid crashes** — corrupted state can cause worse problems.
-- Exception: panic as internal mechanism in tightly coupled code, recovered at public API boundary:
+If constructing expensive log arguments, use the selected logging library's enabled-level API before doing that work. Do not assume a particular logging facade, method name, buffering behavior, or flush cost.
+
+## Panics and recovery
+
+Use returned errors for expected failures. A panic can be appropriate for a broken internal invariant or documented programmer misuse; it is not a substitute for validating external input.
+
+Recover only when a boundary can safely contain a known panic protocol, such as converting an internal parser sentinel into an error. Preserve unknown panics by re-panicking them.
 
 ```go
-func parseInt(in string) int {
-    n, err := strconv.Atoi(in)
-    if err != nil {
-        panic(&syntaxError{"not a valid integer"})
-    }
-}
-
-func Parse(in string) (_ *Node, err error) {
+func Parse(input string) (node *Node, err error) {
     defer func() {
-        if p := recover(); p != nil {
-            sErr, ok := p.(*syntaxError)
+        if recovered := recover(); recovered != nil {
+            syntaxErr, ok := recovered.(*syntaxError)
             if !ok {
-                panic(p) // re-panic unknown panics
+                panic(recovered)
             }
-            err = fmt.Errorf("syntax error: %v", sErr.msg)
+            err = fmt.Errorf("parse: %w", syntaxErr)
         }
     }()
-    // ...
+    return parseInternal(input), nil
 }
 ```
-
-**When to use panic:**
-- API misuse (caught in code review/tests).
-- Unreachable code detection.
-- Package initialization (before flags are parsed).
-
-## Logging Errors
-
-- **Don't log + return**: Let caller decide. Avoids logspam.
-- `log.Error` is expensive (causes flush). Use sparingly.
-- ERROR should be **actionable**, not just "more serious" than WARNING.
-- **Verbose logging**: Guard expensive calls:
-
-```go
-// Good — sql.Explain not called unless V(2) enabled
-if log.V(2) {
-    log.Infof("Handling %v", sql.Explain())
-}
-
-// Bad — sql.Explain called even when not logged
-log.V(2).Infof("Handling %v", sql.Explain())
-```
-
-## Mutable Globals
-
-Avoid mutable globals. Use dependency injection:
-
-```go
-// Bad
-var _timeNow = time.Now
-func sign(msg string) string { return signWithTime(msg, _timeNow()) }
-
-// Good
-type signer struct { now func() time.Time }
-func (s *signer) Sign(msg string) string { return signWithTime(msg, s.now()) }
-```
-
-Libraries must not force clients to rely on global/package-level state:
-
-```go
-// Good — clients create instances
-type Registry struct { plugins map[string]*Plugin }
-func New() *Registry { return &Registry{plugins: make(map[string]*Plugin)} }
-
-// Bad — global state, order-dependent tests
-var registry = make(map[string]*Plugin)
-func Register(name string, p *Plugin) error { ... }
-```
-
-## String Concatenation
-
-| Method | When to use |
-|---|---|
-| `+` operator | Few strings, simplest |
-| `fmt.Sprintf` | Complex formatting |
-| `strings.Builder` | Building bit-by-bit in a loop |
-| `text/template` | Complex templating |
-| `fmt.Fprintf` | Writing directly to `io.Writer` |
-
-## Cross-References
-
-- For zero values and error types: load `style`
-- For panic/recover patterns: load `idioms`
-- For testing error scenarios: load `testing`
-- For linter configuration: load `linter-guide`

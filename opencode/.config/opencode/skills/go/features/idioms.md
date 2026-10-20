@@ -1,69 +1,28 @@
 # Go Idioms
 
-Common Go patterns for slices, maps, structs, defer, channels, goroutines, enums, and concurrency.
+Use these patterns when they fit the API's ownership, lifecycle, and compatibility requirements. Prefer the repository's established conventions for public APIs.
 
-## Interfaces
+## Interfaces and receivers
 
-### Pointers to Interfaces
-Never use a pointer to an interface. Pass interfaces as values:
-
-```go
-// Bad
-func F(w *io.Writer) {}
-
-// Good
-func F(w io.Writer) {}
-```
-
-### Verify Interface Compliance
-Use compile-time assertions:
+Pass interface values, not pointers to interfaces. A pointer to an interface is rarely the intended abstraction.
 
 ```go
-var _ http.Handler = (*Handler)(nil)   // pointer types: nil
-var _ http.Handler = LogHandler{}      // struct types: empty struct
+func Copy(dst io.Writer, src io.Reader) error
 ```
 
-### Receivers and Interfaces
-- Methods with **value receivers** can be called on pointers AND values.
-- Methods with **pointer receivers** can only be called on pointers or addressable values.
-- A pointer type satisfies an interface even if the method has a value receiver.
-- A value type does NOT satisfy an interface if the method has a pointer receiver.
+Define interfaces at the consuming boundary when that improves substitutability or testing. Returning a concrete type is often useful, but return an interface when the abstraction itself is the stable contract.
 
-### Accept Interfaces, Return Structs
-Functions should accept interfaces and return concrete types. This keeps callers flexible while ensuring return values are usable without unwrapping.
-
-## Mutexes
-
-### Zero-value Mutexes
-`sync.Mutex` and `sync.RWMutex` zero values are valid. Do not use pointers:
+Use compile-time assertions when interface conformance is a deliberate part of a type's contract:
 
 ```go
-// Bad
-mu := new(sync.Mutex)
-
-// Good
-var mu sync.Mutex
+var _ http.Handler = (*Handler)(nil)
 ```
 
-### Do Not Embed Mutexes
-Use a named field to keep it private:
+Choose pointer receivers when methods mutate the receiver, copying is undesirable, or the type's method set requires them. Remember that `*T` has methods with both value and pointer receivers, while `T` does not have pointer-receiver methods.
 
-```go
-// Bad
-type SMap struct {
-    sync.Mutex
-    data map[string]string
-}
+## Mutexes and shared state
 
-// Good
-type SMap struct {
-    mu   sync.Mutex
-    data map[string]string
-}
-```
-
-### Define Mutex with Guarded Data
-Keep mutex and the data it guards close together:
+`sync.Mutex` and `sync.RWMutex` have usable zero values. Keep a mutex close to the data it protects and avoid copying a value after its first use.
 
 ```go
 type Counter struct {
@@ -78,220 +37,93 @@ func (c *Counter) Inc() {
 }
 ```
 
-## Slices and Maps
+A named, unexported mutex field usually gives a clearer API than embedding one. Do not expose a lock as part of a public type's contract unless callers are intentionally expected to coordinate through it.
 
-### Copy at Boundaries
-When receiving slices/maps from callers or exposing them, always copy to prevent aliasing:
+## Slices, maps, and ownership
+
+Decide whether a slice or map is borrowed, transferred, or copied at each API boundary. Copy it when the caller must not mutate retained state, when returned data must be isolated, or when concurrent access would otherwise race. Avoid defensive copies when ownership and lifetime are already clear and the allocation would be material.
+
+For Go 1.21+, `slices.Clone` and `maps.Clone` make this explicit; use `copy` or a loop when targeting an earlier release.
 
 ```go
-// Receiving: copy into new allocation
 func (d *Driver) SetTrips(trips []Trip) {
-    d.trips = make([]Trip, len(trips))
-    copy(d.trips, trips)
+    d.trips = slices.Clone(trips)
 }
 
-// Returning: copy before exposing
 func (s *Stats) Snapshot() map[string]int {
     s.mu.Lock()
     defer s.mu.Unlock()
-    result := make(map[string]int, len(s.counters))
-    for k, v := range s.counters {
-        result[k] = v
-    }
-    return result
+    return maps.Clone(s.counters)
 }
 ```
 
-### nil is a Valid Slice
-- Return `nil` instead of `[]int{}` for empty slices.
-- Check `len(s) == 0`, not `s == nil`.
-- Zero-value slice `var s []T` is ready for `append`.
+A nil slice is ready for `append`, has length zero, and ranges safely. Select `nil` or an allocated empty slice based on the API's encoding and compatibility contract; callers should usually test `len(s) == 0`.
 
-### Map and Slice Initialization
-```go
-m := make(map[string]os.DirEntry, len(files)) // Capacity hint when known
-m := map[string]int{"a": 1, "b": 2}           // Fixed elements
-data := make([]int, 0, size)                  // Pre-allocate capacity
-```
+Use capacity hints only when a measured or known size makes them worthwhile.
 
-## Defer
+## `defer` and resource lifetime
 
-Always use `defer` for cleanup. Overhead is negligible:
+Use `defer` to keep cleanup adjacent to successful acquisition when the cleanup should occur on function exit. In loops that acquire many resources, scope each iteration in a helper or close resources explicitly so they are released before the surrounding function returns.
 
 ```go
-p.Lock()
-defer p.Unlock()
-
 f, err := os.Open(path)
-if err != nil { return err }
+if err != nil {
+    return err
+}
 defer f.Close()
-
-// Defer evaluation: arguments are evaluated immediately
-// Use closure for deferred value access
-func doSomething() error {
-    var status string
-    defer func() {
-        log.Printf("status: %s", status) // Evaluated at defer time
-    }()
-    status = "started"
-    // ...
-    status = "finished"
-    return nil
-}
 ```
 
-## Channels
-
-Channels should have size **one** or be **unbuffered**. Larger buffers need strong justification:
+Arguments to an ordinary deferred call are evaluated when `defer` executes. A deferred closure reads captured variables when the closure runs.
 
 ```go
-c := make(chan int, 1)  // buffered with size 1
-c := make(chan int)     // unbuffered
+status := "starting"
+defer func() { log.Printf("status: %s", status) }()
+status = "finished"
 ```
 
-Specify channel direction where possible:
+## Channels and goroutines
+
+Choose channel capacity from the required synchronization, burst tolerance, and backpressure behavior. An unbuffered channel synchronizes sender and receiver; a buffer of one is useful for a one-result handoff, not a universal default.
+
+Expose directional channel types when a function only sends or receives.
+
+Every goroutine needs an owner, a completion path, and a shutdown or cancellation strategy where it can outlive its caller. Wait for goroutines when their results, cleanup, or test completion depend on them. Use leak detection only when it is compatible with the repository's test setup.
 
 ```go
-func sum(values <-chan int) int {     // receive-only
-    for v := range values {
-        out += v
-    }
-    return out
-}
-```
+ctx, cancel := context.WithCancel(parent)
+defer cancel()
 
-## Goroutines
-
-- Every goroutine must have a predictable stop time or a way to signal it to stop.
-- There must be a way to wait for the goroutine to finish.
-- No goroutines in `init()`.
-- Use `go.uber.org/goleak` to test for goroutine leaks.
-
-```go
-stop := make(chan struct{})
 done := make(chan struct{})
 go func() {
     defer close(done)
     for {
         select {
+        case <-ctx.Done():
+            return
         case <-ticker.C:
             flush()
-        case <-stop:
-            return
         }
     }
 }()
-close(stop)
+
+cancel()
 <-done
 ```
 
-## Enums
+## Enums, atomics, and embedding
 
-Start enums at one using `iota + 1` unless zero-value is the desired default:
+Design the zero value intentionally. Start an enum at `iota + 1` when zero should mean invalid or unset; start at zero when it is the natural default.
 
-```go
-type Operation int
+For Go 1.19+, prefer the standard-library typed atomics (`atomic.Bool`, `atomic.Int64`, and related types) for simple atomic state. Use the function-based `sync/atomic` API for earlier releases. Use a mutex or another synchronization design when operations span multiple fields or require invariants.
 
-const (
-    Add Operation = iota + 1
-    Subtract
-    Multiply
-)
-```
+Embed a type only when promoting its methods is part of the intended API. Avoid embedding synchronization primitives in exported types, and consider composition when embedding would leak implementation details.
 
-## Atomics
+## Initialization, assertions, exits, and panics
 
-Prefer `go.uber.org/atomic` or Go 1.19+ stdlib atomic types for type-safe operations:
+Avoid `init` when ordinary initialization makes dependencies and failures clearer. If it is needed, keep it deterministic and free from unexpected I/O or goroutines.
 
-```go
-type Server struct {
-    running atomic.Bool
-}
+Use the comma-`ok` assertion when a dynamic type mismatch is an expected or externally influenced condition. A direct assertion is appropriate only when a violated internal invariant should fail immediately.
 
-func (s *Server) Start() {
-    if s.running.Swap(true) {
-        return // Already running
-    }
-    // Start logic
-}
+Libraries should return errors rather than terminate the process. Executable entry points may turn a final error into logging and an exit status. `os.Exit` and `log.Fatal` skip deferred cleanup, so perform required cleanup before using them.
 
-func (s *Server) IsRunning() bool {
-    return s.running.Load()
-}
-```
-
-## Embedding
-
-- Do NOT embed types in public structs (leaks implementation details).
-- Embedded types must be at the top of struct fields.
-- Do NOT embed `sync.Mutex`.
-- Embed consciously: "would all exported inner methods be added directly?"
-
-```go
-// Good embedding: adds value
-type countingWriteCloser struct {
-    io.WriteCloser
-    count int
-}
-```
-
-## Built-in Names
-
-Never shadow predeclared identifiers:
-
-```go
-// Bad
-var error string
-
-// Good
-var errorMessage string
-```
-
-## init() Functions
-
-Avoid `init()`. When unavoidable: be deterministic, avoid I/O, prefer `var X = fn()`.
-
-## Exit in Main
-
-- Call `os.Exit` or `log.Fatal` ONLY in `main()`.
-- Delegate to a `run()` function that returns an error.
-
-```go
-func main() {
-    if err := run(); err != nil {
-        log.Fatal(err)
-    }
-}
-
-func run() error {
-    // business logic
-}
-```
-
-## Type Assertions
-
-Always use the "comma ok" form:
-
-```go
-// Bad — panics
-t := i.(string)
-
-// Good
-t, ok := i.(string)
-if !ok {
-    // handle gracefully
-}
-```
-
-## Panics
-
-- Return errors, don't panic.
-- Panic only for irrecoverable situations.
-- In tests, use `t.Fatal` / `t.FailNow`, not `panic`.
-
-## Cross-References
-
-- For naming conventions and formatting: load `style`
-- For error patterns: load `error-handling`
-- For modern Go features: load `modern-features`
-- For linter configuration: load `linter-guide`
+Use panic for broken internal invariants or explicitly documented programmer misuse, not ordinary runtime failures. Recover only at a deliberately chosen containment boundary and re-panic unexpected values.

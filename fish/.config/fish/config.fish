@@ -15,3 +15,4 @@ direnv hook fish | source
 zoxide init fish | source
 fx --comp fish | source
 mise activate fish | source
+sofka completion fish | source

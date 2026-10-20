@@ -1,167 +1,77 @@
 ---
 name: domain-cli
-description: Use when building CLI tools in Rust. Keywords: CLI, command line, clap, terminal, stdin, stdout, stderr, argument parsing, shell completion, color output, progress bar, TUI, subcommand.
+description: Use when building command-line applications in Rust, including argument parsing, terminal behavior, pipelines, progress reporting, and process exit semantics.
 ---
 
-# Domain: CLI (Rust)
+# Rust CLI Guidance
 
-**Triggers**: CLI, command line, clap, terminal, stdin, stdout, stderr, argument parsing, shell completion, color output, progress bar, TUI, subcommand, shell.
+Start with the command's contract: machine-readable versus human-readable output, stdin/stdout/stderr behavior, exit statuses, configuration sources, signal/shutdown behavior, and supported terminal environments. Inspect the crate's MSRV and existing CLI framework before choosing APIs or dependencies.
 
-## Domain Constraints -> Design Implications
+## Interface boundaries
 
-| Domain Rule | Design Constraint | Rust Implication |
-|-------------|-------------------|------------------|
-| Fast startup | Minimal init time | Lazy loading, no heavy deps |
-| Single-threaded by default | No thread safety needed | Rc, RefCell ok if needed |
-| Error visibility | Clear error messages | anyhow with context for errors |
-| User control | Signals (Ctrl+C) | Signal handling |
-| Composability | Pipe support | Read from stdin, write to stdout |
+- Parse arguments and configuration at the executable boundary; validate cross-field and domain rules after parsing.
+- Send primary data to stdout and diagnostics, progress, and prompts to stderr so pipelines remain usable.
+- Use `std::io::IsTerminal` when the crate MSRV supports it to adapt interactive presentation. Respect explicit user configuration and conventions such as `NO_COLOR`; never make a TTY heuristic the only way to control output.
+- Provide stable exit codes and machine-readable formats only when they are part of the command's contract. Avoid changing textual output that scripts may consume without a compatibility decision.
 
----
+## Errors and process lifetime
 
-## Critical Constraints
-
-### Fast Startup
-
-```
-RULE: CLI tools should start instantly
-WHY: Users notice startup latency
-RUST: Lazy init for heavy resources, avoid eager loading
-```
-
-### Error Visibility
-
-```
-RULE: Errors must be immediately understandable
-WHY: User is looking at the terminal, not a dashboard
-RUST: anyhow with human-readable context, color output
-```
-
-### Unix Philosophy
-
-```
-RULE: Do one thing well, compose with pipes
-WHY: CLI tools are building blocks
-RUST: Read from stdin, write to stdout, stderr for diagnostics
-```
-
----
-
-## CLI Framework Comparison
-
-| Framework | Style | Best For |
-|-----------|-------|----------|
-| clap (derive) | Derive-based | Most CLI tools |
-| clap (builder) | Builder pattern | Complex CLI with dynamic args |
-| bpaf | Composable | Functional CLI composition |
-| argh | Minimal derive | Simple CLIs |
-
-## Key Crates
-
-| Purpose | Crate |
-|---------|-------|
-| Argument parsing | clap |
-| Terminal colors | colored, owo-colors, anstyle |
-| Progress bars | indicatif |
-| Shell completion | clap_complete |
-| Signals | tokio::signal, signal-hook |
-| Paging | bat, less |
-| TUI | ratatui |
-
-## Design Patterns
-
-| Pattern | Purpose | Implementation |
-|---------|---------|----------------|
-| Derive args | Structured parsing | `#[derive(Parser)]` |
-| Subcommands | Hierarchical CLIs | `enum Commands { ... }` |
-| Progress bars | Long operations | `indicatif::ProgressBar` |
-| Color output | Readable diagnostics | `colored::Colorize` |
-| Pipe detection | Adapt to stdin/stdout | `atty::isnt` |
-
-## Code Pattern: CLI with clap
-
-```rust
-use clap::{Parser, Subcommand};
-
-#[derive(Parser)]
-#[command(name = "myapp", about = "Does awesome things")]
-struct Cli {
-    #[arg(short, long, default_value = "config.toml")]
-    config: PathBuf,
-
-    #[arg(short, long, global = true)]
-    verbose: bool,
-
-    #[command(subcommand)]
-    command: Option<Commands>,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    /// Initialize a new project
-    Init {
-        #[arg(default_value = ".")]
-        path: PathBuf,
-    },
-    /// Build the project
-    Build {
-        #[arg(short, long)]
-        release: bool,
-    },
-}
-
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
-
-    match cli.command {
-        Some(Commands::Init { path }) => init_project(&path)?,
-        Some(Commands::Build { release }) => build_project(release)?,
-        None => run_default(&cli)?,
-    }
-    Ok(())
-}
-```
-
-### Error Display
+Executable boundaries can use an ergonomic reporting type such as `anyhow::Result`; reusable libraries should expose error types that callers can inspect when that is part of their API. Add useful context at filesystem, process, network, and configuration boundaries, then print a failure once in `main` or the selected command runner.
 
 ```rust
 use anyhow::{Context, Result};
 
-fn main() -> Result<()> {
-    if let Err(e) = run() {
-        // Print error chain in human-readable format
-        eprintln!("error: {:#}", e);
-        std::process::exit(1);
-    }
-    Ok(())
+fn run() -> Result<()> {
+    let input = std::fs::read_to_string("data.csv")
+        .with_context(|| "failed to read data.csv")?;
+    process(&input).context("failed to process input")
 }
 
-fn run() -> Result<()> {
-    let content = std::fs::read_to_string("data.csv")
-        .context("failed to read data file")?;
-    process(&content)
-        .context("failed to process data")?;
-    Ok(())
+fn main() {
+    if let Err(error) = run() {
+        eprintln!("error: {error:#}");
+        std::process::exit(1);
+    }
 }
 ```
 
----
+`process::exit` bypasses destructors, so required persistence or protocol completion must happen before it.
 
-## Common Mistakes
+## Responsiveness and concurrency
 
-| Mistake | Domain Violation | Fix |
-|---------|-----------------|-----|
-| Panic on bad input | Crashes instead of error message | Return Result with context |
-| Blocking for too long | Freezes terminal | Progress bar or async |
-| No pipe support | Breaks Unix composability | Check stdin/stdout |
-| Hard-coded colors | Bad terminal compatibility | Respect NO_COLOR |
-| Too many deps | Slow startup | Lazy init, minimize deps |
+A progress bar reports progress; it does not make blocking or CPU-heavy work asynchronous. Keep the terminal responsive by selecting an execution model that matches the workload:
 
-## Layer Mapping
+- straightforward synchronous work is often appropriate for a small command;
+- use bounded workers, Rayon, or a job system for sustained CPU parallelism;
+- use an async runtime for substantial concurrent I/O, with runtime-specific signal and cancellation handling;
+- use `spawn_blocking` only to isolate a bounded blocking operation from async workers.
 
-| Constraint | Feature File |
-|------------|--------------|
-| Argument parsing | load `features/api-design.md` |
-| Error messages | load `features/error-handling.md` |
-| Single-threaded | load `features/ownership.md` |
-| Signal handling | load `features/async.md` |
+CLI applications may be multithreaded through their own code or dependencies. Choose `Rc`/`RefCell` only when the required ownership never crosses threads; do not infer single-threadedness from the interface.
+
+## `clap` shape
+
+Use the repository's chosen `clap` version and feature set. This excerpt omits application-specific functions and imports such as `std::path::PathBuf`:
+
+```rust
+use clap::{Parser, Subcommand};
+use std::path::PathBuf;
+
+#[derive(Parser)]
+struct Cli {
+    #[command(subcommand)]
+    command: Option<Command>,
+}
+
+#[derive(Subcommand)]
+enum Command {
+    Init { #[arg(default_value = ".")] path: PathBuf },
+    Build { #[arg(short, long)] release: bool },
+}
+```
+
+## Load next
+
+- Argument/public option design: `features/api-design.md`
+- Error behavior: `features/error-handling.md`
+- Async signals, cancellation, and tasks: `features/async.md`
+- Configuration, dependencies, and binary layout: `features/project-structure.md`, `features/ecosystem.md`

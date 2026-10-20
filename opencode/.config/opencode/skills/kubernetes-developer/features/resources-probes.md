@@ -4,7 +4,7 @@
 
 ## Rules
 
-1. Set per-container `resources.requests`/`resources.limits` for `cpu`, `memory`, `ephemeral-storage`, `hugepages-<size>`, and extended resources; the Pod aggregate request/limit is the sum of its containers. Why: the scheduler places on requests and the kubelet enforces limits.
+1. Set per-container `resources.requests`/`resources.limits` for `cpu`, `memory`, `ephemeral-storage`, `hugepages-<size>`, and extended resources. For scheduling, ordinary app-container requests are summed, each init container contributes the maximum needed per resource, and Pod overhead is added; inspect restartable-init sidecars and Pod-level resources against the target release. Why: the scheduler uses effective requests, while limit behavior varies by resource and enabled features.
 2. Express CPU in cpu units (0.1 == 100m; 1m = 0.001 CPU) and memory in bytes — use `Ki`/`Mi`/`Gi` for memory, never `k`/`M`/`G`, and never write `400m` for memory (it means 0.4 bytes). Why: unit case changes the value by orders of magnitude.
 3. Expect CPU limits to be enforced by throttling and memory limits reactively by OOM kills under pressure. Why: a container can transiently exceed its memory limit before the kernel reacts.
 4. Do not overcommit `hugepages-*`; hugepages cannot be overcommitted. Why: hugepages are physically reserved.

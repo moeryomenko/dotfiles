@@ -17,7 +17,7 @@
 11. `kubectl port-forward` is TCP-only and long-running (does not return until terminated). Why: it maintains a tunnel for the session.
 12. `kubectl port-forward` requires RBAC `get` on the resource and `create` on `pods/portforward`. Why: port-forwarding creates a subresource.
 13. Diagnose Pod failures in order: `kubectl describe pod` for events, `kubectl get events`, `kubectl get pod <name> -o yaml`, and extract the terminated message with `-o go-template`. Why: events and lastState reveal the failure reason.
-14. Node log query (GA v1.36): kubelet API + kubectl plugin read node logs without SSH; requires the `NodeLogQuery` gate and `enableSystemLogQuery` kubelet config. Why: it removes the SSH dependency for log retrieval.
+14. Use node-log queries only when the target API server and kubelet version/configuration support them; access the kubelet endpoint through the API server node proxy rather than assuming a kubectl plugin. Grant narrowly scoped `nodes/proxy` RBAC and treat results as sensitive, implementation-dependent system data. Why: node logs can expose credentials and are not a stable application API.
 15. For local development use `kind` (Kubernetes IN Docker) or minikube — documented learning environments that run lightweight clusters. Why: a local cluster is the fastest way to iterate on manifests.
 16. Debug Service issues by inspecting `kubectl logs` and verifying backing Pods in EndpointSlices. Why: Service problems usually trace to endpoint membership.
 
@@ -63,6 +63,7 @@ kubectl port-forward mongo:27017   # not a valid target form
 - Describe/events: `kubectl describe pod <name>`; `kubectl get events` (docs:tasks/debug/debug-application/debug-pods.md)
 - Extract terminated message: `kubectl get pod <name> -o go-template="{{range .status.containerStatuses}}{{.lastState.terminated.message}}{{end}}"` (docs:tasks/debug/debug-application/determine-reason-pod-failure.md)
 - Inspect an ephemeral container's security context: `kubectl get pod myapp -o jsonpath='{.spec.ephemeralContainers[0].securityContext}'` (docs:tasks/debug/debug-application/debug-running-pod.md)
+- Query node logs through the API server only after confirming the target release and kubelet configuration: `kubectl get --raw '/api/v1/nodes/<node>/proxy/logs/'`; grant only the necessary `nodes/proxy` permission and do not treat the returned format as an application contract.
 
 ## Unverified Flags
 
@@ -82,7 +83,7 @@ Debug mode choice:
 ## Version Notes
 
 - Ephemeral containers: stable since v1.25 (docs:concepts/workloads/pods/ephemeral-containers.md).
-- Node log query (`NodeLogQuery`): GA in v1.36, enabled by default on kubelet (docs:reference/command-line-tools-reference/feature-gates/NodeLogQuery.md).
+- Node log query availability and configuration are Kubernetes-version- and kubelet-dependent; verify the target cluster documentation before granting `nodes/proxy` access or relying on the API-server proxy endpoint.
 - `kubectl debug` default profile is `legacy` but planned for deprecation — prefer `general` (docs:tasks/debug/debug-application/debug-running-pod.md).
 - `.kuberc` beta (v1.34+) separates user preferences from kubeconfig (docs:reference/kubectl/kuberc.md).
 
@@ -92,6 +93,7 @@ Debug mode choice:
 - `kubectl port-forward` is TCP-only and long-running (does not return until terminated) (docs:tasks/access-application-cluster/port-forward-access-application-cluster.md).
 - `kubectl exec` on a crash-looping container is often impossible — use `kubectl debug --copy-to` or logs `--previous` instead (docs:tasks/debug/debug-application/debug-running-pod.md; docs:tasks/debug/debug-application/get-shell-running-container.md).
 - Node debugging Pods are real Pods on the node — delete them when done (`kubectl delete pod node-debugger-...`) (docs:tasks/debug/debug-application/debug-running-pod.md).
+- Node-log queries require narrowly scoped `nodes/proxy` access and can expose sensitive system data; verify support and kubelet configuration, and do not depend on their log format as an application API.
 - `kubectl logs --previous` only works for containers that have restarted (previous instance exists) (docs:tasks/debug/debug-application/debug-running-pod.md).
 
 ## Cross-References

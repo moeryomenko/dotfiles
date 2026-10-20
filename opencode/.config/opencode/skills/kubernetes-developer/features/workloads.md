@@ -15,7 +15,7 @@
 9. Use a StatefulSet for stable network identity and stable storage: Pods are `$(statefulset)-$(ordinal)`, deployed and deleted in ordinal order, and storage comes from `volumeClaimTemplates`. Why: stateful apps depend on identity and ordering.
 10. Provide a Headless Service (`clusterIP: None`) named by `serviceName` for a StatefulSet. Why: per-Pod DNS names like `$(statefulset)-$(ordinal).$(serviceName).$(ns).svc.cluster.local` depend on it.
 11. Use `updateStrategy.rollingUpdate.partition` for canary/phased StatefulSet rollouts; only ordinals >= partition update, and a `partition` greater than `replicas` blocks updates. Why: the partition boundary controls how many Pods update.
-12. Do not set `terminationGracePeriodSeconds: 0` on StatefulSets; scaling down never deletes PVCs, and the `persistentVolumeClaimRetentionPolicy` (default `Retain`) is gated by `StatefulSetAutoDeletePVC`. Why: the docs call graceful termination mandatory for stable storage.
+12. Do not set `terminationGracePeriodSeconds: 0` on StatefulSets. `persistentVolumeClaimRetentionPolicy` independently controls PVC behavior when the StatefulSet is deleted and when it scales down; use `Retain` or `Delete` deliberately for each. Confirm availability and default behavior on the target Kubernetes release. Why: stable storage needs graceful shutdown and an explicit data-retention policy.
 13. Use a DaemonSet to run a Pod on every (or selected, via nodeSelector/affinity) node; the `selector` is immutable after creation. Why: per-node daemons must track node membership.
 14. Delete a DaemonSet with `--cascade=orphan` to leave its Pods running. Why: orphan deletion keeps daemon Pods alive for offline nodes.
 15. For Jobs: `restartPolicy` may only be `Never` or `OnFailure` in the pod template; `backoffLimit` defaults to 6; `activeDeadlineSeconds` overrides `backoffLimit`; `ttlSecondsAfterFinished` auto-cleans finished Jobs (TTL controller, stable v1.23). Why: Jobs own their retry semantics, unlike Deployments.
@@ -128,7 +128,7 @@ spec:
 - Rollout history and rollback: `kubectl rollout history deployment/nginx-deployment --revision=2`; `kubectl rollout undo deployment/nginx-deployment --to-revision=2` (docs:concepts/workloads/controllers/deployment.md)
 - Pause/resume to batch template changes: `kubectl rollout pause deployment/nginx-deployment`; `kubectl rollout resume deployment/nginx-deployment` (docs:concepts/workloads/controllers/deployment.md)
 - Restart in place after config changes: `kubectl rollout restart deployment configmap-env-var` (docs:tutorials/configuration/updating-configuration-via-a-configmap.md)
-- Update image and scale: `kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1`; `kubectl scale deployment/nginx-deployment --replicas=10`; `kubectl autoscale deployment/nginx-deployment --min=10 --max=15 --cpu-percent=80%` (docs:concepts/workloads/controllers/deployment.md)
+- Update image and scale: `kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1`; `kubectl scale deployment/nginx-deployment --replicas=10`; `kubectl autoscale deployment/nginx-deployment --min=10 --max=15 --cpu-percent=80` (docs:concepts/workloads/controllers/deployment.md)
 - Set resources per container: `kubectl set resources deployment/nginx-deployment -c=nginx --limits=cpu=200m,memory=512Mi` (docs:concepts/workloads/controllers/deployment.md)
 - Patch a Deployment field: `kubectl patch deployment/nginx-deployment -p '{"spec":{"progressDeadlineSeconds":600}}'` (docs:concepts/workloads/controllers/deployment.md)
 - StatefulSet scale/rollback/revisions: `kubectl scale statefulset <name> --replicas=X`; `kubectl rollout undo statefulset/webapp --to-revision=3`; `kubectl get controllerrevisions -l app.kubernetes.io/name=webapp`; `kubectl get controllerrevision/webapp-3 -o yaml` (docs:concepts/workloads/controllers/statefulset.md)
@@ -155,7 +155,6 @@ Controller choice:
 - `InPlacePodVerticalScaling`: GA/locked since v1.35 (docs:reference/command-line-tools-reference/feature-gates/InPlacePodVerticalScaling.md).
 - `PodLevelResources`: beta, enabled by default since v1.34 (docs:reference/command-line-tools-reference/feature-gates/PodLevelResources.md).
 - Sidecar containers: stable/locked since v1.33 (docs:reference/command-line-tools-reference/feature-gates/SidecarContainers.md).
-- **FUTURE (v1.37)**: Static Pods can no longer reference Secrets/ConfigMaps; the `PreventStaticPodAPIReferences` gate is removed (blog:_posts/2026/kubernetes-v1-37-sneak-peek.md).
 
 ## Pitfalls
 

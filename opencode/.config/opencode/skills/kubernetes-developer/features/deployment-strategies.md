@@ -1,6 +1,6 @@
 # Deployment Strategies — rolling updates, canary/blue-green, rollback, progressive delivery
 
-> Default to RollingUpdate, use canary/blue-green patterns for controlled exposure, and keep revision history enabled so rollback always works.
+> Default to RollingUpdate, use canary/blue-green patterns for controlled exposure, and retain revision history when rollback is a compatible incident-response option.
 
 ## Rules
 
@@ -18,7 +18,7 @@
 12. Use Gateway API traffic weighting and header-based matching for progressive delivery; progressive delivery is not a built-in core API feature. Why: Gateway API is the documented differentiator for gradual traffic shifting.
 13. Remember rollouts apply to Deployments, DaemonSets, and StatefulSets. Why: all three controllers implement rollout semantics.
 14. When an HPA manages a Deployment, do not set `.spec.replicas` in the manifest. Why: apply would fight the HPA over the replica count.
-15. A bad image causes ImagePullBackOff and a stuck rollout; roll back rather than editing forward. Why: the controller stops scaling the new ReplicaSet on template failure.
+15. A bad image can cause ImagePullBackOff and a stuck rollout; choose rollback or forward repair after assessing schema, data, external effects, configuration, image availability, and compatibility. Why: retained ReplicaSets alone cannot reverse every release side effect.
 
 ## Good / Bad Examples
 
@@ -97,11 +97,11 @@ Note: canary and blue-green are patterns assembled from documented primitives (t
 
 - The `--record` flag that auto-populated CHANGE-CAUSE is deprecated and slated for removal (docs:concepts/workloads/controllers/deployment.md).
 - StatefulSet `maxUnavailable` rolling-update field: beta since v1.35, disabled by default in v1.36 (docs:concepts/workloads/controllers/statefulset.md).
-- **FUTURE (v1.37)**: no deployment-strategy removals announced; watch the kube-proxy ipvs deprecation and SELinuxMount GA for rollout-affecting changes (SELinux: volumes mounted with `-o context=` may cause Pods sharing a volume with different SELinux labels to fail to start) (blog:_posts/2026/kubernetes-v1-37-sneak-peek.md).
+- Verify node, runtime, and storage-driver security behavior on the target release before treating SELinux-related rollout failures as application failures (docs:tasks/configure-pod-container/security-context.md).
 
 ## Pitfalls
 
-- A bad image (e.g. `nginx:1.161`) causes ImagePullBackOff and a stuck rollout; the controller stops scaling the new ReplicaSet (depends on maxUnavailable). Roll back rather than editing forward (docs:concepts/workloads/controllers/deployment.md).
+- A bad image (e.g. `nginx:1.161`) can cause ImagePullBackOff and a stuck rollout; choose rollback only when schema/data/external effects and configuration are compatible, otherwise repair forward deliberately (docs:concepts/workloads/controllers/deployment.md).
 - `kubectl apply` after manual scaling overrides `replicas`; if an HPA manages the Deployment, do not set `.spec.replicas` at all (docs:concepts/workloads/controllers/deployment.md).
 - `revisionHistoryLimit: 0` disables rollback (docs:concepts/workloads/controllers/deployment.md).
 - Canary Services must not include the differentiating label (`track`) in their selector, or the canary gets no traffic (docs:concepts/workloads/management.md).

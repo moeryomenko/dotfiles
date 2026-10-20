@@ -1,67 +1,42 @@
-# Numeric & Arithmetic Safety (HIGH)
+# Numeric and Arithmetic Safety
 
-## Handle Integer Overflow Explicitly
+Choose numeric behavior as part of the domain contract: valid range, overflow result, rounding, NaN/infinity policy, representation, and error reporting. Debug and release overflow behavior is not a substitute for that decision.
 
-Use `checked_`/`saturating_`/`wrapping_`/`overflowing_` methods instead of relying on overflow behavior:
+## Integer operations and casts
 
-```rust
-// Checked - returns Option
-let sum = a.checked_add(b)?;
+Use the operation matching the intended result:
 
-// Saturating - clamps at min/max
-let clamped = a.saturating_add(b);
+- `checked_*` when overflow must be reported;
+- `saturating_*` when clamping is explicitly correct;
+- `wrapping_*` for modulo arithmetic;
+- `overflowing_*` when both value and overflow flag are meaningful.
 
-// Wrapping - wraps around
-let wrapped = a.wrapping_add(b);
+Use `From` for guaranteed conversions and `TryFrom` or explicit validation for narrowing/possibly lossy conversion. An `as` cast can be intentional for low-level or protocol code, but should be visibly justified at a boundary.
 
-// Overflowing - returns (result, overflowed)
-let (result, overflowed) = a.overflowing_add(b);
-```
+## Floating-point policy
 
-## Avoid `as` for Narrowing Casts
-
-Use `From` for safe widening conversions and `TryFrom` for narrowing:
+Exact equality is correct for some cases (for example, values produced by the same discrete operation), and inappropriate for others. Define comparison policy from the algorithm: absolute tolerance near zero, relative tolerance across magnitudes, and a deliberate NaN/infinity policy. ULP comparison may suit particular numerical algorithms.
 
 ```rust
-// Widening - always safe, use From
-let x: i64 = val.into();
-
-// Narrowing - might truncate, use TryFrom
-let x: i32 = val.try_into()?;
-```
-
-## Don't Compare Floats with `==`
-
-Use a tolerance for equality comparisons, and `total_cmp` for ordering:
-
-```rust
-fn approx_eq(a: f64, b: f64, epsilon: f64) -> bool {
-    (a - b).abs() < epsilon
+fn approx_eq(a: f64, b: f64, absolute: f64, relative: f64) -> bool {
+    if a == b {
+        return true;
+    }
+    if !a.is_finite() || !b.is_finite() {
+        return false;
+    }
+    (a - b).abs() <= absolute.max(relative * a.abs().max(b.abs()))
 }
-
-// For sorting/ordering:
-vec.sort_by(|a, b| a.total_cmp(&b));
 ```
 
-## Bound Values with `clamp` and Saturating Arithmetic
+Use `total_cmp` when a total order is needed, such as sorting `f64` values; it is not an approximate-equality operation.
 
-```rust
-let value = raw_value.clamp(min, max);
-let saturated = a.saturating_add(b);
-```
+## Domain types
 
-## Use `NonZero*` Types to Forbid Zero
+Use `NonZero*` types when zero is invalid and their API benefits fit the type. For money, measurements, timestamps, and protocol fields, select a representation with the required scale, range, serialization, and rounding behavior.
 
-`NonZeroU8`, `NonZeroU16`, `NonZeroU32`, etc. forbid zero at the type level and unlock niche optimization (e.g., `Option<NonZeroUsize>` is pointer-sized):
+## Load next
 
-```rust
-use std::num::NonZeroUsize;
-
-let nz = NonZeroUsize::new(42).unwrap();
-// Option<NonZeroUsize> is the same size as usize
-```
-
-## Cross-References
-
-- For type system patterns: load `type-safety`
-- For conversions: load `conversions`
+- Conversion boundaries: `conversions.md`
+- Domain-specific financial representation: `../domain-fintech/SKILL.md`
+- Newtypes/invariants: `type-safety.md`

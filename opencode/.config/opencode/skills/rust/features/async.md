@@ -1,149 +1,50 @@
-# Async/Await (HIGH)
+# Async and Await
 
-**Triggers**: async, await, Future, tokio, async-std, smol, spawn, JoinSet, select!, join!, channel, mpsc, oneshot, broadcast, CancellationToken, cancellation, async fn in trait, Send across await, spawn_blocking, runtime.
+Choose async because the workload needs concurrent waiting or the framework requires it—not as a universal performance feature. Inspect the chosen runtime, its enabled features, task-spawn bounds, and shutdown model before adopting runtime-specific APIs.
 
-## Configure Tokio Runtime Appropriately
+## Ownership, `Send`, and spawning
 
-| Runtime | Use Case |
-|---------|----------|
-| Multi-thread (default) | IO-bound, many concurrent connections |
-| Current-thread (`flavor = "current_thread"`) | CLI tools, tests, single connection |
-| Custom (`Builder::new_*()`) | Fine-tuned thread count, name, etc. |
+A reference can cross an await when its lifetime remains valid; cloning `Arc` is not inherently required. A future becomes non-`Send` when it retains non-`Send` state across a suspension point, which matters for multithreaded spawning. `'static` is typically required by detached task APIs because the executor may retain a task after the caller returns; it does not mean the task runs forever.
 
-```rust
-#[tokio::main(flavor = "current_thread")]
-async fn main() { /* single-threaded */ }
+Narrow critical sections before `.await` by default. Holding a standard lock guard across an await risks blocking executor threads and can create deadlocks. Tokio async locks are specifically designed to permit a guard across an await when needed, but using one still needs a contention, cancellation, and ownership argument.
 
-#[tokio::main(worker_threads = 4)]
-async fn main() { /* custom thread count */ }
-```
+## Blocking and parallel work
 
-## Never Hold Mutex/RwLock Across `.await`
+Do not run unbounded blocking or CPU-heavy work on async workers. `spawn_blocking` isolates a bounded blocking operation; it is not a universal CPU scheduler. For sustained CPU work, choose bounded concurrency, Rayon, dedicated workers, or a job system based on workload and runtime integration.
 
-Holding a lock across an await point can cause deadlocks if the lock is held on the same thread.
+Runtime async filesystem APIs may internally use blocking pools. Select them where their scheduling and cancellation behavior fit; a small, startup-only synchronous operation can be clearer.
 
-```rust
-// BAD: lock held across await
-let data = lock.lock().unwrap();
-some_future.await;
+## Cancellation and coordination
 
-// GOOD: scope the lock
-let result = {
-    let data = lock.lock().unwrap();
-    data.compute()
-};
-some_future.await;
-```
+Dropping a future cancels it only in the sense that polling stops; it does not automatically undo external side effects. Design operations to leave a recoverable state or explicitly continue/compensate work. Cancellation safety is operation-specific:
 
-## Use `spawn_blocking` for CPU-Intensive Work
+- Tokio channel receive operations are cancellation-safe for messages;
+- lock acquisition may lose queue position when cancelled but does not lose protected data;
+- operations such as `read_exact` can lose partial progress unless the caller owns and resumes the buffer/protocol state.
 
-CPU-bound work on the async executor starves IO tasks:
-
-```rust
-tokio::task::spawn_blocking(move || {
-    heavy_computation(data)
-}).await.unwrap()
-```
-
-## Use `tokio::fs` Instead of `std::fs` in Async Code
-
-`std::fs` blocks the thread. `tokio::fs` offloads to a blocking thread pool.
-
-## Use `CancellationToken` for Graceful Shutdown
+Use bounded channels when backpressure is required. Select `mpsc`, `broadcast`, `watch`, or `oneshot` from delivery semantics, lag behavior, and ownership—not by interchangeability. Join task handles/sets when results, panics, resource cleanup, or shutdown sequencing matters.
 
 ```rust
 use tokio_util::sync::CancellationToken;
 
-let token = CancellationToken::new();
-let token_clone = token.clone();
-tokio::spawn(async move {
+async fn worker(cancel: CancellationToken) {
     tokio::select! {
-        _ = token_clone.cancelled() => return,
+        _ = cancel.cancelled() => {}
         result = do_work() => handle(result),
     }
-});
-token.cancel();
-```
-
-## Use `join!` / `try_join!` for Concurrent Independent Futures
-
-```rust
-let (result1, result2) = tokio::join!(fetch_a(), fetch_b());
-```
-
-`try_join!` propagates errors early.
-
-## Use `select!` to Race Futures
-
-```rust
-tokio::select! {
-    result = primary_task() => handle_primary(result),
-    _ = timeout(Duration::from_secs(5)) => handle_timeout(),
 }
+
+async fn do_work() -> Result<(), std::io::Error> { Ok(()) }
+fn handle(_: Result<(), std::io::Error>) {}
 ```
 
-## Use Bounded Channels to Apply Backpressure
+## Async traits
 
-```rust
-let (tx, rx) = tokio::sync::mpsc::channel(256);  // bounded
-```
+Native `async fn` in traits is stable on supported modern Rust versions, but those traits are not dyn-compatible and their returned future bounds are part of the public API. `async_trait` or an explicit boxed-future/design adapter may be appropriate when dynamic dispatch is needed. `AsyncFn*` bounds have their own MSRV requirements; use them only after checking the crate's toolchain.
 
-| Channel | Use Case |
-|---------|----------|
-| `mpsc` | Async message queues between tasks |
-| `broadcast` | Pub/sub, all subscribers receive all messages |
-| `watch` | Share the latest value with observers |
-| `oneshot` | Request-response patterns |
+## Load next
 
-## Use `JoinSet` for Managing Dynamic Task Collections
-
-```rust
-let mut set = JoinSet::new();
-set.spawn(task1());
-set.spawn(task2());
-while let Some(res) = set.join_next().await {
-    handle(res?);
-}
-```
-
-## Clone Arc/Rc Data Before Await Points
-
-Avoid holding references across suspension:
-
-```rust
-let arc = Arc::clone(&shared);
-some_future.await;
-process(&arc);
-```
-
-## Use Native `async fn` in Traits (Stable 1.75+)
-
-Instead of the `async_trait` macro:
-
-```rust
-trait AsyncProcessor {
-    async fn process(&self, data: Data) -> Result<Output>;
-}
-```
-
-## Use `AsyncFn`/`AsyncFnMut`/`AsyncFnOnce` Bounds
-
-Instead of `F: Fn() -> Fut, Fut: Future`:
-
-```rust
-async fn run<F: AsyncFn()>(f: F) {
-    f().await;
-}
-```
-
-## Ensure Futures Are Cancellation-Safe
-
-Futures used in `tokio::select!` branches should tolerate being dropped without side effects. Operations like `RecvError` on channels, `read_exact` on partial data, or acquiring locks are not cancellation-safe.
-
-## Cross-References
-
-- For concurrency patterns: load `concurrency`
-- For ownership across threads: load `ownership`
-- For cancellation safety: load `lifecycle`
-- For async patterns with examples: load `patterns/async/common-patterns.md`
-- For async error handling: load `error-handling`
+- Locks and atomics: `concurrency.md`
+- Task patterns: `patterns/async/common-patterns.md`
+- Runtime error boundaries: `error-handling.md`
+- Resource completion: `lifecycle.md`

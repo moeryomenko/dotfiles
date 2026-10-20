@@ -1,127 +1,50 @@
-# Memory Optimization (CRITICAL)
+# Memory and Allocation
 
-**Triggers**: allocation, heap, memory, capacity, with_capacity, SmallVec, Box, arena, zero-copy, compact, shrink, reuse, leak, memory optimization, reduce allocation, pre-allocate.
+Optimize allocation count, retained memory, and layout only after identifying a workload and a measurable bottleneck. Allocation avoidance can worsen locality, lifetime complexity, or destructor behavior.
 
-## Use `with_capacity()` When Size Is Known
+## Capacity and reuse
 
-Pre-allocating avoids multiple reallocations as collections grow.
-
-```rust
-let mut results = Vec::with_capacity(1000);
-let mut map = HashMap::with_capacity(pairs.len());
-let estimated = words.iter().map(|w| w.len() + 1).sum();
-let mut output = String::with_capacity(estimated);
-```
-
-## Use `SmallVec` for Usually-Small Collections
-
-When a collection is typically small but occasionally large, `SmallVec` stores the small case on the stack.
+Use capacity hints when a credible size estimate avoids observed growth. A bad estimate or one-off allocation can be less useful than straightforward code.
 
 ```rust
-use smallvec::{smallvec, SmallVec};
-
-let mut vec: SmallVec<[i32; 4]> = smallvec![1, 2, 3];
-// No heap allocation until more than 4 elements
-```
-
-## Use `ArrayVec` for Fixed-Capacity Collections
-
-For collections that never exceed a known maximum, `ArrayVec` allocates entirely on the stack.
-
-## Box Large Enum Variants
-
-When an enum has a variant much larger than others, `Box` the large variant to reduce overall enum size:
-
-```rust
-enum Message {
-    Small(String),                    // 24 bytes
-    Large(Box<HugeDataStructure>),    // 8 bytes on stack, data on heap
+let mut output = String::with_capacity(estimated_bytes);
+for part in parts {
+    output.push_str(part);
 }
 ```
 
-## Use `Box<[T]>` Instead of `Vec<T>` for Fixed-Size Heap Data
+Reuse an allocation with `clear`, `clone_from`, or a caller-owned buffer when ownership and retention are explicit. Do not retain a very large buffer indefinitely merely because reuse is possible.
 
-Once a `Vec` stops growing, shrink it to a boxed slice to reclaim unused capacity:
+## Layout choices
 
-```rust
-let vec: Vec<u8> = (0..100).collect();
-let slice: Box<[u8]> = vec.into_boxed_slice();  // Shrinks to exact size
-```
+`SmallVec`, `ArrayVec`, compact strings, arenas, and boxed variants are workload-specific tools:
 
-## Use `clone_from()` to Reuse Allocations
+- `SmallVec` stores an inline capacity in the container and allocates only after it is exceeded.
+- `ArrayVec` stores elements inline in the container; whether the container itself is stack, heap, or static allocated depends on where it is stored.
+- `Box<T>` can reduce an enum's inline size but adds allocation, pointer indirection, and locality costs.
+- `Vec<T>::into_boxed_slice()` can discard spare capacity when growth is complete, subject to allocation behavior.
+- Arenas can help batch allocation, but retained arenas delay all contained drops and can increase peak memory.
 
-```rust
-let mut dest = String::with_capacity(100);
-// Instead of: dest = source.clone();
-dest.clone_from(&source);  // Reuses existing capacity
-```
+Select narrower integer types only when their range, alignment, serialization, and interoperability remain correct. Inspect actual type layout when it matters; do not infer it from source shape.
 
-## Clear and Reuse Collections in Loops
+## Zero-copy and sharing
 
-```rust
-let mut buffer = Vec::with_capacity(1024);
-for chunk in data.chunks(1024) {
-    buffer.clear();    // Reuses allocation
-    buffer.extend(chunk);
-    process(&buffer);
-}
-```
+Borrowed slices, `Cow`, `bytes::Bytes`, and reference-counted buffers can reduce copying when lifetimes and ownership match the pipeline. They can also retain large backing allocations or complicate APIs. Choose them from observed data flow, not as a default.
 
-## Avoid `format!()` When String Literals Work
+## Formatting
 
-```rust
-// Bad: allocates a String
-let msg = format!("error");
-
-// Good: &'static str
-let msg = "error";
-```
-
-## Use `write!()` Into Existing Buffers Instead of `format!()`
+Use literals rather than `format!` when no formatting is needed. Write into an existing `String` only when buffer reuse or incremental formatting matters, and handle formatting errors according to the destination:
 
 ```rust
 use std::fmt::Write;
 
-let mut output = String::with_capacity(100);
-write!(output, "value: {}", 42).unwrap();  // Reuses buffer
+let mut output = String::new();
+write!(&mut output, "value: {}", 42).expect("writing to String cannot fail");
 ```
 
-## Use Arena Allocators for Batch Allocations
+## Load next
 
-For workloads that allocate many short-lived objects, arena allocators (like `bumpalo` or `typed-arena`) provide significant savings.
-
-## Use Zero-Copy Patterns with Slices and `Bytes`
-
-Use `Cow<'a, str>` or `bytes::Bytes` to share underlying buffers instead of copying.
-
-## Use Compact String Types
-
-For memory-constrained environments, use `compact_str` or `smol_str` instead of `String`.
-
-## Use Appropriately-Sized Integers
-
-Prefer `u32`/`i32` over `u64`/`i64` when the value range fits, especially in large arrays or collections.
-
-## Use Static Assertions to Guard Against Type Size Growth
-
-```rust
-use static_assertions::assert_eq_size;
-
-assert_eq_size!(MyStruct, [u8; 64]);
-```
-
-## Use `mem::take` / `mem::replace` to Move Out of `&mut` Without Cloning
-
-```rust
-let old = mem::take(&mut vec);  // Replaces with default/empty
-```
-
-## Know and Control Drop Order
-
-Struct fields drop top-to-bottom, locals in reverse declaration order. Use `ManuallyDrop` to control drop order when necessary.
-
-## Cross-References
-
-- For performance patterns: load `performance`
-- For ownership patterns: load `ownership`
-- For collection choices: load `collections`
+- Borrowing and cloning semantics: `ownership.md`
+- Collection selection: `collections.md`
+- Measured runtime behavior: `performance.md`, `optimization.md`
+- Cleanup/lifetime tradeoffs: `lifecycle.md`

@@ -1,103 +1,36 @@
-# Type Safety (MEDIUM)
+# Type Safety
 
-## Wrap IDs in Newtypes
+Choose representations that make important mistakes difficult, while keeping APIs proportional to the domain. Newtypes, enums, `Option`, and `Result` are tools—not mandatory wrappers around every primitive.
 
-```rust
-struct UserId(u64);
-struct OrderId(u64);
-```
+## Model the distinction
 
-## Use Newtypes to Enforce Validation at Construction
+Use a newtype when two values share a representation but must not be interchangeable, or when construction validates an invariant:
 
 ```rust
-#[derive(Debug, Clone)]
-pub struct Email(String);
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct UserId(u64);
 
-impl Email {
-    pub fn new(s: String) -> Result<Self, InvalidEmail> {
-        if s.contains('@') && s.contains('.') {
-            Ok(Self(s))
-        } else {
-            Err(InvalidEmail)
-        }
-    }
-}
-```
-
-## Use Enums for Mutually Exclusive States
-
-```rust
-enum ConnectionState {
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ConnectionState {
     Disconnected,
     Connecting,
-    Connected { session_id: u64 },
-    Error(String),
+    Connected,
 }
 ```
 
-## Use `Option<T>` for Values That Might Not Exist
+Use `Option<T>` for a meaningful absence and `Result<T, E>` for an operation that can fail. Sentinel values can be valid wire-format or performance choices when they are documented and safely converted at the boundary.
 
-Never use sentinel values (-1, null pointer, empty string) to represent absence.
+## API implications
 
-## Use `Result<T, E>` for Operations That Can Fail
+Keep invariant-bearing fields private and provide constructors/accessors that maintain the contract. Derive traits only when their semantics are correct: equality, ordering, hashing, copying, and serialization can each be public commitments.
 
-Prefer it over panicking or ad-hoc error signaling.
+Use `#[repr(transparent)]` for a one-field wrapper only when FFI, ABI, or representation compatibility requires it. Do not expose an internal representation accidentally through `Deref`; ordinary newtypes usually need explicit accessors or conversion methods. `Display` and `Debug` serve different audiences, but a type may intentionally implement either, both, or neither according to its interface.
 
-## Use `PhantomData` to Express Type Relationships Without Runtime Cost
+`PhantomData` is for compiler-visible relationships; see `type-driven.md` before using it for lifetime, ownership, or variance reasoning.
 
-```rust
-struct ForeignKey<T> {
-    id: u64,
-    _marker: PhantomData<T>,
-}
-```
+## Load next
 
-## Use `!` (Never Type) for Functions That Never Return
-
-```rust
-fn exit_process() -> ! {
-    std::process::exit(0);
-}
-```
-
-## Add Trait Bounds Only Where Needed
-
-Prefer `where` clauses for readability with multiple bounds.
-
-## Avoid Stringly-Typed APIs
-
-Use enums, newtypes, or validated types instead of raw `String`:
-
-```rust
-// Bad
-fn set_color(color: &str) { /* color might be any string */ }
-
-// Good
-enum Color { Red, Green, Blue }
-fn set_color(color: Color) { /* compiler guarantees valid color */ }
-```
-
-## Use `#[repr(transparent)]` for Newtypes in FFI Contexts
-
-```rust
-#[repr(transparent)]
-struct Wrapper(InnerType);
-```
-
-## Implement `Deref`/`DerefMut` Only for Smart-Pointer Types
-
-Not for general newtype wrappers — use explicit methods instead.
-
-## Use `Display` for User-Facing Output and `Debug` for Diagnostics
-
-Never swap them.
-
-## Implement `LowerHex`, `UpperHex`, `Octal`, and `Binary` for Numeric Newtypes
-
-## Cross-References
-
-- For API design patterns: load `api-design`
-- For conversions: load `conversions`
-- For type-level state machines: load `type-driven`
-- For domain modeling with types: load `domain-modeling`
-- For sealed trait patterns: load `type-driven`
+- Type state and sealed traits: `type-driven.md`
+- Conversions at boundaries: `conversions.md`
+- Public contracts: `api-design.md`
+- Domain values: `domain-modeling.md`

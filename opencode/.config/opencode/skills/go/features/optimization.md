@@ -1,246 +1,115 @@
 # Go Optimization
 
-## Profiling
+Optimize a measured bottleneck, not a suspected one. First establish the workload, correctness constraints, and a reproducible benchmark or production profile. Prefer a simpler design when the measured gain does not justify its complexity.
 
-### CPU Profiling
-```go
-import "runtime/pprof"
+## Measure before changing code
 
-f, _ := os.Create("cpu.prof")
-pprof.StartCPUProfile(f)
-defer pprof.StopCPUProfile()
-```
+Use benchmarks for small, repeatable operations and profiles or traces for application behavior.
 
-### Memory Profiling
-```go
-import "runtime/pprof"
-
-f, _ := os.Create("mem.prof")
-runtime.GC()
-pprof.WriteHeapProfile(f)
-```
-
-### Interactive Analysis
 ```bash
-go tool pprof -http :9090 cpu.prof
-go tool pprof -http :9090 mem.prof
+go test ./... -bench=. -benchmem
+go test ./... -bench=BenchmarkEncode -benchmem -cpuprofile=cpu.prof -memprofile=mem.prof
+go tool pprof -http=:0 cpu.prof
+go tool pprof -http=:0 mem.prof
 ```
 
-### Trace Profiling
+Use `go test -count` or a benchmark comparison tool to account for variance. Benchmark representative inputs, validate results outside the timed loop, and reset the timer after one-time setup.
+
 ```go
-import "runtime/trace"
+var benchmarkResult uint64
 
-f, _ := os.Create("trace.out")
-trace.Start(f)
-defer trace.Stop()
+func BenchmarkHash(b *testing.B) {
+    data := []byte("hello")
+    b.ReportAllocs()
+    b.ResetTimer()
+    for i := 0; i < b.N; i++ {
+        benchmarkResult = hash(data)
+    }
+}
 ```
+
+Capture a trace when scheduler latency, blocking, goroutine behavior, or GC interactions are plausible contributors:
+
 ```bash
+go test ./... -run '^$' -bench=BenchmarkWork -trace=trace.out
 go tool trace trace.out
 ```
 
-### Benchmarks with Profiles
-```bash
-go test -bench=. -cpuprofile=cpu.prof -memprofile=mem.prof -trace=trace.out
-go test -bench=. -benchmem -benchtime=10s
-```
+When collecting profiles in application code, check creation and start errors, stop profiling, and close output files. Prefer the test flags above when they model the workload.
 
-## Memory
+## Allocations and escape analysis
 
-### Escape Analysis
-The Go compiler decides where to allocate. Values that escape to heap:
-- Returned via pointer
-- Assigned to interface
-- Captured by closure
-- Assigned to global/captured variable
+The compiler chooses stack versus heap placement based on data flow and implementation details. Returning a pointer, passing through an interface, capturing a variable, or using a closure can affect escape decisions, but none independently guarantees an allocation. Inspect compiler diagnostics and benchmark allocation counts before changing an API.
 
 ```bash
-go build -gcflags="-m -m" 2>&1 | grep "escapes to heap"
+go build -gcflags='all=-m=2' ./...
 ```
 
-Common heap allocations:
-| Pattern | Heap Escape | Fix |
-|---|---|---|
-| Returning `*T` | Yes | Return `T` if caller can copy |
-| `fmt.Sprintf` | Yes | Use `strconv` for simple int/float/string |
-| `interface{}` param | Yes | Use generics (Go 1.18+) |
-| `[]byte(string)` | Usually | Use `strings.Builder`, `strconv.AppendFloat` |
-| `defer` in hot loop | Closure escapes | Move `defer` outside loop or inline |
-
-### Slice Capacity Pre-allocation
-```go
-// Avoids multiple reallocations
-data := make([]int, 0, expectedSize)
-for _, v := range source {
-    data = append(data, v)
-}
-```
-
-### String Concatenation Performance
-```go
-// Worst: creates new string each iteration
-str := ""
-for _, s := range parts { str += s }
-
-// Best: strings.Builder with capacity
-var b strings.Builder
-b.Grow(totalLen)
-for _, s := range parts { b.WriteString(s) }
-str := b.String()
-```
-
-### Avoid String Conversion Overhead
-
-| Conversion | Cost | Alternative |
-|---|---|---|
-| `string([]byte)` | Allocates | `strings.Builder` |
-| `[]byte(string)` | Allocates | `slices` package (Go 1.21+) |
-| `fmt.Sprintf("%d", n)` | Allocates | `strconv.Itoa`, `strconv.AppendInt` |
-| `fmt.Errorf(...)` | Allocates | `errors.New` for static messages |
-
-## Benchmarking
-
-### Writing Benchmarks
-```go
-func BenchmarkFoo(b *testing.B) {
-    for range b.N {
-        Foo()
-    }
-}
-
-func BenchmarkAlloc(b *testing.B) {
-    b.ReportAllocs() // show allocation stats
-    for range b.N {
-        Foo()
-    }
-}
-
-// Reset timer after setup
-func BenchmarkPool(b *testing.B) {
-    pool := NewPool()
-    b.ResetTimer()
-    for range b.N {
-        pool.Get()
-    }
-}
-```
-
-### Benchmark Gotchas
-- The compiler can eliminate dead code — store results:
-```go
-func BenchmarkHash(b *testing.B) {
-    d := []byte("hello")
-    var result uint64 // prevent elimination
-    for range b.N {
-        result = hash(d)
-    }
-    _ = result
-}
-```
-
-- Avoid costly setup in the loop (call `b.ResetTimer()` after setup).
-- Use `-benchtime=10x` to run exactly 10 iterations for slow benchmarks.
-
-## GC Tuning
-
-### Reduce Pointer Count
-
-Each pointer is a GC root. Reduce allocations to reduce GC pressure:
+Preallocate a slice only when a realistic size estimate prevents growth and profiling indicates the allocation matters.
 
 ```go
-// Before: each Entry is a pointer (heap allocation)
-type Cache struct {
-    entries []*Entry
-}
-
-// After: value type, no pointer chasing
-type Cache struct {
-    entries []Entry
+values := make([]Value, 0, expectedCount)
+for _, value := range source {
+    values = append(values, transform(value))
 }
 ```
 
-### GOGC and GOMEMLIMIT
+For repeated concatenation, `strings.Builder` can reduce allocations. For small or infrequent work, `+` is usually clearer. Call `Grow` only with a credible size estimate.
+
 ```go
-// GOGC=off disables GC (risk of OOM)
-// GOGC=100 means GC triggers when heap doubles
-// GOMEMLIMIT=2GiB sets soft memory limit (Go 1.19+)
+var builder strings.Builder
+for _, part := range parts {
+    builder.WriteString(part)
+}
+result := builder.String()
 ```
 
-In Go 1.19+, set `GOMEMLIMIT` and keep default `GOGC=100` for better latency:
+Conversions between `string` and `[]byte` may allocate. Avoid them by keeping data in the form required by the next operation, or use APIs such as `strconv.AppendInt` when building bytes is already appropriate. Do not introduce unsafe conversions merely to avoid an allocation.
+
+## GC and memory limits
+
+Reducing allocation rate and retaining less memory can reduce GC work. Pointer-rich objects can also increase scanning work, but pointers within live objects are not individually GC roots. Choose value layouts only when their copying, locality, and mutability trade-offs suit the workload.
+
+`GOGC` controls the heap-growth target used by the garbage collector; it is not a fixed heap-doubling guarantee. `GOMEMLIMIT` (Go 1.19+) supplies a soft memory limit and can cause the runtime to collect more aggressively. Set either only after observing production-like memory and latency behavior.
+
+## Pools and resource reuse
+
+`sync.Pool` is for temporary, independently reusable objects under measured allocation pressure. Objects may be discarded at any GC cycle, so it is not a cache or ownership mechanism. Reset an object before putting it back, never retain it after `Put`, and benchmark the added contention and lifecycle complexity.
+
+```go
+var buffers = sync.Pool{
+    New: func() any { return new(bytes.Buffer) },
+}
+
+func withBuffer(fn func(*bytes.Buffer)) {
+    buffer := buffers.Get().(*bytes.Buffer)
+    buffer.Reset()
+    defer buffers.Put(buffer)
+    fn(buffer)
+}
+```
+
+## Compiler diagnostics
+
+Use compiler diagnostics to investigate a measured hot path, not to force a particular transformation:
 
 ```bash
-GOMEMLIMIT=2GiB go run .
+go build -gcflags='all=-m=2' ./...
+go build -gcflags='all=-d=ssa/check_bce/debug=1' ./...
 ```
 
-### Object Pooling
-Use `sync.Pool` for reusable objects. Only for allocations that are **large** or **frequent**.
+Bounds-check elimination depends on provable bounds. Write straightforward loops first, then inspect diagnostics if checks appear in a profile. Do not add artificial indexing solely to influence BCE without a demonstrated improvement.
 
-```go
-var pool = sync.Pool{
-    New: func() any { return new(Buffer) },
-}
+Inlining decisions vary by compiler version and call shape. Splitting cold error handling from a hot path can be helpful when profiles and diagnostics support it; do not assume smaller functions or early returns guarantee a branch-prediction or inlining improvement.
 
-func Get() *Buffer { return pool.Get().(*Buffer) }
-func Put(b *Buffer) { b.Reset(); pool.Put(b) }
-```
+## Concurrency choices
 
-## Compiler Optimizations
+Choose synchronization for the required semantics, then measure contention and throughput:
 
-### Inlining
+| Need | Common fit |
+|---|---|
+| Transfer work, signals, or ownership | channels |
+| Protect shared multi-field state | mutexes |
+| Simple independent counters or flags | typed atomics |
 
-```go
-// Small, simple functions are inlined automatically
-// -gcflags="-l" disables inlining
-// -gcflags="-m" shows inlining decisions
-```
-
-### Bounds Check Elimination (BCE)
-
-```go
-// Before: compiler inserts bounds checks
-b = s[i] + s[j]
-
-// After: first access checks bounds, rest are eliminated
-_ = s[7]
-b = s[i] + s[j] // s[i] and s[j] may skip check
-```
-
-## Concurrency Optimization
-
-### Channel vs Mutex
-
-| Pattern | Best for | Notes |
-|---|---|---|
-| Channel | Signal, coordination, fan-out | Goroutine involved; GC pressure from goroutine stacks |
-| Mutex | Hot-path, fine-grained state | No goroutine overhead; blocking can contend |
-| Atomic | Counters, flags | Lowest overhead; limited to single-word ops |
-
-Use `sync.Pool` under high allocation pressure. Profile before introducing complexity.
-
-### Goroutine Stack Size
-
-Goroutines start at ~8 KB stack (grows as needed). For high-concurrency workloads (100k+ goroutines), minimize per-goroutine allocation. Avoid deep call stacks on many goroutines.
-
-## Code Layout Optimizations
-
-### Hot-Path Fast Returns
-Structure hot functions so the compiler generates better branch prediction:
-
-```go
-func Validate(v Value) error {
-    if v.err != nil { return v.err } // cold path last
-    // hot path first
-    if v.Count > max { return ErrTooBig }
-    return nil
-}
-```
-
-### Function Size
-- Keep hot functions small (compiler inlines small functions).
-- Split large functions: hot path inlined, cold path separate.
-
-## Cross-References
-
-- For allocation-free patterns: load `idioms`
-- For modern features that eliminate allocations: load `modern-features`
-- For benchmark testing patterns: load `testing`
-- For linting performance issues: load `linter-guide`
+Channels add coordination and may require goroutines; mutexes can contend; atomics do not preserve multi-operation invariants. Goroutine stacks grow and shrink dynamically, so use profiles and traces rather than relying on a fixed stack-size assumption when evaluating large concurrency counts.

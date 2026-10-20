@@ -1,54 +1,43 @@
-# Conversions (MEDIUM)
+# Conversions
 
-## Implement `TryFrom` for Fallible Conversions
+Make conversions visible at representation and trust boundaries. Implement standard conversion traits when their semantics are unsurprising and stable; use named constructors or methods when context, policy, or lossy behavior needs to be explicit.
 
-Use instead of ad-hoc conversion functions:
+## Standard traits
 
-```rust
-struct Point { x: i32, y: i32 }
-
-impl TryFrom<(i32, i32)> for Point {
-    type Error = String;
-    
-    fn try_from((x, y): (i32, i32)) -> Result<Self, Self::Error> {
-        if x >= 0 && y >= 0 {
-            Ok(Self { x, y })
-        } else {
-            Err("coordinates must be non-negative".into())
-        }
-    }
-}
-```
-
-## Implement `FromStr` to Enable `str::parse`
+Use `From` for infallible, value-preserving conversions. Use `TryFrom` or `FromStr` when validation can fail, with a typed error when callers need to distinguish failure modes.
 
 ```rust
 use std::str::FromStr;
 
-impl FromStr for MyId {
-    type Err = ParseError;
-    
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let n: u64 = s.parse()?;
-        Ok(Self(n))
+struct Port(u16);
+
+impl FromStr for Port {
+    type Err = std::num::ParseIntError;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(Self(value.parse()?))
     }
 }
-
-// Usage:
-let id: MyId = "42".parse()?;
 ```
 
-## Accept `impl AsMut<T>` for Flexible Mutable Inputs
+If parsing needs semantic validation beyond the syntactic conversion, return an application error or expose a named `parse` constructor instead of forcing it into a generic conversion trait.
 
-Instead of concrete mutable references:
+## Borrowing and mutation
+
+Prefer a direct borrowed interface when that is the actual contract:
 
 ```rust
-fn reset(data: impl AsMut<[u8]>) {
-    data.as_mut().fill(0);
+fn reset(data: &mut [u8]) {
+    data.fill(0);
 }
 ```
 
-## Cross-References
+`impl AsMut<[u8]>` is appropriate only when accepting multiple owning/container forms provides real API value; bind it as `mut data` before calling `data.as_mut()`.
 
-- For error handling patterns: load `error-handling`
-- For API design conventions: load `api-design`
+Avoid lossy `as` casts at external or numeric boundaries. Use checked/explicit conversions and document truncation, rounding, encoding, and ownership behavior.
+
+## Load next
+
+- Error representation: `error-handling.md`
+- Public conversion APIs: `api-design.md`
+- Numeric casts: `numeric.md`

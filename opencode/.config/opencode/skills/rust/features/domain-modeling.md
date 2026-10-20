@@ -1,272 +1,65 @@
-# Domain Modeling (MEDIUM)
+# Domain Modeling
 
-**Triggers**: domain model, DDD, domain-driven design, entity, value object, aggregate, repository, business rules, validation, invariant, newtype, primitive obsession.
+Model distinctions and invariants that matter to the target domain; do not impose domain-driven-design terminology where a simpler data model is clearer. Establish identity, validation rules, mutation authority, persistence boundaries, and consistency requirements before choosing Rust types.
 
-## Core Question
+## Entities and value types
 
-**What is this concept's role in the domain?**
-
-Before modeling in code:
-- Is this an Entity (identity matters) or Value Object (interchangeable)?
-- What invariants must be maintained at all times?
-- Where are the aggregate boundaries?
-- What ownership pattern fits the domain concept?
-
----
-
-## Domain Concept Mapping
-
-| Domain Concept | Rust Pattern | Ownership Implication |
-|----------------|--------------|----------------------|
-| Entity | struct + Id field | Owned, unique identity via `PartialEq` on ID |
-| Value Object | struct + Clone/Copy | Shareable, immutable, equality by value |
-| Aggregate Root | struct owns children | Clear ownership tree, invariants enforced at root |
-| Repository | trait with async methods | Abstracts persistence, returns domain types |
-| Domain Event | enum | Captures state changes, immutable |
-| Domain Service | impl block or free fn | Stateless operations with domain logic |
-| Specification | fn or Fn trait | Reusable predicate logic |
-
----
-
-## Entity Pattern
-
-### Identity-Based Equality
-
-Entities have unique identity that persists across changes:
+An entity has identity whose meaning survives changes to its other fields. A value type is compared by the attributes the domain declares meaningful. Use newtypes or enums when they prevent a real category error or centralize validation; use primitives when the distinction would add no useful contract.
 
 ```rust
-#[derive(Debug)]
-pub struct UserId(Uuid);
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct AccountId(u64);
 
-#[derive(Debug)]
-pub struct User {
-    id: UserId,
-    email: Email,
-    name: String,
-    status: UserStatus,
-}
-
-impl User {
-    pub fn new(email: Email, name: String) -> Self {
-        Self {
-            id: UserId(Uuid::new_v4()),
-            email,
-            name,
-            status: UserStatus::Active,
-        }
-    }
-
-    pub fn deactivate(&mut self) {
-        self.status = UserStatus::Inactive;
-    }
-}
-
-impl PartialEq for User {
-    fn eq(&self, other: &Self) -> bool {
-        self.id == other.id  // Only compare identity
-    }
-}
-
-impl Eq for User {}
-```
-
-### Enforcing Invariants in Entity Methods
-
-```rust
-impl Order {
-    pub fn add_item(&mut self, item: OrderItem) -> Result<(), OrderError> {
-        // Enforce aggregate invariants
-        if self.status != OrderStatus::Pending {
-            return Err(OrderError::NotModifiable);
-        }
-        if self.items.len() >= MAX_ITEMS {
-            return Err(OrderError::ItemLimitExceeded);
-        }
-        self.items.push(item);
-        self.total = self.calculate_total();
-        Ok(())
-    }
-
-    pub fn submit(self) -> Result<SubmittedOrder, OrderError> {
-        // Enforce submission invariants
-        if self.items.is_empty() {
-            return Err(OrderError::EmptyOrder);
-        }
-        Ok(SubmittedOrder {
-            id: self.id,
-            items: self.items,
-            total: self.total,
-            submitted_at: Utc::now(),
-        })
-    }
-}
-```
-
----
-
-## Value Object Pattern
-
-### Immutable, By-Value Equality
-
-Value objects are interchangeable by their attributes:
-
-```rust
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Email(String);
 
 impl Email {
-    pub fn new(s: String) -> Result<Self, ValidationError> {
-        if !s.contains('@') || !s.contains('.') {
-            return Err(ValidationError::InvalidEmail(s));
-        }
-        Ok(Self(s))
-    }
-
-    pub fn as_str(&self) -> &str {
-        &self.0
+    pub fn parse(value: String) -> Result<Self, EmailError> {
+        if !value.contains('@') { return Err(EmailError::Invalid); }
+        Ok(Self(value))
     }
 }
 
-impl std::fmt::Display for Email {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.0.fmt(f)
-    }
-}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EmailError { Invalid }
 ```
 
-### Composed Value Objects
+Derive `Copy` only when implicit duplication is inexpensive and semantically right; derive `Clone`, equality, ordering, or hashing only when those operations express the domain contract.
+
+## Invariants and ownership
+
+Keep fields private when exposing mutation would bypass an invariant. An aggregate boundary may be useful when several values must change atomically, but it need not correspond to one module, one repository, or a particular ownership tree. Put validation where it can be enforced reliably: parsing boundaries, constructors, transition methods, or persistence transactions as appropriate.
 
 ```rust
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Currency { Usd, Eur }
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Money {
-    pub amount: Decimal,
-    pub currency: Currency,
-}
-
-impl Money {
-    pub fn new(amount: Decimal, currency: Currency) -> Self {
-        Self { amount, currency }
-    }
-
-    pub fn add(self, other: Money) -> Result<Self, CurrencyMismatch> {
-        if self.currency != other.currency {
-            return Err(CurrencyMismatch);
-        }
-        Ok(Self {
-            amount: self.amount + other.amount,
-            currency: self.currency,
-        })
-    }
+    minor_units: i64,
+    currency: Currency,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Currency {
-    Usd,
-    Eur,
-    Gbp,
-}
-```
+pub enum MoneyError { CurrencyMismatch, Overflow }
 
----
-
-## Aggregate Pattern
-
-### Aggregate Root with Owned Children
-
-The aggregate root is the single entry point for all mutations:
-
-```rust
-mod order {
-    pub struct Order {
-        id: OrderId,
-        items: Vec<OrderItem>,
-        total: Money,
-        status: OrderStatus,
-    }
-
-    struct OrderItem {
-        product_id: ProductId,
-        quantity: NonZeroU32,
-        price: Money,
-    }
-
-    impl Order {
-        pub fn id(&self) -> &OrderId { &self.id }
-        pub fn items(&self) -> &[OrderItem] { &self.items }
-        pub fn total(&self) -> Money { self.total }
-        pub fn status(&self) -> OrderStatus { self.status }
-    }
-
-    pub struct OrderId(Uuid);
-    pub enum OrderStatus { Pending, Submitted, Shipped, Cancelled }
-}
-```
-
-### Loading and Saving Aggregates
-
-```rust
-#[async_trait]
-pub trait OrderRepository: Send + Sync {
-    async fn find_by_id(&self, id: &OrderId) -> Result<Option<Order>, Error>;
-    async fn save(&self, order: &Order) -> Result<(), Error>;
-    async fn delete(&self, id: &OrderId) -> Result<(), Error>;
-}
-```
-
----
-
-## Domain Service Pattern
-
-Stateless operations that don't naturally belong to an entity:
-
-```rust
-pub struct PricingService {
-    tax_calculator: Arc<dyn TaxCalculator>,
-    discount_policy: Arc<dyn DiscountPolicy>,
-}
-
-impl PricingService {
-    pub fn calculate_order_total(&self, items: &[OrderItem], customer: &Customer) -> Money {
-        let subtotal = items.iter()
-            .map(|i| i.price * i.quantity.get())
-            .fold(Money::zero(), |a, b| a.add(b).unwrap());
-
-        let discount = self.discount_policy.apply(subtotal, customer);
-        let tax = self.tax_calculator.calculate(subtotal - discount, customer);
-
-        subtotal - discount + tax
+impl Money {
+    pub fn checked_add(self, other: Self) -> Result<Self, MoneyError> {
+        if self.currency != other.currency {
+            return Err(MoneyError::CurrencyMismatch);
+        }
+        let minor_units = self.minor_units.checked_add(other.minor_units)
+            .ok_or(MoneyError::Overflow)?;
+        Ok(Self { minor_units, currency: self.currency })
     }
 }
 ```
 
----
+Choose repository traits, domain services, events, and async abstraction only where a real boundary or variability requirement exists. Their public signatures must specify error, cancellation, transaction, and consistency behavior.
 
-## Common Mistakes
+## Load next
 
-| Mistake | Why Wrong | Fix |
-|---------|-----------|-----|
-| Primitive obsession (String everywhere) | No type safety, validation gaps | Newtype wrappers with validation |
-| Public fields with invariants | Invariants violated externally | Private fields + accessor methods |
-| Leaked aggregate internals | Broken encapsulation | Methods on aggregate root only |
-| Entity equality by all fields | Wrong semantics for mutable entities | By ID only |
-| Value Object with identity | Confused semantics | No ID, equality by attributes |
-
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Why Bad | Better |
-|--------------|---------|--------|
-| Anemic domain model (all getters/setters) | Procedural code disguised as OOP | Rich domain methods |
-| Exposing internal collections as `&mut` | Aggregate invariants bypassed | Return immutable views or copies |
-| Multiple aggregates in one module | Blurred boundaries | One module per aggregate |
-| Repository per entity | Over-engineered | Repository per aggregate root |
-
----
-
-## Cross-References
-
-- For newtype patterns: load `type-safety`
-- For API design with builders: load `api-design`
-- For conversions between types: load `conversions`
-- For validation at boundaries: load `patterns`
+- Newtypes and representation: `type-safety.md`
+- Financial precision and persistence: `../domain-fintech/SKILL.md`
+- Public contracts: `api-design.md`
+- Error and transaction boundaries: `domain-error.md`, `lifecycle.md`

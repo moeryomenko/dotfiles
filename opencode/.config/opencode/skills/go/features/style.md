@@ -1,221 +1,77 @@
 # Go Style Guide
 
-## Style Principles
+## Priorities
 
-Readable code attributes in order of importance (Google):
+Apply the repository's established conventions first, provided they do not conflict with Go tooling, correctness, or a deliberate public-API change. Prefer code that is clear to its future reader, simple enough for its requirements, and consistent with nearby code.
 
-1. **Clarity**: The code's purpose is clear to the reader.
-2. **Simplicity**: Accomplishes goal in the simplest way.
-3. **Concision**: High signal-to-noise ratio.
-4. **Maintainability**: Easy to modify correctly.
-5. **Consistency**: Consistent with the broader codebase.
-
-### Clarity
-
-Clarity is viewed through the lens of the **reader**, not the author. Two facets:
-
-- **What** is the code doing? Use descriptive names, commentary, whitespace.
-- **Why** is it doing it? Explain nuances that aren't obvious from code.
-
-Comments should explain **why**, not **what**:
+Use comments for rationale, invariants, externally observable behavior, or non-obvious trade-offs—not a restatement of the code.
 
 ```go
-// Good: explains rationale, not mechanics
-// Gregorian leap years aren't just year%4 == 0.
-var (
-    leap4   = year%4 == 0
-    leap100 = year%100 == 0
-    leap400 = year%400 == 0
-)
-leap := leap4 && (!leap100 || leap400)
-
-// Bad: states the obvious
-// Check if year is a leap year
-leap := (year%4 == 0) && (!(year%100 == 0) || (year%400 == 0))
+// Gregorian leap years are not divisible by 100 unless divisible by 400.
+leap := year%4 == 0 && (year%100 != 0 || year%400 == 0)
 ```
 
-### Simplicity
+Prefer the language and standard library when they meet the need. Add a dependency when it meaningfully improves correctness, interoperability, or maintenance.
 
-**Least mechanism** (Google): Prefer the most standard tools. Core language constructs (channels, slices, maps, loops, structs) > standard library > external dependencies.
+## Formatting and imports
 
-### Concision
-
-Repetitive code obscures differences. Use table-driven tests to factor out common code. When code is similar to a common idiom but subtly different, intentionally "boost" the signal:
-
-```go
-// Calls attention to the subtle difference
-if err := doSomething(); err == nil { // if NO error
-    // ...
-}
-```
-
-### Consistency
-
-**Local consistency** (Google): Where the guide has nothing to say, authors are free to choose, unless code in close proximity takes a consistent stance. If a change would **worsen** an existing deviation, expose it in more API surfaces, or introduce a bug, then local consistency no longer applies.
-
-## Formatting
-
-- All Go source must conform to `gofmt` output.
-- **No fixed line length** (Google). Prefer refactoring over line splitting.
-- Uber recommends soft limit of 99 chars.
-- Do NOT split a line before an indentation change or to make a string fit.
-
-## MixedCaps
-
-Go source uses `MixedCaps` / `mixedCaps` (camelCase), never underscores:
-
-```go
-const MaxLength = 100     // exported
-var maxLength = 50        // unexported
-```
-
-## Naming (Google Philosophy)
-
-Names should:
-- **Not feel repetitive when used**: `Count` not `CountEntries` when type is `Entries`.
-- **Take context into consideration**: A method on `User` can be `ID()` not `UserID()`.
-- **Not repeat concepts already clear**: `ch := make(chan int)` not `channel := make(chan int)`.
-
-### Omit Repetition from Names
-
-```go
-// Bad — repeats package name
-package yamlconfig
-func ParseYAMLConfig(input string) (*Config, error)
-
-// Good
-package yamlconfig
-func Parse(input string) (*Config, error)
-```
-
-**Omit from names:**
-- Types of inputs/outputs (when unambiguous)
-- The type of a method's receiver
-- Whether an input/output is a pointer
-
-### Function Naming
-
-- **Return something** → noun-like names. **Avoid `Get` prefix.**
-- **Do something** → verb-like names.
-- **Identical functions differing by type** → append type name: `ParseInt`, `ParseInt64`.
-
-### Package Naming
-
-- Lowercase, no underscores, not plural, not `util` / `common`.
-- One cohesive idea per package (standard library is the model).
-
-### Shadowing
-
-Be careful with `:=` in nested scopes — it creates a new variable:
-
-```go
-// Bad: shadowing creates a new ctx only inside the if block
-func (s *Server) innerHandler(ctx context.Context, req *pb.MyRequest) *pb.MyResponse {
-    if *shortenDeadlines {
-        ctx, cancel := context.WithTimeout(ctx, 3*time.Second) // shadows outer ctx
-        defer cancel()
-    }
-    // BUG: ctx is the ORIGINAL, uncapped context here
-}
-
-// Good: use = to stomp (reassign) rather than shadow
-func (s *Server) innerHandler(ctx context.Context, req *pb.MyRequest) *pb.MyResponse {
-    if *shortenDeadlines {
-        var cancel func()
-        ctx, cancel = context.WithTimeout(ctx, 3*time.Second) // reassigns outer ctx
-        defer cancel()
-    }
-    // ctx is the capped context here
-}
-```
-
-## Imports
-
-Two groups: standard library first, then everything else, separated by a blank line.
+- Format Go source with `gofmt`.
+- Let the repository's formatter and linter configuration decide import grouping and any line-length policy. Do not manually wrap code merely to meet an arbitrary width.
+- Follow the standard Go spelling convention: exported identifiers use `MixedCaps`; unexported identifiers use `mixedCaps`. Initialisms follow local and Go conventions (`ID`, `URL`, `HTTP`).
+- Use lowercase package names without underscores. Choose a concise name describing the package's purpose; avoid catch-all packages such as `util` unless that is an established repository convention.
 
 ```go
 import (
     "context"
     "fmt"
 
-    "github.com/user/project/pkg"
-    "go.uber.org/zap"
+    "example.com/project/store"
 )
 ```
 
-## Comments and Documentation
+## Naming and scope
 
-- Don't enumerate obvious parameters. Document what's error-prone or non-obvious.
-- Context cancellation: implied behavior, don't restate. Document when behavior differs.
-- Read-only operations are assumed safe for concurrent use (don't restate). Mutating operations are assumed NOT safe (don't restate).
+Choose names that are precise in their local context without repeating the package, receiver, or obvious type.
 
 ```go
-// Good — explains non-obvious behavior
-// The provided data is used to interpolate the format string. If the data does
-// not match the expected format verbs or the amount of data does not satisfy
-// the format specification, the function will inline warnings about formatting
-// errors into the output string as described by the Format errors section.
-func Sprintf(format string, data ...any) string
+package yamlconfig
 
-// Document when context behavior differs from normal
-// Run executes the worker's run loop.
-// If the context is cancelled, Run returns a nil error.
-func (Worker) Run(ctx context.Context) error
-
-// Document non-obvious concurrency semantics
-// Lookup returns the data associated with the key from the cache.
-// This operation is not safe for concurrent use.
-func (*Cache) Lookup(key string) (data []byte, ok bool)
+func Parse(input string) (*Config, error)
 ```
 
-## Variable Declarations
+Use noun-like names for values and verb-like names for actions. `Get` is appropriate when it communicates an operation's semantics (for example, a lookup that can fail or fetch); do not add it mechanically.
 
-Use zero value when the value is empty but **ready for later use**:
+Keep scopes small enough to make data flow obvious. Check `:=` in nested scopes carefully: it may declare a new variable instead of updating the value used later.
 
 ```go
-var (
-    coords Point
-    primes []int
-)
-
-// Common use: output variable for unmarshalling
-var coords Point
-if err := json.Unmarshal(data, &coords); err != nil { ... }
+func limit(ctx context.Context) (context.Context, func()) {
+    ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+    return ctx, cancel
+}
 ```
 
-Use composite literals when you know initial elements:
+## Documentation and exported APIs
+
+Document exported packages, types, functions, methods, and fields when their purpose or contract is not obvious from the declaration. For public APIs, state behavior callers need to rely on: ownership, mutation, error matching, cancellation, ordering, and concurrency guarantees where relevant.
+
+Do not assume all read-only methods are safe for concurrent use. Say so when callers need that guarantee, and document any locking or ownership constraint that would otherwise surprise them.
+
+Preserve compatibility for established exported APIs unless the change is explicitly intended to be breaking.
+
+## Declarations and literals
+
+Use `var` when the zero value is the useful initial state; use a composite literal when initial elements are known.
 
 ```go
-coords   = Point{X: x, Y: y}
-primes   = []int{2, 3, 5, 7, 11}
-captains = map[string]string{"Kirk": "James Tiberius"}
+var result bytes.Buffer
+values := []int{2, 3, 5}
+options := Config{Timeout: time.Second}
 ```
 
-## Struct Initialization
+Use field names for struct literals outside the defining package; `go vet` can flag unkeyed external literals. For exported or long-lived literals in any package, keyed fields make additions and review safer. Positional literals can be clear for small, stable local structs.
 
-- Use field names (enforced by `go vet`).
-- Omit zero-value fields.
-- Use `var user User` for all-zero structs (not `User{}`).
-- Use `&T{...}` for references (not `new(T)`).
+Use `&T{...}` when constructing a pointer with known initial fields. `new(T)` is reasonable when the zero value itself is the desired pointer value.
 
-## Style Rules Summary
+## Control flow
 
-| Aspect | Guideline |
-|--------|-----------|
-| Line length | No fixed limit (Google). Soft 99 chars (Uber). |
-| Case | `MixedCaps` / `mixedCaps`, never snake_case |
-| Package names | Lowercase, no underscores, not plural |
-| Import groups | Stdlib first, blank line separator |
-| Group declarations | Group `const`, `var`, `type` by relation |
-| Function ordering | Rough call order, exported first |
-| Reduce nesting | Handle errors/special cases first, return early |
-| Unnecessary else | Set default, override with if |
-| Local variables | `:=` for values; `var` for zero values |
-| Naked parameters | Use custom types or comments for unclear bool params |
-
-## Cross-References
-
-- For slices, maps, defer, channels, goroutines: load `idioms`
-- For error patterns and panics: load `error-handling`
-- For test conventions: load `testing`
-- For linter configuration: load `linter-guide`
+Handle errors and exceptional conditions near their source; early returns often reduce nesting. Do not flatten control flow at the expense of obscuring the normal path. Group declarations when they represent one concept, not merely because they share a type.

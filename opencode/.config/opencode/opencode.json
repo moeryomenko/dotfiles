@@ -1,65 +1,61 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "@franlol/opencode-md-table-formatter@latest",
-    "opencode-mem",
+  "plugins": [
     "@plannotator/opencode@latest",
-    "@spoons-and-mirrors/subtask2@latest",
-    "@prevalentware/opencode-goal-plugin",
-    "/Users/eryoma/projects/tuicr-opencode-plugin/plugin/index.ts"
+    {
+      "package": "./plugins/rtk"
+    }
   ],
+  "model": "headroom/claude-sonnet-4-6",
   "mcp": {
-    "filesystem": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "."
-      ],
-      "enabled": true
-    },
-    "semble": {
-      "command": [
-        "uvx",
-        "--from",
-        "semble[mcp]",
-        "semble"
-      ],
-      "type": "local",
-      "enabled": true
-    },
-    "mcp-dap-server": {
-      "type": "local",
-      "command": [
-        "mcp-dap-server"
-      ],
-      "enabled": true
-    },
-    "codegraph": {
-      "type": "local",
-      "command": [
-        "codegraph",
-        "serve",
-        "--mcp"
-      ],
-      "enabled": true
-    },
-    "serena": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--from",
-        "serena-agent",
-        "serena",
-        "start-mcp-server",
-        "--project-from-cwd",
-        "--context",
-        "agent",
-        "--open-web-dashboard",
-        "False"
-      ],
-      "enabled": true
+    "servers": {
+      "filesystem": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "."
+        ]
+      },
+      "semble": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "semble[mcp]",
+          "semble"
+        ]
+      },
+      "mcp-dap-server": {
+        "type": "local",
+        "command": [
+          "mcp-dap-server"
+        ]
+      },
+      "headroom": {
+        "type": "local",
+        "command": [
+          "/home/eryoma/.local/bin/headroom",
+          "mcp",
+          "serve"
+        ]
+      },
+      "serena": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "serena-agent",
+          "serena",
+          "start-mcp-server",
+          "--project-from-cwd",
+          "--context",
+          "agent",
+          "--open-web-dashboard",
+          "False"
+        ]
+      }
     }
   },
   "lsp": {
@@ -75,30 +71,65 @@
         ".py",
         ".pyi"
       ]
+    },
+    "autotools": {
+      "command": [
+        "autotools-language-server"
+      ],
+      "extensions": [
+        ".ac"
+      ]
+    },
+    "make-ls": {
+      "command": [
+        "make-ls"
+      ],
+      "extensions": [
+        ".mk",
+        "Makefile",
+        "makefile"
+      ]
     }
   },
   "formatter": true,
-  "provider": {
+  "agents": {
+    "plan": {
+      "model": "anthropic/claude-opus-5"
+    },
+    "build": {
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "providers": {
     "anthropic": {
-      "options": {
+      "settings": {
         "baseURL": "https://claude-n-codex.com:8443/v1"
       }
     },
-    "gis": {
-      "name": "2GIS",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "https://ai-dev-proxy.k8s.n3.2gis.io"
+    "llama": {
+      "package": "@opencode/ai/providers/openai-compatible",
+      "name": "llama",
+      "settings": {
+        "baseURL": "http://127.0.0.1:8080/v1",
+        "timeout": false
       },
       "models": {
-        "coding-medium": {
-          "name": "coding-medium"
-        },
-        "local-coding-medium": {
-          "name": "local-coding-medium"
-        },
-        "coding-large": {
-          "name": "coding-large"
+        "qwen": {
+          "name": "qwen",
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low",
+                "textVerbosity": "low",
+                "reasoningSummary": "auto"
+              }
+            }
+          ],
+          "limit": {
+            "context": 262144,
+            "output": 65536
+          }
         }
       }
     }

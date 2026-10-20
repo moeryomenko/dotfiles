@@ -1,262 +1,143 @@
 # Modern Go Features
 
-Go features organized by version. Detect Go version from `go.mod`.
+Start with the module's `go` directive and selected toolchain. A newer local compiler does not make a language feature or standard-library API available to a module targeting an older Go release. Adopt newer APIs when they improve the code's contract or readability; they are not mandatory migrations.
 
 ## Go 1.24
 
-### `t.Context()` in Tests
+### `testing.T.Context`
+
+`T.Context` provides a context canceled when the test completes. Use it for test-owned work; derive a context when the code requires an independent lifetime or cancellation policy.
+
 ```go
-func TestFoo(t *testing.T) {
-    ctx := t.Context() // cancellable on test timeout, replaces context.Background()
+func TestWorker(t *testing.T) {
+    ctx := t.Context()
+    _ = ctx
 }
 ```
 
-### Generic Type Alias (spec but not yet in go.mod)
+### Generic type aliases
+
+Generic type aliases are supported by Go 1.24.
+
 ```go
 type Set[T comparable] = map[T]struct{}
 ```
 
-### `omitzero` Struct Tag (encoding/json)
+### `encoding/json` `omitzero`
+
+Use `omitzero` when a JSON field should be omitted according to its Go zero value, including a type's `IsZero() bool` method when applicable.
+
 ```go
 type User struct {
-    Name string `json:"name,omitzero"` // omit zero-value fields
+    Name string `json:"name,omitzero"`
 }
 ```
 
 ## Go 1.23
 
-### `iter` package (range-over-func)
+### Iteration
 
-Forward iterator type: `func(func(K, V) bool)`
+Go 1.23 adds range-over-function iteration and the `iter` package. Return an iterator when lazy traversal or early termination is valuable; a slice remains clearer for small, already-materialized results.
 
 ```go
-import "iter"
-
-func All(ctx context.Context) iter.Seq[Result] {
-    return func(yield func(Result) bool) {
-        for _, r := range results {
-            if !yield(r) { return }
+func All(values []string) iter.Seq[string] {
+    return func(yield func(string) bool) {
+        for _, value := range values {
+            if !yield(value) {
+                return
+            }
         }
     }
 }
 
-for r := range All(ctx) {
-    fmt.Println(r)
+for value := range All(values) {
+    fmt.Println(value)
 }
 ```
 
-### `unique` package
-Canonicalize values. Use `unique.Make(value)`.
+`maps.Keys` and `maps.Values` became iterator-based in Go 1.23. Collect them when a slice is required:
 
-### `cmp.Or`
-Returns first non-zero value: `cmp.Or(s.Name, "default")`
+```go
+keys := slices.Collect(maps.Keys(m))
+```
+
+### `unique`
+
+`unique.Make` provides canonicalized comparable values. Use it only when identity sharing or its comparison behavior benefits the design.
 
 ## Go 1.22
 
-### For loop variable fix
-Loop variables no longer escape iteration — no more `v := v` copies:
+### Per-iteration variables
+
+For modules declaring Go 1.22 or later, `for` iteration variables are distinct per iteration. Closures therefore capture the iteration's value rather than a single reused variable. This does not remove ordinary data-race or lifetime concerns.
 
 ```go
-// Go 1.22+ — no bug
-for _, v := range slice {
-    go func() { fmt.Println(v) }()
+for _, value := range values {
+    go func() { fmt.Println(value) }()
 }
 ```
 
-### `math/rand/v2`
-New API, faster, better seeding. Replace `math/rand`:
+Do not remove compatibility copies from a module that still targets an earlier language version without reviewing its build matrix.
+
+### `cmp.Or`
+
+`cmp.Or` returns the first non-zero value.
 
 ```go
-import "math/rand/v2"
-n := rand.IntN(100) // replaces rand.Intn(100)
+name := cmp.Or(user.Name, "anonymous")
 ```
 
-### `http.ServeMux` with method patterns
-```go
-mux.HandleFunc("GET /api/users/{id}", handler) // path params
-id := r.PathValue("id")                        // extract param
-```
+### Other options
 
-### `range` over int
+Go 1.22 includes method-and-wildcard patterns in `http.ServeMux`, `Request.PathValue`, range over integers, and `math/rand/v2`. Choose them when their behavior is appropriate and supported by the module.
+
 ```go
-for i := range 10 { fmt.Println(i) } // 0..9
+mux.HandleFunc("GET /users/{id}", handler)
+for i := range 10 {
+    fmt.Println(i)
+}
 ```
 
 ## Go 1.21
 
-### `slices` package
+### `slices`, `maps`, and `cmp`
+
+These packages express common operations clearly when the module targets Go 1.21 or later.
 
 ```go
-import "slices"
+clone := slices.Clone(values)
+slices.SortFunc(users, func(a, b User) int {
+    return cmp.Compare(a.Age, b.Age)
+})
+slices.SortStableFunc(users, func(a, b User) int {
+    return cmp.Compare(a.Name, b.Name)
+})
 
-slices.Clone(s)
-slices.Compact(s)              // remove adjacent duplicates
-slices.Contains(s, v)
-slices.Delete(s, i, j)
-slices.Equal(s1, s2)
-slices.Index(s, v)
-slices.Insert(s, i, vs...)
-slices.IsSorted(s)
-slices.Max(s), slices.Min(s)
-slices.Replace(s, i, j, vs...)
-slices.Reverse(s)
-slices.Sort(s)                 // sorts in place
-slices.SortFunc(s, func(a,b T) int { return cmp.Compare(a.Age, b.Age) })
-slices.SortStableFunc(s, cmp)
+copyOfMap := maps.Clone(m)
+maps.Copy(dst, src)
 ```
 
-### `maps` package
+In Go 1.21 and 1.22, `maps.Keys(m)` and `maps.Values(m)` return slices. In Go 1.23+, they return iterators; use `slices.Collect` when materialization is needed.
+
+### `log/slog` and contexts
+
+`log/slog` offers structured logging. Adopt it when it fits the repository's logging interface and operational conventions; avoid mixing logging systems without a migration plan.
+
+Go 1.21 also adds `context.WithCancelCause`, `context.Cause`, and `context.AfterFunc` for code that needs those semantics.
+
+### Built-ins
+
+`min`, `max`, and `clear` are available in Go 1.21.
 
 ```go
-import "maps"
-
-maps.Clone(m)                  // shallow clone
-maps.Copy(m1, m2)              // copy entries from m2 to m1
-maps.DeleteFunc(m, func(k,v) bool { return v == 0 })
-maps.Equal(m1, m2)             // deep equality
-maps.Keys(m)                   // returns keys as slice
-maps.Values(m)                 // returns values as slice
+limit := min(requested, maximum)
+clear(cache)
 ```
 
-### `cmp` package
+## Go 1.20 and earlier notable additions
 
-```go
-import "cmp"
+- Go 1.20: `errors.Join`, `http.ResponseController`, `strings.CutPrefix`, and `strings.CutSuffix`.
+- Go 1.19: typed atomic values such as `atomic.Int64` and `atomic.Bool`.
+- Go 1.18: generics, `any`, and `net/netip`.
 
-cmp.Compare(a, b)          // -1, 0, 1
-cmp.Less(a, b)             // bool
-cmp.Or(a, b, ...)          // first non-zero value
-```
-
-### `log/slog`
-Structured logging:
-
-```go
-import "log/slog"
-
-slog.Info("user created", "id", userID, "role", role)
-slog.Warn("rate limit", "ip", ip, "count", n)
-slog.Error("request failed", "err", err, "status", 500)
-
-// Custom logger
-logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-slog.SetDefault(logger)
-```
-
-### `context` improvements
-
-- `context.AfterFunc(ctx, f)` — run f when ctx is done
-- `context.WithCancelCause(ctx)` — cancel with a cause (retrieve via `context.Cause(ctx)`)
-
-### `max`, `min`, `clear` built-ins
-
-```go
-max(1, 2, 3)      // 3
-min(-1, 0, 1)     // -1
-clear(m)          // delete all map entries
-clear(slice)      // zero all elements
-```
-
-## Go 1.20
-
-### `errors.Join`
-Multiple errors into one:
-
-```go
-if err1 != nil || err2 != nil {
-    return errors.Join(err1, err2)
-}
-```
-
-### `http.ResponseController`
-Per-handler control over response writer:
-
-```go
-rc := http.NewResponseController(w)
-rc.SetWriteDeadline(time.Now().Add(5 * time.Second))
-rc.Flush()
-```
-
-### `bytes`, `strings` prefix/suffix checking
-`CutPrefix`, `CutSuffix` for clean prefix removal:
-
-```go
-// Before
-if strings.HasPrefix(s, "http://") {
-    s = strings.TrimPrefix(s, "http://")
-}
-
-// After
-s, found := strings.CutPrefix(s, "http://")
-```
-
-## Go 1.19
-
-### `sync` atomic types
-
-```go
-var counter atomic.Int64
-counter.Add(1)
-n := counter.Load()
-
-var running atomic.Bool
-running.Store(true)
-running.Swap(false)
-```
-
-## Go 1.18
-
-### Generics
-
-```go
-// Generic function
-func Map[T, U any](s []T, f func(T) U) []U {
-    result := make([]U, len(s))
-    for i, v := range s { result[i] = f(v) }
-    return result
-}
-
-// Generic type
-type Stack[T any] struct {
-    items []T
-}
-
-func (s *Stack[T]) Push(v T) { s.items = append(s.items, v) }
-
-// Constraint interface
-type Number interface {
-    ~int | ~float64
-}
-
-func Sum[T Number](values []T) T {
-    var sum T
-    for _, v := range values { sum += v }
-    return sum
-}
-```
-
-### `net/netip`
-New IP address type: `netip.Addr`, `netip.Prefix`. Prefer over `net.IP`.
-
-### `any` alias
-`any = interface{}`. Prefer `any` in new code.
-
-## Migration Guide
-
-| Old Pattern | New Pattern | Since |
-|---|---|---|
-| `context.Background()` in tests | `t.Context()` | 1.24 |
-| `math/rand.Intn(n)` | `math/rand/v2.IntN(n)` | 1.22 |
-| Loop var copy `v := v` | Remove copy | 1.22 |
-| Manual slice ops | `slices` package | 1.21 |
-| Manual map ops | `maps` package | 1.21 |
-| `*log.Logger` | `log/slog` | 1.21 |
-| `interface{}` | `any` | 1.18 |
-| `net.IP` | `netip.Addr` | 1.18 |
-| `strings.TrimPrefix` | `strings.CutPrefix` (cleaner) | 1.20 |
-
-## Cross-References
-
-- For `slices`, `maps` usage in idiomatic code: load `idioms`
-- For `t.Context()` and testing patterns: load `testing`
-- For linting modern usage: load `linter-guide`
+Use these when they make the intent clearer or provide semantics the older alternative cannot. For example, `netip.Addr` is often a stronger value type than `net.IP`, but changing a public API requires a compatibility decision.
