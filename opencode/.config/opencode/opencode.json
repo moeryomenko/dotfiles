@@ -39,7 +39,7 @@
       "headroom": {
         "type": "local",
         "command": [
-          "/home/eryoma/.local/bin/headroom",
+          "/Users/eryoma/.local/bin/headroom",
           "mcp",
           "serve"
         ]
