@@ -24,8 +24,8 @@
 	difftool = true
 [user]
 	name = Maxim Eryomenko
-	email = maxim_eryomenko@rambler.ru
-	signingkey = 5318919FE71A1E81
+	email = moeryomenko@gmail.com
+	signingkey = 96CEC3E0EA4A4553
 [alias]
 	clog    = log --no-merges --format='%C(dim)%h    %<(14)%ad    %<(24)%an    %C(reset)%s' --date=relative
 	glog    = log-graph
