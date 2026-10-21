@@ -73,6 +73,9 @@
 [commit]
 	gpgsign  = true
 	template = ~/.config/gitmessage
+[committer]
+	name = Maxim Eryomenko
+	email = moeryomenko@gmail.com
 [sendemail]
 	smtpserver     = smtp.rambler.ru
 	smtpuser       = maxim_eryomenko@rambler.ru
@@ -106,9 +109,6 @@
 	ui = auto
 [help]
 	autoCorrect = prompt
-[committer]
-	name = Maxim Eryomenko
-	email = maxim_eryomenko@rambler.ru
 [advice]
 	skippedCherryPicks = false
 [tag]
