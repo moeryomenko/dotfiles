@@ -50,6 +50,7 @@ mergiraf               # merge driver (git/.gitconfig merge driver)
 clang                  # clangd LSP for C/C++ (nvim/lsp/clangd.lua)
 lua-language-server    # Lua LSP (nvim/lsp/luals-nvim.lua)
 rust-analyzer          # Rust LSP (nvim/lsp/rust-analyzer.lua)
+vscode-json-languageserver # JSON/JSONC LSP (helix/languages.toml)
 yaml-language-server   # YAML LSP (nvim/lsp/helm_ls.lua)
 # ansible-language-server  -- LSP for Ansible (nvim/lsp/ansiblels.lua), optional
 # helm-ls                 -- LSP for Helm charts (nvim/lsp/helm_ls.lua), optional

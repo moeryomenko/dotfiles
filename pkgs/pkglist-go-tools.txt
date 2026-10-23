@@ -12,6 +12,8 @@ github.com/segmentio/golines
 github.com/go-delve/delve/cmd/dlv
 # nvim/lsp/hyprls.lua -- Hyprland LSP
 github.com/hyprland-community/hyprls/cmd/hyprls
+# helix/languages.toml -- jq LSP
+github.com/wader/jq-lsp
 # fish abbreviations -- gotestsum
 gotest.tools/gotestsum
 # fish abbreviations -- go vet/staticcheck

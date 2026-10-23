@@ -43,3 +43,31 @@ indent = { tab-width = 4, unit = "    " }
 [[grammar]]
 name = "selinux-te"
 source = { git = "https://github.com/moeryomenko/tree-sitter-selinux", rev = "dc813009a179083dcefc111bb2bc19418e50ab5c" }
+
+# ---------------------------------------------------------------------------
+# jq / JSON language servers
+# ---------------------------------------------------------------------------
+
+# jq (https://github.com/wader/jq-lsp). Helix already defaults to jq-lsp; the
+# definition is repeated here so the dependency is explicit.
+[language-server.jq-lsp]
+command = "jq-lsp"
+
+[[language]]
+name = "jq"
+language-servers = ["jq-lsp"]
+
+# JSON (vscode-json-language-server from vscode-langservers-extracted,
+# Arch package: vscode-json-languageserver).
+[language-server.vscode-json-language-server]
+command = "vscode-json-language-server"
+args = ["--stdio"]
+config = { provideFormatter = true, json = { validate = { enable = true } } }
+
+[[language]]
+name = "json"
+language-servers = ["vscode-json-language-server"]
+
+[[language]]
+name = "jsonc"
+language-servers = ["vscode-json-language-server"]
