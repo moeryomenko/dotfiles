@@ -6,7 +6,7 @@ local M = {}
 -- Color palette extracted from the neon anime image
 local colors = {
 	-- Core backgrounds
-	bg = "none",         -- "#1a2642",      -- Deep blue background
+	bg = "#1a2642",      -- Deep blue background
 	bg_alt = "#1e2d4d",  -- Slightly lighter (floating windows, sidebars)
 	bg_light = "#243556", -- Lighter background (current line, selections)
 	bg_lighter = "#2a3d5f", -- Lightest background (visual mode, folds)
