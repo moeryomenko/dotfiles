@@ -15,7 +15,8 @@
     "thinking": "hide"
   },
   "experimental": {
-    "todo": true
+    "todo": true,
+    "background_compaction": true
   },
   "animations": true
 }
