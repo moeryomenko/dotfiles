@@ -34,6 +34,13 @@
         "command": [
           "mcp-dap-server"
         ]
+      },
+      "atuin": {
+        "type": "local",
+        "command": [
+          "/home/eryoma/.cargo/bin/atuin",
+          "mcp"
+        ]
       }
     }
   },
