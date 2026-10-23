@@ -15,6 +15,11 @@ direnv hook fish | source
 zoxide init fish | source
 fx --comp fish | source
 mise activate fish | source
+atuin init fish | source
+
+# bind to ctrl-r in normal and insert mode, add any other bindings you want here too
+bind \cr _atuin_search
+bind -M insert \cr _atuin_search
 
 if test (tty) = /dev/tty1
     export RADV_VIDEO_DECODE=1

@@ -30,6 +30,8 @@ set -gx LDFLAGS "-fuse-ld=wild"
 # Disable legacy ccache; sccache handles caching instead
 set -gx CCACHE_DISABLE 1
 
+set -gx ATUIN_NOBIND true
+
 set -Ux OPENCODE_EXPERIMENTAL_LSP_TOOL true
 set -Ux OPENCODE_ENABLE_EXA 1
 set -gx CODEGRAPH_TELEMETRY 0
