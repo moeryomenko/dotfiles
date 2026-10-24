@@ -49,16 +49,32 @@
       "disabled": true
     },
     "ty": {
-      "command": ["ty", "server"],
-      "extensions": [".py", ".pyi"]
+      "command": [
+        "ty",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
     },
     "autotools": {
-      "command": ["autotools-language-server"],
-      "extensions": [".ac"]
+      "command": [
+        "autotools-language-server"
+      ],
+      "extensions": [
+        ".ac"
+      ]
     },
     "make-ls": {
-      "command": ["make-ls"],
-      "extensions": [".mk", "Makefile", "makefile"]
+      "command": [
+        "make-ls"
+      ],
+      "extensions": [
+        ".mk",
+        "Makefile",
+        "makefile"
+      ]
     }
   },
   "formatter": true,
@@ -66,6 +82,11 @@
     "anthropic": {
       "settings": {
         "baseURL": "https://claude-n-codex.com:8443/v1"
+      }
+    },
+    "openai": {
+      "settings": {
+        "baseURL": "https://api.relaymodels.com/v1"
       }
     },
     "llama": {
