@@ -84,9 +84,2525 @@
         "baseURL": "https://claude-n-codex.com:8443/v1"
       }
     },
-    "openai": {
+    "relaymodels": {
+      "name": "RelayModels",
+      "package": "@opencode/ai/providers/openai-compatible",
       "settings": {
-        "baseURL": "https://api.relaymodels.com/v1"
+        "baseURL": "https://api.relaymodels.com/v1",
+        "apiKey": "{env:RELAYMODELS_API_KEY}"
+      },
+      "headers": {
+        "X-RelayModels-Client": "opencode"
+      },
+      "models": {
+        "gpt-5.6-sol": {
+          "name": "GPT 5.6 Sol",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "gpt-5.6-terra": {
+          "name": "GPT 5.6 Terra",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "gpt-5.6-luna": {
+          "name": "GPT 5.6 Luna",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "gpt-5.5": {
+          "name": "GPT 5.5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
+        },
+        "gpt-5.4": {
+          "name": "GPT 5.4",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
+        },
+        "gpt-5.4-mini": {
+          "name": "GPT 5.4 Mini",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
+        },
+        "claude-fable-5": {
+          "name": "Claude Fable 5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-opus-5": {
+          "name": "Claude Opus 5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 1000000,
+            "output": 128000,
+            "context": 1000000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-opus-4-7": {
+          "name": "Claude Opus 4.7",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-opus-4-6": {
+          "name": "Claude Opus 4.6",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 200000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-sonnet-5": {
+          "name": "Claude Sonnet 5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "claude-haiku-4-5": {
+          "name": "Claude Haiku 4.5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          }
+        },
+        "glm-5.3": {
+          "name": "GLM 5.3",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 131072,
+            "context": 1048576
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "glm-5.3-flash": {
+          "name": "GLM 5.3 Flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 131072,
+            "context": 1048576
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "glm-5-turbo": {
+          "name": "GLM 5 Turbo",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 202752,
+            "output": 131072,
+            "context": 202752
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "glm-5.2": {
+          "name": "GLM 5.2",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 131072,
+            "context": 1048576
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "grok-4.6": {
+          "name": "Grok 4.6",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 500000,
+            "output": 128000,
+            "context": 500000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
+        },
+        "grok-4.5": {
+          "name": "Grok 4.5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 500000,
+            "output": 128000,
+            "context": 500000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "qwen3.8-max": {
+          "name": "Qwen3.8 Max",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "qwen3.7-max": {
+          "name": "Qwen3.7 Max",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "qwen3.7-plus": {
+          "name": "Qwen3.7 Plus",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 65536
+          }
+        },
+        "kimi-k3": {
+          "name": "Kimi K3",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 131072
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "kimi-k2.7-code": {
+          "name": "Kimi K2.7 Code",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": false,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 262144,
+            "output": 262144
+          }
+        },
+        "deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 384000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 384000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "deepseek-v4-flash-vision-exp": {
+          "name": "DeepSeek V4 Flash Vision Exp",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1048576,
+            "input": 1048576,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "minimax-m3": {
+          "name": "MiniMax M3",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 131072
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "thinking",
+              "settings": {
+                "reasoningEffort": "thinking"
+              }
+            }
+          ]
+        },
+        "mimo-v2.5-pro": {
+          "name": "MiMo V2.5 Pro",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1048576,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "mimo-v2.5": {
+          "name": "MiMo V2.5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "audio",
+              "video"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "composer-2.5-fast": {
+          "name": "Composer 2.5 Fast",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "input": 200000,
+            "output": 64000,
+            "context": 200000
+          }
+        },
+        "muse-spark-1.2": {
+          "name": "Muse Spark 1.2",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text",
+              "image",
+              "audio",
+              "video",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "input": 1048576,
+            "output": 131072,
+            "context": 1048576
+          },
+          "variants": [
+            {
+              "id": "minimal",
+              "settings": {
+                "reasoningEffort": "minimal"
+              }
+            },
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "xhigh",
+              "settings": {
+                "reasoningEffort": "xhigh"
+              }
+            }
+          ]
+        },
+        "nemotron-3-ultra": {
+          "name": "Nemotron 3 Ultra",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "nemotron-3.5-lightning": {
+          "name": "Nemotron 3.5 Lightning",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 262144,
+            "output": 128000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "north-mini-code": {
+          "name": "North Mini Code",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": true
+            }
+          },
+          "limit": {
+            "context": 256000,
+            "output": 64000
+          },
+          "variants": [
+            {
+              "id": "none",
+              "settings": {
+                "reasoningEffort": "none"
+              }
+            },
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        },
+        "k2.7-code-cursor": {
+          "name": "k2.7-code-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "glm-5.3-cursor": {
+          "name": "glm-5.3-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "qwen3.8-max-cursor": {
+          "name": "qwen3.8-max-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-6-sol": {
+          "name": "gpt-6-sol",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "fable-5-cursor": {
+          "name": "fable-5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gemini-3.8-flash": {
+          "name": "gemini-3.8-flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "grok-4.5-cursor": {
+          "name": "grok-4.5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "composer-2.5-fast-cursor": {
+          "name": "composer-2.5-fast-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.5-cursor": {
+          "name": "gpt-5.5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "k3-cursor": {
+          "name": "k3-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "grok-4.6-cursor": {
+          "name": "grok-4.6-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "deepseek-v4-pro-cursor": {
+          "name": "deepseek-v4-pro-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "deepseek-v4.1-flash": {
+          "name": "deepseek-v4.1-flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "opus-4-8-cursor": {
+          "name": "opus-4-8-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "sonnet-5-cursor": {
+          "name": "sonnet-5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gemini-3.6-flash": {
+          "name": "gemini-3.6-flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.6-sol-cursor": {
+          "name": "gpt-5.6-sol-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "glm-5.2-cursor": {
+          "name": "glm-5.2-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "muse-spark-1.2-cursor": {
+          "name": "muse-spark-1.2-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "ox-alpha": {
+          "name": "ox-alpha",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-4o-transcribe": {
+          "name": "gpt-4o-transcribe",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gemini-3.5-flash": {
+          "name": "gemini-3.5-flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.6-luna-cursor": {
+          "name": "gpt-5.6-luna-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-6-astra": {
+          "name": "gpt-6-astra",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "glm-5-turbo-cursor": {
+          "name": "glm-5-turbo-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "minimax-m3-cursor": {
+          "name": "minimax-m3-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-6-luna": {
+          "name": "gpt-6-luna",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "nemotron-3.5-lightning-cursor": {
+          "name": "nemotron-3.5-lightning-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "opus-5-cursor": {
+          "name": "opus-5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "claude-opus-5-5": {
+          "name": "claude-opus-5-5",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "mimo-v2.5-pro-cursor": {
+          "name": "mimo-v2.5-pro-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "opus-4-6-cursor": {
+          "name": "opus-4-6-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "glm-5.3-flash-cursor": {
+          "name": "glm-5.3-flash-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gemini-3.1-pro": {
+          "name": "gemini-3.1-pro",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "qwen3.7-plus-cursor": {
+          "name": "qwen3.7-plus-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "claude-fable-5-1": {
+          "name": "claude-fable-5-1",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "qwen3.7-max-cursor": {
+          "name": "qwen3.7-max-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "nemotron-3-ultra-cursor": {
+          "name": "nemotron-3-ultra-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "mimo-v2.5-cursor": {
+          "name": "mimo-v2.5-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.4-mini-cursor": {
+          "name": "gpt-5.4-mini-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "opus-4-7-cursor": {
+          "name": "opus-4-7-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-6.1-sol": {
+          "name": "gpt-6.1-sol",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gemini-3.7-flash": {
+          "name": "gemini-3.7-flash",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.6-terra-cursor": {
+          "name": "gpt-5.6-terra-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "gpt-5.4-cursor": {
+          "name": "gpt-5.4-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "deepseek-v4-flash-cursor": {
+          "name": "deepseek-v4-flash-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "grok-4.7": {
+          "name": "grok-4.7",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        },
+        "sonnet-4-6-cursor": {
+          "name": "sonnet-4-6-cursor",
+          "capabilities": {
+            "tools": true,
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ],
+            "temperature": true,
+            "reasoning": {
+              "supported": false
+            }
+          },
+          "limit": {
+            "context": 128000,
+            "output": 16384
+          }
+        }
       }
     },
     "llama": {
