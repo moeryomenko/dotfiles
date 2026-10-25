@@ -75,14 +75,16 @@ All commits MUST follow Scoped Commits format (https://scopedcommits.com/):
 - **No conversation commits**: Every commit message must describe WHAT changed and WHY. Never write messages like "update", "fix", "wip", "as discussed", "address feedback", "review comments", "try again", or any message that reads like a conversation fragment.
 - **Imperative mood**: "add pagination" not "added pagination" or "adding pagination".
 - **Scope must be a real subsystem**: Use the repo directory name. Use `treewide` for cross-cutting changes.
-- **Body explains WHY**: See commiter agent for full body writing rules.
+- **Title length**: The subject line MUST be at most 50 characters, including the `<scope>: ` prefix. Aim for around 50; do not exceed it.
+- **Body line width**: Every body line MUST be wrapped at 72 characters or fewer, so `git log` and `git format-patch` render without wrapping.
+- **Body explains WHY**: State the reason for the change and any non-obvious consequence. See commiter agent for full body writing rules.
 - **Mandatory trailers**: Every commit MUST contain `Assisted-By: LLM` and a populated `Signed-off-by: Name <email>` trailer.
 - **Sign off with Git**: Create every commit with `git commit --signoff` and include `Assisted-By: LLM` in the commit message. Git MUST generate the sign-off from the committer's configured identity; never leave it empty or invent an identity.
 
 Example command:
 
 ```bash
-git commit --signoff -m "<scope>: <description>" -m "<why>" -m "Assisted-By: LLM"
+git commit --signoff -m "<scope>: <description>" -m "<why, wrapped at 72 columns>" -m "Assisted-By: LLM"
 ```
 
 Required trailers in the resulting commit message:
@@ -90,6 +92,16 @@ Required trailers in the resulting commit message:
 ```text
 Assisted-By: LLM
 Signed-off-by: Name <email>
+```
+
+Before committing, verify the widths:
+
+```bash
+# subject line character count (must be <= 50)
+git log -1 --format=%s | wc -c
+
+# any body line longer than 72 characters (must print nothing)
+git log -1 --format=%b | awk 'length > 72'
 ```
 
 ## 9. Mandatory Skill Activation Before Work (HIGH)
