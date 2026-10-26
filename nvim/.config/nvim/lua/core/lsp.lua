@@ -60,8 +60,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		bufmap('n', 'gq', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', 'Format buffer')
 
 		-- Diagnostics navigation
-		bufmap('n', '[e', '<cmd>lua vim.diagnostic.goto_prev()<cr>', 'Previous diagnostic')
-		bufmap('n', ']e', '<cmd>lua vim.diagnostic.goto_next()<cr>', 'Next diagnostic')
+		bufmap('n', '[e', function()
+			vim.diagnostic.jump({ count = -1 })
+		end, 'Previous diagnostic')
+		bufmap('n', ']e', function()
+			vim.diagnostic.jump({ count = 1 })
+		end, 'Next diagnostic')
 		bufmap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<cr>', 'Show diagnostics')
 		bufmap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'Diagnostics loclist')
 
