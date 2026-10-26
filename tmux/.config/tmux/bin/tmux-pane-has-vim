@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# tmux-pane-has-vim — tell whether a tmux pane is running a vim-like editor.
+#
+# The Ctrl-h/j/k/l bindings from vim-tmux-navigator must decide between
+# forwarding the key to the pane (editor focused) and switching tmux panes.
+# The upstream check inspects the processes attached to the pane tty. That
+# check fails when a shell wrapper runs the shell on a nested pty: atuin's
+# pty-proxy, enabled by default since atuin 18.24, leaves only "atuin" on the
+# pane tty while nvim lives on a second pty, so tmux always stole the keys and
+# nvim never saw them.
+#
+# Walk the pane's process tree instead. Ancestry does not change when a wrapper
+# inserts itself between tmux and the editor.
+#
+# Usage: tmux-pane-has-vim <pane-pid>
+# Exit status: 0 when a vim-like process is in the pane, 1 otherwise.
+
+set -Eeuo pipefail
+
+pane_pid="${1:?usage: tmux-pane-has-vim <pane-pid>}"
+
+# Names accepted upstream: view, vim, nvim, gvim, fzf, and *diff variants.
+vim_like='^(g?view|l?n?vim?x?|fzf)(diff)?$'
+
+ps -eo pid=,ppid=,stat=,comm= |
+	awk -v root="$pane_pid" -v pattern="$vim_like" '
+		{
+			parent[$1] = $2
+			state[$1] = $3
+			name[$1] = $4
+		}
+		END {
+			for (pid in name) {
+				if (name[pid] !~ pattern)
+					continue
+				# A stopped or dead editor cannot take the key.
+				if (state[pid] ~ /^[TXZ]/)
+					continue
+				p = pid
+				while (p != "" && p != 0 && p != root)
+					p = parent[p]
+				if (p == root)
+					exit 0
+			}
+			exit 1
+		}
+	'
