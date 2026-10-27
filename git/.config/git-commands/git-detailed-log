@@ -14,7 +14,7 @@ git log \
 				   \" | \
 				   grep -o '[a-f0-9]\{7\}' | head -1 |
 				   xargs -I % sh -c 'git show --color=always % | bat ' @- " \
-		--bind "alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
+		--bind "ctrl-j:preview-down,ctrl-k:preview-up,alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort,ctrl-m:execute:
               echo \"{}\" | \
 			  grep -o '[a-f0-9]\{7\}' | head -1 |
               xargs -I % git show-commit % @- " \
