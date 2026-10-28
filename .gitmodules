@@ -22,6 +22,3 @@
 [submodule "tmux/.tmux/plugins/tmux-assistant-resurrect"]
 	path = tmux/.tmux/plugins/tmux-assistant-resurrect
 	url = https://github.com/timvw/tmux-assistant-resurrect.git
-[submodule "opencode/.config/opencode/plugins/opencode-subagent-graph"]
-	path = opencode/.config/opencode/plugins/opencode-subagent-graph
-	url = https://github.com/moeryomenko/opencode-subagent-graph.git
