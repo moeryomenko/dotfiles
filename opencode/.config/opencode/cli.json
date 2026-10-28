@@ -1,7 +1,8 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "theme": {
-    "name": "system"
+    "name": "tokyonight",
+    "mode": "dark"
   },
   "plugins": [
     "@prevalentware/opencode-goal-plugin"
@@ -12,11 +13,17 @@
   "session": {
     "sidebar": "auto",
     "scrollbar": false,
-    "thinking": "hide"
+    "thinking": "hide",
+    "markdown": "rendered"
   },
   "experimental": {
     "todo": true,
-    "background_compaction": true
+    "background_compaction": true,
+    "new-designs": true,
+    "client-mcp": true
   },
-  "animations": true
+  "animations": true,
+  "debug": {
+    "devtools": true
+  }
 }
