@@ -3,7 +3,8 @@
 
 # Theme (was [general] import = ["./noir.toml"])
 # Custom themes live in ~/.config/ghostty/themes/<name>
-theme = neon_dreams
+# Official TokyoNight Storm palette (tokyonight.nvim extras)
+theme = tokyonight_storm
 
 # Bold text uses bright palette (was draw_bold_text_with_bright_colors)
 bold-color = bright
