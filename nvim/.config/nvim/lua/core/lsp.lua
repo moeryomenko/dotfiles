@@ -37,14 +37,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		local client = vim.lsp.get_client_by_id(client_id)
 		local bufnr = event.buf
 
-		-- Enable builtin auto-completion with aggressive triggering
-		if client and client:supports_method('textDocument/completion') then
-			vim.lsp.completion.enable(true, client_id, bufnr, { autotrigger = true })
-		end
-
-		-- Set completion options for automatic popup
-		vim.opt_local.completeopt = { 'menu', 'menuone', 'noselect' }
-
 		local function bufmap(mode, lhs, rhs, desc)
 			vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
 		end

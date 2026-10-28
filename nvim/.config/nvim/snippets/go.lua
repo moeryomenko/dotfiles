@@ -49,7 +49,6 @@ local in_test_fn = {
 }
 
 return {
-	s("ctxb", t("ctx := context.Background()")),
 	s(
 		"ctxb",
 		t([[

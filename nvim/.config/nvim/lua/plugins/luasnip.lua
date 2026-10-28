@@ -4,34 +4,54 @@ return {
 		dependencies = {
 			"honza/vim-snippets",
 			"rafamadriz/friendly-snippets",
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		event = "InsertEnter",
 		config = function()
 			local ls = require("luasnip")
+			local cmp = require("cmp")
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						ls.lsp_expand(args.body)
+					end,
+				},
+				mapping = cmp.mapping.preset.insert({
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif ls.expand_or_jumpable() then
+							ls.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item()
+						elseif ls.jumpable(-1) then
+							ls.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				}),
+				confirm_opts = {
+					behavior = cmp.ConfirmBehavior.Replace,
+					select = false,
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+				}),
+			})
 
 			ls.config.set_config({
 				updateevents = "TextChanged,TextChangedI",
 			})
-
-			vim.keymap.set({ "i", "s" }, "<Tab>", function()
-				if vim.fn.pumvisible() == 1 then
-					return "<C-n>"
-				elseif ls.expand_or_jumpable() then
-					ls.expand_or_jump()
-					return ""
-				end
-				return "<Tab>"
-			end, { expr = true, silent = true })
-
-			vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
-				if vim.fn.pumvisible() == 1 then
-					return "<C-p>"
-				elseif ls.jumpable(-1) then
-					ls.jump(-1)
-					return ""
-				end
-				return "<S-Tab>"
-			end, { expr = true, silent = true })
 
 			vim.keymap.set({ "i", "s" }, "<C-k>", function()
 				if ls.jumpable(-1) then
