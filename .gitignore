@@ -38,3 +38,5 @@ opencode/.config/opencode/service.json
 .serena/
 containers/.config/containers/systemd/k8labs-hypervisor-agent.container
 gpg/.gnupg/openpgp-revocs.d/
+containers/.config/containers/systemd/cluster-api-hypervisor.container
+containers/.config/containers/systemd/registry.container
