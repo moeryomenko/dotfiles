@@ -1,0 +1,18 @@
+# asm-lsp configuration for Go (Plan 9) assembly.
+#
+# Used by the asm-lsp-go wrapper (~/.local/bin/asm-lsp-go), which sets
+# XDG_CONFIG_HOME so this file is only read for Go assembly. asm-lsp has no
+# CLI or initializationOptions for this; the config path is fixed at
+# $XDG_CONFIG_HOME/asm-lsp/.asm-lsp.toml.
+#
+# A .asm-lsp.toml in a project root overrides this file completely.
+
+[default_config]
+assembler = "go"
+instruction_set = "x86/x86-64"
+
+[default_config.opts]
+# gcc/clang cannot assemble Go's Plan 9 syntax, so the default compiler-based
+# diagnostics only produce noise. `go vet`/`go build` remain the real checks.
+diagnostics = false
+default_diagnostics = false

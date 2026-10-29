@@ -11,3 +11,5 @@ tuicr
 kdash
 # elio -- file manager TUI (elio/.config/elio)
 elio
+# helix/languages.toml -- assembly LSP (GAS/NASM/Go asm)
+asm-lsp

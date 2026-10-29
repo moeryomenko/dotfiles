@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# asm-lsp picks the assembler from $XDG_CONFIG_HOME/asm-lsp/.asm-lsp.toml and
+# offers no CLI flag or LSP initializationOptions. Point it at an isolated
+# config tree so Go (Plan 9) assembly gets Go instruction docs while GAS/NASM
+# keep the defaults from the plain `asm-lsp` server.
+
+XDG_CONFIG_HOME="$HOME/.config/asm-lsp-go" exec asm-lsp "$@"
