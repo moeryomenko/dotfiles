@@ -71,3 +71,46 @@ language-servers = ["vscode-json-language-server"]
 [[language]]
 name = "jsonc"
 language-servers = ["vscode-json-language-server"]
+
+# ---------------------------------------------------------------------------
+# Assembly
+# ---------------------------------------------------------------------------
+# Helix's built-in `gas` (.s) and `nasm` (.asm/.S/.nasm) languages already use
+# asm-lsp with its default configuration (GAS, host instruction set).
+#
+# Go assembly needs a different asm-lsp assembler, and asm-lsp accepts no CLI
+# flag or initializationOptions: it reads $XDG_CONFIG_HOME/asm-lsp/.asm-lsp.toml.
+# `asm-lsp-go` is a thin wrapper that points XDG_CONFIG_HOME at a Go-specific
+# config tree, so both flavours can coexist.
+[language-server.asm-lsp-go]
+command = "asm-lsp-go"
+
+# Go assembly files end in _<GOARCH>.s. A glob match is checked before (and
+# wins over) the generic .s extension mapping, so these files get the Go
+# server while other .s files stay on the GAS server.
+[[language]]
+name = "go-asm"
+scope = "source.go-asm"
+file-types = [
+  { glob = "*_386.s" },
+  { glob = "*_amd64.s" },
+  { glob = "*_arm.s" },
+  { glob = "*_arm64.s" },
+  { glob = "*_loong64.s" },
+  { glob = "*_mips.s" },
+  { glob = "*_mips64.s" },
+  { glob = "*_mips64le.s" },
+  { glob = "*_mipsle.s" },
+  { glob = "*_ppc64.s" },
+  { glob = "*_ppc64le.s" },
+  { glob = "*_riscv64.s" },
+  { glob = "*_s390x.s" },
+  { glob = "*_wasm.s" },
+]
+roots = ["go.work", "go.mod"]
+comment-token = "//"
+indent = { tab-width = 4, unit = "\t" }
+# Parsed with the GAS grammar until a dedicated Go assembly grammar is added;
+# queries live in runtime/queries/go-asm.
+grammar = "gas"
+language-servers = ["asm-lsp-go"]
