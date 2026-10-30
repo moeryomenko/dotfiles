@@ -116,6 +116,7 @@ slurp                  # region selector (hyprland/bin/screen-record.sh)
 qt6-base               # Qt6 runtime (HyprCapture UI helper)
 layer-shell-qt         # layer-shell overlay (HyprCapture UI helper)
 nlohmann-json          # JSON headers (HyprCapture plugin build via hyprpm)
+opencv                 # OpenCV headers (HyprCapture plugin build via hyprpm)
 xdg-desktop-portal-hyprland # xdg portal (hyprland/bin/xdg-portal.sh)
 xdg-desktop-portal-gtk # xdg portal GTK backend (hyprland-portals.conf)
 
