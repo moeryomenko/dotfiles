@@ -110,7 +110,10 @@ file-types = [
 roots = ["go.work", "go.mod"]
 comment-token = "//"
 indent = { tab-width = 4, unit = "\t" }
-# Parsed with the GAS grammar until a dedicated Go assembly grammar is added;
-# queries live in runtime/queries/go-asm.
-grammar = "gas"
+# Dedicated Plan 9 grammar; queries live in runtime/queries/go-asm.
+grammar = "goasm"
 language-servers = ["asm-lsp-go"]
+
+[[grammar]]
+name = "goasm"
+source = { git = "https://github.com/zchee/tree-sitter-goasm", rev = "79ce6dd3a7795030cb4d8a4266eecee272738560" }
