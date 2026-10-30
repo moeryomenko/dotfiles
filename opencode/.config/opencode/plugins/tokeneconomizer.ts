@@ -1,0 +1,1 @@
+/home/eryoma/workspace/TokenEconomizer/plugin/opencode/tokeneconomizer.ts
