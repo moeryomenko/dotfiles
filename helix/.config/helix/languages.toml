@@ -8,12 +8,43 @@ command = "make-ls"
 command = "css-variable-lsp"
 args = []
 
+# HashiCorp Terraform Language Server. It supports Terraform configuration and
+# variable files, but not Packer HCL templates.
+[language-server.terraform-ls]
+command = "terraform-ls"
+args = ["serve"]
+
+[[language]]
+name = "terraform"
+scope = "source.terraform"
+file-types = ["tf"]
+language-servers = ["terraform-ls"]
+
+[[language]]
+name = "terraform-vars"
+scope = "source.terraform-vars"
+file-types = ["tfvars"]
+language-servers = ["terraform-ls"]
+
+# Packer uses HCL2, but terraform-ls intentionally does not support Packer
+# templates. Keep syntax highlighting and HCL parsing without attaching the
+# Terraform server to avoid incorrect diagnostics and completions.
+[[language]]
+name = "packer"
+scope = "source.packer"
+file-types = [{ glob = "*.pkr.hcl" }]
+grammar = "hcl"
+
 [[language]]
 name = "css"
+scope = "source.css"
+file-types = ["css"]
 language-servers = ["css-lsp", "css-variable-lsp"]
 
 [[language]]
 name = "scss"
+scope = "source.scss"
+file-types = ["scss"]
 language-servers = ["css-lsp", "css-variable-lsp"]
 
 [[language]]
@@ -24,6 +55,8 @@ language-servers = ["autotools-language-server"]
 
 [[language]]
 name = "make"
+scope = "source.make"
+file-types = [{ glob = "[Mm]akefile" }, "mk"]
 language-servers = ["make-ls"]
 
 # SELinux Type Enforcement policy modules (.te) and interface files (.if).
@@ -55,6 +88,8 @@ command = "jq-lsp"
 
 [[language]]
 name = "jq"
+scope = "source.jq"
+file-types = ["jq"]
 language-servers = ["jq-lsp"]
 
 # JSON (vscode-json-language-server from vscode-langservers-extracted,
@@ -66,10 +101,14 @@ config = { provideFormatter = true, json = { validate = { enable = true } } }
 
 [[language]]
 name = "json"
+scope = "source.json"
+file-types = ["json"]
 language-servers = ["vscode-json-language-server"]
 
 [[language]]
 name = "jsonc"
+scope = "source.json"
+file-types = ["jsonc"]
 language-servers = ["vscode-json-language-server"]
 
 # ---------------------------------------------------------------------------
