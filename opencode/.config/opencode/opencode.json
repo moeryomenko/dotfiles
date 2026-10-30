@@ -2176,8 +2176,9 @@
             }
           },
           "limit": {
-            "context": 128000,
-            "output": 16384
+            "context": 1050000,
+            "input": 922000,
+            "output": 128000
           }
         },
         "nemotron-3.5-lightning-cursor": {
