@@ -20,7 +20,8 @@
     "todo": true,
     "background_compaction": true,
     "new-designs": true,
-    "client-mcp": true
+    "client-mcp": true,
+    "artifacts": true
   },
   "animations": true,
   "debug": {
