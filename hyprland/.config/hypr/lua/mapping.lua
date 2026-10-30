@@ -62,6 +62,3 @@ hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("pactl set-sink-volume @DEFAULT_SINK@ -10%"),
 	{ locked = true, repeating = true })
 
--- Hymission Mission Control
-hl.bind(vars.mainMod .. " + O", hl.plugin.scrolloverview.overview("toggle all"))
-
