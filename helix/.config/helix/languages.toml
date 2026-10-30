@@ -104,12 +104,14 @@ name = "json"
 scope = "source.json"
 file-types = ["json"]
 language-servers = ["vscode-json-language-server"]
+indent = { tab-width = 2, unit = "  " }
 
 [[language]]
 name = "jsonc"
 scope = "source.json"
 file-types = ["jsonc"]
 language-servers = ["vscode-json-language-server"]
+indent = { tab-width = 2, unit = "  " }
 
 # ---------------------------------------------------------------------------
 # Assembly
