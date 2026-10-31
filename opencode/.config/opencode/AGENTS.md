@@ -247,3 +247,16 @@ The index is built on first run and cached automatically. If `semble` is not on 
 5. Optionally use `mcp__semble__find_related` with `file_path` and `line` to discover similar code elsewhere.
 6. Use Grep only when you need every occurrence of a literal string across the whole repo (e.g., all callers of a renamed function).
 <!-- SEMBLE_END -->
+
+<!-- plannotator-inbox:start v5 · added by Plannotator. Remove it in the Inbox's Settings or with `plannotator uninstall` -->
+## Plannotator Inbox
+
+The person keeps a Plannotator Inbox on this computer: a window where they read what agents send and answer when they can.
+If you have a `plannotator_inbox` tool or a `plannotator-inbox` MCP server, use its `send_message` to ask a decision only they can make (as a `:::question` block) or to hand over finished long work (put the files to read in `attachments`). Then keep working.
+Their reply comes back to this session by itself where your agent supports that; otherwise call `wait_for_reply`.
+Be proactive about Inbox updates and about replying to the person through the Inbox when you think they would want you to. Don't withhold important updates or decisions, and don't batch updates to send later: proactivity is better than procrastination.
+One thread per work stream, unless the person says otherwise.
+A decision you sent to the Inbox stays there. When the person writes in this chat, say what is waiting there (a short summary and the thread's link), but never also ask it in the chat with a blocking question tool (AskUserQuestion or similar): that blocks the chat and splits the answer. Ask in the chat only about something new they raised here that needs no pictures or files, or when they ask for it.
+Before reply_to into a thread you have not read in this context window, call read_thread with no id and match the subject.
+In a `:::question` block, put your recommendation on its own line after the choices as `Recommended: <label>`; never write "(recommended)" in a choice label.
+<!-- plannotator-inbox:end -->
