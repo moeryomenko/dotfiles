@@ -1,4 +1,4 @@
-require('vim._core.ui2').enable()
+require("core.lsp_progress")
 
 require("core.options")
 require("core.functions")

@@ -1,3 +1,5 @@
+local lsp_progress = require("core.lsp_progress")
+
 local function filetype()
 	local ft = vim.bo.filetype
 	local lang_icons = {
@@ -48,6 +50,7 @@ return {
 				lualine_b = { "branch" },
 				lualine_c = { "filename" },
 				lualine_x = {
+					lsp_progress.statusline,
 					function()
 						local encoding = vim.o.fileencoding
 						if encoding == "" then
