@@ -21,7 +21,7 @@ context you already have. The worktree agent does all the work.
 
 - **Handle**: the worktree directory name, derived from the branch name
   (slugified). Used to identify worktrees in all commands
-- **Worktree directory**: defaults to `<project>__worktrees/<handle>` as a
+- **Worktree directory**: defaults to `<project>/.worktrees/<handle>` as a
   sibling of the project root
 - **Window prefix**: tmux windows are named `wm-<handle>` by default
   (configurable via `window_prefix`)
