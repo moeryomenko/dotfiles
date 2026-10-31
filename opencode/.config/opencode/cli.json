@@ -25,6 +25,7 @@
   },
   "animations": true,
   "debug": {
-    "devtools": true
+    "devtools": true,
+    "turn_tokens": "verbose"
   }
 }
