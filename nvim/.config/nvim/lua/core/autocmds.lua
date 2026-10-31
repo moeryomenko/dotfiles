@@ -5,6 +5,7 @@ end
 -- Hyprlang LSP
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
 	pattern = { "*.hl", "hypr*.conf" },
+	---@diagnostic disable-next-line: unused-local
 	callback = function(event)
 		vim.lsp.start {
 			name = "hyprlang",
