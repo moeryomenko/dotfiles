@@ -1,61 +1,63 @@
-import { execFile } from "node:child_process"
-import { promisify } from "node:util"
-import { Plugin } from "@opencode/plugin"
-
-const execFileAsync = promisify(execFile)
+import type { Plugin } from "@opencode-ai/plugin"
 
 /**
  * code-review-graph plugin for OpenCode.
  *
  * Keeps the knowledge graph up-to-date and surfaces status
  * information automatically during coding sessions.
+ *
+ * Installed by: code-review-graph install --platform opencode
  */
 
-async function run(args: string[], cwd: string): Promise<string> {
+// Helper: run a shell command quietly, swallowing errors.
+async function run($: any, cmd: string): Promise<string> {
   try {
-    const result = await execFileAsync("code-review-graph", args, { cwd })
-    return result.stdout.trim()
+    const result = await $`${cmd}`.quiet()
+    return result.stdout?.toString().trim() ?? ""
   } catch {
     return ""
   }
 }
 
-export default Plugin.define({
-  id: "code-review-graph",
+export default (app: any) => {
+  // 1. Auto-update graph after file edits
+  app.on("file.edited", async ({ $ }: { $: any }) => {
+    try {
+      await $`code-review-graph update --skip-flows`.quiet()
+    } catch {
+      // Swallow — graph may not be built yet for this project.
+    }
+  })
 
-  async setup(ctx) {
-    const controller = new AbortController()
+  // 2. Show graph status when a new session starts
+  app.on("session.created", async ({ $ }: { $: any }) => {
+    try {
+      const result = await $`code-review-graph status`.quiet()
+      const output = result.stdout?.toString().trim()
+      if (output) {
+        console.log("[code-review-graph]", output)
+      }
+    } catch {
+      // Swallow — not every project has a graph.
+    }
+  })
 
-    void (async () => {
-      for await (const event of ctx.event.subscribe({
-        types: ["file.edited", "session.created"],
-        signal: controller.signal,
-      })) {
-        const cwd = event.location?.directory ?? ctx.location.directory
-
-        if (event.type === "file.edited") {
-          await run(["update", "--skip-flows"], cwd)
-        } else if (event.type === "session.created") {
-          const output = await run(["status"], cwd)
-          if (output) console.log("[code-review-graph]", output)
+  // 3. Detect changes before git commit commands
+  app.on("tool.execute.before", async (ctx: any) => {
+    try {
+      const input = ctx?.input ?? ctx?.params ?? {}
+      const cmd =
+        input.command ?? input.cmd ?? input.content ?? ""
+      if (typeof cmd === "string" && /^git\s+commit/i.test(cmd)) {
+        const result =
+          await ctx.$`code-review-graph detect-changes --brief`.quiet()
+        const output = result.stdout?.toString().trim()
+        if (output) {
+          console.log("[code-review-graph] Pre-commit analysis:\n" + output)
         }
       }
-    })().catch(() => {
-      // Event delivery must never affect the OpenCode session.
-    })
-
-    await ctx.shell.hook("create.before", async (event) => {
-      if (!/^git\s+commit(?:\s|$)/i.test(event.command)) return
-
-      const output = await run(
-        ["detect-changes", "--brief"],
-        event.cwd,
-      )
-      if (output) {
-        console.log("[code-review-graph] Pre-commit analysis:\n" + output)
-      }
-    })
-
-    return () => controller.abort()
-  },
-})
+    } catch {
+      // Swallow — never block a commit.
+    }
+  })
+}
