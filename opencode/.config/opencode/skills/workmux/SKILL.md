@@ -25,6 +25,9 @@ context you already have. The worktree agent does all the work.
   sibling of the project root
 - **Window prefix**: tmux windows are named `wm-<handle>` by default
   (configurable via `window_prefix`)
+- **Window mode**: this setup uses `mode: window`, so each worktree opens as
+  a window in the invoking tmux session. Workmux does not create a session
+  per worktree unless `--mode session` or `-s` is passed explicitly.
 - **Agent status**: agents report status via hooks: working, waiting (needs
   input), done (finished)
 

@@ -1,7 +1,7 @@
 nerdfont: true # Enable nerdfont icons (prompted on first run)
 agent: opencode
 
-mode: session # One tmux session per worktree
+mode: window # One tmux window per worktree in the current session
 base_branch: auto # Branch tasks from the detected main branch
 worktree_dir: .worktrees # Keep task worktrees inside the project
 
