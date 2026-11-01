@@ -1080,7 +1080,7 @@
           },
           "limit": {
             "context": 1000000,
-            "output": 65536
+            "output": 131072
           }
         },
         "qwen3.7-max": {
@@ -1896,8 +1896,8 @@
             }
           },
           "limit": {
-            "context": 128000,
-            "output": 16384
+            "output": 384000,
+            "context": 1048576
           }
         },
         "opus-4-8-cursor": {
