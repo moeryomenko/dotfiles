@@ -27,5 +27,8 @@
   "debug": {
     "devtools": true,
     "turn_tokens": "verbose"
+  },
+  "prompt": {
+    "editor": false
   }
 }
