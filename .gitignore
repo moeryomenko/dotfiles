@@ -40,3 +40,5 @@ containers/.config/containers/systemd/k8labs-hypervisor-agent.container
 gpg/.gnupg/openpgp-revocs.d/
 containers/.config/containers/systemd/cluster-api-hypervisor.container
 containers/.config/containers/systemd/registry.container
+opencode/.config/opencode/node_modules/
+opencode/.config/opencode/plugins/opencode-subagent-graph/
