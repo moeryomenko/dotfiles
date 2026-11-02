@@ -26,7 +26,13 @@ ensure_home_window() {
 }
 
 if ! tmux_has_session; then
-    if ! tmux new-session -d -s "${session_name}" -c "${HOME}/videos/dark" 2>/dev/null; then
+    # tmux refuses to start the server when the start directory does not
+    # exist (and `-c` is not covered by 2>/dev/null noise here), so fall back
+    # to $HOME when the preferred directory is missing.
+    start_dir="${HOME}/videos/dark"
+    [[ -d "${start_dir}" ]] || start_dir="${HOME}"
+
+    if ! tmux new-session -d -s "${session_name}" -c "${start_dir}" 2>/dev/null; then
         tmux_has_session || {
             printf 'Unable to create tmux session: %s\n' "${session_name}" >&2
             exit 1

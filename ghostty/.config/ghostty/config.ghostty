@@ -13,10 +13,10 @@ bold-color = bright
 term = tmux-256color
 
 # Font (was [font] size=14.0 + normal/bold/italic/bold_italic families)
-font-family = Google Sans Code NF
-font-family-bold = Google Sans Code NF
-font-family-italic = Google Sans Code NF
-font-family-bold-italic = Google Sans Code NF
+font-family = GoogleSansCode NF
+font-family-bold = GoogleSansCode NF
+font-family-italic = GoogleSansCode NF
+font-family-bold-italic = GoogleSansCode NF
 font-size = 14
 
 # Keybindings (was [[keyboard.bindings]])
@@ -36,7 +36,9 @@ scrollback-limit = 10000000
 mouse-scroll-multiplier = 3
 
 # Shell (was [terminal.shell] program/args). Parsed via /bin/sh -c.
-command = /usr/bin/fish -l -c "exec ~/.config/ghostty/tmux-home-session.sh"
+# NOTE: fish is a Homebrew binary at /opt/homebrew/bin/fish on Apple Silicon;
+# /usr/bin/fish does not exist on macOS and would make every new surface fail.
+command = /opt/homebrew/bin/fish -l -c "exec ~/.config/ghostty/tmux-home-session.sh"
 
 # Window (was [window] ...)
 # Alacritty "Buttonless" is macOS-only; Linux equivalent = no decorations.
