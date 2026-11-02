@@ -35,7 +35,7 @@
       "atuin": {
         "type": "local",
         "command": [
-          "/home/eryoma/.cargo/bin/atuin",
+          "/Users/eryoma/.atuin/bin/atuin",
           "mcp"
         ]
       },
