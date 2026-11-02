@@ -22,12 +22,16 @@ task --completion fish | source
 bind \cr _atuin_search
 bind -M insert \cr _atuin_search
 
-if test (tty) = /dev/tty1
+# Start Hyprland on tty1 unless something is already running there.
+# XDG_VTNR is set by agetty and survives shell startup, unlike (tty),
+# which is unreliable when stdin is not the controlling terminal.
+if status is-interactive
+    and test "$XDG_VTNR" = 1
+    and test -z "$WAYLAND_DISPLAY"
+    and test -z "$HYPRLAND_INSTANCE_SIGNATURE"
     export RADV_VIDEO_DECODE=1
     export SDL_VIDEODRIVER=wayland
     export GDK_BACKEND=wayland
-    export XDG_SESSION_TYPE=wayland
-    export XDG_CURRENT_DESKTOP=sway
     export MOZ_ENABLE_WAYLAND=1
     exec start-hyprland
 end
