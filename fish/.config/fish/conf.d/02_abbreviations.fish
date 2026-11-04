@@ -9,7 +9,11 @@ abbr --add cdfz "z (sk --reverse --preview 'bat --color=always --style=numbers -
 abbr --add g git
 abbr --add lg lazygit
 abbr --add glog "git dlog"
-abbr --add ur "ls | xargs -P10 -I{} git -C {} pull"
+abbr --add ur "for d in */
+    test -d \$d/.git; or continue
+    set -l s (git -C \$d status --porcelain | string collect)
+    test -z \"\$s\"; and echo \$d
+end | xargs -P10 -I{} sh -c 'echo \"=== {}\"; git -C {} pull 2>&1 | tail -5'"
 abbr --add sw "cd (worktree)"
 
 # editing related abbreviations
