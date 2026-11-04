@@ -1,7 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
-    "@plannotator/opencode@latest",
     {
       "package": "./plugins/rtk"
     }
