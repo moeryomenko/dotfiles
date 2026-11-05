@@ -1,7 +1,7 @@
 hl.window_rule({
 	name = "zathura-rules",
 	match = { class = "^(org.pwmt.zathura)$" },
-	workspace = 2,
+	scrolling_width = 1,
 })
 
 hl.window_rule({
