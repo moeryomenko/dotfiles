@@ -12,3 +12,6 @@ panes:
   - command: <agent> # Start the configured agent (e.g., opencode)
     focus: true
   - split: horizontal # Second pane with default shell
+
+dashboard:
+  close_on_jump: false
