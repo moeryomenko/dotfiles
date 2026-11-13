@@ -78,6 +78,21 @@ name = "selinux-te"
 source = { git = "https://github.com/moeryomenko/tree-sitter-selinux", rev = "dc813009a179083dcefc111bb2bc19418e50ab5c" }
 
 # ---------------------------------------------------------------------------
+# Bash / shell
+# ---------------------------------------------------------------------------
+# bashls (https://github.com/k8s-1/bashls, cargo: bashls) is a Rust Bash
+# language server providing completion, navigation, diagnostics and formatting.
+# It shells out to shellcheck for diagnostics and shfmt for formatting; both
+# are resolved on PATH.
+[language-server.bashls]
+command = "bashls"
+config = { bashIde = { shellcheckPath = "shellcheck", shfmt = { path = "shfmt" } } }
+
+[[language]]
+name = "bash"
+language-servers = ["bashls"]
+
+# ---------------------------------------------------------------------------
 # jq / JSON language servers
 # ---------------------------------------------------------------------------
 

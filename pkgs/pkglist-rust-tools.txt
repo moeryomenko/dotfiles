@@ -13,3 +13,5 @@ kdash
 elio
 # helix/languages.toml -- assembly LSP (GAS/NASM/Go asm)
 asm-lsp
+# helix/languages.toml -- Bash/sh LSP (bashls)
+bashls
