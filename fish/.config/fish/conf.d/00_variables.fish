@@ -5,10 +5,20 @@ if test -S ~/.gnupg/S.gpg-agent
     set -gx GPG_AGENT_INFO ~/.gnupg/S.gpg-agent
 end
 
-set -gx DOCKER_HOST unix:///run/user/(id -u)/podman/podman.sock
+if test (uname -s) = Linux
+    set -gx DOCKER_HOST unix:///run/user/(id -u)/podman/podman.sock
+else
+    # Let Docker Desktop use the active Docker context on macOS.
+    set -e DOCKER_HOST
+end
 
-set -Ux EDITOR helix
-set -Ux VISUAL helix
+if test (uname -s) = Darwin
+    set -gx EDITOR hx
+    set -gx VISUAL hx
+else
+    set -gx EDITOR helix
+    set -gx VISUAL helix
+end
 set -Ux GOPATH (go env GOPATH)
 set NPM_PACKAGES "$HOME/.npm-packages"
 set PATH $PATH $NPM_PACKAGES/bin
