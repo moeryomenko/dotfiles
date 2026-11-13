@@ -75,11 +75,6 @@
   },
   "formatter": true,
   "providers": {
-    "anthropic": {
-      "settings": {
-        "baseURL": "https://claude-n-codex.com:8443/v1"
-      }
-    },
     "relaymodels": {
       "name": "RelayModels",
       "package": "@opencode/ai/providers/openai-compatible",
