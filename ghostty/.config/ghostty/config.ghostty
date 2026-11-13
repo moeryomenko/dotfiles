@@ -17,7 +17,7 @@ font-family = GoogleSansCode NF
 font-family-bold = GoogleSansCode NF
 font-family-italic = GoogleSansCode NF
 font-family-bold-italic = GoogleSansCode NF
-font-size = 18
+font-size = 16
 
 # Keybindings (was [[keyboard.bindings]])
 keybind = alt+c=copy_to_clipboard
