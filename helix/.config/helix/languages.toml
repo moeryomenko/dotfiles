@@ -4,6 +4,9 @@ command = "autotools-language-server"
 [language-server.make-ls]
 command = "make-ls"
 
+[language-server.bashls]
+command = "bashls"
+
 [language-server.css-variable-lsp]
 command = "css-variable-lsp"
 args = []
@@ -58,6 +61,10 @@ name = "make"
 scope = "source.make"
 file-types = [{ glob = "[Mm]akefile" }, "mk"]
 language-servers = ["make-ls"]
+
+[[language]]
+name = "bash"
+language-servers = ["bashls"]
 
 # SELinux Type Enforcement policy modules (.te) and interface files (.if).
 # Grammar: https://github.com/moeryomenko/tree-sitter-selinux
