@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=imgvwr
+Comment=Minimal Wayland image viewer
+Exec=imgvwr %F
+Terminal=false
+Categories=Graphics;Viewer;
+MimeType=image/png;image/jpeg;image/webp;image/gif;image/avif;image/jxl;image/apng;
+Keywords=image;viewer;wayland;

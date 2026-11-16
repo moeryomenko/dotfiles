@@ -138,7 +138,23 @@ install_rust_tools() {
 }
 
 # ================================================================
-# Step 7: Install npm global packages
+# Step 7: Install imgvwr
+# ================================================================
+install_imgvwr() {
+    echo "==> Installing imgvwr..."
+    if ! command -v cargo &>/dev/null; then
+        echo "    WARNING: cargo not found -- skipping imgvwr."
+        return
+    fi
+    cargo install --git https://github.com/Gigas002/imgvwr \
+        --tag v1.1.0 --locked \
+        --features jpeg,webp,avif,avif-anim,jxl,jxl-anim,gif,webp-anim,apng \
+        imgvwr
+    echo "    done."
+}
+
+# ================================================================
+# Step 8: Install npm global packages
 # ================================================================
 install_npm_packages() {
     echo "==> Installing npm global packages from pkglist-npm.txt..."
@@ -177,6 +193,8 @@ main() {
     install_hyprpm_plugins
     echo ""
     install_rust_tools
+    echo ""
+    install_imgvwr
     echo ""
     install_npm_packages
     echo ""

@@ -167,7 +167,12 @@ unzip                  # archive extraction (bash/oneliners.sh)
 # ================================================================
 mpv                    # media player (mpv/ config, hyprland windowrules)
 mpv-mpris              # MPRIS plugin (waybar mpris module, mpv title)
-imv                    # image viewer
+wayland                # imgvwr runtime
+libxkbcommon           # imgvwr runtime
+wayland-protocols       # imgvwr build dependency
+pkgconf                # imgvwr build dependency
+dav1d                  # imgvwr AVIF decoding
+libjxl                 # imgvwr JPEG XL decoding
 yt-dlp                 # video downloader
 
 # ================================================================

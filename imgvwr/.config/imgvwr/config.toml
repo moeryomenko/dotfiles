@@ -1,0 +1,18 @@
+[window]
+decorations = false
+antialiasing = true
+
+[viewer]
+min_scale = 0.1
+max_scale = 100.0
+scale_step = 0.1
+filter_method = "lanczos3"
+
+[keybindings]
+quit = "q"
+rotate_left = "["
+rotate_right = "]"
+delete = "Delete"
+
+[logging]
+level = "warn"

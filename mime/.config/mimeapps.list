@@ -17,22 +17,14 @@ application/x-shellscript=helix.desktop;
 text/x-c=helix.desktop;
 text/x-c++=helix.desktop;
 
-# Image viewer — imv
-image/bmp=imv.desktop;
-image/gif=imv.desktop;
-image/jpeg=imv.desktop;
-image/png=imv.desktop;
-image/svg+xml=imv.desktop;
-image/tiff=imv.desktop;
-image/webp=imv.desktop;
-image/avif=imv.desktop;
-image/heif=imv.desktop;
-image/jxl=imv.desktop;
-image/qoi=imv.desktop;
-image/x-farbfeld=imv.desktop;
-image/x-png=imv.desktop;
-image/x-bmp=imv.desktop;
-image/pjpeg=imv.desktop;
+# Image viewer — imgvwr
+image/gif=imgvwr.desktop;
+image/jpeg=imgvwr.desktop;
+image/png=imgvwr.desktop;
+image/webp=imgvwr.desktop;
+image/avif=imgvwr.desktop;
+image/jxl=imgvwr.desktop;
+image/apng=imgvwr.desktop;
 
 # Video player — mpv
 video/mp4=mpv.desktop;
