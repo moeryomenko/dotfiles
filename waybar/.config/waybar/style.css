@@ -24,6 +24,7 @@
 #memory,
 #mpris,
 #custom-mpv,
+#custom-bluetooth-devices,
 #window,
 #cpu,
 #load,
@@ -54,6 +55,7 @@
 #cpu,
 #mpris,
 #custom-mpv,
+#custom-bluetooth-devices,
 #window,
 #load {
     margin: 0 3px;

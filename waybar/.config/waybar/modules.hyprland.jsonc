@@ -31,6 +31,7 @@
     "orientation": "horizontal",
     "modules": [
       "bluetooth",
+      "custom/bluetooth-devices",
       "group/group-volume",
       "network",
       "tray"
@@ -194,9 +195,10 @@
     "format-on": "󰂰",
     "format-off": "󰂲",
     "format-disabled": "󰂲",
-    "format-connected": "{device_alias}",
-    "format-connected-battery": "{device_alias}",
+    "format-connected": "󰂯 {num_connections}",
+    "format-connected-battery": "󰂯 {num_connections}",
     "tooltip-format": "{device_enumerate}",
+    "tooltip-format-connected": "{num_connections} connected\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
     "tooltip-format-enumerate-connected-battery": "{device_alias}   {device_battery_percentage}%",
     "on-click": "~/.config/waybar/bin/toggle_bluetooth",
@@ -278,6 +280,15 @@
     "format": "{}",
     "max-length": 40,
     "tooltip": false,
+    "hide-empty-text": true
+  },
+  "custom/bluetooth-devices": {
+    "exec": "~/.config/waybar/bin/bluetooth-devices.sh",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{}",
+    "tooltip": true,
+    "escape": true,
     "hide-empty-text": true
   }
 }
