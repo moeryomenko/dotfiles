@@ -166,6 +166,7 @@ unzip                  # archive extraction (bash/oneliners.sh)
 # MEDIA
 # ================================================================
 mpv                    # media player (mpv/ config, hyprland windowrules)
+mpv-mpris              # MPRIS plugin (waybar mpris module, mpv title)
 imv                    # image viewer
 yt-dlp                 # video downloader
 
