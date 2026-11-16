@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+<object class="GtkMenu" id="menu">
+    <child>
+      <object class="GtkMenuItem" id="action-1">
+        <property name="label">Monitor system</property>
+        <child type="submenu">
+            <object class="GtkMenu">
+                <child>
+                    <object class="GtkMenuItem" id="action-1-1">
+                        <property name="label">htop</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkMenuItem" id="action-1-2">
+                        <property name="label">btop</property>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkMenuItem" id="action-1-3">
+                        <property name="label">nvtop</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+      </object>
+    </child>
+
+    <child><object class="GtkSeparatorMenuItem" id="separator"/></child>
+
+    <child>
+      <object class="GtkMenuItem" id="action-2">
+        <property name="label">Reload Hyprland</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkMenuItem" id="action-3">
+        <property name="label">Restart Waybar</property>
+      </object>
+    </child>
+
+</object>
+</interface>

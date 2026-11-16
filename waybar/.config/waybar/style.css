@@ -1,149 +1,217 @@
+@import "colors/colors.css";
+
 * {
-    border: none;
-    border-radius: 0px;
-    font-family: Mononoki Nerd Font;
-
-    /* adjust font-size value to your liking: */
-    font-size: 10px;
-
-    min-height: 0;
+    font-family: 'CaskaydiaCove Nerd Font Propo';
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	text-shadow: none;
 }
 
-window#waybar {
-    background-color: rgba(0, 0, 0, 0.9);
-    color: #ffffff;
+#waybar {
+    font-weight: 700;
+    background: transparent;
+    font-size: 14px;
+    color: @fg;
 }
 
-#workspaces button {
-    /* padding: 0 0.4em; */
-    /* background-color: transparent; */
-    color: #ffffff;
-    /* Use box-shadow instead of border so the text isn't offset */
-    box-shadow: inset 0 -3px transparent;
-}
-
-/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-#workspaces button:hover {
-    background: rgba(0, 0, 0, 0.9);
-    box-shadow: inset 0 -3px #ffffff;
-}
-
-#workspaces button.focused {
-    background-color: #64727D;
-    /* box-shadow: inset 0 -3px #ffffff; */
-}
-
-#workspaces button.urgent {
-    background-color: #eb4d4b;
-}
-
-#mode {
-    background-color: #64727D;
-}
-
-#clock,
+/* global paddings */
+#temperature,
+#bluetooth,
 #battery,
-#network,
-#wireplumber,
-#tray,
-#mpd {
-    padding: 0 8px;
-    margin: 4px 1px;
-    color: #000000;
-}
-
+#memory,
+#mpris,
+#custom-mpv,
 #window,
-#workspaces {
-    margin: 0 4px;
+#cpu,
+#load,
+#backlight,
+#pulseaudio {
+    padding: 1px 7px;
 }
 
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
+#network,
+#tray {
+    padding: 1px 6px;
 }
 
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-    margin-right: 0;
+#pulseaudio {
+    padding-left: 4px;
+}
+
+#backlight-slider,
+#pulseaudio-slider {
+    padding: 0 7px 0 2px;
+}
+
+#workspaces,
+#bluetooth,
+#battery,
+#memory,
+#temperature,
+#cpu,
+#mpris,
+#custom-mpv,
+#window,
+#load {
+    margin: 0 3px;
+}
+
+#right,
+#left,
+#right-hidden-top,
+#left-hidden-top,
+#clock  {
+    padding: 2px 10px;
+    border-radius: 15px;
+    background: @module-bg;
+    border: 1px solid @border;
+}
+
+#right-hidden-top,
+#left-hidden-top {
+    padding: 0 12px;
+}
+
+#right, #left  {
+    margin: 0 8px;
 }
 
 #clock {
-    background-color: #000000;
-    color: white;
+    padding: 2px 18px;
 }
 
-#battery {
-    background-color: #000000;
-    color: white;
+#custom-ctlcenter {
+    margin-left: 7px;
 }
 
-#battery.charging {
-    color: #ffffff;
-    background-color: #000000;
+#power-profiles-daemon,
+#custom-start {
+    margin-right: 7px;
 }
 
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
+#cpu.critical,
+#memory.critical,
+#battery.critical,
+#network.disabled,
+#temperature.critical,
+#network.disconnected,
+#power-profiles-daemon.performance {
+	color: @red;
 }
 
-#battery.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+#cpu.warning,
+#memory.warning,
+#battery.warning,
+#temperature.warning {
+	color: @yellow;
+    background: unset;
 }
 
-label:focus {
-    background-color: #000000;
+#power-profiles-daemon.power-saver {
+    color: @green;
 }
 
-#network,
-#wireplumber {
-    background-color: #000000;
-    color: white;
+#custom-start,
+#custom-ctlcenter {
+    color: @blue;
 }
 
-#network.disconnected {
-    background-color: #f53c3c;
-}
-
-#tray {
-    background-color: #2980b9;
-}
-#mpd {
-    background-color: #66cc99;
-    color: #2a5c45;
-}
-
-#mpd.disconnected {
-    background-color: #f53c3c;
-}
-
-#mpd.stopped {
-    background-color: #90b1b1;
-}
-
-#mpd.paused {
-    background-color: #51a37a;
-}
-
-#language {
-    background: #bbccdd;
-    color: #333333;
-    padding: 0 5px;
-    margin: 6px 3px;
+#workspaces button {
+    color: @workspace-fg;
+    font-size: 14px;
+    border-radius: 100%;
+    padding: 0 2px;
+    margin: 0 3px;
     min-width: 16px;
-    border-radius: 4px;
+}
+/*
+#workspaces button.empty:not(.active) {
+    color: @inactive;
+} */
+
+#workspaces button:hover {
+    background: transparent;
 }
 
-#custom-powermenu {
-	color: rgb(242, 143, 173);
-    margin-left: 0.8em;
-    margin-right: 0.8em;
+#mpris.paused {
+    color: @inactive;
+}
+
+/* ---<==== Misc ====>--- */
+
+tooltip,
+tooltip.background {
+    background-image: none;
+    border-radius: 15px;
+    background: @tooltip-bg;
+    box-shadow: none;
+}
+
+tooltip {
+    border: 1px solid @border;
+}
+
+tooltip label {
+    padding: 3px 10px;
+    color: @fg;
+	font-weight: 700;
+}
+
+.popup > * {
+    box-shadow: none;
+    outline: none;
+    border-radius: 14px;
+}
+
+menu {
+    font-weight: 700;
+    color: @fg;
+    background: @tooltip-bg;
+    border: 1px solid @border;
+}
+
+menu > * {
+    padding: 3px 0px;
+    min-width: 5px;
+    border-radius: 6px;
+}
+
+menu > *:last-child {
+    border-radius: 0 0 14px 14px;
+}
+
+menu > *:first-child {
+    border-radius: 14px 14px 0 0;
+}
+
+menu > *:last-child:first-child {
+    border-radius: 14px;
+}
+
+menu > *:hover {
+    background-color: @highlight;
+    color: @fg;
+}
+
+/* Sliders */
+
+slider {
+    opacity: 0;
+    box-shadow: none;
+}
+
+trough {
+    min-width: 50px;
+    min-height: 5px;
+    border-radius: 8px;
+    background: @inactive;
+}
+
+trough highlight {
+    border-radius: 8px;
+    background-color: @fg;
+    background-image: none; /* Some gtk themes set an svg for background. */
 }
