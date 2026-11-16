@@ -240,7 +240,7 @@
   },
   "custom/ctlcenter": {
     "tooltip": false,
-    "format": "",
+    "format": "",
     "on-click": "~/.config/waybar/bin/ctlcenter.sh",
     "menu": "on-click-right",
     "menu-file": "~/.config/waybar/context/ctlcenter.xml",
