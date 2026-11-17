@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+#
+# tmux-file-pick — fuzzy file picker popup for copying paths or editing.
+#
+# Opened by the prefix+F (copy) and prefix+e (edit) bindings as a tmux popup in
+# the active pane's directory. Files are listed from the enclosing Git work
+# tree (or from the pane directory when it is not inside one), so paths are
+# relative to the project root rather than to whatever subdirectory the pane
+# sits in.
+#
+#   copy  copy the selected project-relative path to the Wayland clipboard
+#   edit  open the selected file in helix inside the same popup; quitting helix
+#         ends the popup command, so the popup closes too
+#
+# The preview uses bat for highlighted, line-numbered content and falls back to
+# sed so the picker still works when bat is not installed.
+#
+# Usage: tmux-file-pick [copy|edit]
+# Exit status: copy mode 0 after a copy or cancel; edit mode helix's status.
+
+set -Eeuo pipefail
+
+readonly ACTION="${1:-copy}"
+readonly FD="${TMUX_FILE_PICK_FD:-fd}"
+readonly FZF="${TMUX_FILE_PICK_FZF:-fzf}"
+readonly EDITOR_CMD="${TMUX_FILE_PICK_EDITOR:-helix}"
+
+case "$ACTION" in
+copy | edit) ;;
+*)
+	printf 'usage: %s [copy|edit]\n' "${0##*/}" >&2
+	exit 2
+	;;
+esac
+
+root="${TMUX_FILE_PICK_ROOT:-}"
+if [ -z "$root" ]; then
+	root=$(git rev-parse --show-toplevel 2>/dev/null) || root=$PWD
+fi
+
+preview='bat --style=numbers --color=always --paging=never --line-range=:500 -- {} 2>/dev/null || sed -n "1,500p" -- {}'
+
+selection=$(
+	cd "$root"
+	"$FD" --type f --hidden --exclude .git --strip-cwd-prefix |
+		"$FZF" --reverse --prompt 'file> ' \
+			--preview "$preview" \
+			--preview-window 'right:60%:wrap'
+) || exit 0
+
+[ -n "$selection" ] || exit 0
+
+if [ "$ACTION" = edit ]; then
+	cd "$root"
+	exec "$EDITOR_CMD" -- "$selection"
+fi
+
+# wl-copy forks a daemon that serves the selection and inherits the popup's
+# pty. tmux only closes a popup after both the command exits and the pty sees
+# EOF, so leaving that daemon on the pty freezes the popup. Send its stdio to
+# /dev/null so it cannot keep the pty open.
+if ! printf '%s' "$selection" | wl-copy >/dev/null 2>&1; then
+	if [ -n "${TMUX:-}" ]; then
+		tmux display-message "copy failed: $selection"
+	fi
+	exit 1
+fi
+
+if [ -n "${TMUX:-}" ]; then
+	tmux display-message "copied: $selection"
+fi
