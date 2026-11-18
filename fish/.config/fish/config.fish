@@ -17,6 +17,7 @@ fx --comp fish | source
 mise activate fish | source
 atuin init fish | source
 task --completion fish | source
+workmux completions fish | source
 
 # bind to ctrl-r in normal and insert mode, add any other bindings you want here too
 bind \cr _atuin_search
