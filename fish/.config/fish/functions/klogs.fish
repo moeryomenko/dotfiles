@@ -27,7 +27,20 @@ function klogs
             capture("^\\\\[pod/(?<pod>[^/]+)/[^]]+\\\\] (?<json>\\\\{.*\\\\})$")
             | . as $line
             | ($line.json | fromjson) as $log
-            | "\u001b[36mpod:\u001b[0m \($line.pod)\n\u001b[33mtime:\u001b[0m \($log.time | split("T")[1] | sub("Z$"; ""))\n\u001b[32mmsg:\u001b[0m \($log.msg)\n\u001b[35msource:\u001b[0m \($log.source | {file, function, line} | tojson)\n"
+            | [
+                "\u001b[36mpod:\u001b[0m \($line.pod)",
+                (if ($log.time? | type) == "string" and $log.time != "" then "\u001b[33mtime:\u001b[0m \($log.time | split("T") | last | sub("Z$"; ""))" else empty end),
+                (if $log.level? != null then "\u001b[34mlevel:\u001b[0m \($log.level)" else empty end),
+                (if $log.message_type? != null then "\u001b[35mtype:\u001b[0m \($log.message_type)" else empty end),
+                (if $log.message_info? != null then "\u001b[35minfo:\u001b[0m \($log.message_info)" else empty end),
+                "\u001b[32mmsg:\u001b[0m \((($log.msg // $log.message // "null") | tostring | gsub("[\r\n]+"; " ")))",
+                (if $log.err_cause? != null then "\u001b[31merror:\u001b[0m \($log.err_cause | tostring | gsub("[\r\n]+"; " "))" else empty end),
+                (if ($log.project? // "") != "" then "\u001b[96mproject:\u001b[0m \($log.project)" else empty end),
+                (if ($log.request_id? // "") != "" then "\u001b[90mrequest_id:\u001b[0m \($log.request_id)" else empty end),
+                (if $log.points? != null then "\u001b[93mpoints:\u001b[0m \($log.points | tostring)" else empty end),
+                (if ($log.source? | type) == "object" then "\u001b[35msource:\u001b[0m \($log.source | {file, function, line} | with_entries(select(.value != null)) | tojson)" else empty end)
+            ]
+            | join("\n") + "\n"
         ) catch empty
     '
 end
